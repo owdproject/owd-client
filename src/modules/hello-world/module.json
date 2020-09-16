@@ -1,0 +1,22 @@
+{
+  "name": "hello-world",
+  "windows": [
+    {
+      "name": "WindowExample",
+      "title": "OWD Sample Module",
+      "titleShort": "Open Web Desktop",
+      "icon": "hexagon-multiple-outline",
+      "window": {
+        "menu": true,
+        "closed": true,
+        "hidden": false,
+        "resizable": false,
+        "width": 448,
+        "height": 240,
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    }
+  ]
+}

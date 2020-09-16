@@ -1,0 +1,10 @@
+{
+  "type": "client",
+  "modulesEnabled": {
+    "hello-world": {
+      "name": "hello-world",
+      "version": "1.0.0",
+      "url": "https://www.github.com/owd-modules/hello-world"
+    }
+  }
+}

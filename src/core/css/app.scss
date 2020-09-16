@@ -1,0 +1,39 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  padding: 0;
+  margin: 0;
+  font-weight: normal;
+  font-family: 'Oswald', Tahoma, sans-serif;
+}
+
+a, a:link, a:visited {
+  text-decoration: none;
+}
+
+:focus {
+  outline: none;
+}
+
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 13px;
+
+  &.is-windows {
+    font-size: 14px;
+  }
+}
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}

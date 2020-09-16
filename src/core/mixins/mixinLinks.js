@@ -1,9 +1,4 @@
 export default {
-  computed: {
-    isServerAvailable() {
-      return process.env.VUE_APP_SERVER === 'true'
-    }
-  },
   methods: {
     socialUrl(social) {
       const username = process.env[`VUE_APP_SOCIAL_${social.toUpperCase()}_USER`];

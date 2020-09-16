@@ -53,9 +53,7 @@ Some modules may have additional [npm](https://www.npmjs.com) dependencies, you 
 To do so, check the content of the `src/modules/<module-name>/module.json` configuration file
 to find out if there are any dependencies to install under "dependencies" property.  
 
-Then run `npm install <dependency-name>` for each dependency.
-
-This command will install dependencies into `node_modules` 
+Then run `npm install <dependency-name>` for each dependency. This command will install dependencies into `node_modules` 
 and will add them to the project's dependencies list in the `package.json` file.
 
 #### Define the installed module

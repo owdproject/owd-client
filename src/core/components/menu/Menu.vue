@@ -80,7 +80,7 @@
 
           .v-icon {
             color: white;
-            vertical-align: 2px;
+            vertical-align: 1px;
           }
         }
 

@@ -31,21 +31,10 @@
     created() {
       const self = this;
 
-      this.$store.commit('core/debug/LOG', 'App initialized');
+      // initialize client
+      this.$store.dispatch('core/client/init')
 
-      // # VUEX WINDOWS INIT
-
-      // load windows positions from local storage
-      this.$store.dispatch('core/windows/getWindowsStorage').then(windowsData => {
-        this.$store.dispatch('core/windows/loadWindowsStorage', windowsData);
-      });
-
-      // check windows position on load
-      this.$store.dispatch('core/windows/windowsHandlePageResize');
-
-      // load client customization
-      this.$store.dispatch('core/client/storageLoad');
-
+      // add window resize event
       window.addEventListener("resize", function () {
         clearTimeout(this.handlePageResize);
 
@@ -61,6 +50,7 @@
     destroyed() {
       const self = this;
 
+      // remove window resize event
       window.removeEventListener('resize', function () {
         self.$store.dispatch('core/windows/windowsHandlePageResize');
       })

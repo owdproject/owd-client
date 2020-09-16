@@ -5,11 +5,11 @@
 </template>
 
 <script>
-  import mixinCommon from "./core/mixins/mixinCommon";
+  import mixinServer from "@/core/mixins/mixinServer";
 
   export default {
     name: 'app',
-    mixins: [mixinCommon],
+    mixins: [mixinServer],
     beforeMount() {
       // redirect to homepage on 404
       if (!this.$route.name) {
@@ -30,17 +30,14 @@
       appClasses() {
         const appClasses = [];
 
-        let osName = null;
         let device = 'is-desktop';
+        if (this.$device.mobile) device = 'is-mobile'
 
-        if (this.$device.mobile) {
-          device = 'is-mobile'
-        }
-
+        let osName = null;
         if (navigator.appVersion.indexOf("Win") !== -1) osName = "is-windows";
-        // if (navigator.appVersion.indexOf("Mac") !== -1) osName = "is-mac-os";
-        // if (navigator.appVersion.indexOf("X11") !== -1) osName = "is-unix";
-        // if (navigator.appVersion.indexOf("Linux") !== -1) osName = "is-linux";
+        if (navigator.appVersion.indexOf("Mac") !== -1) osName = "is-mac";
+        if (navigator.appVersion.indexOf("X11") !== -1) osName = "is-unix";
+        if (navigator.appVersion.indexOf("Linux") !== -1) osName = "is-linux";
 
         if (osName) {
           appClasses.push(osName)

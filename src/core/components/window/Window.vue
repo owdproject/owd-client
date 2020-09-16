@@ -16,6 +16,7 @@
     fit-parent
     drag-selector=".window-nav .window-nav-title"
     @drag:start="onDragStart"
+    @drag:move="onDragMove"
     @drag:end="onDragEnd"
     @resize:start="onResizeStart"
     @resize:end="onResizeEnd"
@@ -36,7 +37,7 @@
   >
     <div class="window-container" @mousedown="onActivated">
       <WindowNav :title="title" @invertMaximize="onInvertMaximize">
-        <a class="btn" @click="onMinimize">
+        <a class="btn" @click="onMinimize" v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable">
           <v-icon>mdi-window-minimize</v-icon>
         </a>
         <a class="btn" @click="onInvertMaximize" v-if="window.config.maximizable">
@@ -52,6 +53,8 @@
       <WindowContent>
         <slot />
       </WindowContent>
+
+      <slot name="append-outer" />
     </div>
   </vue-resizable>
 </template>
@@ -251,6 +254,43 @@
       },
 
       /**
+       * On drag event, force no-margin when straight to borders
+       */
+      onDragMove: function(data) {
+        let forceNoMargin = false
+
+        if (data.top <= 15) {
+          forceNoMargin = true
+          data.top = 0
+        }
+        if (data.left <= 15) {
+          forceNoMargin = true
+          data.left = 0
+        }
+
+        if ((data.top + this.window.storage.height) >= window.innerHeight - 15) {
+          forceNoMargin = true
+          data.top = window.innerHeight - this.window.storage.height
+        }
+
+        if ((data.left + this.window.storage.width) >= window.innerWidth - 15) {
+          forceNoMargin = true
+          data.left = window.innerWidth - this.window.storage.width
+        }
+
+        if (forceNoMargin) {
+          this.$store.dispatch('core/windows/windowUpdatePosition', {
+            name: this.window.name,
+            x: data.left,
+            y: data.top,
+            width: data.width,
+            height: data.height
+          })
+        }
+      },
+
+
+      /**
        * Window stop drag event
        * @param data
        */
@@ -266,6 +306,9 @@
           this.window.storage.width !== data.width ||
           this.window.storage.height !== data.height
         ) {
+          if (data.top <= 15) data.top = 0
+          if (data.left <= 15) data.left = 0
+
           this.$store.dispatch('core/windows/windowUpdatePosition', {
             name: this.window.name,
             x: data.left,
@@ -314,25 +357,32 @@
     }
 
     &.no-window-margin .window-container > .window-content {
-      margin: -32px 0 0 0;
-      padding: 32px 12px 12px 12px;
-      height: calc(100% - 44px);
+      height: 100%;
+      margin: -34px 0 0 0;
+      padding: 0;
     }
 
     &.no-content-margin .window-container > .window-content {
-      margin: 0;
-      height: calc(100% - 34px);
+      height: 100%;
+      margin: -34px 0 0 0;
     }
 
     &.maximized {
-      top: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
+      .window-content {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 15px !important;
+        z-index: 12;
+        background: #111111;
 
-      @media (max-width: 768px) {
-        left: auto !important;
+        @media (max-width: 768px) {
+          left: auto !important;
+        }
       }
     }
 
@@ -344,7 +394,6 @@
       height: 100%;
 
       .window-content {
-        position: relative;
         height: calc(100% - 44px);
         margin: 0 12px 12px 12px;
         overflow: hidden;

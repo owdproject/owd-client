@@ -3,7 +3,7 @@ import Vue from 'vue';
 const validColors = ['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white'];
 const validTextFormat = ['b', 's', 'o', 'i', 'u', 'g'];
 
-export default class Shell {
+export default class Terminal {
   constructor() {
     this.instance = null;
     this.commands = {};

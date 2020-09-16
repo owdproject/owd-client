@@ -59,6 +59,23 @@ export default {
   },
 
   actions: {
+    init({commit, dispatch}) {
+      commit('core/debug/LOG', 'App initialized', {root: true});
+
+      // # VUEX WINDOWS INIT
+
+      // load windows positions from local storage
+      dispatch('core/windows/getWindowsStorage', null, {root: true}).then(windowsData => {
+        dispatch('core/windows/loadWindowsStorage', windowsData, {root: true});
+      });
+
+      // check windows position on load
+      dispatch('core/windows/windowsHandlePageResize', null, {root: true});
+
+      // load client customization
+      dispatch('storageLoad');
+    },
+
     /**
      * Load client customizations from local storage
      *

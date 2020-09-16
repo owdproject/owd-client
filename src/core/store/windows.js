@@ -6,8 +6,8 @@ export default {
   namespaced: true,
 
   state: {
-    windowInnerWidth: window.innerWidth,
-    windowInnerHeight: window.innerHeight,
+    desktopInnerWidth: window.innerWidth,
+    desktopInnerHeight: window.innerHeight,
 
     windows: {},
 
@@ -26,10 +26,10 @@ export default {
 
   mutations: {
     SET_PAGE_WIDTH(state, width) {
-      state.windowInnerWidth = width
+      state.desktopInnerWidth = width
     },
     SET_PAGE_HEIGHT(state, height) {
-      state.windowInnerHeight = height
+      state.desktopInnerHeight = height
     },
     SET_WINDOW(state, data) {
       state.windows[data.name] = data.window
@@ -459,7 +459,7 @@ export default {
       if (window.storage.x === 0 || forceLeft) {
         x = 96;
       } else if (window.storage.x < 0 || forceRight) {
-        x = state.windowInnerWidth - window.config.width - 24; // right
+        x = state.desktopInnerWidth - window.config.width - 24; // right
       }
 
       return x
@@ -489,7 +489,7 @@ export default {
       if (window.storage.y === 0 || forceLeft) {
         y = 24;
       } else if (window.storage.y < 0 || forceRight) {
-        y = state.windowInnerHeight - window.config.height - 24; // right
+        y = state.desktopInnerHeight - window.config.height - 24; // right
       }
 
       return y

@@ -59,7 +59,7 @@
 
     &.inactive {
       filter: grayscale(100%);
-      opacity: 0.33;
+      opacity: 0.2;
     }
 
     a {

@@ -3,7 +3,7 @@ import App from './App.vue'
 
 import store from './core/store'
 import router from './core/router'
-import boot from './core/plugins/boot'
+import boot from './core/boot'
 
 // load Open Web Desktop & its modules
 boot({ Vue, store });

@@ -3,7 +3,7 @@ import modulesConfig from '../../../config/modules.json';
 
 const modulesLoaded = {};
 
-export default ({ store, shell }) => {
+export default ({ store, terminal }) => {
   const merge = require('lodash.merge');
 
   if (modulesConfig) {
@@ -89,11 +89,11 @@ export default ({ store, shell }) => {
 
           // load commands
           if (moduleInfo.commands) {
-            const commands = loadCommands(moduleInfo.name, { Vue, store, shell });
+            const commands = loadCommands(moduleInfo.name, { Vue, store, terminal });
 
             if (commands) {
               Object.keys(commands).forEach((commandName) => {
-                shell.addCommand(commandName, commands[commandName])
+                terminal.addCommand(commandName, commands[commandName])
               });
             }
           }
@@ -193,20 +193,20 @@ function loadModuleConfig(moduleName) {
 }
 
 /**
- * Load commands from module passing shell as instance
+ * Load commands from module passing terminal as instance
  *
  * @param moduleFolder
  * @param store
- * @param shell
+ * @param terminal
  * @returns {*}
  */
-function loadCommands(moduleFolder, { store, shell }) {
+function loadCommands(moduleFolder, { store, terminal }) {
   try {
     const commands = require('../../../src/modules/' + moduleFolder + '/commands.js');
 
     if (commands) {
       // instance commands
-      return commands.default({ store, shell});
+      return commands.default({ store, terminal});
     }
   } catch(e) {
     console.log(e);

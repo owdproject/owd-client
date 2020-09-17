@@ -1,5 +1,12 @@
 {
   "name": "hello-world",
+  "version": "1.0.0",
+  "license": "MIT",
+  "homepage": "https://github.com/owd-modules/hello-world",
+  "author": {
+    "name": "hacklover",
+    "url": "https://hacklover.net"
+  },
   "windows": [
     {
       "name": "WindowExample",
@@ -13,7 +20,7 @@
         "resizable": false,
         "width": 448,
         "height": 240,
-        "x": 0,
+        "x": -1,
         "y": 0,
         "z": 0
       }

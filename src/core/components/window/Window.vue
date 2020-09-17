@@ -152,7 +152,7 @@
         window.addEventListener(
           'beforeunload',
           () => {
-            self.$store.dispatch('core/windows/windowClose', self.window.name);
+            self.$store.dispatch('core/windows/windowClose', self.window);
             self.$store.dispatch('core/windows/saveWindowsStorage');
           }
         )
@@ -175,14 +175,14 @@
        * Window minimize event
        */
       onMinimize: function () {
-        this.$store.dispatch('core/windows/windowMinimize', this.window.name)
+        this.$store.dispatch('core/windows/windowMinimize', this.window)
       },
 
       /**
        * Window maximize event
        */
       onInvertMaximize: function () {
-        this.$store.dispatch('core/windows/windowInvertMaximize', this.window.name)
+        this.$store.dispatch('core/windows/windowInvertMaximize', this.window)
       },
 
       /**
@@ -196,7 +196,7 @@
        * Window close event
        */
       onClose: function () {
-        this.$store.dispatch('core/windows/windowClose', this.window.name)
+        this.$store.dispatch('core/windows/windowClose', this.window)
       },
 
       /**
@@ -207,7 +207,7 @@
 
         // prevent focus when minimizing or closing
         setTimeout(() => {
-          self.$store.dispatch('core/windows/windowFocus', self.window.name)
+          self.$store.dispatch('core/windows/windowFocus', self.window)
         }, 100)
       },
 
@@ -280,7 +280,7 @@
 
         if (forceNoMargin) {
           this.$store.dispatch('core/windows/windowUpdatePosition', {
-            name: this.window.name,
+            data: this.window,
             x: data.left,
             y: data.top,
             width: data.width,
@@ -310,7 +310,7 @@
           if (data.left <= 15) data.left = 0
 
           this.$store.dispatch('core/windows/windowUpdatePosition', {
-            name: this.window.name,
+            data: this.window,
             x: data.left,
             y: data.top,
             width: data.width,

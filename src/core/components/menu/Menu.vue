@@ -1,11 +1,18 @@
 <template>
   <div id="menu">
     <ul>
-      <MenuItem
-        v-for="(window, name) in windows"
-        :window="window"
-        :key="name"
-      />
+      <div
+        class="menu-group"
+        v-for="(windowsGroup, windowsGroupName) in windows"
+        :key="windowsGroupName"
+        :data-name="windowsGroupName"
+      >
+        <MenuItem
+            v-for="(window, windowIndex) in windowsGroup"
+            :window="window"
+            :key="windowIndex"
+        />
+      </div>
     </ul>
   </div>
 </template>

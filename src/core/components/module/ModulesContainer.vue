@@ -2,9 +2,18 @@
   <div id="windows-container">
 
     <template v-if="windows">
-      <template v-for="(window, key) in windows">
-        <component :is="window.name" :data="window" :key="key" />
-      </template>
+      <div
+        class="windows-group"
+        v-for="(windowsGroup, windowsGroupName) in windows"
+        :key="windowsGroupName"
+      >
+        <component
+          v-for="(window, windowIndex) in windowsGroup"
+          :is="window.name"
+          :data="window"
+          :key="windowIndex"
+        />
+      </div>
     </template>
 
   </div>
@@ -35,6 +44,10 @@
       right: 0;
       pointer-events: none;
       z-index: 10;
+
+      .windows-group {
+        min-height: 100%;
+      }
     }
 
     &.is-mobile {

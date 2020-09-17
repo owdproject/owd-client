@@ -2,6 +2,7 @@ import Vue from 'vue';
 import modulesConfig from '../../../config/modules.json';
 
 const modulesLoaded = {};
+const windowsLoaded = {};
 
 export default ({ store, terminal }) => {
   const merge = require('lodash.merge');
@@ -55,6 +56,7 @@ export default ({ store, terminal }) => {
 
                 // add module info to loaded modules
                 modulesLoaded[moduleInfo.name] = moduleInfo;
+                windowsLoaded[windowComponent.name] = windowComponent;
               }
             });
           }
@@ -105,8 +107,16 @@ export default ({ store, terminal }) => {
 
   return {
     modulesLoaded,
+    windowsLoaded,
     isModuleLoaded: (module) => {
       return Object.keys(modulesLoaded).includes(module)
+    },
+    getWindowConfigurationFromWindowName: (windowName) => {
+      if (typeof windowsLoaded[windowName] !== 'undefined') {
+        return windowsLoaded[windowName]
+      }
+
+      return null
     }
   };
 }

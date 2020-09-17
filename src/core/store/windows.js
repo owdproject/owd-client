@@ -175,18 +175,18 @@ export default {
     },
 
     generateWindowData(context, data) {
-      let windowData = {...data.module}
+      let windowData = {...data.config}
 
       // assign index
       windowData.index = data.index
 
       // .config contains window standard configuration from specific window module.json
-      windowData.config = data.module.window;
+      windowData.config = data.config.window;
       // .window data has been assigned to .config so is no more needed in .window
       delete windowData.window;
 
       // add storage (clone from .config)
-      windowData.storage = {...data.module.window};
+      windowData.storage = {...data.config.window};
 
       // overwrite .storage with history (from local storage)
       if (data.storage) {
@@ -265,7 +265,7 @@ export default {
                     // temp window object cloned from the default module windows component
                     const windowData = await dispatch('generateWindowData', {
                       index: windowIndex,
-                      module: moduleWindowComponent,
+                      config: moduleWindowComponent,
                       storage: windowStorage
                     })
 
@@ -281,16 +281,7 @@ export default {
 
                   // there is no window stored in local storage so generate at least one window
 
-                  const windowData = await dispatch('generateWindowData', {
-                    index: 0,
-                    module: moduleWindowComponent,
-                    storaage: null
-                  })
-
-                  dispatch('windowCreate', {
-                    name: windowName,
-                    window: windowData
-                  })
+                  dispatch('windowCreate', { name: windowName })
 
                 }
 
@@ -350,14 +341,64 @@ export default {
     },
 
     /**
+     * Get free window group index
+     *
+     * @param state
+     * @param name
+     * @returns {number|*}
+     */
+    getWindowGroupFreeIndex({state}, name) {
+      if (windowsUtils.isArrayOfWindowsNotEmpty(state.windows[name])) {
+        return state.windows[name].length
+      }
+
+      return 0
+    },
+
+    /**
+     * Get original window configuration
+     *
+     * @param context
+     * @param name
+     * @returns {null}
+     */
+    getWindowConfiguration(context, name) {
+      const windowConfiguration = Vue.prototype.$modules.getWindowConfigurationFromWindowName(name);
+
+      if (typeof windowConfiguration !== 'undefined') {
+        return windowConfiguration
+      }
+
+      return null
+    },
+
+    /**
      * Open window
      *
      * @param state
      * @param commit
+     * @param dispatch
      * @param name
      * @param window
      */
-    async windowCreate({state, commit}, {name, window}) {
+    async windowCreate({state, commit, dispatch}, {name, window}) {
+      // check if window is given or...
+      if (!window) {
+        const windowConfiguration = await dispatch('getWindowConfiguration', name)
+
+        if (windowConfiguration) {
+          window = await dispatch('generateWindowData', {
+            index: await dispatch('getWindowGroupFreeIndex', name),
+            config: windowConfiguration,
+            storage: null
+          })
+        }
+      }
+
+      if (!window) {
+        return console.log('[OWD] Unable to create new window')
+      }
+
       const windows = {...state.windows}
 
       // push component to windows array

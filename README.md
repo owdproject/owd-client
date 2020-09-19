@@ -46,10 +46,8 @@ You can install modules by copying the content of the `client` module folder int
 
 #### Install module dependencies
 Some modules may have additional [npm](https://www.npmjs.com) dependencies that you have to install manually.
-To do so, check the "dependencies" property in the `src/modules/<module-name>/module.json` configuration.  
-
-Then run `npm install <dependency-name>` for each dependency to install them into
-the `node_modules` folder and the `package.json` file.
+To do so, check the "dependencies" property in the `src/modules/<module-name>/module.json` configuration.
+Then run `npm install <dependency-name>` for each dependency to install them like every npm module.
 
 #### Define the installed module
 To be able to load the installed modules into your OWD client, you have to define them under `config/modules.json`.

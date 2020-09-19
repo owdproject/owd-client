@@ -66,10 +66,10 @@ Edit that file and be sure to add the new module inside `modulesEnabled`, as in 
 {
   "type": "client",
   "modulesEnabled": {
-    "hello-world": {
-      "name": "hello-world",
+    "sample": {
+      "name": "sample",
       "version": "1.0.0",
-      "url": "https://github.com/owd-modules/hello-world"
+      "url": "https://www.github.com/hacklover/owd-sample"
     },
     "your-module-name": {
       "name": "your-module-name",

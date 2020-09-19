@@ -24,9 +24,8 @@ Open Web Desktop is splitted in various repositories:
 - `owd-server`: Open Web Desktop server integration with Nest.js
 - `owd-cli`: CLI for easy modules installation and maintenance
 
-The plans are to make this web desktop expandable through a series of modules
-that will be released on GitHub and Patreon. In the future, they will probably
-moved to the [owd-modules](https://github.com/owd-modules) organization.
+The plans are to make this project expandable with a series of modules
+that will be released [on GitHub](https://github.com/topics/owd-modules) and Patreon.
 
 
 ## Quick start
@@ -35,32 +34,25 @@ Make sure that you have Git, Node.js and npm installed.
 - Clone the repo with `git clone https://github.com/owd-project/owd-client`
 - Enter the directory with `cd owd-client`
 - Install dependencies with `npm install`
-- Run the OWD client with `npm run serve`
-
-
-## Documentation
-For the moment, there is no documentation. YAY
-
+- Run your OWD client with `npm run serve`
 
 ## Modules
-Each OWD module includes a `client` or a `server`
+Each OWD module may include a `client` or a `server`
 folder. For now, there is no CLI available for modules installation so you should install each module manually.
 
 ### Install a new module
-You can install a module for **OWD Client** copying the content of the `client` module folder into
+You can install modules by copying the content of the `client` module folder into
 `src/modules/<module-name>`.
 
 #### Install module dependencies
-Some modules may have additional [npm](https://www.npmjs.com) dependencies, you need to install them manually.
-To do so, check the content of the `src/modules/<module-name>/module.json` configuration file
-to find out if there are any dependencies to install under "dependencies" property.  
+Some modules may have additional [npm](https://www.npmjs.com) dependencies that you have to install manually.
+To do so, check the "dependencies" property in the `src/modules/<module-name>/module.json` configuration.  
 
-Then run `npm install <dependency-name>` for each dependency. This command will install dependencies into `node_modules` 
-and will add them to the project's dependencies list in the `package.json` file.
+Then run `npm install <dependency-name>` for each dependency to install them like every npm module.
 
 #### Define the installed module
-To be able to load the installed module into your OWD instance, you have to define it under `config/modules.json`.
-Edit that file and be sure to add the new module inside `modulesEnabled`, as in the example:
+To be able to load the installed modules into your OWD client, you have to define them under `config/modules.json`.
+Edit that file and be sure to add every module in `modulesEnabled` like in the example:
 
 ```json
 {
@@ -83,8 +75,6 @@ Edit that file and be sure to add the new module inside `modulesEnabled`, as in 
 
 
 ## Supporters
-This project has been rewritten and modularized to make it open-source and to share it with you.  
-Show your appreciation becoming a supporter!
 
 <a href="https://www.patreon.com/hacklover">
     <img src="https://i.imgur.com/KODHUwR.png" width="160" alt="Become a Patron" />

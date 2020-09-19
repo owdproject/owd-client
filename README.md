@@ -24,7 +24,7 @@ Open Web Desktop is splitted in various repositories:
 - `owd-server`: Open Web Desktop server integration with Nest.js
 - `owd-cli`: CLI for easy modules installation and maintenance
 
-The plans are to make this web desktop expandable through a series of modules
+The plans are to make this project expandable with a series of modules
 that will be released [on GitHub](https://github.com/topics/owd-modules) and Patreon.
 
 

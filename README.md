@@ -11,12 +11,26 @@
     <a href="https://hacklover.net/discord"><img src="https://img.shields.io/discord/520023979595923476.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2" alt="Join us on Discord" /></a>
 </p>
 
+<p align="center">
+    <img src="https://i.imgur.com/LDhn6km.png" alt="Open Web Desktop" />
+</p>
+
 ## Overview
-Open Web Desktop (previously *hacklover-client*, aka what you can see [here](https://hacklover.net))
-is an experimental project that aims to provide a simple environment to create your own web desktop.
+Open Web Desktop (previously *hacklover-client*, aka [my personal website](https://hacklover.net))
+is a project that aims to provide a simple environment to create your own web desktop. Based on Vue.js, it has been rewritten to be fully modular.
 
-Based on Vue.js, it has been rewritten to be fully modular.
+Here is a demo of this [owd-client](https://owd-client.netlify.app) repository.
 
+
+## Features
+- Open-source web desktop client in Vue.js
+- Fully extendable through client modules
+- Fully extendable through pages (soon)
+- Global terminal commands support
+- Global notifications through SSE
+- Themes support (soon)
+- Responsive support (soon)
+- Server integration (soon)
 
 ## About this project
 Open Web Desktop is splitted in various repositories:
@@ -27,6 +41,9 @@ Open Web Desktop is splitted in various repositories:
 The plans are to make this project expandable with a series of modules
 that will be released [on GitHub](https://github.com/topics/owd-modules) and Patreon.
 
+
+## Features
+- Fully modular web desktop
 
 ## Quick start
 Make sure that you have Git, Node.js and npm installed.
@@ -39,6 +56,7 @@ Make sure that you have Git, Node.js and npm installed.
 ## Modules
 Each OWD module may include a `client` or a `server`
 folder. For now, there is no CLI available for modules installation so you should install each module manually.
+Here you can find [some modules](https://github.com/topics/owd-modules) available for all.
 
 ### Install a new module
 You can install modules by copying the content of the `client` module folder into
@@ -72,7 +90,6 @@ Edit that file and be sure to add every module in `modulesEnabled` like in the e
 }
 
 ```
-
 
 ## Supporters
 

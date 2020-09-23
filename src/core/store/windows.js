@@ -767,10 +767,6 @@ export default {
         windowsUtils.getCountArrayOfWindows(windowsWithCertainGroupName) > 1
       ) {
         // destroy window if > 1
-        console.log('UNSET_WINDOW', {
-          name: data.name,
-          index: data.index
-        });
         commit('UNSET_WINDOW', {
           name: data.name,
           index: data.index
@@ -779,7 +775,6 @@ export default {
         // reassign windows indexes
         dispatch('windowReassignIndexes');
       } else {
-        console.log('windowClose', window)
         dispatch('windowClose', window)
       }
     },

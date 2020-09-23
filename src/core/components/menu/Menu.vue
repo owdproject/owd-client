@@ -3,15 +3,17 @@
     <ul>
       <div
         class="menu-group"
-        v-for="(windowsGroup, windowsGroupName) in windows"
-        :key="windowsGroupName"
-        :data-name="windowsGroupName"
+        v-for="(windowGroups, windowGroupsName) in windows"
+        :key="windowGroupsName"
+        :data-name="windowGroupsName"
       >
-        <MenuItem
-            v-for="(window, windowIndex) in windowsGroup"
-            :window="window"
-            :key="windowIndex"
-        />
+        <template v-for="(window, windowIndex) in windowGroups">
+          <MenuItem
+              v-if="window"
+              :window="window"
+              :key="windowIndex"
+          />
+        </template>
       </div>
     </ul>
   </div>

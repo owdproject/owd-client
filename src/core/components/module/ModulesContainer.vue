@@ -4,11 +4,11 @@
     <template v-if="windows">
       <div
         class="windows-group"
-        v-for="(windowsGroup, windowsGroupName) in windows"
-        :key="windowsGroupName"
+        v-for="(windowGroups, windowGroupsName) in windows"
+        :key="windowGroupsName"
       >
         <component
-          v-for="(window, windowIndex) in windowsGroup"
+          v-for="(window, windowIndex) in windowGroups"
           :is="window.name"
           :data="window"
           :key="windowIndex"

@@ -13,3 +13,11 @@ export function isWindowIndexExisting(windowsArray, index) {
 
   return false
 }
+
+export function getCountArrayOfWindows(windowsArray) {
+  if (isArrayOfWindows(windowsArray)) {
+    return windowsArray.length
+  }
+
+  return 0
+}

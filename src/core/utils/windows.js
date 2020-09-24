@@ -1,3 +1,5 @@
+import md5 from 'md5'
+
 export function isArrayOfWindows(windowsArray) {
   return Array.isArray(windowsArray)
 }
@@ -20,4 +22,8 @@ export function getCountArrayOfWindows(windowsArray) {
   }
 
   return 0
+}
+
+export function generateUniqueWindowId() {
+  return md5(Date.now() + Math.random())
 }

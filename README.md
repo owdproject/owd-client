@@ -1,5 +1,9 @@
 # Open Web Desktop - Client
 
+<p align="center">
+    <img src="https://i.imgur.com/Wu1wSQo.png" alt="Open Web Desktop" />
+</p>
+
 > An open-source web desktop made with Vue.js
 
 <p>
@@ -11,39 +15,29 @@
     <a href="https://hacklover.net/discord"><img src="https://img.shields.io/discord/520023979595923476.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2" alt="Join us on Discord" /></a>
 </p>
 
-<p align="center">
-    <img src="https://i.imgur.com/LDhn6km.png" alt="Open Web Desktop" />
-</p>
-
 ## Overview
 Open Web Desktop (previously *hacklover-client*, aka [my personal website](https://hacklover.net))
 is a project that aims to provide a simple environment to create your own web desktop. Based on Vue.js, it has been rewritten to be fully modular.
 
-Here is a demo of this [owd-client](https://owd-client.netlify.app) repository.
-
+[Here]((https://owd-client.netlify.app)) you can find a demo of this owd-client repository.
 
 ## Features
-- Open-source web desktop client in Vue.js
+- Open-source web desktop client
 - Fully extendable through client modules
 - Fully extendable through pages (soon)
 - Global terminal commands support
 - Global notifications through SSE
 - Themes support (soon)
 - Responsive support (soon)
-- Server integration (soon)
 
 ## About this project
 Open Web Desktop is splitted in various repositories:
 - `owd-client`: Open Web Desktop client, made with Vue.js
-- `owd-server`: Open Web Desktop server integration with Nest.js
-- `owd-cli`: CLI for easy modules installation and maintenance
+- `owd-server`: Open Web Desktop server integration with Nest.js (TBA)
+- `owd-cli`: CLI for easy modules installation and maintenance (TBA)
 
 The plans are to make this project expandable with a series of modules
 that will be released [on GitHub](https://github.com/topics/owd-modules) and Patreon.
-
-
-## Features
-- Fully modular web desktop
 
 ## Quick start
 Make sure that you have Git, Node.js and npm installed.
@@ -93,6 +87,8 @@ Edit that file and be sure to add every module in `modulesEnabled` like in the e
 
 ## Supporters
 
+See all sponsors & backer in the [BACKERS.md][].
+
 <a href="https://www.patreon.com/hacklover">
     <img src="https://i.imgur.com/KODHUwR.png" width="160" alt="Become a Patron" />
 </a>
@@ -103,3 +99,5 @@ Edit that file and be sure to add every module in `modulesEnabled` like in the e
 
 ## License
 This project is released under the [MIT License](LICENSE).
+
+[]: BACKERS.md

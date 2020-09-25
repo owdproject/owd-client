@@ -3,6 +3,7 @@
     <ul
       v-for="windowName in Object.keys(windowInstances)"
       class="menu-group"
+      :key="windowName"
     >
       <template v-if="windowInstances[windowName].length > 0">
         <MenuItem

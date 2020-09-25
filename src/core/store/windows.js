@@ -36,11 +36,11 @@ export default {
       state.desktopInnerHeight = height
     },
     // todo / currently this mutation is here just for logging purposes
-    // because window state attrs are changed directly.
-    // i return the cloned window object in getWindow() but it's not effective,
-    // check #wtf-1 and then when 'getWindow' is called
+    // window state attrs are changed directly cuz there is no other way,
+    // i return the cloned window object in getWindow() but it's the state reference anyway
+    // dunno why. check #wtf-1 and where the 'getWindow' method is called for more details
     SET_WINDOW(state, data) {
-      // state.windowInstances[data.name][data.uniqueID] = data
+      state.windowInstances[data.name][data.uniqueID] = data
     },
     UNSET_WINDOW(state, data) {
       const windowGroup = state.windowInstances[data.name];
@@ -232,7 +232,7 @@ export default {
      *
      * @returns {boolean|any}
      */
-    async getWindowsStorageByWindowName({dispatch}, windowName) {
+    async getWindowsStorageByWindowName(conmtext, windowName) {
       if (
         windowLocalStorage &&
         windowLocalStorage.windowInstances &&
@@ -324,10 +324,9 @@ export default {
      * Initialize window
      *
      * @param commit
-     * @param dispatch
      * @param data
      */
-    async windowCreateInstance({commit, dispatch}, data) {
+    async windowCreateInstance({commit}, data) {
       // check if window is given or...
       // get a copy of the module window configuration
       const windowInstance = {...data.config}
@@ -449,7 +448,7 @@ export default {
      * @param dispatch
      * @param data
      */
-    async windowOpen({state, commit, dispatch}, data) {
+    async windowOpen({commit, dispatch}, data) {
       const window = await dispatch('getWindow', data);
 
       // is window in memory?
@@ -610,7 +609,7 @@ export default {
      * @param dispatch
      * @param data
      */
-    async getWindowPosition({state, dispatch}, data) {
+    async getWindowPosition({dispatch}, data) {
       const window = await dispatch('getWindow', data);
 
       // is window in memory?

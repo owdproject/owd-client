@@ -1,21 +1,17 @@
 <template>
-  <div id="windows-container">
-
-    <template v-if="windows">
-      <div
-        class="windows-group"
-        v-for="(windowsGroup, windowsGroupName) in windows"
-        :key="windowsGroupName"
-      >
+  <div id="windows-container" v-if="windowInstances">
+    <template
+      v-for="windowName in Object.keys(windowInstances)"
+    >
+      <template v-for="(moduleWindow, moduleWindowUniqueID) in windowInstances[windowName]">
         <component
-          v-for="(window, windowIndex) in windowsGroup"
-          :is="window.name"
-          :data="window"
-          :key="windowIndex"
+          :is="moduleWindow.name"
+          :data="moduleWindow"
+          :data-window-id="moduleWindowUniqueID"
+          :key="windowName + ' ' + moduleWindowUniqueID"
         />
-      </div>
+      </template>
     </template>
-
   </div>
 </template>
 
@@ -28,7 +24,7 @@
     components: {Window},
     computed: {
       ...mapGetters({
-        windows: 'core/windows/windows'
+        windowInstances: 'core/windows/windowInstances'
       })
     }
   }

@@ -157,6 +157,16 @@
           }
         )
       }
+
+      if (this.window.config.autoDestroyBeforePageUnload) {
+        window.addEventListener(
+          'beforeunload',
+          () => {
+            self.$store.dispatch('core/windows/windowDestroy', self.window);
+            self.$store.dispatch('core/windows/saveWindowsStorage');
+          }
+        )
+      }
     },
     mounted() {
       const self = this;
@@ -164,9 +174,9 @@
       // when press ESC and a window is in full-screen mode
       window.addEventListener('keydown', function(e) {
         if (e.keyCode === 27) {
-          if (self.$store.state.windows.fullscreenMode) {
+          //if (self.$store.state.windows.fullscreenMode) {
             self.$store.dispatch('core/windows/windowUnmaximizeAll');
-          }
+          //}
         }
       });
     },
@@ -196,7 +206,7 @@
        * Window close event
        */
       onClose: function () {
-        this.$store.dispatch('core/windows/windowClose', this.window)
+        this.$store.dispatch('core/windows/windowDestroy', this.window)
       },
 
       /**
@@ -331,6 +341,7 @@
     background: rgb(17, 17, 17);
     box-shadow: 0 0 0 1px rgba(21, 21, 21, 0.5);
     border-radius: 2px;
+    color: #b4b4b4;
     overflow: hidden;
     user-select: none;
     pointer-events: initial;

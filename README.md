@@ -1,49 +1,44 @@
 # Open Web Desktop - Client
 
+<p align="center">
+    <img src="https://i.imgur.com/Wu1wSQo.png" alt="Open Web Desktop" />
+</p>
+
 > An open-source web desktop made with Vue.js
 
 <p>
     <a href="https://github.com/owdproject/owd-client/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg" /></a>
     <a href="https://github.com/vuejs/vue"><img src="https://img.shields.io/badge/Vue.js-v2.6-4FC08D?logo=vue.js" /></a>
-    <a href="https://github.com/owdproject/owd-client"><img src="https://img.shields.io/badge/owd-client-3A9CB6" /></a>
+    <a href="https://github.com/owdproject/owd-client-client"><img src="https://img.shields.io/badge/owd_client-v1.1.0-3A9CB6" /></a>
     <a href="https://github.com/topics/owd-modules"><img src="https://img.shields.io/badge/owd-modules-888" /></a>
     <a href="https://hacklover.net/patreon"><img src="https://img.shields.io/badge/become-a%20patron-orange" alt="Become a Patron" /></a>
     <a href="https://hacklover.net/discord"><img src="https://img.shields.io/discord/520023979595923476.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2" alt="Join us on Discord" /></a>
-</p>
-
-<p align="center">
-    <img src="https://i.imgur.com/LDhn6km.png" alt="Open Web Desktop" />
 </p>
 
 ## Overview
 Open Web Desktop (previously *hacklover-client*, aka [my personal website](https://hacklover.net))
 is a project that aims to provide a simple environment to create your own web desktop. Based on Vue.js, it has been rewritten to be fully modular.
 
-Here is a demo of this [owd-client](https://owd-client.netlify.app) repository.
-
+[Demo]((https://owd-client.netlify.app)) of this owd-client repository. 
 
 ## Features
-- Open-source web desktop client in Vue.js
-- Fully extendable through client modules
-- Fully extendable through pages (soon)
+- Open-source web desktop client
+- Fully extendable through modules
+- Fully extendable through pages
 - Global terminal commands support
 - Global notifications through SSE
-- Themes support (soon)
+- Vuetify.js implemented by default
 - Responsive support (soon)
-- Server integration (soon)
+- Themes support (soon)
 
 ## About this project
 Open Web Desktop is splitted in various repositories:
 - `owd-client`: Open Web Desktop client, made with Vue.js
-- `owd-server`: Open Web Desktop server integration with Nest.js
-- `owd-cli`: CLI for easy modules installation and maintenance
+- `owd-server`: Open Web Desktop server integration with Nest.js (TBA)
+- `owd-cli`: CLI for easy modules installation and maintenance (TBA)
 
 The plans are to make this project expandable with a series of modules
 that will be released [on GitHub](https://github.com/topics/owd-modules) and Patreon.
-
-
-## Features
-- Fully modular web desktop
 
 ## Quick start
 Make sure that you have Git, Node.js and npm installed.
@@ -92,6 +87,8 @@ Edit that file and be sure to add every module in `modulesEnabled` like in the e
 ```
 
 ## Supporters
+
+See all sponsors & backers in the [backers.md](BACKERS.md).
 
 <a href="https://www.patreon.com/hacklover">
     <img src="https://i.imgur.com/KODHUwR.png" width="160" alt="Become a Patron" />

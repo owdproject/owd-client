@@ -9,7 +9,7 @@
 <p>
     <a href="https://github.com/owdproject/owd-client/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg" /></a>
     <a href="https://github.com/vuejs/vue"><img src="https://img.shields.io/badge/Vue.js-v2.6-4FC08D?logo=vue.js" /></a>
-    <a href="https://github.com/owdproject/owd-client"><img src="https://img.shields.io/badge/owd-client-3A9CB6" /></a>
+    <a href="https://github.com/owdproject/owd-client-client"><img src="https://img.shields.io/badge/owd_client-v1.1.0-3A9CB6" /></a>
     <a href="https://github.com/topics/owd-modules"><img src="https://img.shields.io/badge/owd-modules-888" /></a>
     <a href="https://hacklover.net/patreon"><img src="https://img.shields.io/badge/become-a%20patron-orange" alt="Become a Patron" /></a>
     <a href="https://hacklover.net/discord"><img src="https://img.shields.io/discord/520023979595923476.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2" alt="Join us on Discord" /></a>
@@ -19,16 +19,17 @@
 Open Web Desktop (previously *hacklover-client*, aka [my personal website](https://hacklover.net))
 is a project that aims to provide a simple environment to create your own web desktop. Based on Vue.js, it has been rewritten to be fully modular.
 
-[Here]((https://owd-client.netlify.app)) you can find a demo of this owd-client repository.
+[Demo]((https://owd-client.netlify.app)) of this owd-client repository. 
 
 ## Features
 - Open-source web desktop client
-- Fully extendable through client modules
-- Fully extendable through pages (soon)
+- Fully extendable through modules
+- Fully extendable through pages
 - Global terminal commands support
 - Global notifications through SSE
-- Themes support (soon)
+- Vuetify.js implemented by default
 - Responsive support (soon)
+- Themes support (soon)
 
 ## About this project
 Open Web Desktop is splitted in various repositories:
@@ -87,7 +88,7 @@ Edit that file and be sure to add every module in `modulesEnabled` like in the e
 
 ## Supporters
 
-See all sponsors & backer in the [BACKERS.md][].
+See all sponsors & backers in the [backers.md](BACKERS.md).
 
 <a href="https://www.patreon.com/hacklover">
     <img src="https://i.imgur.com/KODHUwR.png" width="160" alt="Become a Patron" />
@@ -99,5 +100,3 @@ See all sponsors & backer in the [BACKERS.md][].
 
 ## License
 This project is released under the [MIT License](LICENSE).
-
-[]: BACKERS.md

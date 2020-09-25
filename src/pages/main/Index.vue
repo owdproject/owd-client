@@ -32,15 +32,15 @@
       const self = this;
 
       // initialize client
-      this.$store.dispatch('core/client/init')
+      this.$store.dispatch('core/client/initialize')
 
       // add window resize event
       window.addEventListener("resize", function () {
         clearTimeout(this.handlePageResize);
 
         this.handlePageResize = setTimeout(() => {
-          self.$store.commit('core/windows/SET_PAGE_WIDTH', window.innerWidth);
-          self.$store.commit('core/windows/SET_PAGE_HEIGHT', window.innerHeight);
+          self.$store.commit('core/windows/SET_DESKTOP_WIDTH', window.innerWidth);
+          self.$store.commit('core/windows/SET_DESKTOP_HEIGHT', window.innerHeight);
 
           // windows position
           self.$store.dispatch('core/windows/windowsHandlePageResize');

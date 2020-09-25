@@ -152,7 +152,17 @@
         window.addEventListener(
           'beforeunload',
           () => {
-            self.$store.dispatch('core/windows/windowClose', self.window.name);
+            self.$store.dispatch('core/windows/windowClose', self.window);
+            self.$store.dispatch('core/windows/saveWindowsStorage');
+          }
+        )
+      }
+
+      if (this.window.config.autoDestroyBeforePageUnload) {
+        window.addEventListener(
+          'beforeunload',
+          () => {
+            self.$store.dispatch('core/windows/windowDestroy', self.window);
             self.$store.dispatch('core/windows/saveWindowsStorage');
           }
         )
@@ -164,9 +174,9 @@
       // when press ESC and a window is in full-screen mode
       window.addEventListener('keydown', function(e) {
         if (e.keyCode === 27) {
-          if (self.$store.state.windows.fullscreenMode) {
+          //if (self.$store.state.windows.fullscreenMode) {
             self.$store.dispatch('core/windows/windowUnmaximizeAll');
-          }
+          //}
         }
       });
     },
@@ -175,14 +185,14 @@
        * Window minimize event
        */
       onMinimize: function () {
-        this.$store.dispatch('core/windows/windowMinimize', this.window.name)
+        this.$store.dispatch('core/windows/windowMinimize', this.window)
       },
 
       /**
        * Window maximize event
        */
       onInvertMaximize: function () {
-        this.$store.dispatch('core/windows/windowInvertMaximize', this.window.name)
+        this.$store.dispatch('core/windows/windowInvertMaximize', this.window)
       },
 
       /**
@@ -196,7 +206,7 @@
        * Window close event
        */
       onClose: function () {
-        this.$store.dispatch('core/windows/windowClose', this.window.name)
+        this.$store.dispatch('core/windows/windowDestroy', this.window)
       },
 
       /**
@@ -207,7 +217,7 @@
 
         // prevent focus when minimizing or closing
         setTimeout(() => {
-          self.$store.dispatch('core/windows/windowFocus', self.window.name)
+          self.$store.dispatch('core/windows/windowFocus', self.window)
         }, 100)
       },
 
@@ -280,7 +290,7 @@
 
         if (forceNoMargin) {
           this.$store.dispatch('core/windows/windowUpdatePosition', {
-            name: this.window.name,
+            data: this.window,
             x: data.left,
             y: data.top,
             width: data.width,
@@ -310,7 +320,7 @@
           if (data.left <= 15) data.left = 0
 
           this.$store.dispatch('core/windows/windowUpdatePosition', {
-            name: this.window.name,
+            data: this.window,
             x: data.left,
             y: data.top,
             width: data.width,
@@ -331,6 +341,7 @@
     background: rgb(17, 17, 17);
     box-shadow: 0 0 0 1px rgba(21, 21, 21, 0.5);
     border-radius: 2px;
+    color: #b4b4b4;
     overflow: hidden;
     user-select: none;
     pointer-events: initial;

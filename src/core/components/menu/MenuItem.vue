@@ -25,7 +25,6 @@
     name: "MenuItem",
     components: {MenuItemIcon},
     props: {
-      name: String, // window object data
       window: Object, // window object data
     },
     methods: {
@@ -36,10 +35,10 @@
         if (this.$device.mobile) {
 
           if (!this.window.storage.closed) {
-            this.$store.dispatch('core/windows/windowClose', this.window.name);
+            this.$store.dispatch('core/windows/windowClose', this.window);
           } else {
             this.$store.dispatch('core/windows/windowCloseAll');
-            this.$store.dispatch('core/windows/windowOpen', this.window.name);
+            this.$store.dispatch('core/windows/windowOpen', this.window);
           }
 
         } else {
@@ -47,18 +46,18 @@
           if (event.shiftKey) {
 
             // force close with shiftkey
-            this.$store.dispatch('core/windows/windowMinimize', this.window.name);
+            this.$store.dispatch('core/windows/windowMinimize', this.window);
 
           } else {
 
             if (this.window.storage && (this.window.storage.closed || this.window.storage.minimized)) {
-              this.$store.dispatch('core/windows/windowOpen', this.window.name);
+              this.$store.dispatch('core/windows/windowOpen', this.window);
             } else {
               // don't close if window has to stay minimized
               if (this.window.config.menu === true) {
-                this.$store.dispatch('core/windows/windowClose', this.window.name);
+                this.$store.dispatch('core/windows/windowClose', this.window);
               } else {
-                this.$store.dispatch('core/windows/windowMinimize', this.window.name);
+                this.$store.dispatch('core/windows/windowMinimize', this.window);
               }
             }
           }

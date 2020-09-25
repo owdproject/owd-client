@@ -1,8 +1,8 @@
 {
-  "name": "hello-world",
+  "name": "sample",
   "version": "1.0.0",
   "license": "MIT",
-  "homepage": "https://github.com/owd-modules/hello-world",
+  "homepage": "https://www.github.com/hacklover/owd-sample",
   "author": {
     "name": "hacklover",
     "url": "https://hacklover.net"

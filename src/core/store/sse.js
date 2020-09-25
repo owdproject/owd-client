@@ -10,7 +10,7 @@ export default {
     SET_CONNECTED: (state, value) => {
       state.connected = value;
     },
-    EVENT_LOG: (state, value) => {
+    LOG_EVENT: (state, value) => {
       state.log = value;
     },
   },
@@ -36,10 +36,10 @@ export default {
 
         if (Array.isArray(data)) {
           data.forEach((event) => {
-            commit('EVENT_LOG', event);
+            commit('LOG_EVENT', event);
           });
         } else {
-          commit('EVENT_LOG', data);
+          commit('LOG_EVENT', data);
         }
       };
     }

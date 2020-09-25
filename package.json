@@ -16,6 +16,7 @@
     "axios": "^0.19.2",
     "kebab-case": "^1.0.0",
     "lodash.merge": "^4.6.2",
+    "md5": "^2.3.0",
     "register-service-worker": "^1.7.1",
     "typeface-oswald": "1.1.4",
     "vue": "^2.6.11",

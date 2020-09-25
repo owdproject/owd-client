@@ -174,9 +174,9 @@
       // when press ESC and a window is in full-screen mode
       window.addEventListener('keydown', function(e) {
         if (e.keyCode === 27) {
-          if (self.$store.state.windows.fullscreenMode) {
+          //if (self.$store.state.windows.fullscreenMode) {
             self.$store.dispatch('core/windows/windowUnmaximizeAll');
-          }
+          //}
         }
       });
     },

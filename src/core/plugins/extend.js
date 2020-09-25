@@ -54,9 +54,16 @@ export default ({ store, terminal }) => {
               if (loadedWindow) {
                 Vue.component(windowComponent.name, loadedWindow);
 
+                // remove windows property from module basic details
+                const moduleBasicDetails = {...moduleInfo}
+                delete moduleBasicDetails.windows
+
                 // add module info to loaded modules
                 modulesLoaded[moduleInfo.name] = moduleInfo;
-                windowsLoaded[windowComponent.name] = windowComponent;
+                windowsLoaded[windowComponent.name] = {
+                  window: windowComponent,
+                  module: moduleBasicDetails
+                };
               }
             });
           }
@@ -113,7 +120,14 @@ export default ({ store, terminal }) => {
     },
     getWindowConfigurationFromWindowName: (windowName) => {
       if (typeof windowsLoaded[windowName] !== 'undefined') {
-        return windowsLoaded[windowName]
+        return windowsLoaded[windowName].window
+      }
+
+      return null
+    },
+    getWindowModuleFromWindowName: (moduleName) => {
+      if (typeof windowsLoaded[moduleName] !== 'undefined') {
+        return windowsLoaded[moduleName].module
       }
 
       return null

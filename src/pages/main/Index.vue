@@ -32,7 +32,7 @@
       const self = this;
 
       // initialize client
-      this.$store.dispatch('core/client/init')
+      this.$store.dispatch('core/client/initialize')
 
       // add window resize event
       window.addEventListener("resize", function () {

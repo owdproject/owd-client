@@ -59,16 +59,17 @@ export default {
   },
 
   actions: {
-    init({commit, dispatch}) {
+    async initialize({commit, dispatch}) {
       commit('core/debug/LOG', 'App initialized', {root: true});
 
       // # VUEX WINDOWS INIT
 
       // load windows positions from local storage
-      dispatch('core/windows/initialize', null, {root: true});
+      await dispatch('core/windows/initialize', null, {root: true});
 
       // load client customization
-      dispatch('storageLoad');
+      // todo improve or remove
+      // await dispatch('storageLoad');
     },
 
     /**

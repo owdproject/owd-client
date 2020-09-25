@@ -25,7 +25,6 @@
     name: "MenuItem",
     components: {MenuItemIcon},
     props: {
-      name: String, // window object data
       window: Object, // window object data
     },
     methods: {

@@ -64,8 +64,6 @@
   import WindowNav from "./WindowNav";
   import WindowContent from "./WindowContent";
 
-  import {storeInstanceCreate,storeInstanceDestroy} from "~/core/utils/store/storeInstance";
-
   export default {
     name: "Window",
     components: {
@@ -181,27 +179,6 @@
           //}
         }
       });
-    },
-    beforeMount() {
-      if (this.window.module.storeInstance) {
-        const storeDefaultsGenerator = require(`../../../modules/${this.window.module.name}/storeInstance`)
-
-        if (storeDefaultsGenerator) {
-          const storeName = `${this.window.module.name}-${this.window.uniqueID}`
-          const storeDefaults = storeDefaultsGenerator.default()
-
-          // create dynamic store module with storeName as path
-          storeInstanceCreate(storeName, storeDefaults)
-        }
-      }
-    },
-    beforeDestroy() {
-      if (this.window.module.storeInstance) {
-        const storeName = `${this.window.module.name}-${this.window.uniqueID}`
-
-        // destroy dynamic store module
-        storeInstanceDestroy(storeName)
-      }
     },
     methods: {
       /**

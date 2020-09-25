@@ -1,20 +1,17 @@
 <template>
-  <div id="menu">
-    <ul>
-      <div
-        class="menu-group"
-        v-for="(windowGroups, windowGroupsName) in windows"
-        :key="windowGroupsName"
-        :data-name="windowGroupsName"
-      >
-        <template v-for="(window, windowIndex) in windowGroups">
-          <MenuItem
-              v-if="window"
-              :window="window"
-              :key="windowIndex"
-          />
-        </template>
-      </div>
+  <div id="menu" v-if="windowInstances">
+    <ul
+      v-for="windowName in Object.keys(windowInstances)"
+      class="menu-group"
+    >
+      <template v-if="windowInstances[windowName].length > 0">
+        <MenuItem
+          v-for="window in windowInstances[windowName]"
+          :window="window"
+          :data-menu-id="window.uniqueID"
+          :key="window.uniqueID"
+        />
+      </template>
     </ul>
   </div>
 </template>
@@ -30,7 +27,7 @@
     },
     computed: {
       ...mapGetters({
-        windows: 'core/windows/windows'
+        windowInstances: 'core/windows/windowInstances'
       })
     }
   }

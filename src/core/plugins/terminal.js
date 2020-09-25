@@ -64,7 +64,7 @@ export default class Terminal {
    * @returns {string}
    */
   get greetings() {
-    return process.env.VUE_APP_USER + " console :: Version " + process.env.VUE_APP_VERSION + "\n" +
+    return process.env.VUE_APP_USER + " console :: Version " + (process.env.VUE_APP_VERSION || '1.0.0') + "\n" +
       "Copyright (c) " + new Date().getFullYear() + " " + process.env.VUE_APP_WEBSITE + "\n\n" +
       "Welcome, " + this.username + ". " +
       "Type " + this.textColor('help', 'white') + " to list available commands\n"

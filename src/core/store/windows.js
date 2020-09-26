@@ -35,6 +35,13 @@ export default {
     SET_DESKTOP_HEIGHT(state, height) {
       state.desktopInnerHeight = height
     },
+<<<<<<< HEAD
+=======
+    // todo / currently this mutation is here just for logging purposes
+    // window state attrs are changed directly cuz there is no other way,
+    // i return the cloned window object in getWindow() but it's the state reference anyway
+    // dunno why. check #wtf-1 and where the 'getWindow' method is called for more details
+>>>>>>> develop
     SET_WINDOW(state, data) {
       state.windowInstances[data.name][data.uniqueID] = data
     },
@@ -239,7 +246,11 @@ export default {
      *
      * @returns {boolean|any}
      */
+<<<<<<< HEAD
     async getWindowsStorageByWindowName(context, windowName) {
+=======
+    async getWindowsStorageByWindowName(conmtext, windowName) {
+>>>>>>> develop
       if (
         windowLocalStorage &&
         windowLocalStorage.windowInstances &&
@@ -331,7 +342,6 @@ export default {
      * Initialize window
      *
      * @param commit
-     * @param dispatch
      * @param data
      */
     async windowCreateInstance({commit}, data) {

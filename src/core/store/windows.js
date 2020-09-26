@@ -549,7 +549,7 @@ export default {
      * @param dispatch
      * @param data
      */
-    async windowInvertMaximize({commit, dispatch}, data) {
+    async windowToggleMaximize({commit, dispatch}, data) {
       const window = await dispatch('getWindow', data);
 
       // is window in memory?
@@ -592,7 +592,6 @@ export default {
      * Set all windows hidden
      *
      * @param state
-     * @param commit
      */
     windowMinimizeAll({dispatch}) {
       dispatch('forEachWindow', window => {
@@ -605,9 +604,10 @@ export default {
     /**
      * Set all windows not maximized
      *
+     * @param commit
      * @param dispatch
      */
-    windowUnmaximizeAll({dispatch}) {
+    windowUnmaximizeAll({commit, dispatch}) {
       dispatch('forEachWindow', window => {
         if (window.storage.maximized) {
           dispatch('windowUnmaximize', window)

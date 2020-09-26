@@ -36,11 +36,11 @@
     ]"
   >
     <div class="window-container" @mousedown="onActivated">
-      <WindowNav :title="title" @invertMaximize="onInvertMaximize">
+      <WindowNav :title="title" @invertMaximize="onToggleMaximize">
         <a class="btn" @click="onMinimize" v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable">
           <v-icon>mdi-window-minimize</v-icon>
         </a>
-        <a class="btn" @click="onInvertMaximize" v-if="window.config.maximizable">
+        <a class="btn" @click="onToggleMaximize" v-if="window.config.maximizable">
           <v-icon>mdi-window-maximize</v-icon>
         </a>
         <a class="btn" :href="window.externalUrl" target="_blank" v-if="window.externalUrl">
@@ -174,9 +174,7 @@
       // when press ESC and a window is in full-screen mode
       window.addEventListener('keydown', function(e) {
         if (e.keyCode === 27) {
-          //if (self.$store.state.windows.fullscreenMode) {
-            self.$store.dispatch('core/windows/windowUnmaximizeAll');
-          //}
+          self.$store.dispatch('core/windows/windowUnmaximizeAll');
         }
       });
     },
@@ -191,8 +189,8 @@
       /**
        * Window maximize event
        */
-      onInvertMaximize: function () {
-        this.$store.dispatch('core/windows/windowInvertMaximize', this.window)
+      onToggleMaximize: function () {
+        this.$store.dispatch('core/windows/windowToggleMaximize', this.window)
       },
 
       /**

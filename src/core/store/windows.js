@@ -35,10 +35,13 @@ export default {
     SET_DESKTOP_HEIGHT(state, height) {
       state.desktopInnerHeight = height
     },
+<<<<<<< HEAD
+=======
     // todo / currently this mutation is here just for logging purposes
     // window state attrs are changed directly cuz there is no other way,
     // i return the cloned window object in getWindow() but it's the state reference anyway
     // dunno why. check #wtf-1 and where the 'getWindow' method is called for more details
+>>>>>>> develop
     SET_WINDOW(state, data) {
       state.windowInstances[data.name][data.uniqueID] = data
     },
@@ -77,6 +80,7 @@ export default {
       const modulesLoaded = Vue.prototype.$modules.modulesLoaded;
 
       const windowInstances = {}
+      const windowFocuses = []
       const windowRegistrationPool = []
 
       // build windows object starting from modules
@@ -142,12 +146,19 @@ export default {
 
       if (windowRegistrationPool.length > 0) {
         for (const windowData of windowRegistrationPool) {
-          await dispatch('windowCreateInstance', windowData)
+          const windowInstance = await dispatch('windowCreateInstance', windowData)
+
+          // add unique id to windowFocuses list
+          if (windowInstance) {
+            windowFocuses.push(windowInstance.uniqueID)
+          }
         }
       }
 
       // check windows position on load
       dispatch('windowsHandlePageResize');
+
+      commit('SET_WINDOW_FOCUSES', windowFocuses)
     },
 
     /**
@@ -173,13 +184,16 @@ export default {
       let windowInstance
 
       if (!data.uniqueID) {
-        windowInstance = windowGroupInstances[0]
+        // some module integrations (for example owd-webamp) needs this
+        if (Array.isArray(windowGroupInstances) && windowGroupInstances.length > 0) {
+          windowInstance = windowGroupInstances[0]
+        }
       } else {
         windowInstance = windowGroupInstances.find(window => window.uniqueID === data.uniqueID)
       }
 
-      if (typeof windowInstance !== 'undefined') {
-        return {...windowInstance} // #wtf-1
+      if (windowInstance) {
+        return {...windowInstance}
       }
 
       return null
@@ -232,7 +246,11 @@ export default {
      *
      * @returns {boolean|any}
      */
+<<<<<<< HEAD
+    async getWindowsStorageByWindowName(context, windowName) {
+=======
     async getWindowsStorageByWindowName(conmtext, windowName) {
+>>>>>>> develop
       if (
         windowLocalStorage &&
         windowLocalStorage.windowInstances &&

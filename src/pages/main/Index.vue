@@ -9,6 +9,8 @@
 
     <Notifications />
 
+    <NoticePressToExitFullScreen />
+
   </div>
 </template>
 
@@ -18,10 +20,12 @@
   import Menu from "../../core/components/menu/Menu";
   import Notifications from "../../core/components/notification/NotificationList";
   import WindowsList from "../../core/components/module/ModulesContainer";
+  import NoticePressToExitFullScreen from "@/core/components/notice/NoticePressToExitFullScreen";
 
   export default {
     name: "index",
     components: {
+      NoticePressToExitFullScreen,
       Background,
       Logo,
       Menu,

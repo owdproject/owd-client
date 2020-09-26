@@ -514,6 +514,7 @@ export default {
 
       if (window.config.maximizable) {
         window.storage.maximized = true;
+        commit('core/fullscreen/SET_FULLSCREEN_MODE', true, {root: true})
       }
 
       // update
@@ -556,6 +557,10 @@ export default {
 
       if (window.config.maximizable) {
         window.storage.maximized = !window.storage.maximized;
+
+        if (window.storage.maximized) {
+          commit('core/fullscreen/SET_FULLSCREEN_MODE', true, {root: true})
+        }
       }
 
       // update
@@ -608,6 +613,8 @@ export default {
           dispatch('windowUnmaximize', window)
         }
       })
+
+      commit('core/fullscreen/SET_FULLSCREEN_MODE', false, {root: true})
     },
 
     /**

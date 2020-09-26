@@ -19,12 +19,12 @@
 Open Web Desktop (previously *hacklover-client*, aka [my personal website](https://hacklover.net))
 is a project that aims to provide a simple environment to create your own web desktop. Based on Vue.js, it has been rewritten to be fully modular.
 
-[Demo]((https://owd-client.netlify.app)) of this owd-client repository. 
+[Check the demo]((https://owd-client.netlify.app)) of this owd-client repository. 
 
 ## Features
-- Open-source web desktop client
-- Fully extendable through modules
-- Fully extendable through pages
+- Open-source web desktop client based on Vue.js
+- Fully extendable through client and server modules
+- Fully extendable through pages and components
 - Global terminal commands support
 - Global notifications through SSE
 - Vuetify.js implemented by default
@@ -88,7 +88,7 @@ Edit that file and be sure to add every module in `modulesEnabled` like in the e
 
 ## Supporters
 
-See all sponsors & backers in the [backers.md](BACKERS.md).
+See all sponsors & backers in the [BACKERS.md](BACKERS.md)
 
 <a href="https://www.patreon.com/hacklover">
     <img src="https://i.imgur.com/KODHUwR.png" width="160" alt="Become a Patron" />
@@ -99,4 +99,4 @@ See all sponsors & backers in the [backers.md](BACKERS.md).
 </a>
 
 ## License
-This project is released under the [MIT License](LICENSE).
+This project is released under the [MIT License](LICENSE)

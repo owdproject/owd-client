@@ -72,6 +72,7 @@
       img {
         vertical-align: middle;
         height: 32px;
+        border-radius: 2px;
       }
 
       div.name {

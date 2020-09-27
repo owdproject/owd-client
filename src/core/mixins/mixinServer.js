@@ -4,4 +4,4 @@ export default {
       return process.env.VUE_APP_SERVER === 'true'
     }
   }
-};
+}

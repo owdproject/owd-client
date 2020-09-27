@@ -11,9 +11,9 @@
 </template>
 
 <script>
-  export default {
-    name: "ProgressBar"
-  }
+export default {
+  name: 'ProgressBar'
+}
 </script>
 
 <style scoped lang="scss">

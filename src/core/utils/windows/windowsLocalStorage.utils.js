@@ -1,8 +1,8 @@
-const windowsLocalStorageName = 'windows-storage';
+const windowsLocalStorageName = 'windows-storage'
 
 export function loadWindowsLocalStorage() {
   try {
-    let storageWindows = localStorage.getItem(windowsLocalStorageName);
+    let storageWindows = localStorage.getItem(windowsLocalStorageName)
 
     storageWindows = JSON.parse(storageWindows)
 
@@ -16,5 +16,5 @@ export function loadWindowsLocalStorage() {
 
 
 export function saveWindowsLocalStorage(data) {
-  localStorage.setItem(windowsLocalStorageName, data);
+  localStorage.setItem(windowsLocalStorageName, data)
 }

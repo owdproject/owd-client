@@ -7,12 +7,12 @@
 </template>
 
 <script>
-  export default {
-    name: "Folder",
-    props: {
-      projects: Object
-    }
+export default {
+  name: 'Folder',
+  props: {
+    projects: Object
   }
+}
 </script>
 
 <style scoped lang="scss">

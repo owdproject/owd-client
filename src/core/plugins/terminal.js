@@ -1,25 +1,25 @@
-import Vue from 'vue';
+import Vue from 'vue'
 
-const validColors = ['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white'];
-const validTextFormat = ['b', 's', 'o', 'i', 'u', 'g'];
+const validColors = ['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']
+const validTextFormat = ['b', 's', 'o', 'i', 'u', 'g']
 
 export default class Terminal {
   constructor() {
     // owd terminal instance
-    this.instance = null;
+    this.instance = null
     // jquery-terminal, xterm, etc
     this.type = ''
 
     // all commands are stored here
-    this.commands = {};
+    this.commands = {}
 
     this.defaultColors = {
       menu: 'cyan'
-    };
+    }
 
     this.account = {
       logged: false,
-      color: "white"
+      color: 'white'
     }
   }
 
@@ -29,7 +29,7 @@ export default class Terminal {
    * @param terminal
    */
   setInstance(terminal) {
-    this.instance = terminal;
+    this.instance = terminal
   }
 
   /**
@@ -38,7 +38,7 @@ export default class Terminal {
    * @param type
    */
   setType(type) {
-    this.type = type;
+    this.type = type
   }
 
   /**
@@ -64,10 +64,10 @@ export default class Terminal {
    * @returns {string}
    */
   get greetings() {
-    return process.env.VUE_APP_USER + " console :: Version " + (process.env.VUE_APP_VERSION || '1.0.0') + "\n" +
-      "Copyright (c) " + new Date().getFullYear() + " " + process.env.VUE_APP_WEBSITE + "\n\n" +
-      "Welcome, " + this.username + ". " +
-      "Type " + this.textColor('help', 'white') + " to list available commands\n"
+    return process.env.VUE_APP_USER + ' console :: Version ' + (process.env.VUE_APP_VERSION || '1.0.0') + '\n' +
+      'Copyright (c) ' + new Date().getFullYear() + ' ' + process.env.VUE_APP_WEBSITE + '\n\n' +
+      'Welcome, ' + this.username + '. ' +
+      'Type ' + this.textColor('help', 'white') + ' to list available commands\n'
   }
 
   /**
@@ -79,12 +79,12 @@ export default class Terminal {
     console.log(this.type)
 
     switch(this.type) {
-      case "jquery-terminal":
-        this.instance.exec(command)
-        break;
-      case "xterm":
+    case 'jquery-terminal':
+      this.instance.exec(command)
+      break
+    case 'xterm':
 
-        break;
+      break
     }
   }
 
@@ -93,12 +93,12 @@ export default class Terminal {
    */
   destroy() {
     switch(this.type) {
-      case "jquery-terminal":
-        this.instance.destroy()
-        break;
-      case "xterm":
+    case 'jquery-terminal':
+      this.instance.destroy()
+      break
+    case 'xterm':
 
-        break;
+      break
     }
   }
 
@@ -109,12 +109,12 @@ export default class Terminal {
    */
   setCommand(command) {
     switch(this.type) {
-      case "jquery-terminal":
-        this.instance.set_command(command)
-        break;
-      case "xterm":
+    case 'jquery-terminal':
+      this.instance.set_command(command)
+      break
+    case 'xterm':
 
-        break;
+      break
     }
   }
 
@@ -149,13 +149,13 @@ export default class Terminal {
    */
   textColor(text, color, textFormat) {
     if (!validTextFormat.includes(textFormat)) {
-      textFormat = '';
+      textFormat = ''
     } else {
-      textFormat = '!' + textFormat;
+      textFormat = '!' + textFormat
     }
 
     if (!validColors.includes(color)) {
-      color = '';
+      color = ''
     }
 
     return '[[' + textFormat + ';' + color + ';]' + text + ']'
@@ -168,6 +168,6 @@ export default class Terminal {
    * @returns {*}
    */
   apiBaseUrl(url) {
-    return process.env.VUE_APP_SERVER_API_BASE_URL + url;
+    return process.env.VUE_APP_SERVER_API_BASE_URL + url
   }
 }

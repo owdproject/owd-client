@@ -1,4 +1,4 @@
 import Vue from 'vue'
-import device from "vue-device-detector"
+import device from 'vue-device-detector'
 
-Vue.use(device);
+Vue.use(device)

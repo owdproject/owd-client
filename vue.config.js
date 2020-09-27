@@ -1,5 +1,5 @@
-const path = require('path');
-const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin');
+const path = require('path')
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 
 module.exports = {
   pwa: {
@@ -54,6 +54,6 @@ module.exports = {
       alias: {
         '~': path.resolve(__dirname, 'src')
       }
-    },
+    }
   }
-};
+}

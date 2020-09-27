@@ -35,18 +35,40 @@
       }
     ]"
   >
-    <div class="window-container" @mousedown="onActivated">
-      <WindowNav :title="title" @invertMaximize="onToggleMaximize">
-        <a class="btn" @click="onMinimize" v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable">
+    <div
+      class="window-container"
+      @mousedown="onActivated"
+    >
+      <WindowNav
+        :title="title"
+        @invertMaximize="onToggleMaximize"
+      >
+        <a
+          class="btn"
+          @click="onMinimize"
+          v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable"
+        >
           <v-icon>mdi-window-minimize</v-icon>
         </a>
-        <a class="btn" @click="onToggleMaximize" v-if="window.config.maximizable">
+        <a
+          class="btn"
+          @click="onToggleMaximize"
+          v-if="window.config.maximizable"
+        >
           <v-icon>mdi-window-maximize</v-icon>
         </a>
-        <a class="btn" :href="window.externalUrl" target="_blank" v-if="window.externalUrl">
+        <a
+          class="btn"
+          :href="window.externalUrl"
+          target="_blank"
+          v-if="window.externalUrl"
+        >
           <v-icon>mdi-open-in-new</v-icon>
         </a>
-        <a class="btn" @click="onClose">
+        <a
+          class="btn"
+          @click="onClose"
+        >
           <v-icon>mdi-window-close</v-icon>
         </a>
       </WindowNav>
@@ -60,274 +82,274 @@
 </template>
 
 <script>
-  import VueResizable from 'vue-resizable'
-  import WindowNav from "./WindowNav";
-  import WindowContent from "./WindowContent";
+import VueResizable from 'vue-resizable'
+import WindowNav from './WindowNav'
+import WindowContent from './WindowContent'
 
-  export default {
-    name: "Window",
-    components: {
-      WindowContent,
-      WindowNav,
-      VueResizable
+export default {
+  name: 'Window',
+  components: {
+    WindowContent,
+    WindowNav,
+    VueResizable
+  },
+  props: {
+    title: String,
+    window: Object
+  },
+  data() {
+    return {
+      resizing: false,
+      dragging: false
+    }
+  },
+  computed: {
+    windowIdName() {
+      const kebabCase = require('kebab-case')
+      const kebabCaseName = kebabCase(this.window.name)
+
+      return kebabCaseName.substr(1, kebabCaseName.length+1)
     },
-    props: {
-      title: String,
-      window: Object,
-    },
-    data() {
-      return {
-        resizing: false,
-        dragging: false
+    windowMaxWidth() {
+      if (!this.window.config.resizable) {
+        return this.window.config.width
       }
-    },
-    computed: {
-      windowIdName() {
-        const kebabCase = require('kebab-case');
-        const kebabCaseName = kebabCase(this.window.name);
 
-        return kebabCaseName.substr(1, kebabCaseName.length+1);
+      if (this.window.storage.fullscreen) {
+        return window.innerWidth
+      }
+
+      if (this.window.config.maxWidth) {
+        return this.window.config.maxWidth
+      }
+
+      return undefined
+    },
+    windowMaxHeight() {
+      if (!this.window.config.resizable) {
+        return this.window.config.height
+      }
+
+      if (this.window.storage.fullscreen) {
+        return window.innerHeight
+      }
+
+      if (this.window.config.maxHeight) {
+        return this.window.config.maxHeight
+      }
+
+      return undefined
+    },
+    windowMinWidth() {
+      if (this.window.config.minWidth) {
+        return this.window.config.minWidth
+      }
+
+      return this.window.config.width
+    },
+    windowMinHeight() {
+      if (this.window.config.minHeight) {
+        return this.window.config.minHeight
+      }
+
+      return this.window.config.height
+    }
+  },
+  watch: {
+    'window.storage': {
+      handler: function () {
+        clearTimeout(this.saveToLocalstorage)
+
+        this.saveToLocalstorage = setTimeout(() => {
+          this.$store.dispatch('core/windows/saveWindowsStorage')
+        }, 500)
       },
-      windowMaxWidth() {
-        if (!this.window.config.resizable) {
-          return this.window.config.width;
-        }
+      deep: true
+    }
+  },
+  created() {
+    const self = this
 
-        if (this.window.storage.fullscreen) {
-          return window.innerWidth;
+    if (this.window.config.autoCloseBeforePageUnload) {
+      window.addEventListener(
+        'beforeunload',
+        () => {
+          self.$store.dispatch('core/windows/windowClose', self.window)
+          self.$store.dispatch('core/windows/saveWindowsStorage')
         }
+      )
+    }
 
-        if (this.window.config.maxWidth) {
-          return this.window.config.maxWidth;
+    if (this.window.config.autoDestroyBeforePageUnload) {
+      window.addEventListener(
+        'beforeunload',
+        () => {
+          self.$store.dispatch('core/windows/windowDestroy', self.window)
+          self.$store.dispatch('core/windows/saveWindowsStorage')
         }
+      )
+    }
+  },
+  mounted() {
+    const self = this
 
-        return undefined;
-      },
-      windowMaxHeight() {
-        if (!this.window.config.resizable) {
-          return this.window.config.height;
-        }
-
-        if (this.window.storage.fullscreen) {
-          return window.innerHeight;
-        }
-
-        if (this.window.config.maxHeight) {
-          return this.window.config.maxHeight;
-        }
-
-        return undefined;
-      },
-      windowMinWidth() {
-        if (this.window.config.minWidth) {
-          return this.window.config.minWidth;
-        }
-
-        return this.window.config.width;
-      },
-      windowMinHeight() {
-        if (this.window.config.minHeight) {
-          return this.window.config.minHeight;
-        }
-
-        return this.window.config.height;
+    // when press ESC and a window is in full-screen mode
+    window.addEventListener('keydown', function(e) {
+      if (e.keyCode === 27) {
+        self.$store.dispatch('core/windows/windowUnmaximizeAll')
       }
-    },
-    watch: {
-      'window.storage': {
-        handler: function () {
-          clearTimeout(this.saveToLocalstorage);
-
-          this.saveToLocalstorage = setTimeout(() => {
-            this.$store.dispatch('core/windows/saveWindowsStorage');
-          }, 500);
-        },
-        deep: true
-      }
-    },
-    created() {
-      const self = this;
-
-      if (this.window.config.autoCloseBeforePageUnload) {
-        window.addEventListener(
-          'beforeunload',
-          () => {
-            self.$store.dispatch('core/windows/windowClose', self.window);
-            self.$store.dispatch('core/windows/saveWindowsStorage');
-          }
-        )
-      }
-
-      if (this.window.config.autoDestroyBeforePageUnload) {
-        window.addEventListener(
-          'beforeunload',
-          () => {
-            self.$store.dispatch('core/windows/windowDestroy', self.window);
-            self.$store.dispatch('core/windows/saveWindowsStorage');
-          }
-        )
-      }
-    },
-    mounted() {
-      const self = this;
-
-      // when press ESC and a window is in full-screen mode
-      window.addEventListener('keydown', function(e) {
-        if (e.keyCode === 27) {
-          self.$store.dispatch('core/windows/windowUnmaximizeAll');
-        }
-      });
-    },
-    methods: {
-      /**
+    })
+  },
+  methods: {
+    /**
        * Window minimize event
        */
-      onMinimize: function () {
-        this.$store.dispatch('core/windows/windowMinimize', this.window)
-      },
+    onMinimize: function () {
+      this.$store.dispatch('core/windows/windowMinimize', this.window)
+    },
 
-      /**
+    /**
        * Window maximize event
        */
-      onToggleMaximize: function () {
-        this.$store.dispatch('core/windows/windowToggleMaximize', this.window)
-      },
+    onToggleMaximize: function () {
+      this.$store.dispatch('core/windows/windowToggleMaximize', this.window)
+    },
 
-      /**
+    /**
        * Window open new link
        */
-      onOpenLink: function (url) {
-        window.open(url, "_blank");
-      },
+    onOpenLink: function (url) {
+      window.open(url, '_blank')
+    },
 
-      /**
+    /**
        * Window close event
        */
-      onClose: function () {
-        this.$store.dispatch('core/windows/windowDestroy', this.window)
-      },
+    onClose: function () {
+      this.$store.dispatch('core/windows/windowDestroy', this.window)
+    },
 
-      /**
+    /**
        * Window focus event
        */
-      onFocus: function () {
-        const self = this;
+    onFocus: function () {
+      const self = this
 
-        // prevent focus when minimizing or closing
-        setTimeout(() => {
-          self.$store.dispatch('core/windows/windowFocus', self.window)
-        }, 100)
-      },
+      // prevent focus when minimizing or closing
+      setTimeout(() => {
+        self.$store.dispatch('core/windows/windowFocus', self.window)
+      }, 100)
+    },
 
-      /**
+    /**
        * Window actived event
        */
-      onActivated: function () {
-        if (!this.window.storage.closed) this.onFocus()
-      },
+    onActivated: function () {
+      if (!this.window.storage.closed) this.onFocus()
+    },
 
-      /**
+    /**
        * Window start resize event
        */
-      onResizeStart: function(data) {
-        // emit to parent component
-        this.$emit('resize:start', data);
+    onResizeStart: function(data) {
+      // emit to parent component
+      this.$emit('resize:start', data)
 
-        this.resizing = true;
-      },
+      this.resizing = true
+    },
 
-      /**
+    /**
        * Window end resize event
        */
-      onResizeEnd: function(data) {
-        // emit to parent component
-        this.$emit('resize:end', data);
+    onResizeEnd: function(data) {
+      // emit to parent component
+      this.$emit('resize:end', data)
 
-        this.window.storage.x = data.left;
-        this.window.storage.y = data.top;
-        this.window.storage.width = data.width;
-        this.window.storage.height = data.height;
+      this.window.storage.x = data.left
+      this.window.storage.y = data.top
+      this.window.storage.width = data.width
+      this.window.storage.height = data.height
 
-        this.resizing = false;
-      },
+      this.resizing = false
+    },
 
-      /**
+    /**
        * Window start drag event
        */
-      onDragStart: function(data) {
-        // emit to parent component
-        this.$emit('drag:start', data);
+    onDragStart: function(data) {
+      // emit to parent component
+      this.$emit('drag:start', data)
 
-        this.dragging = true;
-      },
+      this.dragging = true
+    },
 
-      /**
+    /**
        * On drag event, force no-margin when straight to borders
        */
-      onDragMove: function(data) {
-        let forceNoMargin = false
+    onDragMove: function(data) {
+      let forceNoMargin = false
 
-        if (data.top <= 15) {
-          forceNoMargin = true
-          data.top = 0
-        }
-        if (data.left <= 15) {
-          forceNoMargin = true
-          data.left = 0
-        }
+      if (data.top <= 15) {
+        forceNoMargin = true
+        data.top = 0
+      }
+      if (data.left <= 15) {
+        forceNoMargin = true
+        data.left = 0
+      }
 
-        if ((data.top + this.window.storage.height) >= window.innerHeight - 15) {
-          forceNoMargin = true
-          data.top = window.innerHeight - this.window.storage.height
-        }
+      if ((data.top + this.window.storage.height) >= window.innerHeight - 15) {
+        forceNoMargin = true
+        data.top = window.innerHeight - this.window.storage.height
+      }
 
-        if ((data.left + this.window.storage.width) >= window.innerWidth - 15) {
-          forceNoMargin = true
-          data.left = window.innerWidth - this.window.storage.width
-        }
+      if ((data.left + this.window.storage.width) >= window.innerWidth - 15) {
+        forceNoMargin = true
+        data.left = window.innerWidth - this.window.storage.width
+      }
 
-        if (forceNoMargin) {
-          this.$store.dispatch('core/windows/windowUpdatePosition', {
-            data: this.window,
-            x: data.left,
-            y: data.top,
-            width: data.width,
-            height: data.height
-          })
-        }
-      },
+      if (forceNoMargin) {
+        this.$store.dispatch('core/windows/windowUpdatePosition', {
+          data: this.window,
+          x: data.left,
+          y: data.top,
+          width: data.width,
+          height: data.height
+        })
+      }
+    },
 
 
-      /**
+    /**
        * Window stop drag event
        * @param data
        */
-      onDragEnd: function (data) {
-        // emit to parent component
-        this.$emit('drag:end', data);
+    onDragEnd: function (data) {
+      // emit to parent component
+      this.$emit('drag:end', data)
 
-        this.dragging = false;
+      this.dragging = false
 
-        if (
-          this.window.storage.x !== data.left ||
+      if (
+        this.window.storage.x !== data.left ||
           this.window.storage.y !== data.top ||
           this.window.storage.width !== data.width ||
           this.window.storage.height !== data.height
-        ) {
-          if (data.top <= 15) data.top = 0
-          if (data.left <= 15) data.left = 0
+      ) {
+        if (data.top <= 15) data.top = 0
+        if (data.left <= 15) data.left = 0
 
-          this.$store.dispatch('core/windows/windowUpdatePosition', {
-            data: this.window,
-            x: data.left,
-            y: data.top,
-            width: data.width,
-            height: data.height
-          })
-        }
+        this.$store.dispatch('core/windows/windowUpdatePosition', {
+          data: this.window,
+          x: data.left,
+          y: data.top,
+          width: data.width,
+          height: data.height
+        })
       }
     }
   }
+}
 </script>
 
 <style lang="scss">

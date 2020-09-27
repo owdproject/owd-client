@@ -1,12 +1,22 @@
 <template>
   <transition name="fade">
-    <div :data-name="name" :class="['notice', `notice-service-${service}`]" v-show="visible">
+    <div
+      :data-name="name"
+      :class="['notice', `notice-service-${service}`]"
+      v-show="visible"
+    >
       <div class="notice-icon">
         <v-icon v-text="`mdi-${service}`" />
       </div>
       <div class="notice-text">
-        <div class="title" v-text="text"/>
-        <div class="details" v-text="details" />
+        <div
+          class="title"
+          v-text="text"
+        />
+        <div
+          class="details"
+          v-text="details"
+        />
       </div>
     </div>
   </transition>
@@ -14,7 +24,7 @@
 
 <script>
 export default {
-  name: "NotificationDetails",
+  name: 'NotificationDetails',
   props: {
     name: String,
     service: String,
@@ -28,7 +38,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.visible = true;
+      this.visible = true
     })
   }
 }

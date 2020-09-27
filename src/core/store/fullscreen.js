@@ -15,5 +15,5 @@ export default {
     SET_FULLSCREEN_MODE(state, value) {
       state.fullscreen = value
     }
-  },
-};
+  }
+}

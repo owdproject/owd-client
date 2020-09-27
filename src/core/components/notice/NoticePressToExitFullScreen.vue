@@ -1,8 +1,11 @@
 <template>
   <transition name="fade-transition">
     <v-btn
-        class="btn-exit-full-screen" rounded dark disabled
-        v-show="visible"
+      class="btn-exit-full-screen"
+      rounded
+      dark
+      disabled
+      v-show="visible"
     >
       Press <kbd>ESC</kbd> to exit full screen
     </v-btn>
@@ -11,7 +14,7 @@
 
 <script>
 export default {
-  name: "NoticePressToExitFullscreen",
+  name: 'NoticePressToExitFullscreen',
   data() {
     return {
       visible: false,

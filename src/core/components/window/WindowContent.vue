@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  export default {
-    name: "WindowContent"
-  }
+export default {
+  name: 'WindowContent'
+}
 </script>

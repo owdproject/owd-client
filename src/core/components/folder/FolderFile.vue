@@ -1,28 +1,42 @@
 <template>
-  <li class="file" :class="{ inactive }">
-    <a :target="target" :href="url" :title="title" @click="fn">
-      <img :src="icon" :alt="title" />
-      <div class="name" v-html="name" />
+  <li
+    class="file"
+    :class="{ inactive }"
+  >
+    <a
+      :target="target"
+      :href="url"
+      :title="title"
+      @click="fn"
+    >
+      <img
+        :src="icon"
+        :alt="title"
+      >
+      <div
+        class="name"
+        v-html="name"
+      />
     </a>
   </li>
 </template>
 
 <script>
-  export default {
-    name: "FolderFile",
-    props: {
-      name: String,
-      title: String,
-      icon: String,
-      url: String,
-      target: String,
-      inactive: Boolean,
-      fn: {
-        type: Function,
-        default: function () {}
-      },
+export default {
+  name: 'FolderFile',
+  props: {
+    name: String,
+    title: String,
+    icon: String,
+    url: String,
+    target: String,
+    inactive: Boolean,
+    fn: {
+      type: Function,
+      default: function () {}
     }
   }
+}
 </script>
 
 <style lang="scss">

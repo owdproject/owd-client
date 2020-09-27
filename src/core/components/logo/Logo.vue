@@ -3,7 +3,9 @@
     <h2>
       <vue-typer
         :text="$store.state.core.client.title"
-        shuffle :repeat="0" :typeDelay="50"
+        shuffle
+        :repeat="0"
+        :type-delay="50"
         erase-style="select-back"
       />
     </h2>
@@ -11,14 +13,14 @@
 </template>
 
 <script>
-  import {VueTyper} from 'vue-typer'
+import {VueTyper} from 'vue-typer'
 
-  export default {
-    name: "Logo",
-    components: {
-      VueTyper
-    }
+export default {
+  name: 'Logo',
+  components: {
+    VueTyper
   }
+}
 </script>
 
 <style lang="scss">

@@ -3,9 +3,9 @@
 </template>
 
 <script>
-  export default {
-    name: "Background"
-  }
+export default {
+  name: 'Background'
+}
 </script>
 
 <style scoped lang="scss">

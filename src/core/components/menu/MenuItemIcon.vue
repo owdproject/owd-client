@@ -9,7 +9,7 @@
 export default {
   name: 'MenuItemIcon',
   props: {
-    icon: String
+    icon: [String,Object]
   },
   computed: {
     iconName() {

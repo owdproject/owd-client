@@ -8,7 +8,6 @@
 
 <p>
     <a href="https://github.com/owdproject/owd-client/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg" /></a>
-    <a href="https://github.com/owdproject/owd-client"><img src="https://img.shields.io/codacy/grade/f32d37e5b57e407f8e09fe3111731f55/master" /></a>
     <a href="https://github.com/owdproject/owd-client"><img src="https://img.shields.io/github/release/owdproject/owd-client.svg?maxAge=2592000" /></a>
     <a href="https://github.com/owdproject/owd-client"><img src="https://img.shields.io/badge/owd-client-3A9CB6" /></a>
     <a href="https://github.com/topics/owd-modules"><img src="https://img.shields.io/badge/owd-modules-888" /></a>

@@ -6,15 +6,15 @@ import router from './core/router'
 import boot from './core/boot'
 
 // load Open Web Desktop & its modules
-boot({ Vue, store });
+boot({ Vue, store })
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
 /**
  * INIT
  */
 new Vue({
-    store,
-    router,
-    render: h => h(App)
-}).$mount('#app');
+  store,
+  router,
+  render: h => h(App)
+}).$mount('#app')

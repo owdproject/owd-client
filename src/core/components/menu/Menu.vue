@@ -1,5 +1,8 @@
 <template>
-  <div id="menu" v-if="windowInstances">
+  <div
+    id="menu"
+    v-if="windowInstances"
+  >
     <ul
       v-for="windowName in Object.keys(windowInstances)"
       class="menu-group"
@@ -22,7 +25,7 @@ import {mapGetters} from 'vuex'
 import MenuItem from './MenuItem.vue'
 
 export default {
-  name: "Menu",
+  name: 'Menu',
   components: {
     MenuItem
   },

@@ -1,10 +1,11 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vue from 'vue'
+import Vuex from 'vuex'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 // VUEX INIT
 import storeClient from './client'
+import storeFullScreen from './fullscreen'
 import storeWindows from './windows'
 import storeNotification from './notification'
 import storeSse from './sse'
@@ -16,6 +17,7 @@ export default new Vuex.Store({
       namespaced: true,
       modules: {
         client: storeClient,
+        fullscreen: storeFullScreen,
         windows: storeWindows,
         notification: storeNotification,
         sse: storeSse,
@@ -23,4 +25,4 @@ export default new Vuex.Store({
       }
     }
   }
-});
+})

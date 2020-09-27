@@ -13,57 +13,60 @@
       <MenuItemIcon :icon="window.icon" />
     </div>
     <div class="name">
-      <div class="name-inner" v-html="(window.titleShort || window.title)" />
+      <div
+        class="name-inner"
+        v-html="(window.titleShort || window.title)"
+      />
     </div>
   </li>
 </template>
 
 <script>
-  import MenuItemIcon from "./MenuItemIcon";
+import MenuItemIcon from './MenuItemIcon'
 
-  export default {
-    name: "MenuItem",
-    components: {MenuItemIcon},
-    props: {
-      window: Object, // window object data
-    },
-    methods: {
-      /**
+export default {
+  name: 'MenuItem',
+  components: {MenuItemIcon},
+  props: {
+    window: Object // window object data
+  },
+  methods: {
+    /**
        * Toggle window visibility
        */
-      windowToggle: function (event) {
-        if (this.$device.mobile) {
+    windowToggle: function (event) {
+      if (this.$device.mobile) {
 
-          if (!this.window.storage.closed) {
-            this.$store.dispatch('core/windows/windowClose', this.window);
-          } else {
-            this.$store.dispatch('core/windows/windowCloseAll');
-            this.$store.dispatch('core/windows/windowOpen', this.window);
-          }
+        if (!this.window.storage.closed) {
+          this.$store.dispatch('core/windows/windowClose', this.window)
+        } else {
+          this.$store.dispatch('core/windows/windowCloseAll')
+          this.$store.dispatch('core/windows/windowOpen', this.window)
+        }
+
+      } else {
+
+        if (event.shiftKey) {
+
+          // force close with shiftkey
+          this.$store.dispatch('core/windows/windowMinimize', this.window)
 
         } else {
 
-          if (event.shiftKey) {
-
-            // force close with shiftkey
-            this.$store.dispatch('core/windows/windowMinimize', this.window);
-
+          if (this.window.storage && (this.window.storage.closed || this.window.storage.minimized)) {
+            this.$store.dispatch('core/windows/windowOpen', this.window)
           } else {
-
-            if (this.window.storage && (this.window.storage.closed || this.window.storage.minimized)) {
-              this.$store.dispatch('core/windows/windowOpen', this.window);
+            // don't close if window has to stay minimized
+            if (this.window.config.menu === true) {
+              this.$store.dispatch('core/windows/windowClose', this.window)
             } else {
-              // don't close if window has to stay minimized
-              if (this.window.config.menu === true) {
-                this.$store.dispatch('core/windows/windowClose', this.window);
-              } else {
-                this.$store.dispatch('core/windows/windowMinimize', this.window);
-              }
+              this.$store.dispatch('core/windows/windowMinimize', this.window)
             }
           }
-
         }
+
       }
     }
   }
+}
 </script>

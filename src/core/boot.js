@@ -17,9 +17,9 @@ import Terminal from './plugins/terminal'
 import extend from './plugins/extend'
 
 export default function({ Vue, store }) {
-  const terminal = new Terminal();
-  Vue.prototype.$terminal = terminal;
+  const terminal = new Terminal()
+  Vue.prototype.$terminal = terminal
 
   // extend owd-client
-  Vue.prototype.$modules = extend({ store, terminal });
+  Vue.prototype.$modules = extend({ store, terminal })
 }

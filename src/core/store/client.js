@@ -1,12 +1,12 @@
-import axios from 'axios';
+import axios from 'axios'
 
-const clientDefaultTitle = process.env.VUE_APP_NAME;
-const clientDefaultVersion = process.env.VUE_APP_VERSION;
+const clientDefaultTitle = process.env.VUE_APP_NAME
+const clientDefaultVersion = process.env.VUE_APP_VERSION
 
-const clientLocalStorageName = 'client-storage';
-const apiUrl = process.env.VUE_APP_SERVER_API_BASE_URL;
+const clientLocalStorageName = 'client-storage'
+const apiUrl = process.env.VUE_APP_SERVER_API_BASE_URL
 
-const defaultUsername = 'guest';
+const defaultUsername = 'guest'
 
 export default {
   namespaced: true,
@@ -31,41 +31,41 @@ export default {
 
   mutations: {
     TITLE_SET(state, title) {
-      state.title = title;
+      state.title = title
     },
 
     TITLE_RESET(state) {
-      state.title = clientDefaultTitle;
+      state.title = clientDefaultTitle
     },
 
     VERSION_SET(state, version) {
-      state.version = version;
+      state.version = version
     },
 
     VERSION_RESET(state) {
-      state.version = clientDefaultVersion;
+      state.version = clientDefaultVersion
     },
 
     SYNC_SET(state, data) {
-      state.sync = data;
+      state.sync = data
     },
 
     ACCOUNT_SET(state, data) {
       if (!data) {
-        data = {username: defaultUsername, token: null};
+        data = {username: defaultUsername, token: null}
       }
-      state.account = data;
+      state.account = data
     }
   },
 
   actions: {
     async initialize({commit, dispatch}) {
-      commit('core/debug/LOG', 'App initialized', {root: true});
+      commit('core/debug/LOG', 'App initialized', {root: true})
 
       // # VUEX WINDOWS INIT
 
       // load windows positions from local storage
-      await dispatch('core/windows/initialize', null, {root: true});
+      await dispatch('core/windows/initialize', null, {root: true})
 
       // load client customization
       // todo improve or remove
@@ -81,13 +81,13 @@ export default {
     storageLoad({ commit }) {
       if (localStorage.getItem(clientLocalStorageName)) {
         try {
-          let clientData = JSON.parse(localStorage.getItem(clientLocalStorageName));
+          const clientData = JSON.parse(localStorage.getItem(clientLocalStorageName))
 
-          commit('TITLE_SET', clientData.title);
-          commit('VERSION_SET', clientData.version);
-          commit('ACCOUNT_SET', clientData.account);
+          commit('TITLE_SET', clientData.title)
+          commit('VERSION_SET', clientData.version)
+          commit('ACCOUNT_SET', clientData.account)
         } catch (e) {
-          localStorage.removeItem(clientLocalStorageName);
+          localStorage.removeItem(clientLocalStorageName)
         }
       }
     },
@@ -98,15 +98,15 @@ export default {
      * @param state
      */
     storageSave({ state }) {
-      let clientData = {
+      const clientData = {
         title: state.title,
         version: state.version,
         account: state.account,
-        snakeAutostart: state.snakeAutostart,
-      };
+        snakeAutostart: state.snakeAutostart
+      }
 
       // save in local storage
-      localStorage.setItem(clientLocalStorageName, JSON.stringify(clientData));
+      localStorage.setItem(clientLocalStorageName, JSON.stringify(clientData))
     },
 
     /**
@@ -122,18 +122,18 @@ export default {
         axios
           .post(apiUrl + 'auth/login', {username: data.username, password: data.password})
           .then(response => {
-            commit('core/ACCOUNT_SET', {username: response.data.username, token: response.data.token});
-            dispatch('storageSave');
+            commit('core/ACCOUNT_SET', {username: response.data.username, token: response.data.token})
+            dispatch('storageSave')
 
-            resolve(response.data);
+            resolve(response.data)
           })
           .catch(() => {
-            commit('core/ACCOUNT_SET');
-            dispatch('storageSave');
+            commit('core/ACCOUNT_SET')
+            dispatch('storageSave')
 
-            reject();
-          });
-      });
+            reject()
+          })
+      })
     },
 
     /**
@@ -146,21 +146,21 @@ export default {
      * @returns {Promise<any>}
      */
     doCheckToken({ state, commit, dispatch }) {
-      const token = state.account.token;
+      const token = state.account.token
 
       return new Promise((resolve, reject) => {
         axios
           .post(apiUrl + 'auth/check', {token: token})
           .then(() => {
-            resolve();
+            resolve()
           })
           .catch(() => {
-            commit('core/ACCOUNT_SET');
-            dispatch('storageSave');
+            commit('core/ACCOUNT_SET')
+            dispatch('storageSave')
 
-            reject();
-          });
-      });
+            reject()
+          })
+      })
     },
 
     /**
@@ -170,8 +170,8 @@ export default {
      * @param dispatch
      */
     doLogout({ commit, dispatch }) {
-      commit('core/ACCOUNT_SET');
-      dispatch('storageSave');
+      commit('core/ACCOUNT_SET')
+      dispatch('storageSave')
     }
   }
-};
+}

@@ -1,7 +1,7 @@
-import Vue from 'vue';
-import * as windowsUtils from "~/core/utils/windows.utils";
-import * as windowLocalStorageUtils from "~/core/utils/windows/windowsLocalStorage.utils";
-import {storeInstanceCreate,storeInstanceDestroy} from "@/core/utils/store/storeInstance.utils";
+import Vue from 'vue'
+import * as windowsUtils from '~/core/utils/windows.utils'
+import * as windowLocalStorageUtils from '~/core/utils/windows/windowsLocalStorage.utils'
+import {storeInstanceCreate,storeInstanceDestroy} from '@/core/utils/store/storeInstance.utils'
 
 // load windows storage from local storage
 const windowLocalStorage = windowLocalStorageUtils.loadWindowsLocalStorage()
@@ -39,7 +39,7 @@ export default {
       state.windowInstances[data.name][data.uniqueID] = data
     },
     UNSET_WINDOW(state, data) {
-      const windowGroup = state.windowInstances[data.name];
+      const windowGroup = state.windowInstances[data.name]
 
       // check if is array of windows
       if (windowsUtils.isWindowGroup(windowGroup)) {
@@ -70,7 +70,7 @@ export default {
      */
     async initialize({commit,dispatch}) {
       // get loaded modules in OWD Client
-      const modulesLoaded = Vue.prototype.$modules.modulesLoaded;
+      const modulesLoaded = Vue.prototype.$modules.modulesLoaded
 
       const windowInstances = {}
       const windowFocuses = []
@@ -81,7 +81,7 @@ export default {
 
         // for each module
         for (const moduleName of Object.keys(modulesLoaded)) {
-          const module = modulesLoaded[moduleName];
+          const module = modulesLoaded[moduleName]
           const moduleWithoutWindows = {...module}; delete moduleWithoutWindows.windows
 
           // does module contain any windows?
@@ -93,11 +93,11 @@ export default {
               if (moduleWindowComponent.window) {
 
                 // for example WindowSample
-                const windowName = moduleWindowComponent.name;
+                const windowName = moduleWindowComponent.name
 
                 windowInstances[windowName] = []
 
-                console.log('[OWD] Module component name: ' + windowName);
+                console.log('[OWD] Module component name: ' + windowName)
 
                 const storageWindows = await dispatch('getWindowsStorageByWindowName', windowName)
 
@@ -149,7 +149,7 @@ export default {
       }
 
       // check windows position on load
-      dispatch('windowsHandlePageResize');
+      dispatch('windowsHandlePageResize')
 
       commit('SET_WINDOW_FOCUSES', windowFocuses)
     },
@@ -165,12 +165,12 @@ export default {
       let name
 
       switch(typeof data) {
-        case 'string':
-          name = data
-          break;
-        case 'object':
-          name = data.name
-          break;
+      case 'string':
+        name = data
+        break
+      case 'object':
+        name = data.name
+        break
       }
 
       const windowGroupInstances = getters['windowInstances'][name]
@@ -258,7 +258,7 @@ export default {
      */
     saveWindowsStorage({state}) {
       if (Object.keys(state.windowInstances).length) {
-        const data = {};
+        const data = {}
 
         // for each window group
         for (const windowName of Object.keys(state.windowInstances)) {
@@ -278,8 +278,8 @@ export default {
               height: Number(window.storage.height),
               closed: !!window.storage.closed,
               minimized: !!window.storage.minimized,
-              maximized: !!window.storage.maximized,
-            });
+              maximized: !!window.storage.maximized
+            })
 
           }
 
@@ -301,7 +301,7 @@ export default {
      * @returns {null}
      */
     getWindowConfiguration(context, name) {
-      const windowConfiguration = Vue.prototype.$modules.getWindowConfigurationFromWindowName(name);
+      const windowConfiguration = Vue.prototype.$modules.getWindowConfigurationFromWindowName(name)
 
       if (typeof windowConfiguration !== 'undefined') {
         return windowConfiguration
@@ -318,7 +318,7 @@ export default {
      * @returns {null}
      */
     getWindowModule(context, name) {
-      const windowModule = Vue.prototype.$modules.getWindowModuleFromWindowName(name);
+      const windowModule = Vue.prototype.$modules.getWindowModuleFromWindowName(name)
 
       if (typeof windowModule !== 'undefined') {
         return windowModule
@@ -343,16 +343,16 @@ export default {
       windowInstance.uniqueID = windowsUtils.generateUniqueWindowId()
 
       // .config contains rules and features enabled in the module.json "window" attr
-      windowInstance.config = data.config.window;
+      windowInstance.config = data.config.window
 
       // add informations about this module
-      windowInstance.module = data.module;
+      windowInstance.module = data.module
 
       // .window data has been assigned to .config so is no more needed in .window
-      delete windowInstance.window;
+      delete windowInstance.window
 
       // add storage (clone from windowInstance.config)
-      windowInstance.storage = {...windowInstance.config};
+      windowInstance.storage = {...windowInstance.config}
 
       // overwrite .storage with history (local storage)
       if (data.storage) {
@@ -366,12 +366,12 @@ export default {
           height: Number(data.storage.height),
           closed: !!data.storage.closed,
           minimized: !!data.storage.minimized,
-          maximized: !!data.storage.maximized,
-        };
+          maximized: !!data.storage.maximized
+        }
 
         // show item in menu
         if (windowInstance.config.menu === false) {
-          windowInstance.storage.menu = !!data.storage.menu;
+          windowInstance.storage.menu = !!data.storage.menu
         }
 
         // window is already opened, show item in menu
@@ -438,14 +438,14 @@ export default {
       window.storage.closed = false
 
       // calculate pos x and y
-      window.storage.x = await dispatch('windowCalcPosX', {window});
-      window.storage.y = await dispatch('windowCalcPosY', {window});
+      window.storage.x = await dispatch('windowCalcPosX', {window})
+      window.storage.y = await dispatch('windowCalcPosY', {window})
 
       // update
-      commit('SET_WINDOW', window);
+      commit('SET_WINDOW', window)
 
       // focus on window
-      dispatch('windowFocus', window);
+      dispatch('windowFocus', window)
     },
 
     /**
@@ -457,27 +457,27 @@ export default {
      * @param data
      */
     async windowOpen({commit, dispatch}, data) {
-      const window = await dispatch('getWindow', data);
+      const window = await dispatch('getWindow', data)
 
       // is window in memory?
-      if (!window || !window.storage) return console.log('[OWD] Window missing');
+      if (!window || !window.storage) return console.log('[OWD] Window missing')
 
-      window.storage.closed = false;
-      window.storage.minimized = false;
-      window.storage.menu = true;
+      window.storage.closed = false
+      window.storage.minimized = false
+      window.storage.menu = true
 
       // calculate pos x and y
-      window.storage.x = await dispatch('windowCalcPosX', {window});
-      window.storage.y = await dispatch('windowCalcPosY', {window});
+      window.storage.x = await dispatch('windowCalcPosX', {window})
+      window.storage.y = await dispatch('windowCalcPosY', {window})
 
       // update
-      commit('SET_WINDOW', window);
+      commit('SET_WINDOW', window)
 
       // check windows position on load
-      dispatch('windowsHandlePageResize');
+      dispatch('windowsHandlePageResize')
 
       // focus on window
-      dispatch('windowFocus', window);
+      dispatch('windowFocus', window)
     },
 
     /**
@@ -488,15 +488,15 @@ export default {
      * @param data
      */
     async windowMinimize({commit, dispatch}, data) {
-      const window = await dispatch('getWindow', data);
+      const window = await dispatch('getWindow', data)
 
       // is window in memory?
-      if (!window || !window.storage) return console.log('[OWD] Window missing');
+      if (!window || !window.storage) return console.log('[OWD] Window missing')
 
-      window.storage.minimized = true;
+      window.storage.minimized = true
 
       // update
-      commit('SET_WINDOW', window);
+      commit('SET_WINDOW', window)
     },
 
     /**
@@ -507,17 +507,18 @@ export default {
      * @param data
      */
     async windowMaximize({commit, dispatch}, data) {
-      const window = await dispatch('getWindow', data);
+      const window = await dispatch('getWindow', data)
 
       // is window in memory?
-      if (!window || !window.storage) return console.log('[OWD] Window missing');
+      if (!window || !window.storage) return console.log('[OWD] Window missing')
 
       if (window.config.maximizable) {
-        window.storage.maximized = true;
+        window.storage.maximized = true
+        commit('core/fullscreen/SET_FULLSCREEN_MODE', true, {root: true})
       }
 
       // update
-      commit('SET_WINDOW', window);
+      commit('SET_WINDOW', window)
     },
 
     /**
@@ -528,17 +529,17 @@ export default {
      * @param data
      */
     async windowUnmaximize({commit, dispatch}, data) {
-      const window = await dispatch('getWindow', data);
+      const window = await dispatch('getWindow', data)
 
       // is window in memory?
-      if (!window || !window.storage) return console.log('[OWD] Window missing');
+      if (!window || !window.storage) return console.log('[OWD] Window missing')
 
       if (window.config.maximizable) {
-        window.storage.maximized = false;
+        window.storage.maximized = false
       }
 
       // update
-      commit('SET_WINDOW', window);
+      commit('SET_WINDOW', window)
     },
 
     /**
@@ -548,18 +549,22 @@ export default {
      * @param dispatch
      * @param data
      */
-    async windowInvertMaximize({commit, dispatch}, data) {
-      const window = await dispatch('getWindow', data);
+    async windowToggleMaximize({commit, dispatch}, data) {
+      const window = await dispatch('getWindow', data)
 
       // is window in memory?
-      if (!window || !window.storage) return console.log('[OWD] Window missing');
+      if (!window || !window.storage) return console.log('[OWD] Window missing')
 
       if (window.config.maximizable) {
-        window.storage.maximized = !window.storage.maximized;
+        window.storage.maximized = !window.storage.maximized
+
+        if (window.storage.maximized) {
+          commit('core/fullscreen/SET_FULLSCREEN_MODE', true, {root: true})
+        }
       }
 
       // update
-      commit('SET_WINDOW', window);
+      commit('SET_WINDOW', window)
     },
 
     /**
@@ -570,16 +575,16 @@ export default {
      * @param data
      */
     async windowExpand({commit, dispatch}, data) {
-      const window = await dispatch('getWindow', data);
+      const window = await dispatch('getWindow', data)
 
       // is window in memory?
-      if (!window || !window.storage) return console.log('[OWD] Window missing');
+      if (!window || !window.storage) return console.log('[OWD] Window missing')
 
       if (window.config.expandable) {
-        window.storage.expanded = !window.storage.expanded;
+        window.storage.expanded = !window.storage.expanded
 
         // update
-        commit('SET_WINDOW', window);
+        commit('SET_WINDOW', window)
       }
     },
 
@@ -587,7 +592,6 @@ export default {
      * Set all windows hidden
      *
      * @param state
-     * @param commit
      */
     windowMinimizeAll({dispatch}) {
       dispatch('forEachWindow', window => {
@@ -600,14 +604,17 @@ export default {
     /**
      * Set all windows not maximized
      *
+     * @param commit
      * @param dispatch
      */
-    windowUnmaximizeAll({dispatch}) {
+    windowUnmaximizeAll({commit, dispatch}) {
       dispatch('forEachWindow', window => {
         if (window.storage.maximized) {
           dispatch('windowUnmaximize', window)
         }
       })
+
+      commit('core/fullscreen/SET_FULLSCREEN_MODE', false, {root: true})
     },
 
     /**
@@ -618,10 +625,10 @@ export default {
      * @param data
      */
     async getWindowPosition({dispatch}, data) {
-      const window = await dispatch('getWindow', data);
+      const window = await dispatch('getWindow', data)
 
       // is window in memory?
-      if (!window || !window.storage) return console.log('[OWD] Window missing');
+      if (!window || !window.storage) return console.log('[OWD] Window missing')
 
       return {
         x: window.storage.x,
@@ -671,10 +678,10 @@ export default {
      * @param data
      */
     async getWindowFocus({dispatch}, data) {
-      const window = await dispatch('getWindow', data);
+      const window = await dispatch('getWindow', data)
 
       // is window in memory?
-      if (!window || !window.storage) return console.log('[OWD] Window missing');
+      if (!window || !window.storage) return console.log('[OWD] Window missing')
 
       return window.storage.z
     },
@@ -689,16 +696,16 @@ export default {
      * @param y
      */
     async windowUpdatePosition({commit, dispatch}, {data, x, y}) {
-      const window = await dispatch('getWindow', data);
+      const window = await dispatch('getWindow', data)
 
       // is window in memory?
-      if (!window || !window.storage) return console.log('[OWD] Window missing');
+      if (!window || !window.storage) return console.log('[OWD] Window missing')
 
-      window.storage.x = x;
-      window.storage.y = y;
+      window.storage.x = x
+      window.storage.y = y
 
       // update
-      commit('SET_WINDOW', window);
+      commit('SET_WINDOW', window)
     },
 
     /**
@@ -709,10 +716,10 @@ export default {
      * @param data
      */
     async windowDestroy({commit, dispatch}, data) {
-      const window = await dispatch('getWindow', data);
+      const window = await dispatch('getWindow', data)
 
       // is window in memory?
-      if (!window || !window.storage) return console.log('[OWD] Window missing');
+      if (!window || !window.storage) return console.log('[OWD] Window missing')
 
       const windowsWithCertainGroupName = await dispatch('getWindowsByWindowName', window.name)
       if (
@@ -720,7 +727,7 @@ export default {
         windowsUtils.getCountArrayOfWindows(windowsWithCertainGroupName) > 1
       ) {
         // destroy window if > 1
-        commit('UNSET_WINDOW', window);
+        commit('UNSET_WINDOW', window)
 
         // destroy storeInstance if present
         if (data.module.storeInstance) {
@@ -742,18 +749,18 @@ export default {
      * @param data
      */
     async windowClose({commit, dispatch}, data) {
-      const window = await dispatch('getWindow', data);
+      const window = await dispatch('getWindow', data)
 
       // is window in memory?
-      if (!window || !window.storage) return console.log('[OWD] Window missing');
+      if (!window || !window.storage) return console.log('[OWD] Window missing')
 
-      window.storage.closed = true;
+      window.storage.closed = true
 
       if (typeof window.config.menu === 'boolean') {
-        window.storage.menu = false;
+        window.storage.menu = false
       }
 
-      commit('SET_WINDOW', window);
+      commit('SET_WINDOW', window)
     },
 
     /**
@@ -763,26 +770,26 @@ export default {
      * @param commit
      */
     windowCloseAll({state, commit}) {
-      const windowGroups = {...state.windows};
+      const windowGroups = {...state.windows}
 
       Object.keys(windowGroups).forEach(name => {
         windowGroups[name].storage.closed = true
-      });
+      })
 
       // update
-      commit('SET_WINDOWS', windowGroups);
+      commit('SET_WINDOWS', windowGroups)
     },
 
     async windowSetNavTitle({commit, dispatch}, {data, title}) {
-      const window = await dispatch('getWindow', data);
+      const window = await dispatch('getWindow', data)
 
       // is window in memory?
-      if (!window || !window.storage) return console.log('[OWD] Window missing');
+      if (!window || !window.storage) return console.log('[OWD] Window missing')
 
-      window.title = title;
+      window.title = title
 
       // update
-      commit('SET_WINDOW', window);
+      commit('SET_WINDOW', window)
     },
 
     /**
@@ -794,19 +801,19 @@ export default {
      * @returns {Promise<void>}
      */
     async windowCalcPosX({state}, data) {
-      if (typeof data.forceLeft === 'undefined') data.forceLeft = false;
-      if (typeof data.forceRight === 'undefined') data.forceRight = false;
+      if (typeof data.forceLeft === 'undefined') data.forceLeft = false
+      if (typeof data.forceRight === 'undefined') data.forceRight = false
 
       // is window in memory?
-      if (!data || !data.window.storage) return console.log('[OWD] Window missing');
+      if (!data || !data.window.storage) return console.log('[OWD] Window missing')
 
-      let x = data.window.storage.x;
+      let x = data.window.storage.x
 
       // if > 0, window pos was loaded from local storage
       if (data.window.storage.x === 0 || data.forceLeft) {
-        x = 96;
+        x = 96
       } else if (data.window.storage.x < 0 || data.forceRight) {
-        x = state.desktopInnerWidth - data.window.config.width - 24; // right
+        x = state.desktopInnerWidth - data.window.config.width - 24 // right
       }
 
       return x
@@ -821,19 +828,19 @@ export default {
      * @returns {Promise<unknown>}
      */
     async windowCalcPosY({state}, data) {
-      if (typeof data.forceLeft === 'undefined') data.forceLeft = false;
-      if (typeof data.forceRight === 'undefined') data.forceRight = false;
+      if (typeof data.forceLeft === 'undefined') data.forceLeft = false
+      if (typeof data.forceRight === 'undefined') data.forceRight = false
 
       // is window in memory?
-      if (!data || !data.window.storage) return console.log('[OWD] Window missing');
+      if (!data || !data.window.storage) return console.log('[OWD] Window missing')
 
-      let y = data.window.storage.y;
+      let y = data.window.storage.y
 
       // if > 0, window pos was loaded from local storage
       if (data.window.storage.y === 0 || data.forceLeft) {
-        y = 24;
+        y = 24
       } else if (data.window.storage.y < 0 || data.forceRight) {
-        y = state.desktopInnerHeight - window.config.height - 24; // right
+        y = state.desktopInnerHeight - window.config.height - 24 // right
       }
 
       return y
@@ -849,23 +856,23 @@ export default {
      */
     windowsHandlePageResize({state,commit,dispatch}) {
       // reset position if window moved outside parent on page resize
-      const windowGroupInstances = {...state.windowInstances};
+      const windowGroupInstances = {...state.windowInstances}
 
       dispatch('forEachWindow', async window => {
 
         if (!window.storage.closed) {
-          const maxLeft = window.storage.x + window.storage.width;
-          const maxTop = window.storage.y + window.storage.height;
+          const maxLeft = window.storage.x + window.storage.width
+          const maxTop = window.storage.y + window.storage.height
 
           // calculate max top/left position allowed
           if (maxLeft < window.storage.width || maxLeft > state.desktopInnerWidth) {
-            window.storage.x = await dispatch('windowCalcPosX', {window, forceRight: true});
+            window.storage.x = await dispatch('windowCalcPosX', {window, forceRight: true})
 
             // replace data in windows object
             windowGroupInstances[window.name][window.uniqueID] = window
           }
           if (maxTop < window.storage.height || maxTop > state.desktopInnerHeight) {
-            window.storage.y = await dispatch('windowCalcPosY', {window, forceRight: true});
+            window.storage.y = await dispatch('windowCalcPosY', {window, forceRight: true})
 
             // replace data in windows object
             windowGroupInstances[window.name][window.uniqueID] = window
@@ -877,4 +884,4 @@ export default {
       commit('SET_WINDOW_INSTANCES', windowGroupInstances)
     }
   }
-};
+}

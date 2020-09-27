@@ -1,5 +1,8 @@
 <template>
-  <div id="windows-container" v-if="windowInstances">
+  <div
+    id="windows-container"
+    v-if="windowInstances"
+  >
     <template
       v-for="windowName in Object.keys(windowInstances)"
     >
@@ -16,18 +19,18 @@
 </template>
 
 <script>
-  import {mapGetters} from "vuex";
-  import Window from "../window/Window";
+import {mapGetters} from 'vuex'
+import Window from '../window/Window'
 
-  export default {
-    name: "WindowsContainer",
-    components: {Window},
-    computed: {
-      ...mapGetters({
-        windowInstances: 'core/windows/windowInstances'
-      })
-    }
+export default {
+  name: 'WindowsContainer',
+  components: {Window},
+  computed: {
+    ...mapGetters({
+      windowInstances: 'core/windows/windowInstances'
+    })
   }
+}
 </script>
 
 <style lang="scss">

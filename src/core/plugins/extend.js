@@ -1,37 +1,37 @@
-import Vue from 'vue';
-import modulesConfig from '../../../config/modules.json';
+import Vue from 'vue'
+import modulesConfig from '../../../config/modules.json'
 
-const modulesLoaded = {};
-const windowsLoaded = {};
+const modulesLoaded = {}
+const windowsLoaded = {}
 
 export default ({ store, terminal }) => {
-  const merge = require('lodash.merge');
+  const merge = require('lodash.merge')
 
   if (modulesConfig) {
-    let failed = false;
+    let failed = false
 
     if (modulesConfig.type !== 'client') {
-      console.error("[OWD] Config modules.json is not valid.");
-      failed = true;
+      console.error('[OWD] Config modules.json is not valid.')
+      failed = true
     }
 
     if (!modulesConfig.modulesEnabled || modulesConfig.modulesEnabled.length === 0) {
-      console.log("[OWD] There aren't modules to load.");
-      failed = true;
+      console.log("[OWD] There aren't modules to load.")
+      failed = true
     }
 
     if (!failed) {
       // get names of the modules
-      const modulesNames = Object.keys(modulesConfig.modulesEnabled);
+      const modulesNames = Object.keys(modulesConfig.modulesEnabled)
 
       if (modulesNames.length > 0) {
         for (const moduleName of modulesNames) {
 
           // load module info
-          const moduleInfo = loadModuleInfo(moduleName);
+          const moduleInfo = loadModuleInfo(moduleName)
 
           if (!moduleInfo) {
-            return console.log(`Module info is not valid.`)
+            return console.log('Module info is not valid.')
           }
 
           // check dependencies
@@ -46,37 +46,37 @@ export default ({ store, terminal }) => {
           if (Array.isArray(moduleInfo.windows)) {
             moduleInfo.windows.forEach(windowComponent => {
               if (!windowComponent.name) {
-                return console.log(`[OWD] Component name is missing in ${windowComponent.name}.`);
+                return console.log(`[OWD] Component name is missing in ${windowComponent.name}.`)
               }
 
-              const loadedWindow = loadModuleWindow(moduleInfo.name, windowComponent.name);
+              const loadedWindow = loadModuleWindow(moduleInfo.name, windowComponent.name)
 
               if (loadedWindow) {
-                Vue.component(windowComponent.name, loadedWindow);
+                Vue.component(windowComponent.name, loadedWindow)
 
                 // remove windows property from module basic details
                 const moduleBasicDetails = {...moduleInfo}
                 delete moduleBasicDetails.windows
 
                 // add module info to loaded modules
-                modulesLoaded[moduleInfo.name] = moduleInfo;
+                modulesLoaded[moduleInfo.name] = moduleInfo
                 windowsLoaded[windowComponent.name] = {
                   window: windowComponent,
                   module: moduleBasicDetails
-                };
+                }
               }
-            });
+            })
           }
 
           // load store
           if (moduleInfo.store) {
-            const loadedStore = loadModuleStore(moduleInfo.name);
+            const loadedStore = loadModuleStore(moduleInfo.name)
 
             if (loadedStore) {
-              let storeConfig = {};
+              let storeConfig = {}
 
               if (moduleInfo.config) {
-                const loadedConfig = loadModuleConfig(moduleInfo.name);
+                const loadedConfig = loadModuleConfig(moduleInfo.name)
 
                 if (loadedConfig) {
                   storeConfig = loadedConfig
@@ -89,21 +89,21 @@ export default ({ store, terminal }) => {
                   namespaced: true,
                   state: storeConfig
                 }
-              ));
+              ))
 
               // add module info to loaded modules
-              modulesLoaded[moduleInfo.name] = moduleInfo;
+              modulesLoaded[moduleInfo.name] = moduleInfo
             }
           }
 
           // load commands
           if (moduleInfo.commands) {
-            const commands = loadCommands(moduleInfo.name, { Vue, store, terminal });
+            const commands = loadCommands(moduleInfo.name, { Vue, store, terminal })
 
             if (commands) {
               Object.keys(commands).forEach((commandName) => {
                 terminal.addCommand(commandName, commands[commandName])
-              });
+              })
             }
           }
 
@@ -132,7 +132,7 @@ export default ({ store, terminal }) => {
 
       return null
     }
-  };
+  }
 }
 
 /**
@@ -142,21 +142,21 @@ export default ({ store, terminal }) => {
  * @returns {boolean}
  */
 function areDependenciesSatisfied(dependencies) {
-  let dependenciesStatisfied = true;
+  let dependenciesStatisfied = true
 
   if (dependencies && dependencies.length > 0) {
     dependencies.forEach((dependency) => {
 
       if (dependenciesStatisfied) {
         if (!modulesLoaded.list.includes(dependency)) {
-          dependenciesStatisfied = false;
+          dependenciesStatisfied = false
         }
       }
 
     })
   }
 
-  return dependenciesStatisfied;
+  return dependenciesStatisfied
 }
 
 /**
@@ -167,9 +167,9 @@ function areDependenciesSatisfied(dependencies) {
  */
 function loadModuleInfo(moduleFolder) {
   try {
-    return require('../../../src/modules/' + moduleFolder + '/module.json');
+    return require('../../../src/modules/' + moduleFolder + '/module.json')
   } catch(e) {
-    console.log(e);
+    console.log(e)
   }
 }
 
@@ -184,7 +184,7 @@ function loadModuleWindow(moduleName, windowName) {
   try {
     return require('../../../src/modules/' + moduleName + '/windows/' + windowName + '.vue').default
   } catch(e) {
-    console.log(e);
+    console.log(e)
   }
 }
 
@@ -196,9 +196,9 @@ function loadModuleWindow(moduleName, windowName) {
  */
 function loadModuleStore(moduleName) {
   try {
-    return require('../../../src/modules/' + moduleName + '/store').default;
+    return require('../../../src/modules/' + moduleName + '/store').default
   } catch(e) {
-    console.log(e);
+    console.log(e)
   }
 }
 
@@ -210,9 +210,9 @@ function loadModuleStore(moduleName) {
  */
 function loadModuleConfig(moduleName) {
   try {
-    return require('../../../config/' + moduleName + '/config.json');
+    return require('../../../config/' + moduleName + '/config.json')
   } catch(e) {
-    console.log(e);
+    console.log(e)
   }
 }
 
@@ -226,13 +226,13 @@ function loadModuleConfig(moduleName) {
  */
 function loadCommands(moduleFolder, { store, terminal }) {
   try {
-    const commands = require('../../../src/modules/' + moduleFolder + '/commands.js');
+    const commands = require('../../../src/modules/' + moduleFolder + '/commands.js')
 
     if (commands) {
       // instance commands
-      return commands.default({ store, terminal});
+      return commands.default({ store, terminal})
     }
   } catch(e) {
-    console.log(e);
+    console.log(e)
   }
 }

@@ -19,11 +19,11 @@ export function isWindowIndexExisting(windowGroup, uniqueID) {
 export function findWindowWithAttr(windowGroup, attr, value) {
   for (let i = 0; i < windowGroup.length; i += 1) {
     if (windowGroup[i][attr] === value) {
-      return i;
+      return i
     }
   }
 
-  return -1;
+  return -1
 }
 
 export function getCountArrayOfWindows(windowsArray) {

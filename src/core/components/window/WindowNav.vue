@@ -1,6 +1,10 @@
 <template>
   <div class="window-nav">
-    <div class="window-nav-title" v-text="title" @dblclick="$emit('invertMaximize')" />
+    <div
+      class="window-nav-title"
+      v-text="title"
+      @dblclick="$emit('invertMaximize')"
+    />
     <div class="window-nav-btn-group">
       <slot />
     </div>
@@ -8,12 +12,12 @@
 </template>
 
 <script>
-  export default {
-    name: "WindowNav",
-    props: {
-      title: String
-    }
+export default {
+  name: 'WindowNav',
+  props: {
+    title: String
   }
+}
 </script>
 
 <style scoped lang="scss">

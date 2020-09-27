@@ -1,5 +1,7 @@
 # Open Web Desktop - Client
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9ff01ac8d62f43abb006fb17990005e1)](https://app.codacy.com/gh/owdproject/owd-client?utm_source=github.com&utm_medium=referral&utm_content=owdproject/owd-client&utm_campaign=Badge_Grade)
+
 <p align="center">
     <img src="https://i.imgur.com/Wu1wSQo.png" alt="Open Web Desktop" />
 </p>

@@ -5,7 +5,9 @@
 </p>
 
 **Open Web Desktop** is a MIT-licensed open-source project.  
-Please consider to <a href="https://hacklover.net/patreon">become a backer or a sponsor on Patreon</a>.
+
+It's still relatively in its infancy, but if you like it  
+please consider to <a href="https://patreon.com/hacklover">become a backer or sponsor on Patreon</a>.
 
 ## Sponsors
 - <a href="https://hacklover.net/patreon">Become a sponsor</a>

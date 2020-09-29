@@ -24,6 +24,21 @@ export default {
     windowInstances(state) {
       return state.windowInstances
     },
+    windowInstancesOpened(state) {
+      let count = 0
+
+      for (const windowName of Object.keys(state.windowInstances)) {
+        const windowGroup = state.windowInstances[windowName]
+
+        if (windowGroup.length > 0) {
+          windowGroup.forEach(window => {
+            if (window.storage.closed === false) count++
+          })
+        }
+      }
+
+      return count
+    },
     windowFocuses(state) {
       return state.windowFocuses
     }
@@ -40,10 +55,9 @@ export default {
       state.windowInstances[window.name][window.uniqueID] = window
     },
     UNSET_WINDOW(state, window) {
-      const windowGroup = state.windowInstances[window.name]
+      if (windowsUtils.isWindowGroupNotEmpty(window.name)) {
+        const windowGroup = state.windowInstances[window.name]
 
-      // check if is array of windows
-      if (windowsUtils.isWindowGroup(windowGroup)) {
         if (windowsUtils.isWindowUniqueIdExisting(windowGroup, window.uniqueID)) {
           const index = windowsUtils.findWindowWithAttr(windowGroup, 'uniqueID', window.uniqueID)
 
@@ -230,7 +244,7 @@ export default {
      * @returns {boolean|any}
      */
     async getWindowsByWindowName({state}, name) {
-      if (windowsUtils.isWindowGroupNotEmpty(state.windowInstances[name])) {
+      if (windowsUtils.isWindowGroupNotEmpty(name)) {
         return state.windowInstances[name]
       }
 

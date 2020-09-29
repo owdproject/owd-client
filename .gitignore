@@ -1,4 +1,10 @@
-.env
-
+# Jetbrains
 /.idea
+
+# Docker
+.env
+docker-compose.yml
+
+# App
+/src/dist
 /node_modules/

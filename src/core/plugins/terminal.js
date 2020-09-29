@@ -5,13 +5,11 @@ const validTextFormat = ['b', 's', 'o', 'i', 'u', 'g']
 
 export default class Terminal {
   constructor() {
-    // owd terminal instance
-    this.instance = null
-    // jquery-terminal, xterm, etc
-    this.type = ''
-
-    // all commands are stored here
+    // all terminal commands
     this.commands = {}
+
+    // all terminal events
+    this.events = {}
 
     this.defaultColors = {
       menu: 'cyan'
@@ -21,24 +19,6 @@ export default class Terminal {
       logged: false,
       color: 'white'
     }
-  }
-
-  /**
-   * Set terminal instance
-   *
-   * @param terminal
-   */
-  setInstance(terminal) {
-    this.instance = terminal
-  }
-
-  /**
-   * Set terminal type
-   *
-   * @param type
-   */
-  setType(type) {
-    this.type = type
   }
 
   /**
@@ -71,54 +51,6 @@ export default class Terminal {
   }
 
   /**
-   * Exec command
-   *
-   * @param command
-   */
-  exec(command) {
-    console.log(this.type)
-
-    switch(this.type) {
-    case 'jquery-terminal':
-      this.instance.exec(command)
-      break
-    case 'xterm':
-
-      break
-    }
-  }
-
-  /**
-   * Destroy terminal
-   */
-  destroy() {
-    switch(this.type) {
-    case 'jquery-terminal':
-      this.instance.destroy()
-      break
-    case 'xterm':
-
-      break
-    }
-  }
-
-  /**
-   * Set input command
-   *
-   * @param command
-   */
-  setCommand(command) {
-    switch(this.type) {
-    case 'jquery-terminal':
-      this.instance.set_command(command)
-      break
-    case 'xterm':
-
-      break
-    }
-  }
-
-  /**
    * Add command to terminal
    *
    * @param name
@@ -126,6 +58,20 @@ export default class Terminal {
    */
   addCommand(name, fn) {
     this.commands[name] = fn
+  }
+
+  /**
+   * Add event to terminal
+   *
+   * @param event
+   * @param fn
+   */
+  addEvent(event, fn) {
+    if (typeof this.events[event] === 'undefined') {
+      this.events[event] = []
+    }
+
+    this.events[event].push(fn)
   }
 
   /**

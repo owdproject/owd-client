@@ -1,4 +1,12 @@
 export default {
+  computed: {
+    appAuthor() {
+      return process.env.VUE_APP_USER
+    },
+    appName() {
+      return process.env.VUE_APP_NAME
+    }
+  },
   methods: {
     socialUrl(social) {
       const username = process.env[`VUE_APP_SOCIAL_${social.toUpperCase()}_USER`]

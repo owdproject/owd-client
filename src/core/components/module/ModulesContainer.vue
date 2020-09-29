@@ -3,15 +3,13 @@
     id="windows-container"
     v-if="windowInstances"
   >
-    <template
-      v-for="windowName in Object.keys(windowInstances)"
-    >
-      <template v-for="(moduleWindow, moduleWindowUniqueID) in windowInstances[windowName]">
+    <template v-for="windowName in Object.keys(windowInstances)">
+      <template v-for="moduleWindow in windowInstances[windowName]">
         <component
           :is="moduleWindow.name"
           :data="moduleWindow"
-          :data-window-id="moduleWindowUniqueID"
-          :key="windowName + ' ' + moduleWindowUniqueID"
+          :data-window-id="moduleWindow.uniqueID"
+          :key="windowName + ' ' + moduleWindow.uniqueID"
         />
       </template>
     </template>

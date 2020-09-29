@@ -169,7 +169,7 @@ function loadModuleInfo(moduleFolder) {
   try {
     return require('../../../src/modules/' + moduleFolder + '/module.json')
   } catch(e) {
-    console.log(e)
+    console.log(`[OWD] Missing "/modules/${moduleFolder}/module.json"`)
   }
 }
 
@@ -184,7 +184,7 @@ function loadModuleWindow(moduleName, windowName) {
   try {
     return require('../../../src/modules/' + moduleName + '/windows/' + windowName + '.vue').default
   } catch(e) {
-    console.log(e)
+    console.log(`[OWD] Missing "/modules/${moduleName}/windows/${windowName}.vue"`)
   }
 }
 
@@ -198,7 +198,7 @@ function loadModuleStore(moduleName) {
   try {
     return require('../../../src/modules/' + moduleName + '/store').default
   } catch(e) {
-    console.log(e)
+    console.log(`[OWD] Missing "/modules/${moduleName}/store"`)
   }
 }
 
@@ -212,7 +212,7 @@ function loadModuleConfig(moduleName) {
   try {
     return require('../../../config/' + moduleName + '/config.json')
   } catch(e) {
-    console.log(e)
+    console.log(`[OWD] Missing "/modules/${moduleName}/config.json"`)
   }
 }
 
@@ -233,6 +233,6 @@ function loadCommands(moduleFolder, { store, terminal }) {
       return commands.default({ store, terminal})
     }
   } catch(e) {
-    console.log(e)
+    console.log(`[OWD] Missing "/modules/${moduleFolder}/commands.js"`)
   }
 }

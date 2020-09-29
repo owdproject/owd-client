@@ -3,18 +3,15 @@
     id="menu"
     v-if="windowInstances"
   >
-    <ul
-      v-for="windowName in Object.keys(windowInstances)"
-      class="menu-group"
-      :key="windowName"
-    >
-      <template v-if="windowInstances[windowName].length > 0">
-        <MenuItem
-          v-for="window in windowInstances[windowName]"
-          :window="window"
-          :data-menu-id="window.uniqueID"
-          :key="window.uniqueID"
-        />
+    <ul class="menu-group">
+      <template v-for="windowName in Object.keys(windowInstances)">
+        <template v-for="moduleWindow in windowInstances[windowName]">
+          <MenuItem
+            :window="moduleWindow"
+            :data-menu-id="moduleWindow.uniqueID"
+            :key="windowName + ' ' + moduleWindow.uniqueID"
+          />
+        </template>
       </template>
     </ul>
   </div>

@@ -8,12 +8,16 @@ export function isWindowGroupNotEmpty(windowsArray) {
   return Object.keys(windowsArray).length > 0
 }
 
-export function isWindowIndexExisting(windowGroup, uniqueID) {
+export function isWindowUniqueIdExisting(windowGroup, uniqueID) {
   if (typeof uniqueID === 'string') {
     return windowGroup.find(window => window.uniqueID === uniqueID)
   }
 
   return false
+}
+
+export function isWindowIndexExisting(windowGroup, index) {
+  return typeof windowGroup[index] !== 'undefined'
 }
 
 export function findWindowWithAttr(windowGroup, attr, value) {

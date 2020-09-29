@@ -16,7 +16,8 @@ export default {
     windowInstances: {},
 
     // windows z-index
-    windowFocuses: []
+    windowFocuses: [],
+    windowFocused: null
   },
 
   getters: {
@@ -35,23 +36,26 @@ export default {
     SET_DESKTOP_HEIGHT(state, height) {
       state.desktopInnerHeight = height
     },
-    SET_WINDOW(state, data) {
-      state.windowInstances[data.name][data.uniqueID] = data
+    SET_WINDOW(state, window) {
+      state.windowInstances[window.name][window.uniqueID] = window
     },
-    UNSET_WINDOW(state, data) {
-      const windowGroup = state.windowInstances[data.name]
+    UNSET_WINDOW(state, window) {
+      const windowGroup = state.windowInstances[window.name]
 
       // check if is array of windows
       if (windowsUtils.isWindowGroup(windowGroup)) {
-        if (windowsUtils.isWindowIndexExisting(windowGroup, data.uniqueID)) {
-          const index = windowsUtils.findWindowWithAttr(windowGroup, 'uniqueID', data.uniqueID)
-          state.windowInstances[data.name].splice(index, 1)
+        if (windowsUtils.isWindowUniqueIdExisting(windowGroup, window.uniqueID)) {
+          const index = windowsUtils.findWindowWithAttr(windowGroup, 'uniqueID', window.uniqueID)
+
+          if (index > -1) {
+            state.windowInstances[window.name].splice(index, 1)
+          }
         }
       }
     },
-    REGISTER_WINDOW(state, data) {
+    REGISTER_WINDOW(state, window) {
       // add window instance to window data
-      state.windowInstances[data.name].push(data)
+      state.windowInstances[window.name].push(window)
     },
     SET_WINDOW_INSTANCES(state, windowInstances) {
       state.windowInstances = windowInstances
@@ -382,7 +386,13 @@ export default {
 
       // initialize storeInstance if needed
       if (windowInstance.module.storeInstance) {
-        const storeDefaultsGenerator = require(`../../modules/${windowInstance.module.name}/storeInstance`)
+        let storeDefaultsGenerator = null
+
+        try {
+          storeDefaultsGenerator = require(`../../modules/${windowInstance.module.name}/storeInstance`)
+        } catch(e) {
+          console.log(`[OWD] Missing "/modules/${windowInstance.module.name}/storeInstance"`)
+        }
 
         if (storeDefaultsGenerator) {
           const storeName = `${windowInstance.module.name}-${windowInstance.uniqueID}`
@@ -408,44 +418,58 @@ export default {
      * @param state
      * @param commit
      * @param dispatch
-     * @param name
-     * @param window
+     * @param data
      */
-    async windowCreate({state, commit, dispatch}, {name, window}) {
-      // check if window is given or...
-      if (!window) {
-        const config = await dispatch('getWindowConfiguration', name)
-        const module = await dispatch('getWindowModule', name)
+    async windowCreate({state, commit, dispatch}, data) {
+      // it accepts strings and objects. when it's a string, converts to object
+      if (typeof data === 'string') {
+        data = {
+          name: data,
+          window: null
+        }
+      }
 
-        window = await dispatch('windowCreateInstance', {
-          name,
+      // check if there is already one window created in this window group
+      if (windowsUtils.isWindowIndexExisting(state.windowInstances[data.name], 0)) {
+        const windowAlreadyAvailable = state.windowInstances[data.name][0]
+
+        // just open it instead of creating a new one
+        if (windowAlreadyAvailable.storage.closed) {
+          return dispatch('windowOpen', windowAlreadyAvailable)
+        }
+      }
+
+      // check if window is given or...
+      if (!data.window) {
+        const config = await dispatch('getWindowConfiguration', data.name)
+        const module = await dispatch('getWindowModule', data.name)
+
+        data.window = await dispatch('windowCreateInstance', {
+          name: data.name,
           config,
           module
         })
       }
 
-      if (!window) {
+      if (!data.window) {
         return console.log('[OWD] Unable to create new window')
       }
 
-      const windowGroups = {...state.windowInstances}
-
-      // push component to windows array
-      if (typeof windowGroups[name] === 'undefined') {
-        windowGroups[name] = []
+      data.window.storage.closed = false
+      data.window.storage.minimized = false
+      if (typeof data.window.config.menu === 'boolean') {
+        data.window.storage.menu = true
       }
 
-      window.storage.closed = false
-
       // calculate pos x and y
-      window.storage.x = await dispatch('windowCalcPosX', {window})
-      window.storage.y = await dispatch('windowCalcPosY', {window})
+      data.window.storage.x = await dispatch('windowCalcPosX', {window: data.window})
+      data.window.storage.y = await dispatch('windowCalcPosY', {window: data.window})
 
       // update
-      commit('SET_WINDOW', window)
+      commit('SET_WINDOW', data.window)
 
       // focus on window
-      dispatch('windowFocus', window)
+      dispatch('windowFocus', data.window)
     },
 
     /**
@@ -840,7 +864,9 @@ export default {
       if (data.window.storage.y === 0 || data.forceLeft) {
         y = 24
       } else if (data.window.storage.y < 0 || data.forceRight) {
-        y = state.desktopInnerHeight - window.config.height - 24 // right
+        if (window.config) {
+          y = state.desktopInnerHeight - window.config.height - 24 // right
+        }
       }
 
       return y

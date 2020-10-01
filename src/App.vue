@@ -55,9 +55,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-  html, body {
-    background: #151515;
-  }
-</style>

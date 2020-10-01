@@ -14,14 +14,18 @@ export default {
   name: 'App',
   mixins: [mixinServer],
   beforeMount() {
+    const self = this;
+
     // redirect to homepage on 404
     if (!this.$route.name) {
-      this.$router.push({ name: 'index' })
+      this.$router.push({ name: 'index' });
     }
 
-    // connect to server if available
+    // on page ready, connect to SSE
     if (this.isServerAvailable) {
-      this.$store.dispatch('core/sse/connect', 'once')
+      window.addEventListener("load", function() {
+        self.$store.dispatch('core/sse/connect', 'once');
+      })
     }
   },
   computed: {

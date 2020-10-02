@@ -1,6 +1,8 @@
 <template>
   <div id="menu">
     <ul class="menu-group">
+      <slot name="prepend" />
+
       <template v-for="groupName of Object.keys(windowInstances)">
         <template v-for="windowInstance of windowInstances[groupName]">
           <MenuItem
@@ -10,6 +12,8 @@
           />
         </template>
       </template>
+
+      <slot name="append" />
     </ul>
   </div>
 </template>

@@ -1,37 +1,43 @@
 import store from '../../core/store/index'
 import md5 from 'md5'
 
-export function isWindowGroupExisting(windowName) {
-  const windowInstances = store.getters['core/windows/windowInstances']
-
-  return typeof windowInstances[windowName] !== 'undefined'
+export function generateWindowUniqueId() {
+  return md5(Date.now() + Math.random())
 }
 
-export function isWindowGroupNotEmpty(windowName) {
-  const windowInstances = store.getters['core/windows/windowInstances']
+// WINDOW INSTANCES
 
-  if (Object.keys(windowInstances).includes(windowName)) {
-    return windowInstances[windowName].length > 0
+export function isWindowInstancesGroupExisting(groupName) {
+  return typeof store.getters['core/windows/windowInstances'][groupName] !== 'undefined'
+}
+
+export function getWindowInstancesByWindowGroup(groupName) {
+  return  store.getters['core/windows/windowInstances'][groupName]
+}
+
+export function isWindowInstancesGroupWindowIndexExisting(groupName, i) {
+  return typeof store.getters['core/windows/windowInstances'][groupName][i] !== 'undefined'
+}
+
+export function getWindowInstancesGroupWindowIndex(groupName, i) {
+  return store.getters['core/windows/windowInstances'][groupName][i]
+}
+
+export function findWindowInstanceByAttr(groupName, attr, value) {
+  const windowInstancesGroup = getWindowInstancesByWindowGroup(groupName)
+
+  if (windowInstancesGroup) {
+    return windowInstancesGroup.find(window => window[attr] === value)
   }
 
-  return false
+  return null
 }
 
-export function isWindowUniqueIdExisting(windowGroup, uniqueID) {
-  if (typeof uniqueID === 'string') {
-    return windowGroup.find(window => window.uniqueID === uniqueID)
-  }
+export function findWindowInstancesIndexByAttr(groupName, attr, value) {
+  const windowInstances = store.getters['core/windows/windowInstances']
 
-  return false
-}
-
-export function isWindowIndexExisting(windowGroup, index) {
-  return typeof windowGroup[index] !== 'undefined'
-}
-
-export function findWindowWithAttr(windowGroup, attr, value) {
-  for (let i = 0; i < windowGroup.length; i += 1) {
-    if (windowGroup[i][attr] === value) {
+  for (let i = 0; i < windowInstances[groupName].length; i += 1) {
+    if (windowInstances[groupName][i][attr] === value) {
       return i
     }
   }
@@ -39,14 +45,54 @@ export function findWindowWithAttr(windowGroup, attr, value) {
   return -1
 }
 
-export function getCountArrayOfWindows(windowGroup) {
-  if (isWindowGroupNotEmpty(windowGroup)) {
-    return windowGroup.length
-  }
+/**
+ * For each window instance
+ *
+ * @param cb
+ */
+export function forEachWindowInstance(cb) {
+  const windowInstances = store.getters['core/windows/windowInstances']
 
-  return 0
+  for (const groupName of Object.keys(windowInstances)) {
+    for (const window of windowInstances[groupName]) {
+      cb(window)
+    }
+  }
 }
 
-export function generateUniqueWindowId() {
-  return md5(Date.now() + Math.random())
+// WINDOW CATEGORIES
+
+/**
+ * Get window category
+ *
+ * @param categoryName
+ * @returns {*[]|*}
+ */
+export function getWindowCategory(categoryName) {
+  if (isWindowCategoryExisting(categoryName)) {
+    return store.getters['core/windows/windowCategories'][categoryName]
+  }
+
+  return []
+}
+
+/**
+ * Does window category exist?
+ *
+ * @param categoryName
+ * @returns {boolean}
+ */
+export function isWindowCategoryExisting(categoryName) {
+  return typeof store.getters['core/windows/windowCategories'][categoryName] !== 'undefined'
+}
+
+/**
+ * Does index in window category exist?
+ *
+ * @param categoryName
+ * @param index
+ * @returns {number}
+ */
+export function isWindowCategoryWindowIndexExisting(categoryName, index) {
+  return store.getters['core/windows/windowCategories'][categoryName].indexOf(index)
 }

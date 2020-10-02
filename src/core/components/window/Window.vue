@@ -41,7 +41,7 @@
     >
       <WindowNav
         :title="title"
-        @invertMaximize="onToggleMaximize"
+        @toggleMaximize="onToggleMaximize"
       >
         <a
           class="btn"
@@ -175,7 +175,7 @@ export default {
         'beforeunload',
         () => {
           self.$store.dispatch('core/windows/windowClose', self.window)
-          self.$store.dispatch('core/windows/saveWindowsStorage')
+          // self.$store.dispatch('core/windows/saveWindowsStorage')
         }
       )
     }
@@ -185,7 +185,7 @@ export default {
         'beforeunload',
         () => {
           self.$store.dispatch('core/windows/windowDestroy', self.window)
-          self.$store.dispatch('core/windows/saveWindowsStorage')
+          // self.$store.dispatch('core/windows/saveWindowsStorage')
         }
       )
     }

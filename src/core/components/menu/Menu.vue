@@ -1,15 +1,12 @@
 <template>
-  <div
-    id="menu"
-    v-if="windowInstances"
-  >
+  <div id="menu">
     <ul class="menu-group">
-      <template v-for="windowName in Object.keys(windowInstances)">
-        <template v-for="moduleWindow in windowInstances[windowName]">
+      <template v-for="groupName of Object.keys(windowInstances)">
+        <template v-for="windowInstance of windowInstances[groupName]">
           <MenuItem
-            :window="moduleWindow"
-            :data-menu-id="moduleWindow.uniqueID"
-            :key="windowName + ' ' + moduleWindow.uniqueID"
+            :window="windowInstance"
+            :data-menu-id="windowInstance.uniqueID"
+            :key="groupName + '-' + windowInstance.uniqueID"
           />
         </template>
       </template>

@@ -3,7 +3,7 @@
     <div
       class="window-nav-title"
       v-text="title"
-      @dblclick="$emit('invertMaximize')"
+      @dblclick="$emit('toggleMaximize')"
     />
     <div class="window-nav-btn-group">
       <slot />

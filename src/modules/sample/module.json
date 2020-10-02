@@ -1,8 +1,10 @@
 {
   "name": "sample",
+  "singleton": true,
+  "autostart": true,
   "version": "1.0.0",
   "license": "MIT",
-  "homepage": "https://www.github.com/hacklover/owd-sample",
+  "homepage": "https://github.com/hacklover/owd-sample",
   "author": {
     "name": "hacklover",
     "url": "https://hacklover.net"
@@ -20,7 +22,7 @@
         "resizable": false,
         "width": 448,
         "height": 240,
-        "x": -1,
+        "x": 0,
         "y": 0,
         "z": 0
       }

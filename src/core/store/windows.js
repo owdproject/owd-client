@@ -229,6 +229,16 @@ export default {
     },
 
     /**
+     * Reset entire windows storage
+     *
+     * @param commit
+     */
+    resetWindowsStorage({commit}) {
+      commit('SET_WINDOW_INSTANCES', [])
+      windowsInitialLocalStorageUtils.resetWindowsLocalStorage()
+    },
+
+    /**
      * Get window by name or by name + id
      *
      * @param context

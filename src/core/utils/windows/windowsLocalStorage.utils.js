@@ -14,7 +14,10 @@ export function loadWindowsLocalStorage() {
   return null
 }
 
-
 export function saveWindowsLocalStorage(data) {
   localStorage.setItem(windowsLocalStorageName, data)
+}
+
+export function resetWindowsLocalStorage() {
+  localStorage.removeItem(windowsLocalStorageName)
 }

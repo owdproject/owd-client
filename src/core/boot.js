@@ -1,6 +1,6 @@
 // import app style
-import './css/app.scss'
-import '../css/app.scss'
+import './assets/css/app.scss'
+import '../assets/css/app.scss'
 
 // register service worker
 import './registerServiceWorker'

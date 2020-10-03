@@ -7,42 +7,12 @@ export function generateWindowUniqueId() {
 
 // WINDOW INSTANCES
 
-export function isWindowInstancesGroupExisting(groupName) {
-  return typeof store.getters['core/windows/windowInstances'][groupName] !== 'undefined'
+export function findWindowInstanceByAttr(attr, value) {
+  return store.getters['core/windows/windowInstances'].find(window => window[attr] === value)
 }
 
-export function getWindowInstancesByWindowGroup(groupName) {
-  return  store.getters['core/windows/windowInstances'][groupName]
-}
-
-export function isWindowInstancesGroupWindowIndexExisting(groupName, i) {
-  return typeof store.getters['core/windows/windowInstances'][groupName][i] !== 'undefined'
-}
-
-export function getWindowInstancesGroupWindowIndex(groupName, i) {
-  return store.getters['core/windows/windowInstances'][groupName][i]
-}
-
-export function findWindowInstanceByAttr(groupName, attr, value) {
-  const windowInstancesGroup = getWindowInstancesByWindowGroup(groupName)
-
-  if (windowInstancesGroup) {
-    return windowInstancesGroup.find(window => window[attr] === value)
-  }
-
-  return null
-}
-
-export function findWindowInstancesIndexByAttr(groupName, attr, value) {
-  const windowInstances = store.getters['core/windows/windowInstances']
-
-  for (let i = 0; i < windowInstances[groupName].length; i += 1) {
-    if (windowInstances[groupName][i][attr] === value) {
-      return i
-    }
-  }
-
-  return -1
+export function findWindowInstanceIndex(attr, value) {
+  return store.getters['core/windows/windowInstances'].findIndex(window => window[attr] === value)
 }
 
 /**
@@ -53,11 +23,27 @@ export function findWindowInstancesIndexByAttr(groupName, attr, value) {
 export function forEachWindowInstance(cb) {
   const windowInstances = store.getters['core/windows/windowInstances']
 
-  for (const groupName of Object.keys(windowInstances)) {
-    for (const window of windowInstances[groupName]) {
-      cb(window)
-    }
+  for (const windowInstance of windowInstances) {
+    cb(windowInstance)
   }
+}
+
+// WINDOW GROUPS
+
+export function isWindowGroupExisting(groupName) {
+  return typeof store.getters['core/windows/windowGroups'][groupName] !== 'undefined'
+}
+
+export function getWindowGroup(groupName) {
+  return  store.getters['core/windows/windowGroups'][groupName]
+}
+
+export function isWindowGroupWindowIndexExisting(groupName, i) {
+  return typeof store.getters['core/windows/windowGroups'][groupName][i] !== 'undefined'
+}
+
+export function getWindowGroupWindowIndex(groupName, i) {
+  return store.getters['core/windows/windowGroups'][groupName][i]
 }
 
 // WINDOW CATEGORIES

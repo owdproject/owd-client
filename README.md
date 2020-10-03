@@ -1,7 +1,7 @@
 # Open Web Desktop - Client
 
 <p>
-    <img src="https://i.imgur.com/ATQkKQr.png" alt="Open Web Desktop" />
+    <img src="https://i.imgur.com/qiBDv2q.png" alt="Open Web Desktop" />
 </p>
 
 > An open-source web desktop made with Vue.js

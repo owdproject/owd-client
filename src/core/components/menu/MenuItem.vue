@@ -1,24 +1,16 @@
 <template>
-  <li
-    v-if="window.config.menu || typeof window.config.menu === 'boolean' && window.storage.menu"
-    :class="{ active: !window.storage.closed && !window.storage.minimized }"
-    :data-window="window.name"
-    @click="windowToggle"
-  >
+  <div class="menu-item">
     <div
-      class="menu-square"
-      :style="`background: ${window.color}`"
+      :class="['menu-item-square', {'custom-icon': icon.image}]"
+      :style="menuItemStyles"
       v-ripple.500="'rgba(255, 255, 255, 0.1)'"
     >
-      <MenuItemIcon :icon="window.icon" />
+      <MenuItemIcon :icon="icon" />
     </div>
-    <div class="name">
-      <div
-        class="name-inner"
-        v-html="(window.titleShort || window.title)"
-      />
+    <div class="menu-item-name">
+      <div class="menu-item-name-inner" v-html="title" />
     </div>
-  </li>
+  </div>
 </template>
 
 <script>
@@ -28,45 +20,92 @@ export default {
   name: 'MenuItem',
   components: {MenuItemIcon},
   props: {
-    window: Object // window object data
+    title: String,
+    icon: String|Object,
+    color: String,
   },
-  methods: {
-    /**
-       * Toggle window visibility
-       */
-    windowToggle: function (event) {
-      if (this.$device.mobile) {
-
-        if (!this.window.storage.closed) {
-          this.$store.dispatch('core/windows/windowClose', this.window)
-        } else {
-          this.$store.dispatch('core/windows/windowCloseAll')
-          this.$store.dispatch('core/windows/windowOpen', this.window)
-        }
-
-      } else {
-
-        if (event.shiftKey) {
-
-          // force close with shiftkey
-          this.$store.dispatch('core/windows/windowMinimize', this.window)
-
-        } else {
-
-          if (this.window.storage && (this.window.storage.closed || this.window.storage.minimized)) {
-            this.$store.dispatch('core/windows/windowOpen', this.window)
-          } else {
-            // don't close if window has to stay minimized
-            if (this.window.config.menu === true) {
-              this.$store.dispatch('core/windows/windowClose', this.window)
-            } else {
-              this.$store.dispatch('core/windows/windowMinimize', this.window)
-            }
-          }
-        }
-
+  computed: {
+    menuItemStyles() {
+      if (!this.icon || (this.icon && !this.icon.image)) {
+        return `background: ${this.color}`
       }
+
+      return ''
     }
   }
 }
 </script>
+
+<style scoped lang="scss">
+.menu-item {
+  .menu-item-square {
+    width: 48px;
+    height: 100%;
+    font-size: 24px;
+    text-align: center;
+    border-radius: 2px;
+    transition: background 0.6s ease-in-out;
+    will-change: background;
+    float: left;
+
+    &:not(.custom-icon) {
+      background: darken($colorDefault, 7.5%);
+    }
+
+    .v-icon {
+      color: white;
+      vertical-align: 1px;
+    }
+  }
+
+  .menu-item-name {
+    background: #212121;
+    transition: width 0.3s ease-in-out;
+    overflow: hidden;
+    float: left;
+    width: 0;
+    height: 48px;
+    line-height: 48px;
+    border-radius: 2px;
+    word-spacing: -1px;
+    font-size: 18px;
+    margin-left: 4px;
+
+    .menu-item-name-inner {
+      padding: 0 12px;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .menu-square {
+      position: relative !important;
+      width: 48px;
+      z-index: 3;
+      float: none;
+      margin: 0 0 0 4px;
+      box-shadow: -4px 0 0 0 #171717;
+    }
+
+    .menu-item-name {
+      position: fixed;
+      left: 15px;
+      right: 15px;
+      bottom: 15px;
+      margin: 0;
+      box-shadow: 1px 0 0 0 #141416, -20px 0 15px 0 #141416;
+      transition: none;
+      color: #EEE;
+      width: auto;
+      height: 48px;
+      line-height: 48px;
+      display: none;
+    }
+
+    &:hover {
+      .menu-item-name {
+        display: block;
+      }
+    }
+  }
+}
+</style>

@@ -13,12 +13,15 @@ export default {
     desktopInnerWidth: window.innerWidth,
     desktopInnerHeight: window.innerHeight,
 
-    windowInstances: {},
+    windowInstances: [],
 
-    // windows categories
+    // window groups
+    windowGroups: {},
+
+    // window categories
     windowCategories: {},
 
-    // windows z-index
+    // window z-indexes
     windowFocuses: [],
     windowFocused: null
   },
@@ -27,16 +30,11 @@ export default {
     windowInstances(state) {
       return state.windowInstances
     },
-    windowInstancesOpened() {
-      const windowInstancesOpened = []
-
-      windowsUtils.forEachWindowInstance(windowInstance => {
-        if (windowInstance.storage.closed === false) {
-          windowInstancesOpened.push(window)
-        }
-      })
-
-      return windowInstancesOpened
+    windowInstancesOpened(state) {
+      return state.windowInstances.filter(windowInstance => windowInstance.storage.closed === false)
+    },
+    windowGroups(state) {
+      return state.windowGroups
     },
     windowCategories(state) {
       return state.windowCategories
@@ -54,6 +52,14 @@ export default {
       state.desktopInnerHeight = height
     },
     REGISTER_WINDOW(state, data) {
+      // add to window groups
+      if (!windowsUtils.isWindowGroupExisting(data.name)) {
+        state.windowGroups[data.name] = []
+      }
+      if (!state.windowGroups[data.name].includes(data.uniqueID)) {
+        state.windowGroups[data.name].push(data.uniqueID)
+      }
+
       // add to window categories
       if (!windowsUtils.isWindowCategoryExisting(data.category)) {
         state.windowCategories[data.category] = []
@@ -63,13 +69,18 @@ export default {
       }
 
       // add to window instances
-      if (!windowsUtils.isWindowInstancesGroupExisting(data.name)) {
-        state.windowInstances[data.name] = []
-      }
-
-      state.windowInstances[data.name].push(data)
+      state.windowInstances.push(data)
     },
     UNREGISTER_WINDOW(state, data) {
+      // remove from groups
+      if (windowsUtils.isWindowGroupExisting(data.name)) {
+        const indexGroup = state.windowGroups[data.name].indexOf(data.uniqueID)
+
+        if (indexGroup > -1) {
+          state.windowGroups[data.name].splice(indexGroup, 1)
+        }
+      }
+
       // remove from categories
       if (windowsUtils.isWindowCategoryExisting(data.category)) {
         const indexCategory = state.windowCategories[data.category].indexOf(data.uniqueID)
@@ -80,10 +91,10 @@ export default {
       }
 
       // remove from window instances
-      const index = windowsUtils.findWindowInstancesIndexByAttr(data.name, 'uniqueID', data.uniqueID)
+      const index = windowsUtils.findWindowInstanceIndex('uniqueID', data.uniqueID)
 
       if (index > -1) {
-        state.windowInstances[data.name].splice(index, 1)
+        state.windowInstances.splice(index, 1)
       }
     },
     SET_WINDOW() {
@@ -109,8 +120,7 @@ export default {
       // get loaded modules in OWD Client
       const modulesLoaded = Vue.prototype.$modules.modulesLoaded
 
-      const windowBaseInstances = {}
-      const windowRegistrationPool = []
+      const windowInstancesRegistrationPool = []
       const windowFocuses = []
 
       // build windows object starting from modules
@@ -132,8 +142,6 @@ export default {
                 // for example WindowSample
                 const windowName = moduleWindowComponent.name
 
-                windowBaseInstances[windowName] = []
-
                 console.log('[OWD] Module component name: ' + windowName)
 
                 const storageWindows = await dispatch('getInitialWindowsStorageByWindowName', windowName)
@@ -150,7 +158,7 @@ export default {
                   // for each window storage
                   for (const windowStorage of storageWindows) {
 
-                    windowRegistrationPool.push({
+                    windowInstancesRegistrationPool.push({
                       ...windowData,
                       storage: windowStorage
                     })
@@ -162,7 +170,7 @@ export default {
                   // there is no window stored in local storage so generate
                   // at least one instance if .autostart is set to true
                   if (module.autostart) {
-                    windowRegistrationPool.push(windowData)
+                    windowInstancesRegistrationPool.push(windowData)
                   }
 
                 }
@@ -175,10 +183,8 @@ export default {
 
       }
 
-      commit('SET_WINDOW_INSTANCES', windowBaseInstances)
-
-      if (windowRegistrationPool.length > 0) {
-        for (const windowData of windowRegistrationPool) {
+      if (windowInstancesRegistrationPool.length > 0) {
+        for (const windowData of windowInstancesRegistrationPool) {
           const windowInstance = await dispatch('windowCreateInstance', windowData)
 
           // add unique id to windowFocuses list
@@ -194,6 +200,24 @@ export default {
       if (JSON.stringify(windowFocuses) !== JSON.stringify(getters['windowFocuses'])) {
         commit('SET_WINDOW_FOCUSES', windowFocuses)
       }
+    },
+
+    /**
+     * Returns windows history from local storage
+     * (or return selective windows history filtered by windowName)
+     *
+     * @returns {boolean|any}
+     */
+    async getInitialWindowsStorageByWindowName(context, windowName) {
+      if (
+        windowsInitialLocalStorage &&
+        windowsInitialLocalStorage.windowInstances &&
+        typeof windowsInitialLocalStorage.windowInstances[windowName] !== 'undefined'
+      ) {
+        return windowsInitialLocalStorage.windowInstances[windowName]
+      }
+
+      return null
     },
 
     /**
@@ -229,6 +253,16 @@ export default {
     },
 
     /**
+     * Reset entire windows storage
+     *
+     * @param commit
+     */
+    resetWindowsStorage({commit}) {
+      commit('SET_WINDOW_INSTANCES', [])
+      windowsInitialLocalStorageUtils.resetWindowsLocalStorage()
+    },
+
+    /**
      * Get window by name or by name + id
      *
      * @param context
@@ -237,49 +271,30 @@ export default {
      */
     getWindow(context, data) {
       let groupName
+      let uniqueID
 
       switch (typeof data) {
         case 'string':
           groupName = data
           break
         case 'object':
-          groupName = data.name
+          if (data.uniqueID) {
+            uniqueID = data.uniqueID
+          } else {
+            groupName = data.name
+          }
           break
       }
 
       let windowInstance
 
-      if (!data.uniqueID) {
-        // get first instance of this instance group name
-        windowInstance = windowsUtils.getWindowInstancesGroupWindowIndex(groupName, 0)
+      if (uniqueID) {
+        windowInstance = windowsUtils.findWindowInstanceByAttr('uniqueID', uniqueID)
       } else {
-        if (!data.config) {
-          windowInstance = windowsUtils.findWindowInstanceByAttr(groupName, 'uniqueID', data.uniqueID)
-        } else {
-          // data is already a window instance
-          windowInstance = data
-        }
+        windowInstance = windowsUtils.findWindowInstanceByAttr('name', groupName)
       }
 
       if (windowInstance) return windowInstance
-
-      return null
-    },
-
-    /**
-     * Returns windows history from local storage
-     * (or return selective windows history filtered by windowName)
-     *
-     * @returns {boolean|any}
-     */
-    async getInitialWindowsStorageByWindowName(context, windowName) {
-      if (
-        windowsInitialLocalStorage &&
-        windowsInitialLocalStorage.windowInstances &&
-        typeof windowsInitialLocalStorage.windowInstances[windowName] !== 'undefined'
-      ) {
-        return windowsInitialLocalStorage.windowInstances[windowName]
-      }
 
       return null
     },
@@ -388,9 +403,9 @@ export default {
       }
 
       // check if there is already one window created in this window group
-      if (module.singleton || windowsUtils.isWindowInstancesGroupExisting(data.name)) {
-        if (windowsUtils.isWindowInstancesGroupWindowIndexExisting(data.name, 0)) {
-          const window = windowsUtils.getWindowInstancesGroupWindowIndex(data.name, 0)
+      if (windowsUtils.isWindowGroupExisting(data.name)) {
+        if (module.singleton && windowsUtils.isWindowGroupWindowIndexExisting(data.name, 0)) {
+          const window = windowsUtils.getWindowGroupWindowIndex(data.name, 0)
 
           // just open it instead of creating a new one
           if (module.singleton || window.storage.closed) {
@@ -733,8 +748,9 @@ export default {
       // is window in memory?
       if (!window || !window.storage) return console.log('[OWD] Window missing');
 
-      const windowInstancesGroup = windowsUtils.getWindowInstancesByWindowGroup(data.name)
-      if (typeof window.config.menu === 'boolean' && windowInstancesGroup.length > 1) {
+      const windowInstancesGroup = windowsUtils.getWindowGroup(data.name)
+
+      if ((!!window.autostart === false && !!window.config.menu === false) || windowInstancesGroup.length > 1) {
         // destroy window if > 1
         commit('UNREGISTER_WINDOW', window);
 

@@ -5,18 +5,18 @@
 
       <template v-for="windowInstance of windowInstances">
         <li
-          v-if="windowInstance.config.menu || typeof windowInstance.config.menu === 'boolean' && windowInstance.storage.menu"
-          :class="{ active: !windowInstance.storage.closed && !windowInstance.storage.minimized }"
-          :data-window="windowInstance.name"
-          @click="(e) => windowToggle(e, windowInstance)"
+            v-if="windowInstance.config.menu || typeof windowInstance.config.menu === 'boolean' && windowInstance.storage.menu"
+            :class="{ active: !windowInstance.storage.closed && !windowInstance.storage.minimized }"
+            :data-window="windowInstance.name"
+            @click="(e) => windowToggle(e, windowInstance)"
         >
           <MenuItem
-            :title="windowInstance.titleShort || windowInstance.title"
-            :color="windowInstance.color"
-            :icon="windowInstance.icon"
-            :window="windowInstance"
-            :data-menu-id="windowInstance.uniqueID"
-            :key="windowInstance.uniqueID"
+              :title="windowInstance.titleShort || windowInstance.title"
+              :color="windowInstance.color"
+              :icon="windowInstance.icon"
+              :window="windowInstance"
+              :data-menu-id="windowInstance.uniqueID"
+              :key="windowInstance.uniqueID"
           />
         </li>
       </template>
@@ -108,7 +108,7 @@ export default {
     list-style-type: none;
 
     li {
-      color: #EEE;
+      color: $menuItemTitleColor;
       height: 48px;
       line-height: 48px;
       margin-bottom: 4px;
@@ -133,7 +133,7 @@ export default {
       }
 
       &.active .menu-item-square:not(.custom-icon) {
-        background: $colorDefault;
+        background: $menuItemSquareBackground;
       }
     }
   }

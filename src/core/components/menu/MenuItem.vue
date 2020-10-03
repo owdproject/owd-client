@@ -1,9 +1,9 @@
 <template>
   <div class="menu-item">
     <div
-      :class="['menu-item-square', {'custom-icon': icon.image}]"
-      :style="menuItemStyles"
-      v-ripple.500="'rgba(255, 255, 255, 0.1)'"
+        :class="['menu-item-square', {'custom-icon': icon.image}]"
+        :style="menuItemStyles"
+        v-ripple.500="'rgba(255, 255, 255, 0.1)'"
     >
       <MenuItemIcon :icon="icon" />
     </div>
@@ -49,17 +49,17 @@ export default {
     float: left;
 
     &:not(.custom-icon) {
-      background: darken($colorDefault, 7.5%);
+      background: darken($menuItemSquareBackground, 7.5%);
     }
 
     .v-icon {
-      color: white;
+      color: $menuItemSquareColor;
       vertical-align: 1px;
     }
   }
 
   .menu-item-name {
-    background: #212121;
+    background: $menuItemTitleBackground;
     transition: width 0.3s ease-in-out;
     overflow: hidden;
     float: left;
@@ -94,7 +94,6 @@ export default {
       margin: 0;
       box-shadow: 1px 0 0 0 #141416, -20px 0 15px 0 #141416;
       transition: none;
-      color: #EEE;
       width: auto;
       height: 48px;
       line-height: 48px;

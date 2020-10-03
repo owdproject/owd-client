@@ -1,22 +1,23 @@
 <template>
   <div>
+
     <Logo />
     <Menu />
 
     <WindowsList />
 
     <Notifications />
-
     <NoticePressToExitFullScreen />
+
   </div>
 </template>
 
 <script>
-import Logo from '../../core/components/logo/Logo'
-import Menu from '../../core/components/menu/Menu'
-import Notifications from '../../core/components/notification/NotificationList'
-import WindowsList from '../../core/components/module/ModulesContainer'
-import NoticePressToExitFullScreen from '@/core/components/notice/NoticePressToExitFullScreen'
+import Logo from '~/core/components/logo/Logo'
+import Menu from '~/core/components/menu/Menu'
+import Notifications from '~/core/components/notification/NotificationList'
+import WindowsList from '~/core/components/module/ModulesContainer'
+import NoticePressToExitFullScreen from '~/core/components/notice/NoticePressToExitFullScreen'
 
 export default {
   name: 'Index',
@@ -26,33 +27,6 @@ export default {
     Menu,
     WindowsList,
     Notifications
-  },
-  created() {
-    const self = this
-
-    // initialize client
-    this.$store.dispatch('core/client/initialize')
-
-    // add window resize event
-    window.addEventListener('resize', function () {
-      clearTimeout(this.handlePageResize)
-
-      this.handlePageResize = setTimeout(() => {
-        self.$store.commit('core/windows/SET_DESKTOP_WIDTH', window.innerWidth)
-        self.$store.commit('core/windows/SET_DESKTOP_HEIGHT', window.innerHeight)
-
-        // windows position
-        self.$store.dispatch('core/windows/windowsHandlePageResize')
-      }, 100)
-    })
-  },
-  destroyed() {
-    const self = this
-
-    // remove window resize event
-    window.removeEventListener('resize', function () {
-      self.$store.dispatch('core/windows/windowsHandlePageResize')
-    })
   }
 }
 </script>

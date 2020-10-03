@@ -1,7 +1,7 @@
 # Sponsors & Backers
 
 <p>
-    <img src="https://i.imgur.com/ATQkKQr.png" alt="Open Web Desktop" />
+    <img src="https://i.imgur.com/qiBDv2q.png" alt="Open Web Desktop" />
 </p>
 
 **Open Web Desktop** is a MIT-licensed open-source project,  

@@ -1,13 +1,33 @@
-const path = require('path')
-const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
+const path = require('path');
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin');
+
+// import version from package.json
+process.env.VUE_APP_VERSION = require('./package.json').version;
 
 module.exports = {
+  indexPath: 'index.html',
+  outputDir: 'dist',
+
+  devServer: {
+    disableHostCheck: true,
+    host: '0.0.0.0',
+    port: 3000
+  },
+
+  css: {
+    loaderOptions: {
+      scss: {
+        prependData: '@import "~/assets/css/variables.scss";'
+      }
+    }
+  },
+
   pwa: {
     name: process.env.VUE_APP_NAME,
-    themeColor: process.env.VUE_APP_THEME,
-    msTileColor: process.env.VUE_APP_THEME,
+    themeColor: '#161719',
+    msTileColor: '#161719',
     manifestOptions: {
-      background_color: process.env.VUE_APP_THEME
+      background_color: "#161719"
     },
     iconPaths: {
       favicon32: 'img/icons/favicon-32x32.png',
@@ -16,15 +36,6 @@ module.exports = {
       maskIcon: 'img/icons/safari-pinned-tab.svg',
       msTileImage: 'img/icons/msapplication-icon-144x144.png'
     }
-  },
-
-  indexPath: 'index.html',
-  outputDir: 'dist',
-
-  devServer: {
-    disableHostCheck: true,
-    host: '0.0.0.0',
-    port: 3000
   },
 
   configureWebpack: {
@@ -50,10 +61,11 @@ module.exports = {
         }
       })
     ],
+
     resolve: {
       alias: {
         '~': path.resolve(__dirname, 'src')
       }
-    }
+    },
   }
-}
+};

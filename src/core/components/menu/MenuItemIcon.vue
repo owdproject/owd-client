@@ -1,8 +1,6 @@
 <template>
-  <v-icon
-    :style="iconStyle"
-    v-text="iconName"
-  />
+  <v-img v-if="icon.image" :src="icon.image" />
+  <v-icon v-else :style="iconStyle" v-text="iconName" />
 </template>
 
 <script>

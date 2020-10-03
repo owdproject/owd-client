@@ -3,14 +3,22 @@
     <ul class="menu-group">
       <slot name="prepend" />
 
-      <template v-for="groupName of Object.keys(windowInstances)">
-        <template v-for="windowInstance of windowInstances[groupName]">
+      <template v-for="windowInstance of windowInstances">
+        <li
+          v-if="windowInstance.config.menu || typeof windowInstance.config.menu === 'boolean' && windowInstance.storage.menu"
+          :class="{ active: !windowInstance.storage.closed && !windowInstance.storage.minimized }"
+          :data-window="windowInstance.name"
+          @click="(e) => windowToggle(e, windowInstance)"
+        >
           <MenuItem
+            :title="windowInstance.titleShort || windowInstance.title"
+            :color="windowInstance.color"
+            :icon="windowInstance.icon"
             :window="windowInstance"
             :data-menu-id="windowInstance.uniqueID"
-            :key="groupName + '-' + windowInstance.uniqueID"
+            :key="windowInstance.uniqueID"
           />
-        </template>
+        </li>
       </template>
 
       <slot name="append" />
@@ -31,13 +39,49 @@ export default {
     ...mapGetters({
       windowInstances: 'core/windows/windowInstances'
     })
+  },
+  methods: {
+    /**
+     * Toggle window visibility
+     */
+    windowToggle: function (event, windowInstance) {
+      if (this.$device.mobile) {
+
+        if (!windowInstance.storage.closed) {
+          this.$store.dispatch('core/windows/windowClose', windowInstance)
+        } else {
+          this.$store.dispatch('core/windows/windowCloseAll')
+          this.$store.dispatch('core/windows/windowOpen', windowInstance)
+        }
+
+      } else {
+
+        if (event.shiftKey) {
+
+          // force close with shiftkey
+          this.$store.dispatch('core/windows/windowMinimize', windowInstance)
+
+        } else {
+
+          if (windowInstance.storage && (windowInstance.storage.closed || windowInstance.storage.minimized)) {
+            this.$store.dispatch('core/windows/windowOpen', windowInstance)
+          } else {
+            // don't close if window has to stay minimized
+            if (windowInstance.config.menu === true) {
+              this.$store.dispatch('core/windows/windowClose', windowInstance)
+            } else {
+              this.$store.dispatch('core/windows/windowMinimize', windowInstance)
+            }
+          }
+        }
+
+      }
+    }
   }
 }
 </script>
 
 <style lang="scss">
-$colorDefault: #4987c1;
-
 #menu {
   position: fixed;
   top: 0;
@@ -74,55 +118,6 @@ $colorDefault: #4987c1;
       text-align: left;
       cursor: pointer;
 
-      .menu-square {
-        width: 48px;
-        height: 100%;
-        font-size: 24px;
-        text-align: center;
-        border-radius: 2px;
-        background: darken($colorDefault, 7.5%);
-        transition: background 0.6s ease-in-out;
-        will-change: background;
-        //box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.055), inset 0 -1px 0 0 rgba(0, 0, 0, 0.085);
-        float: left;
-
-        .v-icon {
-          color: white;
-          vertical-align: 1px;
-        }
-      }
-
-      .name {
-        background: #212121;
-        transition: width 0.3s ease-in-out;
-        overflow: hidden;
-        float: left;
-        width: 0;
-        height: 100%;
-        line-height: 47px;
-        border-radius: 2px;
-        word-spacing: -1px;
-        font-size: 18px;
-        margin-left: 4px;
-
-        .name-inner {
-          padding: 0 12px;
-        }
-      }
-
-      &[data-window="project_southernwars"] {
-        span {
-          font-size: 28px;
-        }
-      }
-
-      &[data-window="paint"] {
-        span {
-          vertical-align: -2px;
-          font-size: 27px;
-        }
-      }
-
       &:after {
         display: block;
         content: '';
@@ -131,13 +126,13 @@ $colorDefault: #4987c1;
 
       @media (min-width: 559px) {
         &:hover {
-          .name {
+          .menu-item-name {
             width: 148px;
           }
         }
       }
 
-      &.active .square {
+      &.active .menu-item-square:not(.custom-icon) {
         background: $colorDefault;
       }
     }
@@ -159,36 +154,6 @@ $colorDefault: #4987c1;
         line-height: 48px;
         float: left;
         margin: 4px 0 0 0;
-
-        .menu-square {
-          position: relative !important;
-          width: 48px;
-          z-index: 3;
-          float: none;
-          margin: 0 0 0 4px;
-          box-shadow: -4px 0 0 0 #171717;
-        }
-
-        .name {
-          position: fixed;
-          left: 15px;
-          right: 15px;
-          bottom: 15px;
-          margin: 0;
-          box-shadow: 1px 0 0 0 #141416, -20px 0 15px 0 #141416;
-          transition: none;
-          color: #EEE;
-          width: auto;
-          height: 48px;
-          line-height: 48px;
-          display: none;
-        }
-
-        &:hover {
-          .name {
-            display: block;
-          }
-        }
       }
     }
   }

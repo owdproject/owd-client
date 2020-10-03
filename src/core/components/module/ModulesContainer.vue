@@ -1,14 +1,12 @@
 <template>
   <div id="windows-container">
-    <template v-for="groupName of Object.keys(windowInstances)">
-      <template v-for="windowInstance of windowInstances[groupName]">
-        <component
-          :is="windowInstance.name"
-          :data="windowInstance"
-          :data-window-id="windowInstance.uniqueID"
-          :key="groupName + '-' + windowInstance.uniqueID"
-        />
-      </template>
+    <template v-for="windowInstance of windowInstances">
+      <component
+        :is="windowInstance.name"
+        :data="windowInstance"
+        :data-window-id="windowInstance.uniqueID"
+        :key="windowInstance.uniqueID"
+      />
     </template>
   </div>
 </template>

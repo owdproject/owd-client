@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Background />
     <Logo />
     <Menu />
 
@@ -14,7 +13,6 @@
 
 <script>
 import Logo from '../../core/components/logo/Logo'
-import Background from '../../core/components/background/Background'
 import Menu from '../../core/components/menu/Menu'
 import Notifications from '../../core/components/notification/NotificationList'
 import WindowsList from '../../core/components/module/ModulesContainer'
@@ -24,7 +22,6 @@ export default {
   name: 'Index',
   components: {
     NoticePressToExitFullScreen,
-    Background,
     Logo,
     Menu,
     WindowsList,

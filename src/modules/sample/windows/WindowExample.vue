@@ -1,8 +1,5 @@
 <template>
-  <Window
-    :title="data.title"
-    :window="data"
-  >
+  <Window :title="data.title" :window="data">
     <p>
       Hello world! I'm an empty window.
     </p>
@@ -10,14 +7,14 @@
 </template>
 
 <script>
-import Window from '~/core/components/window/Window'
-export default {
-  name: 'WindowExample',
-  components: {Window},
-  props: {
-    data: Object
+  import Window from "~/core/components/window/Window";
+  export default {
+    name: "WindowExample",
+    components: {Window},
+    props: {
+      data: Object
+    }
   }
-}
 </script>
 
 <style scoped lang="scss">

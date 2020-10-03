@@ -19,7 +19,10 @@ export default {
       const sse = new EventSource(process.env.VUE_APP_SERVER_API_BASE_URL + 'sse')
 
       sse.onerror = () => {
-        commit('SET_CONNECTED', false)
+        if (state.connected) {
+          commit('SET_CONNECTED', false)
+        }
+
         console.error('Unable to connect to sse')
 
         sse.close()
@@ -29,8 +32,11 @@ export default {
       }
 
       sse.onmessage = (message) => {
-        commit('SET_CONNECTED', true)
         clearInterval(state.reconnectInterval)
+
+        if (!state.connected) {
+          commit('SET_CONNECTED', true)
+        }
 
         const data = JSON.parse(message.data)
 

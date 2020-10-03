@@ -41,7 +41,7 @@
     >
       <WindowNav
         :title="title"
-        @invertMaximize="onToggleMaximize"
+        @toggleMaximize="onToggleMaximize"
       >
         <a
           class="btn"
@@ -173,9 +173,9 @@ export default {
     if (this.window.config.autoCloseBeforePageUnload) {
       window.addEventListener(
         'beforeunload',
-        () => {
-          self.$store.dispatch('core/windows/windowClose', self.window)
-          self.$store.dispatch('core/windows/saveWindowsStorage')
+        async () => {
+          await self.$store.dispatch('core/windows/windowClose', self.window)
+          await self.$store.dispatch('core/windows/saveWindowsStorage')
         }
       )
     }
@@ -183,9 +183,9 @@ export default {
     if (this.window.config.autoDestroyBeforePageUnload) {
       window.addEventListener(
         'beforeunload',
-        () => {
-          self.$store.dispatch('core/windows/windowDestroy', self.window)
-          self.$store.dispatch('core/windows/saveWindowsStorage')
+        async () => {
+          await self.$store.dispatch('core/windows/windowDestroy', self.window)
+          await self.$store.dispatch('core/windows/saveWindowsStorage')
         }
       )
     }

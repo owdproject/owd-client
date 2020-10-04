@@ -1,7 +1,7 @@
 <template>
   <div class="menu-item">
     <div
-        :class="['menu-item-square', {'custom-icon': icon.image}]"
+        :class="['menu-item-square']"
         :style="menuItemStyles"
         v-ripple.500="'rgba(255, 255, 255, 0.1)'"
     >
@@ -40,17 +40,14 @@ export default {
 .menu-item {
   .menu-item-square {
     width: 48px;
-    height: 100%;
+    height: 48px;
     font-size: 24px;
     text-align: center;
     border-radius: 2px;
+    background: darken($menuItemSquareBackground, 7.5%);
     transition: background 0.6s ease-in-out;
     will-change: background;
     float: left;
-
-    &:not(.custom-icon) {
-      background: darken($menuItemSquareBackground, 7.5%);
-    }
 
     .v-icon {
       color: $menuItemSquareColor;

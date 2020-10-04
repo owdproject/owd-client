@@ -1,12 +1,6 @@
 <template>
-  <Window
-    :title="data.title"
-    :window="data"
-  >
-    <iframe
-      @load="iframeLoaded"
-      :src="url"
-    />
+  <Window :title="data.title" :window="data">
+    <iframe @load="iframeLoaded" :src="url" />
   </Window>
 </template>
 
@@ -28,11 +22,11 @@ export default {
   },
   computed: {
     visible() {
-      return !this.data.storage.closed && !this.data.storage.minimized
+      return !this.data.storage.closed
     }
   },
   watch: {
-    'visible': function (val) {
+    visible(val) {
       if (val === true) {
         if (this.visible === true) {
           this.url = this.data.iframeUrl
@@ -52,6 +46,8 @@ export default {
           this.url = this.data.iframeUrl
         }
       }
+
+      this.$emit('iframeLoaded')
     }
   }
 }

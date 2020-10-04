@@ -41,6 +41,13 @@ export default {
     },
     windowFocuses(state) {
       return state.windowFocuses
+    },
+    windowFocused(state) {
+      if (state.windowFocuses.length > 0) {
+        return state.windowFocuses[state.windowFocuses.length - 1]
+      }
+
+      return null
     }
   },
 

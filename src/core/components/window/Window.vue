@@ -202,36 +202,36 @@ export default {
   },
   methods: {
     /**
-       * Window minimize event
-       */
+     * Window minimize event
+     */
     onMinimize: function () {
       this.$store.dispatch('core/windows/windowMinimize', this.window)
     },
 
     /**
-       * Window maximize event
-       */
+     * Window maximize event
+     */
     onToggleMaximize: function () {
       this.$store.dispatch('core/windows/windowToggleMaximize', this.window)
     },
 
     /**
-       * Window open new link
-       */
+     * Window open new link
+     */
     onOpenLink: function (url) {
       window.open(url, '_blank')
     },
 
     /**
-       * Window close event
-       */
+     * Window close event
+     */
     onClose: function () {
       this.$store.dispatch('core/windows/windowDestroy', this.window)
     },
 
     /**
-       * Window focus event
-       */
+     * Window focus event
+     */
     onFocus: function () {
       const self = this
 
@@ -242,15 +242,15 @@ export default {
     },
 
     /**
-       * Window actived event
-       */
+     * Window actived event
+     */
     onActivated: function () {
       if (!this.window.storage.closed) this.onFocus()
     },
 
     /**
-       * Window start resize event
-       */
+     * Window start resize event
+     */
     onResizeStart: function(data) {
       // emit to parent component
       this.$emit('resize:start', data)
@@ -259,8 +259,8 @@ export default {
     },
 
     /**
-       * Window end resize event
-       */
+     * Window end resize event
+     */
     onResizeEnd: function(data) {
       // emit to parent component
       this.$emit('resize:end', data)
@@ -274,8 +274,8 @@ export default {
     },
 
     /**
-       * Window start drag event
-       */
+     * Window start drag event
+     */
     onDragStart: function(data) {
       // emit to parent component
       this.$emit('drag:start', data)
@@ -284,8 +284,8 @@ export default {
     },
 
     /**
-       * On drag event, force no-margin when straight to borders
-       */
+     * On drag event, force no-margin when straight to borders
+     */
     onDragMove: function(data) {
       let forceNoMargin = false
 
@@ -321,9 +321,9 @@ export default {
 
 
     /**
-       * Window stop drag event
-       * @param data
-       */
+     * Window stop drag event
+     * @param data
+     */
     onDragEnd: function (data) {
       // emit to parent component
       this.$emit('drag:end', data)
@@ -331,7 +331,7 @@ export default {
       this.dragging = false
 
       if (
-        this.window.storage.x !== data.left ||
+          this.window.storage.x !== data.left ||
           this.window.storage.y !== data.top ||
           this.window.storage.width !== data.width ||
           this.window.storage.height !== data.height
@@ -407,7 +407,7 @@ export default {
         width: 100% !important;
         height: 100% !important;
         margin: 0 !important;
-        padding: 15px !important;
+        padding: 15px;
         z-index: 12;
         background: #111111;
 

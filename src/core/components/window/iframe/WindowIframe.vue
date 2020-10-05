@@ -1,6 +1,11 @@
 <template>
-  <Window :title="data.title" :window="data">
+  <Window class="window-iframe" :title="data.title" :window="data">
     <iframe @load="iframeLoaded" :src="url" />
+    <v-progress-linear
+        v-if="progressBar && !loaded"
+        color="#323232"
+        indeterminate
+    />
   </Window>
 </template>
 
@@ -12,7 +17,8 @@ export default {
     Window
   },
   props: {
-    data: Object
+    data: Object,
+    progressBar: Boolean
   },
   data() {
     return {
@@ -53,12 +59,25 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-  iframe {
-    border: 0;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    height: 100%;
+<style lang="scss">
+.window-iframe {
+  .window-content {
+    position: relative;
+
+    iframe {
+      border: 0;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .v-progress-linear {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
   }
+}
 </style>

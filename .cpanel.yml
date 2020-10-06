@@ -1,0 +1,7 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/bipolarmorgan/public_html/desktop
+    #- /bin/cp file.ext $DEPLOYPATH
+    #- /bin/cp -R folder $DEPLOYPATH
+    - /bin/cp -R * $DEPLOYPATH

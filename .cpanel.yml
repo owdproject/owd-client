@@ -5,4 +5,4 @@ deployment:
     #- /bin/cp file.ext $DEPLOYPATH
     #- /bin/cp -R folder $DEPLOYPATH
     - /bin/cp -R * $DEPLOYPATH
-    - cd $DEPLOYPATH && /usr/bin/npm install
+    - /bin/cp -R .* $DEPLOYPATH

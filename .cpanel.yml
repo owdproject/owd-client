@@ -5,4 +5,4 @@ deployment:
     #- /bin/cp file.ext $DEPLOYPATH
     #- /bin/cp -R folder $DEPLOYPATH
     - /bin/cp -R * $DEPLOYPATH
-    - /bin/cp -R .* $DEPLOYPATH
+   

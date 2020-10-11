@@ -771,6 +771,9 @@ export default {
       } else {
         dispatch('windowClose', window)
       }
+
+      // run manually cuz watch event in <Window> isn't triggered after destroy
+      dispatch('saveWindowsStorage', window)
     },
 
     /**

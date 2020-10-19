@@ -16,6 +16,9 @@ import Terminal from './plugins/terminal'
 
 import extend from './plugins/extend'
 
+// import vuetify
+import './plugins/vuetify'
+
 export default function({ Vue, store }) {
   const terminal = new Terminal()
   Vue.prototype.$terminal = terminal

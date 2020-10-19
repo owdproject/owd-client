@@ -98,7 +98,7 @@ export default ({ store, terminal }) => {
 
           // load commands
           if (moduleInfo.commands) {
-            const commands = loadCommands(moduleInfo.name, { Vue, store, terminal })
+            const commands = loadCommands(moduleInfo.name, { Vue, store, terminal, module: moduleInfo })
 
             if (commands) {
               Object.keys(commands).forEach((commandName) => {
@@ -224,13 +224,13 @@ function loadModuleConfig(moduleName) {
  * @param terminal
  * @returns {*}
  */
-function loadCommands(moduleFolder, { store, terminal }) {
+function loadCommands(moduleFolder, { store, terminal, module }) {
   try {
     const commands = require('../../../src/modules/' + moduleFolder + '/commands.js')
 
     if (commands) {
       // instance commands
-      return commands.default({ store, terminal})
+      return commands.default({ store, terminal, module})
     }
   } catch(e) {
     console.log(`[OWD] Missing "/modules/${moduleFolder}/commands.js"`)

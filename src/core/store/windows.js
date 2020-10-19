@@ -41,6 +41,13 @@ export default {
     },
     windowFocuses(state) {
       return state.windowFocuses
+    },
+    windowFocused(state) {
+      if (state.windowFocuses.length > 0) {
+        return state.windowFocuses[state.windowFocuses.length - 1]
+      }
+
+      return null
     }
   },
 
@@ -764,6 +771,9 @@ export default {
       } else {
         dispatch('windowClose', window)
       }
+
+      // run manually cuz watch event in <Window> isn't triggered after destroy
+      dispatch('saveWindowsStorage', window)
     },
 
     /**
@@ -831,9 +841,9 @@ export default {
 
       // if > 0, window pos was loaded from local storage
       if (data.window.storage.x === 0 || data.forceLeft) {
-        x = 96
+        x = data.window.storage.x + 96
       } else if (data.window.storage.x < 0 || data.forceRight) {
-        x = state.desktopInnerWidth - data.window.config.width - 24 // right
+        x = state.desktopInnerWidth - data.window.storage.width - 24 // right
       }
 
       return x
@@ -858,10 +868,10 @@ export default {
 
       // if > 0, window pos was loaded from local storage
       if (data.window.storage.y === 0 || data.forceLeft) {
-        y = 24
+        y = data.window.storage.y + 24
       } else if (data.window.storage.y < 0 || data.forceRight) {
-        if (data.window.config) {
-          y = state.desktopInnerHeight - data.window.config.height - 24 // right
+        if (data.window.storage) {
+          y = state.desktopInnerHeight - data.window.storage.height - 24 // right
         }
       }
 

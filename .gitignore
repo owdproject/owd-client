@@ -1,5 +1,6 @@
-# Jetbrains
-/.idea
+# Editors
+.idea
+.vscode
 
 # Docker
 .env

@@ -1,20 +1,20 @@
 import Vue from 'vue'
-import App from './App.vue'
+import App from './App'
 
-import store from './core/store'
-import router from './core/router'
-import boot from './core/boot'
+import config from '../client.config'
+import {store, boot} from '@owd-client/core/src'
 
 // load Open Web Desktop & its modules
-boot({ Vue, store })
+const owdInstance = new boot({ Vue, config, store });
 
-Vue.config.productionTip = false
+// assign to $owd
+Vue.prototype.$owd = owdInstance
 
 /**
- * INIT
+ * Vue app initialization
  */
 new Vue({
   store,
-  router,
+  router: owdInstance.router,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');

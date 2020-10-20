@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import Window from "~/core/components/window/Window";
+  import Window from "@owd-client/core/src/components/window/Window";
   export default {
     name: "WindowExample",
     components: {Window},

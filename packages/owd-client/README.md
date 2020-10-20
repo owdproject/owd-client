@@ -30,14 +30,6 @@ Based on Vue.js, it has been rewritten to be fully modular.
 - Global notifications through SSE
 - Vuetify.js implemented by default
 
-## About this project
-Open Web Desktop is splitted in two main repositories:
-- `owd-client`: Open Web Desktop client, made with Vue.js
-- `owd-server`: Open Web Desktop server, made with Nest.js (TBA)
-
-The plans are to make it expandable through a series of modules
-that will be released on [GitHub](https://github.com/topics/owd-modules) and [Patreon](https://patreon.com/hacklover).
-
 ## Getting started
 In the future there will be a tool to bootstrap your OWD client.  
 For now, you have to follow some easy steps as explained below.
@@ -88,7 +80,7 @@ Edit that file and be sure to add every module in `modulesEnabled` like in the e
 
 ## Supporters
 
-See all sponsors & backers in the [BACKERS.md](BACKERS.md)
+See all sponsors & backers in the [BACKERS.md](../../BACKERS.md)
 
 <a href="https://www.patreon.com/hacklover">
     <img src="https://i.imgur.com/KODHUwR.png" width="160" alt="Become a Patron" />

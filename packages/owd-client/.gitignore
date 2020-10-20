@@ -1,0 +1,11 @@
+# Editors
+.idea
+.vscode
+
+# Docker
+.env
+docker-compose.yml
+
+# App
+/src/dist
+/node_modules/

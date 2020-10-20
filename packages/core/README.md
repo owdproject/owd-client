@@ -9,7 +9,7 @@
 </p>
 
 ## Overview
-Open Web Desktop is a project that aims to provide a simple environment to create your own web desktop.
+OWD is a project that aims to provide a simple environment to create your own web desktop.
 
 ## Features
 - Open-source web desktop client based on Vue.js

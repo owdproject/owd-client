@@ -1,0 +1,26 @@
+{
+  "name": "@owd-client/core",
+  "version": "1.0.0",
+  "description": "OWD Client Core",
+  "author": {
+    "name": "hacklover",
+    "url": "https://hacklover.net"
+  },
+  "homepage": "https://github.com/owdproject/owd.js#readme",
+  "license": "MIT",
+  "main": "src/index.js",
+  "directories": {
+    "src": "src"
+  },
+  "files": [
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/owdproject/owd.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/owdproject/owd.js/issues"
+  },
+  "gitHead": "d86bfe085ce934a89acc4314b5569638723f4a76"
+}

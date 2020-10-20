@@ -1,9 +1,9 @@
 {
-  "name": "owd.js",
+  "name": "owd-client",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/owdproject/owd.js.git"
+    "url": "git+https://github.com/owdproject/owd-client.git"
   },
   "devDependencies": {
     "lerna": "^3.22.1"

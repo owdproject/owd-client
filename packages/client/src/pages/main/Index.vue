@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Desktop :system-bar="systemBar">
 
     <Logo />
     <Menu />
@@ -9,10 +9,11 @@
     <Notifications />
     <NoticePressToExitFullScreen />
 
-  </div>
+  </Desktop>
 </template>
 
 <script>
+import Desktop from '@owd-client/core/src/components/desktop/Desktop'
 import Logo from '@owd-client/core/src/components/logo/Logo'
 import Menu from '@owd-client/core/src/components/menu/Menu'
 import Notifications from '@owd-client/core/src/components/notification/NotificationList'
@@ -22,11 +23,20 @@ import NoticePressToExitFullScreen from '@owd-client/core/src/components/notice/
 export default {
   name: 'Index',
   components: {
-    NoticePressToExitFullScreen,
+    Desktop,
     Logo,
     Menu,
     WindowsList,
-    Notifications
+    Notifications,
+    NoticePressToExitFullScreen
+  },
+  data() {
+    return {
+      systemBar: {
+        enabled: false,
+        dark: true
+      }
+    }
   }
 }
 </script>

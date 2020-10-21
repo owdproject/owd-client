@@ -1,0 +1,34 @@
+{
+  "name": "owd-client",
+  "version": "1.3.0",
+  "private": true,
+  "homepage": "https://github.com/owdproject/owd-client",
+  "license": "MIT",
+  "author": {
+    "name": "hacklover",
+    "url": "https://hacklover.net"
+  },
+  "scripts": {
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "serve": "vue-cli-service serve"
+  },
+  "dependencies": {
+    "@mdi/font": "^5.6.55",
+    "@owd-client/core": "^1.3.2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-pwa": "^4.5.6",
+    "@vue/cli-service": "^4.5.6",
+    "vue-template-compiler": "^2.6.12",
+    "css-loader": "^4.3.0",
+    "sass-loader": "^10.0.2",
+    "sass": "^1.26.11"
+  },
+  "devDependenciesDisabled": {
+    "@vue/cli-plugin-eslint": "^4.3.1",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.0.0",
+    "eslint-plugin-vue": "^6.2.2"
+  }
+}

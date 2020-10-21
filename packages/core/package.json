@@ -1,6 +1,6 @@
 {
   "name": "@owd-client/core",
-  "version": "1.3.0",
+  "version": "1.3.2",
   "description": "OWD Client Core",
   "homepage": "https://github.com/owdproject/owd-client#readme",
   "bugs": {
@@ -15,13 +15,7 @@
     "name": "hacklover",
     "url": "https://hacklover.net"
   },
-  "main": "src/index.js",
-  "directories": {
-    "src": "src"
-  },
-  "files": [
-    "src"
-  ],
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -61,7 +55,7 @@
     "vuex": "^3.5.1"
   },
   "devDependencies": {
-    "@mdi/font": "^5.6.55",
+    "sass-loader": "^10.0.2",
     "@vue/cli-plugin-eslint": "^4.3.1",
     "@vue/cli-plugin-pwa": "^4.5.6",
     "@vue/cli-service": "^4.5.6",
@@ -70,7 +64,6 @@
     "eslint": "^7.0.0",
     "eslint-plugin-vue": "^6.2.2",
     "sass": "^1.26.11",
-    "sass-loader": "^10.0.2",
     "vue-template-compiler": "^2.6.12"
   },
   "postcss": {

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App'
 
 import config from '../client.config'
-import {store, boot} from '@owd-client/core/src'
+import {store, boot} from '@owd-client/core'
 
 // load Open Web Desktop & its modules
 const owdInstance = new boot({ Vue, config, store });

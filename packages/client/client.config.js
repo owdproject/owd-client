@@ -1,5 +1,3 @@
-import '@mdi/font/css/materialdesignicons.css'
-
 // import all pages routes
 import routesMain from '@/pages/main/routes'
 
@@ -15,4 +13,9 @@ export default {
   pages,
   plugins: [],
   modules: modulesConfig,
+
+  // vuetify config
+  vuetify: {
+    rtl: false
+  }
 }

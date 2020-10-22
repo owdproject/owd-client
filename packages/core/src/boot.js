@@ -9,11 +9,11 @@ import './registerServiceWorker'
 // import device detector
 import './plugins/deviceDetector'
 
+// import mdi icons
+import '@mdi/font/css/materialdesignicons.css'
+
 // import fonts
 import './plugins/fonts'
-
-// import vuetify
-import './plugins/vuetify'
 
 import owdTerminal from './plugins/terminal'
 import owdExtend from './plugins/extend'
@@ -24,7 +24,15 @@ export default class {
     this.config = config
     this.store = store
 
-    return this.initialize(Vue)
+    // set vuetify config
+    this.initializeVuetify(Vue);
+
+    const owdInstance = this.initialize(Vue)
+
+    // assign to $owd
+    Vue.prototype.$owd = owdInstance
+
+    return owdInstance
   }
 
   /**
@@ -56,5 +64,14 @@ export default class {
       terminal,
       router
     }
+  }
+
+  /**
+   * Set vuetify global config
+   * @param Vue
+   */
+  initializeVuetify(Vue) {
+    // assign vuetify config to $vuetify
+    Vue.prototype.$vuetify = this.config.vuetify
   }
 }

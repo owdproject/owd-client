@@ -1,6 +1,9 @@
 {
   "name": "owd-client",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/owdproject/owd-client.git"

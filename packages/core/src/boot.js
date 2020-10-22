@@ -24,7 +24,12 @@ export default class {
     this.config = config
     this.store = store
 
-    return this.initialize(Vue)
+    const owdInstance = this.initialize(Vue)
+
+    // assign to $owd
+    Vue.prototype.$owd = owdInstance
+
+    return owdInstance
   }
 
   /**

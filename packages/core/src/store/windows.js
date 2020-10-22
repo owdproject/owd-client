@@ -149,7 +149,7 @@ export default {
                 // for example WindowSample
                 const windowName = moduleWindowComponent.name
 
-                console.log('[OWD] Module component name: ' + windowName)
+                console.log('[OWD] Load module component: ' + windowName)
 
                 const storageWindows = await dispatch('getInitialWindowsStorageByWindowName', windowName)
 

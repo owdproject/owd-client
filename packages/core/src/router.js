@@ -3,16 +3,6 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-function mergeOwdRoutes(owdAllRoutes) {
-  let vueRoutes = []
-
-  owdAllRoutes.forEach(owdRoutes => {
-    vueRoutes = vueRoutes.concat(owdRoutes)
-  })
-
-  return vueRoutes
-}
-
 export default function(clientConfig) {
   return new VueRouter({
     mode: 'history',
@@ -21,4 +11,14 @@ export default function(clientConfig) {
     },
     routes: mergeOwdRoutes(clientConfig.routes)
   })
+}
+
+function mergeOwdRoutes(owdAllRoutes) {
+  let vueRoutes = []
+
+  owdAllRoutes.forEach(owdRoutes => {
+    vueRoutes = vueRoutes.concat(owdRoutes)
+  })
+
+  return vueRoutes
 }

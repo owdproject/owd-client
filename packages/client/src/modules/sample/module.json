@@ -17,7 +17,7 @@
       "icon": {
         "name": "hexagon-multiple-outline",
         "offset": {
-          "y": 1
+          "y": -1
         }
       },
       "window": {

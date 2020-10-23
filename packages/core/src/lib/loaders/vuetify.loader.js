@@ -1,6 +1,6 @@
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin');
 
-module.exports = function myLoader() {
+module.exports = function vuetifyLoader() {
   return new VuetifyLoaderPlugin({
     /**
      * This function will be called for every tag used in each vue component

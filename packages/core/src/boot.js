@@ -85,8 +85,10 @@ export default class {
   initializeTerminal(Vue) {
     const terminal = new owdTerminal()
 
-    // pre assign terminal to $owd
+    // pre assign terminal to $owd (for module integrations)
     Vue.prototype.$owd = { terminal }
+
+    return terminal
   }
 
   initializeRouter() {

@@ -14,7 +14,12 @@
       "name": "WindowExample",
       "title": "OWD Sample Module",
       "titleShort": "Open Web Desktop",
-      "icon": "hexagon-multiple-outline",
+      "icon": {
+        "name": "hexagon-multiple-outline",
+        "offset": {
+          "y": 1
+        }
+      },
       "window": {
         "menu": true,
         "closed": true,

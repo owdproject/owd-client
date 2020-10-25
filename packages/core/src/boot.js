@@ -59,6 +59,9 @@ export default class {
     // import Oswald font with typeface
     require('typeface-oswald')
 
+    // import Jetbrains Mono font with typeface
+    require('typeface-jetbrains-mono')
+
     // import mdi icons
     require('@mdi/font/css/materialdesignicons.css')
 

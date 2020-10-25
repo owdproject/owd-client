@@ -33,7 +33,7 @@ export default {
       display: inline-block;
       width: 100%;
       padding-left: 12px;
-      font-family: monospace, FreeMono;
+      font-family: $fontMono;
       color: #FFF;
       cursor: default;
       white-space: nowrap;

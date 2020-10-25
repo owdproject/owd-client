@@ -74,7 +74,7 @@ export default class Module {
    */
   loadModuleStoreInstance(context) {
     // load module store instance
-    if (context.moduleInfo.storeInstance && !context.moduleInfo.singleton) {
+    if (!context.moduleInfo.singleton) {
       if (typeof this.loadStoreInstance === 'function') {
         this.moduleStoreInstance = this.loadStoreInstance({
           store: context.store,
@@ -160,17 +160,19 @@ export default class Module {
         terminal: context.terminal
       })
 
-      const moduleSseEventsKeys = Object.keys(moduleSseEvents);
+      if (moduleSseEvents) {
+        const moduleSseEventsKeys = Object.keys(moduleSseEvents);
 
-      context.store.subscribe((mutation) => {
-        if (mutation.type === 'core/sse/LOG_EVENT') {
-          const event = mutation.payload
+        context.store.subscribe((mutation) => {
+          if (mutation.type === 'core/sse/LOG_EVENT') {
+            const event = mutation.payload
 
-          if (moduleSseEventsKeys.includes(event.name)) {
-            if (typeof moduleSseEvents[event.name] === 'function') moduleSseEvents[event.name](event.data)
+            if (moduleSseEventsKeys.includes(event.name)) {
+              if (typeof moduleSseEvents[event.name] === 'function') moduleSseEvents[event.name](event.data)
+            }
           }
-        }
-      })
+        })
+      }
     }
   }
 }

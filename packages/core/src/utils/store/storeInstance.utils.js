@@ -8,9 +8,6 @@ export function storeInstanceCreate(storePath, storeDefaults) {
 
   // we initialize the new dynamic module in the global store:
   store.registerModule(storePath, localModule)
-
-  // get access to the module context
-  // const { mapState, mapActions, mapMutations, mapGetters } = createNamespacedHelpers(path);
 }
 
 export function storeInstanceDestroy(storePath) {

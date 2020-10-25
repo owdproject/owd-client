@@ -4,8 +4,8 @@ import './lib/service-worker/registerServiceWorker'
 // import device detector
 import './plugins/deviceDetector'
 
-import owdTerminal from './lib/terminal/terminal.class'
-import owdModulesExtend from './lib/modules/modulesExtend.class'
+import owdTerminalExtend from './lib/terminal/extend/terminalExtend.class'
+import owdModulesExtend from './lib/modules/extend/modulesExtend.class'
 import owdRouter from './router'
 
 export default class {
@@ -70,28 +70,27 @@ export default class {
   }
 
   /**
-   * Initialize modules
-   */
-  initializeModules() {
-    // load owd modules
-    return new owdModulesExtend({
-      store: this.store,
-      config: this.config,
-      terminal: this.terminal
-    })
-  }
-
-  /**
    * Initialize global terminal support
    * @param Vue
    */
   initializeTerminal(Vue) {
-    const terminal = new owdTerminal()
+    const terminalExtend = new owdTerminalExtend()
 
     // pre assign terminal to $owd (for module integrations)
-    Vue.prototype.$owd = { terminal }
+    Vue.prototype.$owd = { terminal: terminalExtend }
 
-    return terminal
+    return terminalExtend
+  }
+
+  /**
+   * Initialize modules
+   */
+  initializeModules() {
+    return new owdModulesExtend({
+      config: this.config,
+      terminal: this.terminal,
+      store: this.store
+    })
   }
 
   initializeRouter() {

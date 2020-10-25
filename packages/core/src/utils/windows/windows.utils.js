@@ -1,4 +1,4 @@
-import store from '../store/index'
+import store from '../../store'
 import md5 from 'md5'
 
 export function generateWindowUniqueId() {

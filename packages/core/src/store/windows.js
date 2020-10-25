@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import * as windowsUtils from '../utils/windows.utils'
+import * as windowsUtils from '../utils/windows/windows.utils'
 import * as windowsInitialLocalStorageUtils from '../utils/windows/windowsLocalStorage.utils'
 import {storeInstanceCreate,storeInstanceDestroy} from '../utils/store/storeInstance.utils'
 
@@ -136,13 +136,21 @@ export default {
         // for each module
         for (const moduleName of Object.keys(modulesLoaded)) {
           const module = modulesLoaded[moduleName]
-          const moduleWithoutWindows = {...module}; delete moduleWithoutWindows.windows
+
+          // compatibility for module v1
+          if (!module.moduleInfo) {
+            module.moduleInfo = module
+          }
 
           // does module contain any windows?
-          if (Array.isArray(module.windows) && module.windows.length > 0) {
+          if (
+            module.moduleInfo &&
+            module.moduleInfo.windows && Array.isArray(module.moduleInfo.windows) &&
+            module.moduleInfo.windows.length > 0
+          ) {
 
             // for each window in module
-            for (const moduleWindowComponent of module.windows) {
+            for (const moduleWindowComponent of module.moduleInfo.windows) {
               // is component effectively a window?
               if (moduleWindowComponent.window) {
 
@@ -156,7 +164,7 @@ export default {
                 const windowData = {
                   name: windowName,
                   config: moduleWindowComponent,
-                  module: moduleWithoutWindows
+                  module
                 }
 
                 // has windowsStorage filtered by windowName (from local storage) some windows for us?
@@ -360,21 +368,32 @@ export default {
       }
 
       // initialize storeInstance if module isn't a singleton
-      if (!windowInstance.module.singleton) {
+      if (!windowInstance.module.moduleInfo.singleton) {
         let storeDefaultsGenerator = null
 
-        try {
-          storeDefaultsGenerator = require(`@/../src/modules/${windowInstance.module.name}/storeInstance`)
-        } catch(e) {
-          console.log(`[OWD] Missing "/modules/${windowInstance.module.name}/storeInstance"`)
-        }
+        switch(parseInt(windowInstance.module.moduleInfo.version)) {
+          case 2:
+            windowInstance.module.createModuleStoreInstance(
+              `${windowInstance.module.moduleInfo.name}-${windowInstance.uniqueID}`
+            )
+            break;
+          case 1:
+          default:
+            // legacy store instance initialization
+            try {
+              storeDefaultsGenerator = require(`@/../src/modules/${windowInstance.module.name}/storeInstance`)
+            } catch(e) {
+              console.log(`[OWD] Missing "/modules/${windowInstance.module.name}/storeInstance"`)
+            }
 
-        if (storeDefaultsGenerator) {
-          const storeName = `${windowInstance.module.name}-${windowInstance.uniqueID}`
-          const storeDefaults = storeDefaultsGenerator.default()
+            if (storeDefaultsGenerator) {
+              const storeName = `${windowInstance.module.name}-${windowInstance.uniqueID}`
+              const storeDefaults = storeDefaultsGenerator.default()
 
-          // create dynamic store module with storeName as path
-          storeInstanceCreate(storeName, storeDefaults)
+              // create dynamic store module with storeName as path
+              storeInstanceCreate(storeName, storeDefaults)
+            }
+            break;
         }
       }
 
@@ -403,7 +422,7 @@ export default {
         }
       }
 
-      const module = Vue.prototype.$owd.modules.getWindowModuleFromWindowName(data.name)
+      const module = Vue.prototype.$owd.modules.getModuleFromWindowName(data.name)
 
       if (!module) {
         return console.log('[OWD] This module window doesn\'t exists')
@@ -761,16 +780,30 @@ export default {
         // destroy window if > 1
         commit('UNREGISTER_WINDOW', window);
 
-        // destroy storeInstance if needed
-        if (!data.module.singleton) {
-          const storeName = `${data.module.name}-${data.uniqueID}`
+        const storeName = `${data.module.moduleInfo.name}-${data.uniqueID}`
 
-          // destroy dynamic store module
-          storeInstanceDestroy(storeName)
+        switch(parseInt(data.module.moduleInfo.version)) {
+          case 2:
+            // destroy storeInstance dynamically if needed
+            if (!data.module.moduleInfo.singleton) {
+              if (typeof data.module.moduleInfo.storeInstance === 'function') {
+                data.module.destroyModuleStoreInstance(storeName)
+              }
+            }
+            break;
+          case 1:
+          default:
+            // destroy storeInstance dynamically if needed
+            storeInstanceDestroy(storeName)
+            break;
         }
+
+
       } else {
         dispatch('windowClose', window)
       }
+
+      dispatch('saveWindowsStorage')
     },
 
     /**

@@ -184,7 +184,7 @@ export default {
 
                   // there is no window stored in local storage so generate
                   // at least one instance if .autostart is set to true
-                  if (module.autostart) {
+                  if (module.moduleInfo.autostart) {
                     windowInstancesRegistrationPool.push(windowData)
                   }
 

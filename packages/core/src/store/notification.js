@@ -18,7 +18,7 @@ export default {
 
       setTimeout(() => {
         state.list.pop()
-      }, notification.duration | 8000)
+      }, notification.duration | 30000)
     }
   }
 }

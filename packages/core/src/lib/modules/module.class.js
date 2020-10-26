@@ -163,25 +163,23 @@ export default class Module {
    */
   loadModuleSseEvents(context) {
     // load events sse
-    if (typeof this.loadSseEvent === 'function') {
-      const moduleSseEvents = this.loadSseEvent({
+    if (typeof this.loadSseEvents === 'function') {
+      const moduleSseEvents = this.loadSseEvents({
         store: context.store,
         terminal: context.terminal
       })
 
-      if (moduleSseEvents) {
-        const moduleSseEventsKeys = Object.keys(moduleSseEvents);
+      const moduleSseEventsKeys = Object.keys(moduleSseEvents);
 
-        context.store.subscribe((mutation) => {
-          if (mutation.type === 'core/sse/LOG_EVENT') {
-            const event = mutation.payload
+      context.store.subscribe((mutation) => {
+        if (mutation.type === 'core/sse/LOG_EVENT') {
+          const event = mutation.payload
 
-            if (moduleSseEventsKeys.includes(event.name)) {
-              if (typeof moduleSseEvents[event.name] === 'function') moduleSseEvents[event.name](event.data)
-            }
+          if (moduleSseEventsKeys.includes(event.name)) {
+            if (typeof moduleSseEvents[event.name] === 'function') moduleSseEvents[event.name](event.data)
           }
-        })
-      }
+        }
+      })
     }
   }
 }

@@ -55,10 +55,13 @@ export default class Module {
   createModuleStore(context) {
     const merge = require('lodash.merge')
 
-    // register store to Vuex
-    context.store.registerModule(this.moduleInfo.name, merge(
-      this.moduleStore,
-      {
+    let moduleStore = this.moduleStore
+    let moduleStoreMerge = {
+      namespaced: true
+    }
+
+    if (this.moduleStoreConfig) {
+      moduleStoreMerge = {
         namespaced: true,
         state: this.moduleStoreConfig
       }

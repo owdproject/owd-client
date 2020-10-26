@@ -22,9 +22,5 @@ a, a:link, a:visited {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 13px;
-
-  &.is-windows {
-    font-size: 13.5px;
-  }
+  font-size: 14px;
 }

@@ -20,8 +20,8 @@
     @drag:end="onDragEnd"
     @resize:start="onResizeStart"
     @resize:end="onResizeEnd"
-    :id="windowIdName"
     :class="[
+      windowIdName,
       'window', {
         'expanded': window.storage.expanded,
         'maximized': window.config.maximizable && window.storage.maximized,

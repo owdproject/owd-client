@@ -1,31 +1,19 @@
-// import app core styles
-import './assets/css/app.scss'
-// import app custom styles
-import '@/assets/css/app.scss'
-
 // register service worker
-import './registerServiceWorker'
+import './lib/service-worker/registerServiceWorker'
 
 // import device detector
 import './plugins/deviceDetector'
 
-// import mdi icons
-import '@mdi/font/css/materialdesignicons.css'
-
-// import fonts
-import './plugins/fonts'
-
-import owdTerminal from './plugins/terminal'
-import owdExtend from './plugins/extend'
+import owdTerminalExtend from './lib/terminal/extend/terminalExtend.class'
+import owdModulesExtend from './lib/modules/extend/modulesExtend.class'
 import owdRouter from './router'
 
 export default class {
   constructor({ Vue, config, store }) {
     this.config = config
     this.store = store
-
-    // set vuetify config
-    this.initializeVuetify(Vue);
+    this.terminal = null
+    this.modules = null
 
     const owdInstance = this.initialize(Vue)
 
@@ -42,36 +30,70 @@ export default class {
   initialize(Vue) {
     Vue.config.productionTip = !!this.config.productionTip;
 
-    // load owd-client terminal commands
-    const terminal = new owdTerminal()
+    // assets
+    this.initializeAssets(Vue);
 
-    // pre assign terminal to $owd (it can be useful in certain modules)
-    Vue.prototype.$owd = { terminal }
-
-    // load owd modules
-    const modules = new owdExtend({
-      store: this.store,
-      config: this.config,
-      terminal
-    })
-
-    // initialize owd router
-    const router = owdRouter(this.config)
+    this.terminal = this.initializeTerminal(Vue)
+    this.modules = this.initializeModules(Vue)
+    this.router = this.initializeRouter(Vue)
 
     return {
-      store: this.store,
-      modules,
-      terminal,
-      router
+      modules: this.modules,
+      terminal: this.terminal,
+      router: this.router,
+      store: this.store
     }
   }
 
   /**
-   * Set vuetify global config
+   * Initialize assets
    * @param Vue
    */
-  initializeVuetify(Vue) {
+  initializeAssets(Vue) {
+    // import app core styles
+    require('./assets/css/app.scss')
+
+    // import app custom styles from owd-client
+    require('@/assets/css/app.scss')
+
+    // import Oswald font with typeface
+    require('typeface-oswald')
+
+    // import Jetbrains Mono font with typeface
+    require('typeface-jetbrains-mono')
+
+    // import mdi icons
+    require('@mdi/font/css/materialdesignicons.css')
+
     // assign vuetify config to $vuetify
     Vue.prototype.$vuetify = this.config.vuetify
+  }
+
+  /**
+   * Initialize global terminal support
+   * @param Vue
+   */
+  initializeTerminal(Vue) {
+    const terminalExtend = new owdTerminalExtend()
+
+    // pre assign terminal to $owd (for module integrations)
+    Vue.prototype.$owd = { terminal: terminalExtend }
+
+    return terminalExtend
+  }
+
+  /**
+   * Initialize modules
+   */
+  initializeModules() {
+    return new owdModulesExtend({
+      config: this.config,
+      terminal: this.terminal,
+      store: this.store
+    })
+  }
+
+  initializeRouter() {
+    return owdRouter(this.config)
   }
 }

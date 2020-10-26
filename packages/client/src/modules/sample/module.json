@@ -1,8 +1,8 @@
 {
   "name": "sample",
+  "version": "2.0.0",
   "singleton": true,
   "autostart": true,
-  "version": "1.2.0",
   "license": "MIT",
   "homepage": "https://github.com/hacklover/owd-sample",
   "author": {
@@ -14,7 +14,12 @@
       "name": "WindowExample",
       "title": "OWD Sample Module",
       "titleShort": "Open Web Desktop",
-      "icon": "hexagon-multiple-outline",
+      "icon": {
+        "name": "hexagon-multiple-outline",
+        "offset": {
+          "y": -1
+        }
+      },
       "window": {
         "menu": true,
         "closed": true,

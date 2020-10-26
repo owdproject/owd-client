@@ -1,7 +1,7 @@
 // import version from package.json
 process.env.VUE_APP_VERSION = require('./package.json').version;
 
-const vuetifyLoader = require('@owd-client/core/src/loaders/vuetify.loader')
+const vuetifyLoader = require('@owd-client/core/src/lib/loaders/vuetify.loader')
 
 module.exports = {
   indexPath: 'index.html',

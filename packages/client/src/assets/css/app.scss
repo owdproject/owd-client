@@ -4,6 +4,10 @@ html, body {
   background: $bodyBackground;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Oswald', Tahoma, sans-serif;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   background: rgba(34, 34, 34, 0.3);

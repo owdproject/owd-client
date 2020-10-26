@@ -3,7 +3,7 @@ import Vue from 'vue'
 const validColors = ['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']
 const validTextFormat = ['b', 's', 'o', 'i', 'u', 'g']
 
-export default class Terminal {
+export default class {
   constructor() {
     // all terminal commands
     this.commands = {}
@@ -23,6 +23,7 @@ export default class Terminal {
 
   /**
    * Logged username
+   * todo
    *
    * @returns {string|*}
    */
@@ -51,13 +52,34 @@ export default class Terminal {
   }
 
   /**
-   * Add command to terminal
+   * Add global command to terminal
    *
    * @param name
    * @param fn
    */
   addCommand(name, fn) {
     this.commands[name] = fn
+  }
+
+  /**
+   * Does terminal global command exists?
+   *
+   * @param name
+   */
+  existCommand(name) {
+    return typeof this.commands[name] === 'function'
+  }
+
+  /**
+   * Run terminal global command
+   *
+   * @param name
+   * @param args
+   */
+  execCommand(name, args) {
+    if (this.existCommand(name)) {
+      this.commands[name](...args)
+    }
   }
 
   /**

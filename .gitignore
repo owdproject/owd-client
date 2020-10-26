@@ -4,3 +4,6 @@
 
 # Lerna
 lerna-debug.log
+
+# App
+node_modules

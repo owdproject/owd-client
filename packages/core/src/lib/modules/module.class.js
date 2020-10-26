@@ -41,8 +41,8 @@ export default class Module {
    */
   loadModuleStore(context) {
     // load module store
-    if (this.moduleInfo.store && typeof this.loadStore === 'function') {
-      this.moduleStore = this.loadStore()
+    if (typeof this.loadStore === 'function') {
+      this.moduleStore = this.loadStore(context)
       this.createModuleStore(context)
     }
   }
@@ -62,6 +62,12 @@ export default class Module {
         namespaced: true,
         state: this.moduleStoreConfig
       }
+    }
+
+    // register store to Vuex
+    context.store.registerModule(this.moduleInfo.name, merge(
+      moduleStore,
+      moduleStoreMerge
     ))
   }
 

@@ -46,6 +46,22 @@ export function getWindowGroupWindowIndex(groupName, i) {
   return store.getters['core/windows/windowGroups'][groupName][i]
 }
 
+/**
+ * For each window instance in window group
+ *
+ * @param groupName
+ * @param cb
+ */
+export function forEachWindowInstanceInWindowGroup(groupName, cb) {
+  store.getters['core/windows/windowGroups'][groupName].forEach(async uniqueID => {
+    const window = await store.dispatch('core/windows/getWindow', {uniqueID})
+
+    if (window) {
+      cb(window)
+    }
+  })
+}
+
 // WINDOW CATEGORIES
 
 /**

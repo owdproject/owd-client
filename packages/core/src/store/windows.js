@@ -807,6 +807,20 @@ export default {
     },
 
     /**
+     * Destroy all windows in this group
+     *
+     * @param dispatch
+     * @param windowGroup
+     */
+    windowDestroyGroup({dispatch}, windowGroup) {
+      if (windowsUtils.isWindowGroupExisting(windowGroup)) {
+        windowsUtils.forEachWindowInstanceInWindowGroup(windowGroup, (windowInstance) => {
+          dispatch('windowDestroy', windowInstance)
+        })
+      }
+    },
+
+    /**
      * Close window
      *
      * @param dispatch
@@ -838,6 +852,20 @@ export default {
         window.storage.closed = true
         commit('SET_WINDOW', window)
       })
+    },
+
+    /**
+     * Close all windows in this group
+     *
+     * @param dispatch
+     * @param windowGroup
+     */
+    windowCloseGroup({dispatch}, windowGroup) {
+      if (windowsUtils.isWindowGroupExisting(windowGroup)) {
+        windowsUtils.forEachWindowInstanceInWindowGroup(windowGroup, (windowInstance) => {
+          dispatch('windowClose', windowInstance)
+        })
+      }
     },
 
     async windowSetNavTitle({commit, dispatch}, {data, title}) {

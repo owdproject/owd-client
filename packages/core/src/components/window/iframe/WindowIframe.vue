@@ -1,6 +1,6 @@
 <template>
   <Window class="window-iframe" :title="data.title" :window="data">
-    <iframe @load="iframeLoaded" :id="`${data.module.name+'-iframe'}`" :src="url" />
+    <iframe @load="iframeLoaded" :id="`${data.module.moduleInfo.name+'-iframe'}`" :src="url" />
     <v-progress-linear
       v-if="progressBar && !loaded"
       color="#323232"

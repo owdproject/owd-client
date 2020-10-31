@@ -133,7 +133,7 @@ div.notice {
       text-transform: uppercase;
       font-size: 10px;
       letter-spacing: 1px;
-      margin-top: -1px;
+      margin-top: -2px;
     }
   }
 }

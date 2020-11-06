@@ -6,7 +6,7 @@
       v-show="visible"
     >
       <div class="notice-icon">
-        <v-icon v-text="`mdi-${service}`" />
+        <v-icon v-text="icon" />
       </div>
       <div class="notice-text">
         <div
@@ -28,6 +28,7 @@ export default {
   props: {
     name: String,
     service: String,
+    icon: String,
     text: String,
     details: String
   },

@@ -38,6 +38,7 @@ export default class {
     this.router = this.initializeRouter(Vue)
 
     return {
+      config: this.config,
       modules: this.modules,
       terminal: this.terminal,
       router: this.router,

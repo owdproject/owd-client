@@ -15,7 +15,7 @@
       "title": "OWD Sample Module",
       "titleShort": "Open Web Desktop",
       "icon": {
-        "name": "hexagon-multiple-outline",
+        "name": "mdi-hexagon-multiple-outline",
         "offset": {
           "y": -1
         }

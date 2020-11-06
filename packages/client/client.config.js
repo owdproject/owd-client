@@ -1,3 +1,6 @@
+// import mdi icons
+require('@mdi/font/css/materialdesignicons.css')
+
 // import all pages routes
 import routesMain from '@/pages/main/routes'
 

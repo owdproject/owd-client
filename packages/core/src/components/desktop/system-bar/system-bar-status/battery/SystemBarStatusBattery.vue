@@ -1,6 +1,6 @@
 <template>
   <div v-if="$device.mobile">
-    <v-icon>mdi-battery</v-icon>
+    <v-icon v-text="$owd.config.icons.systemBar.battery" />
   </div>
 </template>
 

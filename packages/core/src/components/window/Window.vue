@@ -48,14 +48,14 @@
           @click="onMinimize"
           v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable"
         >
-          <v-icon>mdi-window-minimize</v-icon>
+          <v-icon v-text="$owd.config.icons.windows.minimize" />
         </a>
         <a
           class="btn btn-maximize"
           @click="onToggleMaximize"
           v-if="window.config.maximizable"
         >
-          <v-icon>mdi-window-maximize</v-icon>
+          <v-icon v-text="$owd.config.icons.windows.maximize" />
         </a>
         <a
           class="btn btn-external-url"
@@ -63,13 +63,13 @@
           target="_blank"
           v-if="window.externalUrl"
         >
-          <v-icon>mdi-open-in-new</v-icon>
+          <v-icon v-text="$owd.config.icons.windows.external" />
         </a>
         <a
           class="btn btn-close"
           @click="onClose"
         >
-          <v-icon>mdi-window-close</v-icon>
+          <v-icon v-text="$owd.config.icons.windows.close" />
         </a>
       </WindowNav>
       <WindowContent>

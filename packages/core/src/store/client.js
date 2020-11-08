@@ -110,6 +110,17 @@ export default {
     },
 
     /**
+     * Wipe all data, restore default client settings
+     */
+    reset({dispatch}, reload) {
+      localStorage.clear();
+      sessionStorage.clear();
+      dispatch('core/windows/resetWindowsStorage', null, {root: true})
+
+      if (reload) window.location.reload()
+    },
+
+    /**
      * Login user
      *
      * @param commit

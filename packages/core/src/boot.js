@@ -38,6 +38,7 @@ export default class {
     this.router = this.initializeRouter(Vue)
 
     return {
+      config: this.config,
       modules: this.modules,
       terminal: this.terminal,
       router: this.router,
@@ -61,9 +62,6 @@ export default class {
 
     // import Jetbrains Mono font with typeface
     require('typeface-jetbrains-mono')
-
-    // import mdi icons
-    require('@mdi/font/css/materialdesignicons.css')
 
     // assign vuetify config to $vuetify
     Vue.prototype.$vuetify = this.config.vuetify

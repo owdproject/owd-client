@@ -902,6 +902,7 @@ export default {
         x = 96
       } else if (data.window.storage.x < 0 || data.forceRight) {
         x = state.desktopInnerWidth - data.window.config.width - 24 // right
+        if (data.window.storage.x < 0) x = x + data.window.storage.x
       }
 
       return x
@@ -930,6 +931,7 @@ export default {
       } else if (data.window.storage.y < 0 || data.forceRight) {
         if (data.window.config) {
           y = state.desktopInnerHeight - data.window.config.height - 24 // right
+          if (data.window.storage.y < 0) y = y + data.window.storage.y
         }
       }
 

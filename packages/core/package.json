@@ -1,6 +1,6 @@
 {
   "name": "@owd-client/core",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "OWD Client Core",
   "homepage": "https://github.com/owdproject/owd-client#readme",
   "bugs": {
@@ -39,7 +39,6 @@
     "root": true
   },
   "dependencies": {
-    "@mdi/font": "^5.6.55",
     "axios": "^0.20.0",
     "kebab-case": "^1.0.0",
     "lodash.merge": "^4.6.2",

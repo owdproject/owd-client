@@ -5,7 +5,6 @@
     </li>
     <li>
       Applications
-      <v-icon size="20">mdi-menu-down</v-icon>
     </li>
   </ul>
 </template>

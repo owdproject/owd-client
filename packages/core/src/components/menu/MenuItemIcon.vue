@@ -12,11 +12,11 @@ export default {
   computed: {
     iconName() {
       if (typeof this.icon === 'string') {
-        return `mdi-${this.icon}`
+        return this.icon
       }
 
       if (typeof this.icon === 'object') {
-        if (this.icon.name) return `mdi-${this.icon.name}`
+        if (this.icon.name) return this.icon.name
       }
 
       return ''

@@ -2,8 +2,6 @@
   <div>
     <slot name="prepend" />
 
-    <v-icon>mdi-signal-cellular-outline</v-icon>
-
     <SystemBarStatusBattery />
 
     <slot name="append" />

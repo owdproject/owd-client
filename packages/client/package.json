@@ -1,6 +1,6 @@
 {
   "name": "owd-client",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "private": true,
   "homepage": "https://github.com/owdproject/owd-client",
   "license": "MIT",
@@ -14,15 +14,16 @@
     "serve": "vue-cli-service serve"
   },
   "dependencies": {
-    "@owd-client/core": "^1.4.1"
+    "@owd-client/core": "^1.4.2"
   },
   "devDependencies": {
+    "@mdi/font": "^5.6.55",
     "@vue/cli-plugin-pwa": "^4.5.8",
     "@vue/cli-service": "^4.5.8",
-    "vue-template-compiler": "^2.6.12",
     "css-loader": "^5.0.0",
+    "sass": "^1.27.0",
     "sass-loader": "^10.0.3",
-    "sass": "^1.27.0"
+    "vue-template-compiler": "^2.6.12"
   },
   "devDependenciesDisabled": {
     "@vue/cli-plugin-eslint": "^4.3.1",

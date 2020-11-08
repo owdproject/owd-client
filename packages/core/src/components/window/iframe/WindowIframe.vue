@@ -1,6 +1,14 @@
 <template>
   <Window class="window-iframe" :title="data.title" :window="data">
-    <iframe @load="iframeLoaded" :id="`${data.module.moduleInfo.name+'-iframe'}`" :src="url" />
+    <div class="iframe-container" v-click-outside="focusOut">
+      <iframe
+        :src="url" :id="`${data.module.moduleInfo.name+'-iframe'}`"
+        @load="iframeLoaded"
+      />
+
+      <div v-if="!focus" class="iframe-focus-in-detect" @click="focusIn"/>
+    </div>
+
     <v-progress-linear
       v-if="progressBar && !loaded"
       color="#323232"
@@ -11,6 +19,7 @@
 
 <script>
 import Window from '../Window'
+
 export default {
   name: 'WindowIframe',
   components: {
@@ -23,7 +32,8 @@ export default {
   data() {
     return {
       url: '',
-      loaded: false
+      loaded: false,
+      focus: true
     }
   },
   computed: {
@@ -44,6 +54,14 @@ export default {
     }
   },
   methods: {
+    focusIn() {
+      this.focus = true
+      this.$emit('iframeFocusIn')
+    },
+    focusOut() {
+      this.focus = false
+      this.$emit('iframeFocusOut')
+    },
     iframeLoaded() {
       if (this.url !== '') {
         this.loaded = true
@@ -64,19 +82,31 @@ export default {
   .window-content {
     position: relative;
 
-    iframe {
-      border: 0;
-      padding: 0;
-      margin: 0;
-      width: 100%;
+    .iframe-container {
       height: 100%;
-    }
 
-    .v-progress-linear {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      iframe {
+        border: 0;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .iframe-focus-in-detect {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+
+      .v-progress-linear {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
     }
   }
 }

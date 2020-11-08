@@ -9,6 +9,7 @@ export default {
       state.list.unshift({
         name: notification.name,
         service: notification.service,
+        icon: notification.icon,
         text: notification.text,
         details: notification.details
       })

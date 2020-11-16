@@ -1,8 +1,6 @@
 // import version from package.json
 process.env.VUE_APP_VERSION = require('./package.json').version;
 
-const vuetifyLoader = require('@owd-client/core/src/lib/loaders/vuetify.loader')
-
 module.exports = {
   indexPath: 'index.html',
   outputDir: 'dist',
@@ -41,11 +39,5 @@ module.exports = {
       swSrc: 'service-worker.js',
       exclude: [/\.map$/, /_redirects/, /robots.txt/]
     }
-  },
-
-  configureWebpack: {
-    plugins: [
-      vuetifyLoader()
-    ]
   }
 };

@@ -1,7 +1,7 @@
-import Vue from 'vue'
 import * as windowsUtils from '../utils/windows/windows.utils'
 import * as windowsInitialLocalStorageUtils from '../utils/windows/windowsLocalStorage.utils'
 import {storeInstanceCreate,storeInstanceDestroy} from '../utils/store/storeInstance.utils'
+import store from "./index";
 
 // load windows storage from local storage
 const windowsInitialLocalStorage = windowsInitialLocalStorageUtils.loadWindowsLocalStorage()
@@ -60,7 +60,7 @@ export default {
     },
     REGISTER_WINDOW(state, data) {
       // add to window groups
-      if (!windowsUtils.isWindowGroupExisting(data.name)) {
+      if (typeof state.windowGroups[data.name] === 'undefined') {
         state.windowGroups[data.name] = []
       }
       if (!state.windowGroups[data.name].includes(data.uniqueID)) {
@@ -68,7 +68,7 @@ export default {
       }
 
       // add to window categories
-      if (!windowsUtils.isWindowCategoryExisting(data.category)) {
+      if (typeof state.windowCategories[data.category] === 'undefined') {
         state.windowCategories[data.category] = []
       }
       if (!state.windowCategories[data.category].includes(data.uniqueID)) {
@@ -80,7 +80,7 @@ export default {
     },
     UNREGISTER_WINDOW(state, data) {
       // remove from groups
-      if (windowsUtils.isWindowGroupExisting(data.name)) {
+      if (typeof state.windowGroups[data.name] !== 'undefined') {
         const indexGroup = state.windowGroups[data.name].indexOf(data.uniqueID)
 
         if (indexGroup > -1) {
@@ -89,7 +89,7 @@ export default {
       }
 
       // remove from categories
-      if (windowsUtils.isWindowCategoryExisting(data.category)) {
+      if (typeof state.windowCategories[data.category] !== 'undefined') {
         const indexCategory = state.windowCategories[data.category].indexOf(data.uniqueID)
 
         if (indexCategory > -1) {
@@ -98,7 +98,7 @@ export default {
       }
 
       // remove from window instances
-      const index = windowsUtils.findWindowInstanceIndex('uniqueID', data.uniqueID)
+      const index = state.windowInstances.findIndex(window => window['uniqueID'] === data.uniqueID)
 
       if (index > -1) {
         state.windowInstances.splice(index, 1)
@@ -120,12 +120,14 @@ export default {
     /**
      * Initialize all windows instances and load positions from local storage
      *
-     * @param state
+     * @param getters
+     * @param rootGetters
+     * @param commit
      * @param dispatch
      */
-    async initialize({getters,commit,dispatch}) {
+    async initialize({getters,rootGetters,commit,dispatch}) {
       // get loaded modules in OWD Client
-      const modulesLoaded = Vue.prototype.$owd.modules.modulesLoaded
+      const modulesLoaded = rootGetters['core/modules/modulesLoaded']
 
       const windowInstancesRegistrationPool = []
       const windowFocuses = []
@@ -136,11 +138,6 @@ export default {
         // for each module
         for (const moduleName of Object.keys(modulesLoaded)) {
           const module = modulesLoaded[moduleName]
-
-          // compatibility for module v1
-          if (!module.moduleInfo) {
-            module.moduleInfo = module
-          }
 
           // does module contain any windows?
           if (
@@ -238,12 +235,13 @@ export default {
     /**
      * Save windows positions in local storage
      *
+     * @param dispatch
      * @param state
      */
-    saveWindowsStorage({state}) {
+    async saveWindowsStorage({dispatch,state}) {
       const data = {}
 
-      windowsUtils.forEachWindowInstance(windowInstance => {
+      await dispatch('forEachWindowInstance', windowInstance => {
         if (typeof data[windowInstance.name] === 'undefined') {
           data[windowInstance.name] = []
         }
@@ -284,7 +282,7 @@ export default {
      * @param data
      * @returns {null|*}
      */
-    getWindow(context, data) {
+    async getWindow({dispatch}, data) {
       let groupName
       let uniqueID
 
@@ -304,9 +302,15 @@ export default {
       let windowInstance
 
       if (uniqueID) {
-        windowInstance = windowsUtils.findWindowInstanceByAttr('uniqueID', uniqueID)
+        windowInstance = await dispatch('findWindowInstanceByAttr', {
+          attr: 'uniqueID',
+          value: uniqueID
+        })
       } else {
-        windowInstance = windowsUtils.findWindowInstanceByAttr('name', groupName)
+        windowInstance = await dispatch('findWindowInstanceByAttr', {
+          attr: 'name',
+          value: groupName
+        })
       }
 
       if (windowInstance) return windowInstance
@@ -422,19 +426,19 @@ export default {
         }
       }
 
-      const module = Vue.prototype.$owd.modules.getModuleFromWindowName(data.name)
+      const windowInfo = await dispatch('modules/getLoadedModuleWindowInfo', data.name, {root: true})
 
-      if (!module) {
+      if (!windowInfo) {
         return console.log('[OWD] This module window doesn\'t exists')
       }
 
       // check if there is already one window created in this window group
-      if (windowsUtils.isWindowGroupExisting(data.name)) {
-        if (module.singleton && windowsUtils.isWindowGroupWindowIndexExisting(data.name, 0)) {
-          const window = windowsUtils.getWindowGroupWindowIndex(data.name, 0)
+      if (await dispatch('isWindowGroupExisting', data.name)) {
+        if (windowInfo.module.singleton && dispatch('isWindowGroupWindowIndexExisting', {groupName: data.name, i: 0})) {
+          const window = dispatch('getWindowGroupWindowIndex', {groupName: data.name, i: 0})
 
           // just open it instead of creating a new one
-          if (module.singleton || window.storage.closed) {
+          if (windowInfo.module.singleton || window.storage.closed) {
             return dispatch('windowOpen', window)
           }
         }
@@ -442,12 +446,10 @@ export default {
 
       // check if window is given or...
       if (!data.window) {
-        const config = Vue.prototype.$owd.modules.getWindowConfigurationFromWindowName(data.name)
-
         data.window = await dispatch('windowCreateInstance', {
           name: data.name,
-          config,
-          module
+          config: windowInfo.window,
+          module: windowInfo.module
         })
       }
 
@@ -644,8 +646,8 @@ export default {
     /**
      * Set all windows hidden
      */
-    windowMinimizeAll() {
-      windowsUtils.forEachWindowInstance(window => {
+    async windowMinimizeAll({dispatch}) {
+      await dispatch('forEachWindowInstance', window => {
         if (window.storage.maximized) {
           window.storage.closed = true
         }
@@ -658,8 +660,8 @@ export default {
      * @param commit
      * @param dispatch
      */
-    windowUnmaximizeAll({commit, dispatch}) {
-      windowsUtils.forEachWindowInstance(window => {
+    async windowUnmaximizeAll({commit, dispatch}) {
+      await dispatch('forEachWindowInstance', window => {
         if (window.storage.maximized) {
           dispatch('windowUnmaximize', window)
         }
@@ -695,7 +697,7 @@ export default {
      * @param commit
      * @param data
      */
-    async windowFocus({state, commit}, data) {
+    async windowFocus({state, commit, dispatch}, data) {
       const windowFocuses = [...state.windowFocuses]
 
       if (windowFocuses.length === 0) {
@@ -709,7 +711,7 @@ export default {
 
       windowFocuses.push(data.uniqueID)
 
-      windowsUtils.forEachWindowInstance(window => {
+      await dispatch('forEachWindowInstance', window => {
         let index = windowFocuses.indexOf(window.uniqueID)
 
         if (index < 0) {
@@ -774,7 +776,7 @@ export default {
       // is window in memory?
       if (!window || !window.storage) return console.log('[OWD] Window missing');
 
-      const windowInstancesGroup = windowsUtils.getWindowGroup(data.name)
+      const windowInstancesGroup = await dispatch('getWindowGroup', data.name)
 
       if ((!!window.autostart === false && !!window.config.menu === false) || windowInstancesGroup.length > 1) {
         // destroy window if > 1
@@ -803,7 +805,7 @@ export default {
         dispatch('windowClose', window)
       }
 
-      dispatch('saveWindowsStorage')
+      await dispatch('saveWindowsStorage')
     },
 
     /**
@@ -812,10 +814,13 @@ export default {
      * @param dispatch
      * @param windowGroup
      */
-    windowDestroyGroup({dispatch}, windowGroup) {
-      if (windowsUtils.isWindowGroupExisting(windowGroup)) {
-        windowsUtils.forEachWindowInstanceInWindowGroup(windowGroup, (windowInstance) => {
-          dispatch('windowDestroy', windowInstance)
+    async windowDestroyGroup({dispatch}, windowGroup) {
+      if (await dispatch('isWindowGroupExisting', windowGroup)) {
+        await dispatch('forEachWindowInstanceInWindowGroup', {
+          groupName: windowGroup,
+          cb: (windowInstance) => {
+            dispatch('windowDestroy', windowInstance)
+          }
         })
       }
     },
@@ -847,8 +852,8 @@ export default {
      *
      * @param commit
      */
-    windowCloseAll({commit}) {
-      windowsUtils.forEachWindowInstance(window => {
+    async windowCloseAll({commit,dispatch}) {
+      await dispatch('forEachWindowInstance', window => {
         window.storage.closed = true
         commit('SET_WINDOW', window)
       })
@@ -860,10 +865,13 @@ export default {
      * @param dispatch
      * @param windowGroup
      */
-    windowCloseGroup({dispatch}, windowGroup) {
-      if (windowsUtils.isWindowGroupExisting(windowGroup)) {
-        windowsUtils.forEachWindowInstanceInWindowGroup(windowGroup, (windowInstance) => {
-          dispatch('windowClose', windowInstance)
+    async windowCloseGroup({dispatch}, windowGroup) {
+      if (await dispatch('isWindowGroupExisting', windowGroup)) {
+        await dispatch('forEachWindowInstanceInWindowGroup', {
+          groupName: windowGroup,
+          cb: (windowInstance) => {
+            dispatch('windowClose', windowInstance)
+          }
         })
       }
     },
@@ -946,7 +954,7 @@ export default {
      * @param dispatch
      */
     async windowsHandlePageResize({state,commit,dispatch}) {
-      await windowsUtils.forEachWindowInstance(async window => {
+      await dispatch('forEachWindowInstance', async window => {
         let changed = false
 
         if (window.storage && !window.storage.closed) {
@@ -968,6 +976,100 @@ export default {
           commit('SET_WINDOW', window)
         }
       })
+    },
+
+    // WINDOW INSTANCES
+
+    findWindowInstanceByAttr({getters}, {attr, value}) {
+      return getters['windowInstances'].find(window => window[attr] === value)
+    },
+
+    findWindowInstanceIndex({getters}, {attr, value}) {
+      return getters['windowInstances'].findIndex(window => window[attr] === value)
+    },
+
+    /**
+     * For each window instance
+     *
+     * @param cb
+     */
+    forEachWindowInstance({getters}, cb) {
+      const windowInstances = getters['windowInstances']
+
+      for (const windowInstance of windowInstances) {
+        cb(windowInstance)
+      }
+    },
+
+    // WINDOW GROUPS
+
+    isWindowGroupExisting({getters}, groupName) {
+      return typeof getters['windowGroups'][groupName] !== 'undefined'
+    },
+
+    getWindowGroup({getters}, groupName) {
+      return getters['windowGroups'][groupName]
+    },
+
+    isWindowGroupWindowIndexExisting({getters}, {groupName, i}) {
+      return typeof getters['windowGroups'][groupName][i] !== 'undefined'
+    },
+
+    getWindowGroupWindowIndex({getters}, {groupName, i}) {
+      return getters['windowGroups'][groupName][i]
+    },
+
+    /**
+     * For each window instance in window group
+     *
+     * @param groupName
+     * @param cb
+     */
+    forEachWindowInstanceInWindowGroup({getters,dispatch}, {groupName, cb}) {
+      getters['windowGroups'][groupName].forEach(async uniqueID => {
+        const window = await dispatch('getWindow', {uniqueID})
+
+        if (window) {
+          cb(window)
+        }
+      })
+    },
+
+    // WINDOW CATEGORIES
+
+    /**
+     * Get window category
+     *
+     * @param categoryName
+     * @returns {*[]|*}
+     */
+    async getWindowCategory({dispatch}, categoryName) {
+      if (await dispatch('isWindowCategoryExisting', categoryName)) {
+        return store.getters['windowCategories'][categoryName]
+      }
+
+      return []
+    },
+
+    /**
+     * Does window category exist?
+     *
+     * @param categoryName
+     * @returns {boolean}
+     */
+    isWindowCategoryExisting({getters}, categoryName) {
+      return typeof getters['windowCategories'][categoryName] !== 'undefined'
+    },
+
+    /**
+     * Does index in window category exist?
+     *
+     * @param categoryName
+     * @param index
+     * @returns {number}
+     */
+    isWindowCategoryWindowIndexExisting({getters}, {categoryName, index}) {
+      return getters['windowCategories'][categoryName].indexOf(index)
     }
   }
 }

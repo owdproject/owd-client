@@ -3,8 +3,8 @@
     <div
       :class="['menu-item-square']"
       :style="menuItemStyles"
-      v-ripple.500="'rgba(255, 255, 255, 0.1)'"
     >
+      <!-- v-ripple.500="'rgba(255, 255, 255, 0.1)'" -->
       <MenuItemIcon :icon="icon" />
     </div>
     <div class="menu-item-name">

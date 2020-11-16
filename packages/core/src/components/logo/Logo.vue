@@ -1,5 +1,7 @@
 <template>
   <div id="logo">
+    <h2 v-text="title" />
+    <!--
     <h2>
       <vue-typer
         :text="title"
@@ -9,16 +11,17 @@
         erase-style="select-back"
       />
     </h2>
+    -->
   </div>
 </template>
 
 <script>
-import {VueTyper} from 'vue-typer'
+// import {VueTyper} from 'vue-typer'
 
 export default {
   name: 'Logo',
   components: {
-    VueTyper
+    // VueTyper
   },
   props: {
     title: {

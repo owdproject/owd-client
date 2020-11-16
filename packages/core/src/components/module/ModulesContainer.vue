@@ -1,13 +1,13 @@
 <template>
   <div id="windows-container">
-    <template v-for="windowInstance of windowInstances">
+    <div v-for="windowInstance of windowInstances" :key="windowInstance.uniqueID">
       <component
         :is="windowInstance.name"
         :data="windowInstance"
         :data-window-id="windowInstance.uniqueID"
         :key="windowInstance.uniqueID"
       />
-    </template>
+    </div>
   </div>
 </template>
 

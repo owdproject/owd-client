@@ -1,5 +1,5 @@
 <template>
-  <vue-resizable
+  <div
     v-show="!window.storage.closed && !window.storage.minimized"
     :data-window="window.name"
     :max-width="windowMaxWidth"
@@ -78,7 +78,7 @@
 
       <slot name="append-outer" />
     </div>
-  </vue-resizable>
+  </div>
 </template>
 
 <script>
@@ -167,29 +167,6 @@ export default {
       deep: true
     }
   },
-  created() {
-    const self = this
-
-    if (this.window.config.autoCloseBeforePageUnload) {
-      window.addEventListener(
-        'beforeunload',
-        async () => {
-          await self.$store.dispatch('core/windows/windowClose', self.window)
-          await self.$store.dispatch('core/windows/saveWindowsStorage')
-        }
-      )
-    }
-
-    if (this.window.config.autoDestroyBeforePageUnload) {
-      window.addEventListener(
-        'beforeunload',
-          async () => {
-          await self.$store.dispatch('core/windows/windowDestroy', self.window)
-          await self.$store.dispatch('core/windows/saveWindowsStorage')
-        }
-      )
-    }
-  },
   mounted() {
     const self = this
 
@@ -199,6 +176,26 @@ export default {
         self.$store.dispatch('core/windows/windowUnmaximizeAll')
       }
     })
+
+    if (this.window.config.autoCloseBeforePageUnload) {
+      window.addEventListener(
+          'beforeunload',
+          async () => {
+            await self.$store.dispatch('core/windows/windowClose', self.window)
+            await self.$store.dispatch('core/windows/saveWindowsStorage')
+          }
+      )
+    }
+
+    if (this.window.config.autoDestroyBeforePageUnload) {
+      window.addEventListener(
+          'beforeunload',
+          async () => {
+            await self.$store.dispatch('core/windows/windowDestroy', self.window)
+            await self.$store.dispatch('core/windows/saveWindowsStorage')
+          }
+      )
+    }
   },
   methods: {
     /**

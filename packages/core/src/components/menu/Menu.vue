@@ -44,6 +44,7 @@ export default {
      * Toggle window visibility
      */
     windowToggle: function (event, windowInstance) {
+      /*
       if (this.$device.mobile) {
 
         if (!windowInstance.storage.closed) {
@@ -54,6 +55,7 @@ export default {
         }
 
       } else {
+       */
 
         if (event.shiftKey) {
 
@@ -74,7 +76,7 @@ export default {
           }
         }
 
-      }
+      //}
     }
   }
 }

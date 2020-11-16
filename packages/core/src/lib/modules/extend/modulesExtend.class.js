@@ -1,14 +1,8 @@
-import Vue from 'vue'
-
-import {loadModuleFileCommands} from "../../../utils/modules/moduleCommand.utils";
 import {loadModuleFileComponentWindow} from "../../../utils/modules/moduleComponent.utils";
-import {loadModuleFileStore, loadModuleFileStoreConfig} from "../../../utils/modules/moduleStore.utils";
 
 export default class {
-  constructor({ store, terminal, config }) {
-    if (!this.isConfigModuleValid(config)) return
-
-    this.config = config
+  constructor({ app, store, terminal }) {
+    this.app = app
     this.terminal = terminal
     this.store = store
 
@@ -18,7 +12,8 @@ export default class {
     this.initialize()
   }
 
-  isConfigModuleValid() {
+  /*
+  isModuleConfigValid() {
     let failed = true
 
     if (this.config && this.config.modules) {
@@ -35,34 +30,32 @@ export default class {
 
     return failed
   }
+  */
 
   initialize() {
     // get names of the modules
-    const modulesNames = Object.keys(this.config.modules.modulesEnabled)
+    const modulesNames = Object.keys(this.app.config.owd.modules.modulesEnabled)
 
     for (const moduleName of modulesNames) {
       // load module info
       const moduleInfo = this.loadModuleInfo(moduleName)
 
-      // compatibility with module v1
-      let moduleInstance = moduleInfo
+      let moduleInstance = null
 
-      // load module
-      switch (parseInt(moduleInfo.version)) {
-        case 2:
-          // load module class
-          moduleInstance = this.loadModule(moduleInfo)
-          break;
-        case 1:
-        default:
-          // load module with commands.js + store
-          this.loadLegacyModule(moduleInfo)
-          break;
+      try {
+        moduleInstance = this.loadModule(moduleInfo)
+      } catch(e) {
+        console.error(e)
       }
 
       // add module info to loaded modules
-      this.modulesLoaded[moduleInfo.name] = moduleInstance
+      if (moduleInstance) {
+        this.modulesLoaded[moduleInfo.name] = moduleInstance
+      }
     }
+
+    this.store.commit('core/modules/SET_LOADED_MODULES', this.modulesLoaded)
+    this.store.commit('core/modules/SET_LOADED_WINDOWS', this.windowsLoaded)
   }
 
   /**
@@ -76,15 +69,16 @@ export default class {
     if (moduleClass && typeof moduleClass.default === 'function') {
       const moduleInstance = new moduleClass.default({
         // context
-        moduleInfo: moduleInfo,
-        terminal: this.terminal,
-        store: this.store
+        moduleInfo,
+        app: this.app,
+        store: this.store,
+        terminal: this.terminal
       })
 
       if (moduleInstance) {
         // load all module window components
         if (Array.isArray(moduleInfo.windows)) {
-          this.registerModuleComponentWindows(moduleInfo, moduleInstance)
+          this.registerModuleWindowComponents(moduleInfo, moduleInstance)
         }
 
         return moduleInstance
@@ -94,82 +88,9 @@ export default class {
     }
   }
 
-  /**
-   * Load legacy module
-   *
-   * - commands.js
-   * - store.js or storeInstance.js
-   */
-  async loadLegacyModule(moduleInfo) {
-    if (!moduleInfo) {
-      if (this.config.debug) console.error('[OWD] Module info is not valid.')
-
-      return false
-    }
-
-    // check dependencies
-    if (!this.areDependenciesSatisfied(moduleInfo.dependencies)) {
-      if (this.config.debug) console.error(
-        `Dependencies of ${moduleInfo.name} are not satisfied.\n` +
-        JSON.stringify(moduleInfo.dependencies)
-      )
-
-      return false
-    }
-
-    // load all window components
-    if (Array.isArray(moduleInfo.windows)) {
-      this.registerModuleComponentWindows(moduleInfo, moduleInfo)
-    }
-
-    // register store to Vuex
-    if (moduleInfo.store) {
-      // load src/modules/<module-name>/store.js
-      const moduleStore = loadModuleFileStore(moduleInfo)
-      // load config/<module-name>/config.json
-      const moduleStoreConfig = loadModuleFileStoreConfig(moduleInfo)
-
-      this.registerLegacyModuleStore(moduleInfo, moduleStore, moduleStoreConfig)
-    }
-
-    // register commands to OWD global terminal commands
-    if (moduleInfo.commands) {
-      // load src/modules/<module-name>/commands.js
-      const commandsLoader = loadModuleFileCommands(moduleInfo)
-
-      if (commandsLoader) {
-        // initialize commands
-        const moduleCommands = commandsLoader({
-          store: this.store,
-          terminal: this.terminal
-        })
-
-        this.registerLegacyModuleCommands(moduleCommands)
-      }
-    }
-  }
-
-  isModuleLoaded(module) {
-    return Object.keys(this.modulesLoaded).includes(module)
-  }
-
   getWindowConfigurationFromWindowName(windowName) {
     if (typeof this.windowsLoaded[windowName] !== 'undefined') {
       return this.windowsLoaded[windowName].window
-    }
-
-    return null
-  }
-
-  /**
-   * Used in some modules
-   *
-   * @param moduleName
-   * @returns {null|*}
-   */
-  getModuleFromWindowName(moduleName) {
-    if (typeof this.windowsLoaded[moduleName] !== 'undefined') {
-      return this.windowsLoaded[moduleName].module
     }
 
     return null
@@ -219,7 +140,7 @@ export default class {
    * @param moduleInfo
    * @param moduleInstance
    */
-  registerModuleComponentWindows(moduleInfo, moduleInstance) {
+  registerModuleWindowComponents(moduleInfo, moduleInstance) {
     moduleInfo.windows.forEach(windowComponent => {
       if (!windowComponent.name) {
         if (this.config.debug) console.error(`[OWD] Component name is missing in ${windowComponent.name}.`)
@@ -230,7 +151,7 @@ export default class {
       const moduleComponent = loadModuleFileComponentWindow(moduleInfo, windowComponent.name)
 
       if (moduleComponent) {
-        Vue.component(windowComponent.name, moduleComponent)
+        this.app.component(windowComponent.name, moduleComponent)
 
         // add module info to loaded modules
         this.windowsLoaded[windowComponent.name] = {
@@ -239,45 +160,5 @@ export default class {
         }
       }
     })
-  }
-
-  /**
-   * Register module store
-   *
-   * @param moduleInfo
-   * @param moduleStore
-   * @param moduleStoreConfig
-   */
-  registerLegacyModuleStore(moduleInfo, moduleStore, moduleStoreConfig) {
-    const merge = require('lodash.merge')
-
-    let storeConfig = {}
-
-    if (moduleInfo.config && moduleStoreConfig) {
-      storeConfig = moduleStoreConfig
-    }
-
-    // register store to Vuex
-    this.store.registerModule(moduleInfo.name, merge(
-      moduleStore,
-      {
-        namespaced: true,
-        state: storeConfig
-      }
-    ))
-  }
-
-  /**
-   * Globally register commands to terminal
-   *
-   * @param moduleCommands
-   */
-  registerLegacyModuleCommands(moduleCommands) {
-    if (moduleCommands) {
-      // register commands to OWD global terminal commands
-      Object.keys(moduleCommands).forEach((commandName) => {
-        this.terminal.addCommand(commandName, moduleCommands[commandName])
-      })
-    }
   }
 }

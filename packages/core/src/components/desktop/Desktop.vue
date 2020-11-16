@@ -45,14 +45,14 @@
           self.$store.dispatch('core/sse/connect', 'once')
         })
       }
-    },
-    created() {
-      const self = this
+
+      // CREATED EVENT
 
       // initialize client
-      this.$store.dispatch('core/client/initialize')
+      // this.$store.dispatch('core/client/initialize')
 
       // add window resize event
+      /*
       window.addEventListener('resize', function () {
         clearTimeout(this.handlePageResize)
 
@@ -64,14 +64,17 @@
           self.$store.dispatch('core/windows/windowsHandlePageResize')
         }, 100)
       })
+       */
     },
-    destroyed() {
+    unmounted() {
       const self = this
 
       // remove window resize event
+      /*
       window.removeEventListener('resize', function () {
         self.$store.dispatch('core/windows/windowsHandlePageResize')
       })
+       */
     }
   }
 </script>

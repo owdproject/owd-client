@@ -1,11 +1,14 @@
 // import mdi icons
-require('@mdi/font/css/materialdesignicons.css')
+import '@mdi/font/css/materialdesignicons.css'
 
 // import all pages routes
 import routesMain from '@/pages/main/routes'
 
 // import modules configuration
 import modulesConfig from '@/../config/modules.json'
+
+// types
+import {OwdClientConfiguration} from "../types";
 
 export default {
   debug: false,
@@ -41,4 +44,4 @@ export default {
   vuetify: {
     rtl: false
   }
-}
+} as OwdClientConfiguration

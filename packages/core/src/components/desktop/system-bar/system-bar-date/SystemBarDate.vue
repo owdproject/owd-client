@@ -10,11 +10,6 @@ export default {
       now: new Date()
     }
   },
-  created () {
-    const self = this
-
-    setInterval(() => self.now = new Date(), 1000)
-  },
   computed: {
     time() {
       let currentHours = this.now.getHours();
@@ -25,7 +20,12 @@ export default {
 
       return `${currentHours}:${currentMinutes}`
     }
-  }
+  },
+  mounted() {
+    const self = this
+
+    setInterval(() => self.now = new Date(), 1000)
+  },
 }
 </script>
 

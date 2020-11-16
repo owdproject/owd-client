@@ -1,5 +1,3 @@
-import Vue from 'vue'
-
 const validColors = ['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']
 const validTextFormat = ['b', 's', 'o', 'i', 'u', 'g']
 
@@ -97,17 +95,6 @@ export default class {
   }
 
   /**
-   * Check if module is loaded
-   *
-   * @param module
-   * @returns {*}
-   */
-
-  isModuleLoaded(module) {
-    return Vue.prototype.$owd.modules.isModuleLoaded(module)
-  }
-
-  /**
    * Color helper
    *
    * @param text
@@ -136,6 +123,6 @@ export default class {
    * @returns {*}
    */
   apiBaseUrl(url) {
-    return process.env.VUE_APP_SERVER_API_BASE_URL + url
+    return process.env.VUE_APP_API_BASE_URL + url
   }
 }

@@ -1,13 +1,13 @@
 <template>
   <Desktop :system-bar="systemBar">
 
-    <Logo :title="$store.state.core.client.title" />
-    <Menu />
+    <!--<Logo :title="$store.state.core.client.title" />-->
+    <!--<Menu /> -->
 
-    <WindowsList />
+    <!--<WindowsList />
 
     <Notifications />
-    <NoticePressToExitFullScreen />
+    <NoticePressToExitFullScreen />-->
 
   </Desktop>
 </template>
@@ -37,6 +37,9 @@ export default {
         dark: true
       }
     }
+  },
+  mounted() {
+    this.$store.dispatch('core/client/initialize')
   }
 }
 </script>

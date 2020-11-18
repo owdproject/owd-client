@@ -39,6 +39,7 @@
     "root": true
   },
   "dependencies": {
+    "@types/lodash.merge": "^4.6.6",
     "axios": "^0.21.0",
     "kebab-case": "^1.0.0",
     "lodash.merge": "^4.6.2",

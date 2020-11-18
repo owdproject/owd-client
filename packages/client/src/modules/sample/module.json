@@ -20,16 +20,20 @@
           "y": -1
         }
       },
-      "window": {
+      "config": {
         "menu": true,
         "closed": true,
         "hidden": false,
         "resizable": false,
-        "width": 448,
-        "height": 240,
-        "x": -1,
-        "y": 0,
-        "z": 0
+        "size": {
+          "width": 448,
+          "height": 240
+        },
+        "position": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        }
       }
     }
   ]

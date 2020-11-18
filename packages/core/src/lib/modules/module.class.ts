@@ -1,19 +1,48 @@
-import {loadModuleFileStoreConfig} from "../../utils/modules/moduleStore.utils";
-import store from "../../store";
+import {OwdModuleContext, OwdModuleCommands, OwdModuleInfo, OwdModuleWindow} from "../../../../types";
+import {MutationPayload, Store} from "vuex";
+import merge from 'lodash.merge'
 
-export default class Module {
-  constructor(context) {
+export default abstract class OwdModule {
+  private readonly moduleInfo
+  private readonly app
+  private readonly store
+  private readonly terminal
+
+  private moduleStore: any
+  private moduleStoreConfig: any
+  private moduleStoreInstance: any
+  private moduleWindows: {[key: string]: any}
+
+  constructor(context: OwdModuleContext) {
     this.moduleInfo = context.moduleInfo
-    this.moduleStore = null
-    this.moduleStoreInstance = null
-    this.moduleStoreConfig = null
+    this.app = context.app
+    this.store = context.store
+    this.terminal = context.terminal
 
-    this.loadModuleStoreConfig(context)
-    this.loadModuleStore(context)
-    this.loadModuleStoreInstance(context)
-    this.loadModuleCommands(context)
-    this.loadModuleSseEvents(context)
+    this.moduleWindows = {}
+
+    this.loadModuleStoreConfig()
+    this.loadModuleStore()
+    this.loadModuleStoreInstance()
+    this.loadModuleWindowComponents()
+    this.loadModuleCommands()
+    this.loadModuleSseEvents()
   }
+
+  abstract loadAssets(): void
+  abstract loadCommands(context: {
+    store: Store<any>,
+    terminal: any
+  }): OwdModuleCommands
+  abstract loadSseEvents(context: {
+    store: Store<any>,
+    terminal: any
+  }): OwdModuleCommands
+  abstract loadStore(): void
+  abstract loadStoreInstance(context: {
+    store: Store<any>,
+    terminal: any
+  }): void
 
   /**
    * Check module dependencies (todo)
@@ -36,28 +65,23 @@ export default class Module {
 
   /**
    * Load module store
-   *
-   * @param context
    */
-  loadModuleStore(context) {
+  loadModuleStore() {
     // load module store
     if (typeof this.loadStore === 'function') {
-      this.moduleStore = this.loadStore(context)
-      this.createModuleStore(context)
+      this.moduleStore = this.loadStore()
+      this.registerModuleStore()
     }
   }
 
   /**
-   * Create module store
-   *
-   * @param context
+   * Register module store
    */
-  createModuleStore(context) {
-    const merge = require('lodash.merge')
-
+  registerModuleStore() {
     let moduleStore = this.moduleStore
     let moduleStoreMerge = {
-      namespaced: true
+      namespaced: true,
+      state: null
     }
 
     if (this.moduleStoreConfig) {
@@ -68,7 +92,7 @@ export default class Module {
     }
 
     // register store to Vuex
-    context.store.registerModule(this.moduleInfo.name, merge(
+    this.store.registerModule(this.moduleInfo.name, merge(
       moduleStore,
       moduleStoreMerge
     ))
@@ -78,34 +102,32 @@ export default class Module {
 
   /**
    * Load module store instance
-   *
-   * @param context
    */
-  loadModuleStoreInstance(context) {
+  loadModuleStoreInstance() {
     // load module store instance
-    if (!context.moduleInfo.singleton) {
+    if (!this.moduleInfo.singleton) {
       if (typeof this.loadStoreInstance === 'function') {
         this.moduleStoreInstance = this.loadStoreInstance({
-          store: context.store,
-          terminal: context.terminal
+          store: this.store,
+          terminal: this.terminal
         })
       }
     }
   }
 
   /**
-   * Create module store instance
+   * Register module store instance
    *
    * @param storeName
    */
-  createModuleStoreInstance(storeName) {
+  registerModuleStoreInstance(storeName: string) {
     const storeModule = {
       namespaced: true,
       ...this.moduleStoreInstance
     }
 
     // we initialize the new dynamic module in the global store:
-    store.registerModule(storeName, storeModule)
+    this.store.registerModule(storeName, storeModule)
   }
 
   /**
@@ -113,42 +135,54 @@ export default class Module {
    *
    * @param storeName
    */
-  destroyModuleStoreInstance(storeName) {
-    store.unregisterModule(storeName)
+  destroyModuleStoreInstance(storeName: string) {
+    this.store.unregisterModule(storeName)
   }
 
   // ### MODULE STORE CONFIG
 
   /**
    * Load module store config
-   *
-   * @param context
    */
-  loadModuleStoreConfig(context) {
-    if (context.moduleInfo.config) {
-      this.moduleStoreConfig = loadModuleFileStoreConfig(context.moduleInfo);
+  loadModuleStoreConfig() {
+    if (this.moduleInfo.config) {
+      this.moduleStoreConfig = this.loadModuleStoreConfigFile();
     }
+  }
+
+  /**
+   * Load module store config from config.json
+   * @returns {*}
+   */
+  loadModuleStoreConfigFile() {
+    if (this.moduleInfo.config) {
+      try {
+        return require('@/../config/' + this.moduleInfo.name + '/config.json')
+      } catch(e) {
+        console.error(`[OWD] Unable to load "/modules/${this.moduleInfo.name}/config.json"`, e)
+      }
+    }
+
+    return null
   }
 
   // ### MODULE COMMANDS
 
   /**
    * Load module commands
-   *
-   * @param context
    */
-  loadModuleCommands(context) {
+  loadModuleCommands() {
     // load commands
     if (typeof this.loadCommands === 'function') {
       const moduleCommands = this.loadCommands({
-        store: context.store,
-        terminal: context.terminal
+        store: this.store,
+        terminal: this.terminal
       })
 
       // register commands to OWD global terminal commands
       if (moduleCommands) {
         Object.keys(moduleCommands).forEach((commandName) => {
-          context.terminal.addCommand(commandName, moduleCommands[commandName])
+          this.terminal.addCommand(commandName, moduleCommands[commandName])
         })
       }
     }
@@ -158,20 +192,18 @@ export default class Module {
 
   /**
    * Load module SSE events
-   *
-   * @param context
    */
-  loadModuleSseEvents(context) {
+  loadModuleSseEvents() {
     // load events sse
     if (typeof this.loadSseEvents === 'function') {
       const moduleSseEvents = this.loadSseEvents({
-        store: context.store,
-        terminal: context.terminal
+        store: this.store,
+        terminal: this.terminal
       })
 
       const moduleSseEventsKeys = Object.keys(moduleSseEvents);
 
-      context.store.subscribe((mutation) => {
+      this.store.subscribe((mutation: MutationPayload) => {
         if (mutation.type === 'core/sse/LOG_EVENT') {
           const event = mutation.payload
 
@@ -180,6 +212,42 @@ export default class Module {
           }
         }
       })
+    }
+  }
+
+  /**
+   * Register module window components
+   */
+  loadModuleWindowComponents() {
+    // load all module window components
+    if (Array.isArray(this.moduleInfo.windows)) {
+      this.moduleInfo.windows.forEach((windowComponent: OwdModuleWindow) => {
+        if (!windowComponent.name) {
+          if (this.app.config.debug) console.error(`[OWD] Component name is missing in ${windowComponent.name}.`)
+
+          return false
+        }
+
+        const moduleComponent = this.registerModuleWindowComponent(windowComponent.name)
+
+        if (moduleComponent) {
+          // sync vue component registration
+          // todo make it async with defineAsyncComponent
+          this.app.component(windowComponent.name, moduleComponent)
+
+          // add module info to loaded modules
+          // maybe not more needed
+          this.moduleWindows[windowComponent.name] = windowComponent
+        }
+      })
+    }
+  }
+
+  registerModuleWindowComponent(windowName: string) {
+    try {
+      return require('@/../src/modules/' + this.moduleInfo.name + '/windows/' + windowName + '.vue').default
+    } catch(e) {
+      if (this.app.config.debug) console.error(`[OWD] Unable to load "/modules/${this.moduleInfo.name}/windows/${windowName}.vue"`, e)
     }
   }
 }

@@ -11,21 +11,3 @@ export function loadModuleFileStore(moduleInfo) {
     console.error(`[OWD] Unable to load "/modules/${moduleInfo.name}/store"`, e)
   }
 }
-
-/**
- * Load module store config from config.json
- *
- * @param moduleInfo
- * @returns {*}
- */
-export function loadModuleFileStoreConfig(moduleInfo) {
-  if (moduleInfo.config) {
-    try {
-      return require('@/../config/' + moduleInfo.name + '/config.json')
-    } catch(e) {
-      console.error(`[OWD] Unable to load "/modules/${moduleInfo.name}/config.json"`, e)
-    }
-  }
-
-  return null
-}

@@ -3,24 +3,23 @@
 
 import owdCreateStore from './store'
 import owdCreateRouter from './router'
-/*
-import owdTerminalExtend from './lib/terminal/extend/terminalExtend.class.js'
-import owdModulesExtend from './lib/modules/extend/modulesExtend.class.js'
- */
+import owdTerminalExtend from './lib/terminal/extend/terminalExtend.class'
+import owdModulesExtend from './lib/modules/extend/modulesExtend.class'
 
-import {createApp} from "vue";
-import {OwdCoreBootContext} from "../../types";
+import {App, OwdCoreBootContext, OwdCoreModulesContext} from "../../types";
 
 import deviceDetector from "./plugins/deviceDetector";
 
-interface IBoot {
-  loaded: boolean
+interface Boot {
+  loaded: boolean;
+  store: any;
+  terminal: any;
 }
 
-type App = ReturnType<typeof createApp>
-
-export default class Boot implements IBoot {
-  public loaded: boolean = false
+export default class OwdBoot implements Boot {
+  loaded: boolean = false
+  store: any
+  terminal: any
 
   constructor(context: OwdCoreBootContext) {
     try {
@@ -49,16 +48,17 @@ export default class Boot implements IBoot {
     this.initializeRouter(context.app)
 
     // store
-    const store = this.initializeStore(context.app)
-    /*
-    this.router = this.initializeRouter(context.app)
-    this.terminal = this.initializeTerminal(context.app)
-    this.modules = this.initializeModules({
+    this.store = this.initializeStore(context.app)
+
+    // terminal
+    this.terminal = this.initializeTerminal()
+
+    this.initializeModules({
+      config: context.config,
       app: context.app,
       store: this.store,
       terminal: this.terminal
     })
-     */
   }
 
   initializeConfig(context: OwdCoreBootContext) {
@@ -109,8 +109,6 @@ export default class Boot implements IBoot {
   }
 
   initializeRouter(app: App) {
-    console.log(app.config)
-
     // create owd router
     // @ts-ignore
     const owdRouter = owdCreateRouter(app.config.owd.routes)
@@ -122,18 +120,14 @@ export default class Boot implements IBoot {
   /**
    * Initialize global terminal support
    */
-  /*
   initializeTerminal() {
-    const terminalExtend = new owdTerminalExtend()
-
-    // pre assign terminal to $owd (for module integrations)
-    // Vue.prototype.$owd = { terminal: terminalExtend }
-
     return new owdTerminalExtend()
   }
 
-  initializeModules({app, store, terminal}) {
-    return new owdModulesExtend({app, store, terminal})
-  }
+  /**
+   * Initialize modules
    */
+  initializeModules(context: OwdCoreModulesContext) {
+    return new owdModulesExtend(context)
+  }
 }

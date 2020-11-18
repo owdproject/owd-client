@@ -35,7 +35,76 @@ export interface OwdClientConfiguration {
   vuetify: any
 }
 
+// OWD CORE
+
 export interface OwdCoreBootContext {
   app: App
   config: any
+}
+
+// modulesExtend.class
+export interface OwdCoreModulesContext {
+  config: OwdClientConfiguration
+  app: App
+  store: any
+  terminal: any
+}
+
+// module.class
+export interface OwdModuleContext extends OwdCoreModulesContext {
+  moduleInfo: OwdModuleInfo
+}
+
+// OWD MODULES
+
+export interface OwdModuleWindowIcon {
+  name?: string
+  offset?: {
+    x?: number
+    y?: number
+  }
+}
+
+export interface OwdModuleWindow {
+  name: string
+  title: string
+  titleShort: string
+  icon: string|OwdModuleWindowIcon
+  config: {
+    menu: boolean
+    closed: boolean
+    hidden: boolean
+    resizable: boolean
+    size: {
+      width: number
+      height: number
+    }
+    position: {
+      x: number
+      y: number
+      z: number
+    }
+  }
+}
+
+export interface OwdModuleInfo {
+  name: string
+  version: string
+
+  license?: string
+  homepage?: string
+  author?: {
+    name: string
+    url: string
+  }
+
+  config: boolean
+  singleton: boolean
+  autostart: boolean
+
+  windows: OwdModuleWindow[]
+}
+
+export interface OwdModuleCommands {
+  [key: string]: any
 }

@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "rootDir": ".",
     "types": [
-      "webpack-env"
+      "webpack-env",
+      "@types/lodash.merge"
     ],
     "paths": {
       "@/*": [

@@ -1,28 +1,34 @@
-import {loadModuleFileComponentWindow} from "../../../utils/modules/moduleComponent.utils";
+import {OwdCoreModulesContext, OwdModuleInfo} from "../../../../../types";
 
 export default class {
-  constructor({ app, store, terminal }) {
-    this.app = app
-    this.terminal = terminal
-    this.store = store
+  config: any
+  app: any
+  terminal = null
+  store: any = null
+
+  modulesLoaded: any
+
+  constructor(context: OwdCoreModulesContext) {
+    this.config = context.config
+    this.app = context.app
+    this.terminal = context.terminal
+    this.store = context.store
 
     this.modulesLoaded = {}
-    this.windowsLoaded = {}
 
     this.initialize()
   }
 
-  /*
   isModuleConfigValid() {
     let failed = true
 
-    if (this.config && this.config.modules) {
+    if (this.config && typeof this.config.modules !== 'undefined') {
       if (this.config.modules.type !== 'client') {
-        if (this.config.debug) console.error('[OWD] Config modules.json is not valid.')
+        return console.error('[OWD] Config modules.json is not valid.')
       }
 
       if (!this.config.modules.modulesEnabled || Object.keys(this.config.modules.modulesEnabled).length === 0) {
-        if (this.config.debug) console.error("[OWD] There are no modules to load.")
+        return console.error("[OWD] There are no modules to load.")
       }
 
       failed = false
@@ -30,8 +36,10 @@ export default class {
 
     return failed
   }
-  */
 
+  /**
+   * Load OWD modules
+   */
   initialize() {
     // get names of the modules
     const modulesNames = Object.keys(this.app.config.owd.modules.modulesEnabled)
@@ -55,7 +63,6 @@ export default class {
     }
 
     this.store.commit('core/modules/SET_LOADED_MODULES', this.modulesLoaded)
-    this.store.commit('core/modules/SET_LOADED_WINDOWS', this.windowsLoaded)
   }
 
   /**
@@ -63,11 +70,12 @@ export default class {
    *
    * @param moduleInfo
    */
-  loadModule(moduleInfo) {
-    const moduleClass = require('@/../src/modules/' + moduleInfo.name + '/index')
+  loadModule(moduleInfo: OwdModuleInfo) {
+    const moduleClass = require('@/../src/modules/' + moduleInfo.name + '/index').default
 
-    if (moduleClass && typeof moduleClass.default === 'function') {
-      const moduleInstance = new moduleClass.default({
+    if (moduleClass && typeof moduleClass === 'function') {
+
+      const moduleInstance = new moduleClass({
         // context
         moduleInfo,
         app: this.app,
@@ -76,11 +84,6 @@ export default class {
       })
 
       if (moduleInstance) {
-        // load all module window components
-        if (Array.isArray(moduleInfo.windows)) {
-          this.registerModuleWindowComponents(moduleInfo, moduleInstance)
-        }
-
         return moduleInstance
       }
 
@@ -88,20 +91,13 @@ export default class {
     }
   }
 
-  getWindowConfigurationFromWindowName(windowName) {
-    if (typeof this.windowsLoaded[windowName] !== 'undefined') {
-      return this.windowsLoaded[windowName].window
-    }
-
-    return null
-  }
-
   /**
-   * Check if dependencies are satisfied (wip)
+   * Check if dependencies are satisfied todo
    *
    * @param dependencies
    * @returns {boolean}
    */
+  /*
   areDependenciesSatisfied(dependencies) {
     let dependenciesStatisfied = true
 
@@ -119,6 +115,7 @@ export default class {
 
     return dependenciesStatisfied
   }
+   */
 
   /**
    * Load module info
@@ -126,39 +123,11 @@ export default class {
    * @param moduleFolder
    * @returns {any}
    */
-  loadModuleInfo(moduleFolder) {
+  loadModuleInfo(moduleFolder: string) {
     try {
       return require('@/../src/modules/' + moduleFolder + '/module.json')
     } catch(e) {
       if (this.config.debug) console.error(`[OWD] Unable to load "/modules/${moduleFolder}/module.json"`, e)
     }
-  }
-
-  /**
-   * Register module window components
-   *
-   * @param moduleInfo
-   * @param moduleInstance
-   */
-  registerModuleWindowComponents(moduleInfo, moduleInstance) {
-    moduleInfo.windows.forEach(windowComponent => {
-      if (!windowComponent.name) {
-        if (this.config.debug) console.error(`[OWD] Component name is missing in ${windowComponent.name}.`)
-
-        return false
-      }
-
-      const moduleComponent = loadModuleFileComponentWindow(moduleInfo, windowComponent.name)
-
-      if (moduleComponent) {
-        this.app.component(windowComponent.name, moduleComponent)
-
-        // add module info to loaded modules
-        this.windowsLoaded[windowComponent.name] = {
-          window: windowComponent,
-          module: moduleInstance
-        }
-      }
-    })
   }
 }

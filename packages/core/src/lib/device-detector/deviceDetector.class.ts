@@ -6,23 +6,23 @@ const devicePixelRatio = window.devicePixelRatio || 1;
 const ipadOS13Up = window.navigator.platform === "MacIntel" && window.navigator.maxTouchPoints > 1;
 
 export default class DeviceDetector {
-  readonly windows: boolean;
-  readonly mac: boolean;
-  readonly unix: boolean;
-  readonly linux: boolean;
+  readonly windows: boolean
+  readonly mac: boolean
+  readonly unix: boolean
+  readonly linux: boolean
 
-  readonly ipod: boolean;
-  readonly ipad: boolean;
-  readonly iphone: boolean;
+  readonly ipod: boolean
+  readonly ipad: boolean
+  readonly iphone: boolean
 
-  readonly iphoneX: boolean;
-  readonly iphoneXR: boolean;
-  readonly iphoneXSMax: boolean;
+  readonly iphoneX: boolean
+  readonly iphoneXR: boolean
+  readonly iphoneXSMax: boolean
 
-  readonly ios: boolean;
-  readonly android: boolean;
-  readonly androidPhone: boolean;
-  readonly mobile: boolean;
+  readonly ios: boolean
+  readonly android: boolean
+  readonly androidPhone: boolean
+  readonly mobile: boolean
 
   constructor() {
     this.windows = this.findUserAgent("windows");
@@ -99,21 +99,4 @@ export default class DeviceDetector {
 
     return appClasses
   }
-}
-
-export interface IDeviceDetector {
-  ios: boolean;
-  iphone: boolean;
-  iphoneX: boolean;
-  iphoneXR: boolean;
-  iphoneXSMax: boolean;
-  ipod: boolean;
-  ipad: boolean;
-  android: boolean;
-  androidPhone: boolean;
-  windows: boolean;
-  mac: boolean;
-  unix: boolean;
-  linux: boolean;
-  mobile: boolean;
 }

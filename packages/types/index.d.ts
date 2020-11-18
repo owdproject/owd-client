@@ -10,6 +10,27 @@ type ModuleType = any //{ app: AppStateType; console: ConsoleStateType }
 export type App = ReturnType<typeof createApp>
 export type StateType = ModuleType
 
+// DEVICE DETECTOR
+
+export interface OwdDeviceDetector {
+  ios: boolean;
+  iphone: boolean;
+  iphoneX: boolean;
+  iphoneXR: boolean;
+  iphoneXSMax: boolean;
+  ipod: boolean;
+  ipad: boolean;
+  android: boolean;
+  androidPhone: boolean;
+  windows: boolean;
+  mac: boolean;
+  unix: boolean;
+  linux: boolean;
+  mobile: boolean;
+}
+
+// OWD CLIENT
+
 export interface OwdClientConfigurationModulesEnabled {
   [key: string]: {
     name: string

@@ -35,6 +35,7 @@ export interface OwdClientConfiguration {
   debug: boolean
   routes: any[]
   modules: OwdClientConfigurationModules
+  desktop: OwdClientConfigurationDesktop
   icons: OwdClientConfigurationIcons
   vuetify: any
 }
@@ -46,6 +47,15 @@ export interface OwdClientConfigurationModules {
 
 export interface OwdClientConfigurationIcons {
   [key: string]: any
+}
+
+export interface OwdClientConfigurationDesktop {
+  offset: {
+    top: number,
+    left: number,
+    right: number,
+    bottom: number
+  }
 }
 
 export interface OwdClientConfigurationModulesEnabled {

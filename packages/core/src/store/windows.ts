@@ -939,21 +939,24 @@ export default class WindowsModule extends VuexModule {
   @Action
   async calcPositionX(data: any) {
     const pageWindow = window
+    const owdWindow = data.window
+
+    const owdConfigDesktopOffset = owdWindow.module.app.config.owd.desktop.offset
 
     if (typeof data.forceLeft === 'undefined') data.forceLeft = false
     if (typeof data.forceRight === 'undefined') data.forceRight = false
 
     // is window in memory?
-    if (!data || !data.window.storage) return console.log('[OWD] Window missing')
+    if (!data || !owdWindow.storage) return console.log('[OWD] Window missing')
 
-    let x = data.window.storage.x
+    let x = owdWindow.storage.position.x
 
     // if > 0, window pos was loaded from local storage
-    if (data.window.storage.x === 0 || data.forceLeft) {
-      x = 96
-    } else if (data.window.storage.x < 0 || data.forceRight) {
-      x = pageWindow.innerWidth - data.window.config.width - 24 // right
-      if (data.window.storage.x < 0) x = x + data.window.storage.x
+    if (owdWindow.storage.position.x === 0 || data.forceLeft) {
+      x = owdConfigDesktopOffset.left
+    } else if (owdWindow.storage.position.x < 0 || data.forceRight) {
+      x = pageWindow.innerWidth - owdWindow.config.size.width - owdConfigDesktopOffset.right // right
+      if (owdWindow.storage.position.x < 0) x = x + owdWindow.storage.position.x
     }
 
     return x
@@ -968,22 +971,25 @@ export default class WindowsModule extends VuexModule {
   @Action
   async calcPositionY(data: any) {
     const pageWindow = window
+    const owdWindow = data.window
+
+    const owdConfigDesktopOffset = owdWindow.module.app.config.owd.desktop.offset
 
     if (typeof data.forceLeft === 'undefined') data.forceLeft = false
     if (typeof data.forceRight === 'undefined') data.forceRight = false
 
     // is window in memory?
-    if (!data || !data.window.storage) return console.log('[OWD] Window missing')
+    if (!data || !owdWindow.storage) return console.log('[OWD] Window missing')
 
-    let y = data.window.storage.y
+    let y = owdWindow.storage.position.y
 
     // if > 0, window pos was loaded from local storage
-    if (data.window.storage.y === 0 || data.forceLeft) {
-      y = 24
-    } else if (data.window.storage.y < 0 || data.forceRight) {
-      if (data.window.config) {
-        y = pageWindow.innerHeight - data.window.config.height - 24 // right
-        if (data.window.storage.y < 0) y = y + data.window.storage.y
+    if (owdWindow.storage.position.y === 0 || data.forceLeft) {
+      y = owdConfigDesktopOffset.top
+    } else if (owdWindow.storage.position.y < 0 || data.forceRight) {
+      if (owdWindow.config) {
+        y = pageWindow.innerHeight - owdWindow.config.size.height - owdConfigDesktopOffset.bottom // bottom
+        if (owdWindow.storage.position.y < 0) y = y + owdWindow.storage.position.y
       }
     }
 

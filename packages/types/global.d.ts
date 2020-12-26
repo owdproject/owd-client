@@ -1,4 +1,4 @@
-import { StateType, OwdClientConfigurationIcons } from './index'
+import {StateType, OwdClientConfiguration} from './index'
 import { Router, RouteLocationNormalizedLoaded } from 'vue-router'
 import { Store } from 'vuex'
 
@@ -8,10 +8,7 @@ declare module '@vue/runtime-core' {
     $route: RouteLocationNormalizedLoaded
     $router: Router
     $owd: {
-      config: {
-        debug: boolean
-        icons: OwdClientConfigurationIcons
-      }
+      config: OwdClientConfiguration
     }
   }
 }

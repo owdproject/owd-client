@@ -21,6 +21,16 @@ export default {
   // owd modules
   modules: modulesConfig,
 
+  // owd desktop
+  desktop: {
+    offset: {
+      top: 24,
+      left: 96,
+      right: 24,
+      bottom: 24
+    }
+  },
+
   // owd icons
   icons: {
     windows: {

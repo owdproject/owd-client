@@ -112,7 +112,7 @@ export default {
       line-height: 48px;
       margin-bottom: 4px;
       padding: 0;
-      font-family: $fontMenu;
+      font-family: $fontTitle;
       font-size: 17px;
       text-align: left;
       cursor: pointer;

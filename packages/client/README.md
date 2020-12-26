@@ -31,15 +31,10 @@ Based on Vue.js, it has been rewritten to be fully modular.
 - Vuetify.js implemented by default
 
 ## Getting started
-In the future there will be a tool to bootstrap your OWD client.  
-For now, you have to follow some easy steps as explained below.
-
-- Make sure you have Git and Node.js installed
+- Make sure you have Git, Node.js and Yarn installed
 - Clone this repo with `git clone https://github.com/owd-project/owd-client`
-- Copy the folder `packages/owd-client` in a new location of your choice
-- Enter that directory with `cd <your-path>/owd-client`
-- Install dependencies with `npm install`
-- Run your OWD client with `npm run serve`
+- Install dependencies with `yarn install`
+- Run OWD client with `npm run serve`
 
 ## Modules
 Each OWD module may include a `client` or a `server` folder.

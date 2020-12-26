@@ -1,10 +1,8 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
-import VueDeviceDetector from 'vue-device-detector'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
-localVue.use(VueDeviceDetector)
 
 import App from './App.vue'
 import PageIndex from './pages/main/Index.vue'

@@ -24,16 +24,15 @@ export default {
   .window-nav {
     position: relative;
     display: flex;
-    height: 34px;
-    line-height: 34px;
+    height: 38px;
+    line-height: 42px;
     user-select: none;
     z-index: 10;
 
-    > .window-nav-title {
+    .window-nav-title {
       display: inline-block;
       width: 100%;
       padding-left: 12px;
-      font-family: $fontMono;
       color: $windowNavTitleColor;
       cursor: default;
       white-space: nowrap;
@@ -47,31 +46,19 @@ export default {
       }
     }
 
-    > .window-nav-btn-group {
+    .window-nav-btn-group {
       display: flex;
       text-align: right;
-      margin-right: 1px;
 
       .btn {
         display: inline-block;
-        width: 33px;
-        height: 34px;
-        line-height: 34px;
+        width: 38px;
         text-align: center;
         cursor: pointer;
 
         .v-icon {
           color: $windowNavTitleColor;
           font-size: 19px;
-        }
-
-        .mdi-open-in-new {
-          font-size: 15px;
-        }
-
-        .mdi-window-maximize {
-          font-size: 18px;
-          vertical-align: -3px;
         }
       }
     }

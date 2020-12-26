@@ -1,10 +1,7 @@
 <template>
   <div id="notifications">
     <ul>
-      <li
-        v-for="(notification, key) in $store.state.core.notification.list"
-        :key="key"
-      >
+      <li v-for="(notification, key) in notifications" :key="key">
         <Notification
           :name="notification.name"
           :service="notification.service"
@@ -18,11 +15,17 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
 import Notification from './NotificationDetails'
 
 export default {
   name: 'NotificationList',
-  components: {Notification}
+  components: {Notification},
+  computed: {
+    ...mapGetters({
+      notifications: 'core/notification/list'
+    })
+  }
 }
 </script>
 

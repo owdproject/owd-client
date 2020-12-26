@@ -13,12 +13,16 @@
 </template>
 
 <script>
+import {ref} from 'vue'
 export default {
   name: 'NoticePressToExitFullscreen',
-  data() {
+  setup() {
+    const visible = ref(false)
+    const timeout = ref(0)
+
     return {
-      visible: false,
-      timeout: null
+      visible,
+      timeout
     }
   },
   mounted() {
@@ -26,18 +30,11 @@ export default {
       if (mutation.type === 'core/fullscreen/SET_FULLSCREEN_MODE') {
         if (typeof mutation.payload === 'boolean') {
           if (mutation.payload) {
-
             clearTimeout(this.timeout)
             this.visible = true
-
-            this.timeout = setTimeout(() => {
-              this.visible = false
-            }, 3000)
-
+            this.timeout = setTimeout(() => this.visible = false, 3000)
           } else {
-
             this.visible = false
-
           }
         }
       }

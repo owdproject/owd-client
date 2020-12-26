@@ -1,14 +1,12 @@
 <template>
-  <Desktop :system-bar="systemBar">
+  <Desktop>
+    <Logo :title="$store.state['core/client'].title" />
+    <Menu />
 
-    <!--<Logo :title="$store.state.core.client.title" />-->
-    <!--<Menu /> -->
-
-    <!--<WindowsList />
+    <WindowsContainer />
 
     <Notifications />
-    <NoticePressToExitFullScreen />-->
-
+    <NoticePressToExitFullScreen />
   </Desktop>
 </template>
 
@@ -17,7 +15,7 @@ import Desktop from '@owd-client/core/src/components/desktop/Desktop'
 import Logo from '@owd-client/core/src/components/logo/Logo'
 import Menu from '@owd-client/core/src/components/menu/Menu'
 import Notifications from '@owd-client/core/src/components/notification/NotificationList'
-import WindowsList from '@owd-client/core/src/components/module/ModulesContainer'
+import WindowsContainer from '@owd-client/core/src/components/window/container/WindowsContainer'
 import NoticePressToExitFullScreen from '@owd-client/core/src/components/notice/NoticePressToExitFullScreen'
 
 export default {
@@ -26,20 +24,13 @@ export default {
     Desktop,
     Logo,
     Menu,
-    WindowsList,
+    WindowsContainer,
     Notifications,
     NoticePressToExitFullScreen
   },
-  data() {
-    return {
-      systemBar: {
-        enabled: false,
-        dark: true
-      }
-    }
-  },
   mounted() {
     this.$store.dispatch('core/client/initialize')
+    this.$store.dispatch('core/windows/initialize')
   }
 }
 </script>

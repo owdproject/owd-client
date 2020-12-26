@@ -1,5 +1,5 @@
 <template>
-  <Window :title="data.title" :window="data">
+  <Window :title="data.config.title" :window="data">
     <p>
       Hello world! I'm an empty window.
     </p>
@@ -20,5 +20,6 @@
 <style scoped lang="scss">
   p {
     color: #AAA;
+    margin-top: 0;
   }
 </style>

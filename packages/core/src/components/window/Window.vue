@@ -1,17 +1,17 @@
 <template>
-  <div
+  <vue-resizable
     v-show="!window.storage.closed && !window.storage.minimized"
     :data-window="window.name"
     :max-width="windowMaxWidth"
     :max-height="windowMaxHeight"
     :min-width="windowMinWidth"
     :min-height="windowMinHeight"
-    :width="window.storage.width"
-    :height="window.storage.height"
-    :left="window.storage.x"
-    :top="window.storage.y"
+    :width="window.storage.size.width"
+    :height="window.storage.size.height"
+    :left="window.storage.position.x"
+    :top="window.storage.position.y"
     :style="{
-      zIndex: window.storage.z
+      zIndex: window.storage.position.z
     }"
     fit-parent
     drag-selector=".window-nav .window-nav-title"
@@ -21,8 +21,9 @@
     @resize:start="onResizeStart"
     @resize:end="onResizeEnd"
     :class="[
-      windowIdName,
-      'window', {
+      windowNameClass,
+      'window',
+      {
         'expanded': window.storage.expanded,
         'maximized': window.config.maximizable && window.storage.maximized,
         'dragging': dragging,
@@ -39,10 +40,7 @@
       class="window-container"
       @mousedown="onActivated"
     >
-      <WindowNav
-        :title="title"
-        @toggleMaximize="onToggleMaximize"
-      >
+      <WindowNav :title="title" @toggleMaximize="onToggleMaximize">
         <a
           class="btn btn-minimize"
           @click="onMinimize"
@@ -78,11 +76,12 @@
 
       <slot name="append-outer" />
     </div>
-  </div>
+  </vue-resizable>
 </template>
 
 <script>
-import VueResizable from 'vue-resizable'
+import {ref, computed} from 'vue'
+import VueResizable from '../../../../vue-resizable/src/components/vue-resizable'
 import WindowNav from './WindowNav'
 import WindowContent from './WindowContent'
 
@@ -94,73 +93,73 @@ export default {
     VueResizable
   },
   props: {
-    title: String,
+    title: {
+      type: String,
+      default: 'Empty title'
+    },
     window: Object
   },
-  data() {
-    return {
-      resizing: false,
-      dragging: false
-    }
-  },
-  computed: {
-    windowIdName() {
+  setup(props) {
+    const resizing = ref(false)
+    const dragging = ref(false)
+
+    // window name class
+    const windowNameClass = computed(() => {
       const kebabCase = require('kebab-case')
-      const kebabCaseName = kebabCase(this.window.name)
+      const kebabCaseName = kebabCase(props.window.config.name)
 
       return kebabCaseName.substr(1, kebabCaseName.length+1)
-    },
-    windowMaxWidth() {
-      if (!this.window.config.resizable) {
-        return this.window.config.width
-      }
+    })
 
-      if (this.window.storage.fullscreen) {
-        return window.innerWidth
-      }
-
-      if (this.window.config.maxWidth) {
-        return this.window.config.maxWidth
-      }
+    // window max width
+    const windowMaxWidth = computed(() => {
+      if (!props.window.config.resizable) return props.window.config.size.width
+      if (props.window.storage.fullscreen) return window.innerWidth
+      if (props.window.config.maxWidth) return props.window.config.maxWidth
 
       return undefined
-    },
-    windowMaxHeight() {
-      if (!this.window.config.resizable) {
-        return this.window.config.height
-      }
+    })
 
-      if (this.window.storage.fullscreen) {
-        return window.innerHeight
-      }
-
-      if (this.window.config.maxHeight) {
-        return this.window.config.maxHeight
-      }
+    // window max height
+    const windowMaxHeight = computed(() => {
+      if (!props.window.config.resizable) return props.window.config.size.height
+      if (props.window.storage.fullscreen) return window.innerHeight
+      if (props.window.config.maxHeight) return props.window.config.maxHeight
 
       return undefined
-    },
-    windowMinWidth() {
-      if (this.window.config.minWidth) {
-        return this.window.config.minWidth
-      }
+    })
 
-      return this.window.config.width
-    },
-    windowMinHeight() {
-      if (this.window.config.minHeight) {
-        return this.window.config.minHeight
-      }
+    // window min width
+    const windowMinWidth = computed(() => {
+      if (props.window.config.minWidth) return props.window.config.minWidth
 
-      return this.window.config.height
+      return props.window.config.size.width
+    })
+
+    // window min height
+    const windowMinHeight = computed(() => {
+      if (props.window.config.minHeight) return props.window.config.minHeight
+
+      return props.window.config.size.height
+    })
+
+    return {
+      resizing,
+      dragging,
+
+      windowNameClass,
+      windowMaxWidth,
+      windowMaxHeight,
+      windowMinWidth,
+      windowMinHeight,
     }
   },
   watch: {
     'window.storage': {
       handler: function () {
-        clearTimeout(this.saveToLocalstorage)
+        clearTimeout(this.saveToLocalStorage)
 
-        this.saveToLocalstorage = setTimeout(() => {
+        this.saveToLocalStorage = setTimeout(() => {
           this.$store.dispatch('core/windows/saveWindowsStorage')
         }, 500)
       },
@@ -199,36 +198,29 @@ export default {
   },
   methods: {
     /**
-       * Window minimize event
-       */
+     * Window minimize event
+     */
     onMinimize: function () {
       this.$store.dispatch('core/windows/windowMinimize', this.window)
     },
 
     /**
-       * Window maximize event
-       */
+     * Window maximize event
+     */
     onToggleMaximize: function () {
       this.$store.dispatch('core/windows/windowToggleMaximize', this.window)
     },
 
     /**
-       * Window open new link
-       */
-    onOpenLink: function (url) {
-      window.open(url, '_blank')
-    },
-
-    /**
-       * Window close event
-       */
+     * Window close event
+     */
     onClose: function () {
       this.$store.dispatch('core/windows/windowDestroy', this.window)
     },
 
     /**
-       * Window focus event
-       */
+     * Window focus event
+     */
     onFocus: function () {
       const self = this
 
@@ -239,15 +231,15 @@ export default {
     },
 
     /**
-       * Window actived event
-       */
+     * Window actived event
+     */
     onActivated: function () {
       if (!this.window.storage.closed) this.onFocus()
     },
 
     /**
-       * Window start resize event
-       */
+     * Window start resize event
+     */
     onResizeStart: function(data) {
       // emit to parent component
       this.$emit('resize:start', data)
@@ -256,23 +248,28 @@ export default {
     },
 
     /**
-       * Window end resize event
-       */
+     * Window end resize event
+     */
     onResizeEnd: function(data) {
       // emit to parent component
       this.$emit('resize:end', data)
 
-      this.window.storage.x = data.left
-      this.window.storage.y = data.top
-      this.window.storage.width = data.width
-      this.window.storage.height = data.height
+      this.$store.dispatch('core/windows/windowUpdatePosition', {
+        data: this.window,
+        position: { x: data.left, y: data.top }
+      })
+
+      this.$store.dispatch('core/windows/windowUpdateSize', {
+        data: this.window,
+        size: { width: data.width, height: data.height }
+      })
 
       this.resizing = false
     },
 
     /**
-       * Window start drag event
-       */
+     * Window start drag event
+     */
     onDragStart: function(data) {
       // emit to parent component
       this.$emit('drag:start', data)
@@ -281,8 +278,8 @@ export default {
     },
 
     /**
-       * On drag event, force no-margin when straight to borders
-       */
+     * On drag event, force no-margin when straight to borders
+     */
     onDragMove: function(data) {
       let forceNoMargin = false
 
@@ -295,32 +292,33 @@ export default {
         data.left = 0
       }
 
-      if ((data.top + this.window.storage.height) >= window.innerHeight - 15) {
+      if ((data.top + this.window.storage.size.height) >= window.innerHeight - 15) {
         forceNoMargin = true
-        data.top = window.innerHeight - this.window.storage.height
+        data.top = window.innerHeight - this.window.storage.size.height
       }
 
-      if ((data.left + this.window.storage.width) >= window.innerWidth - 15) {
+      if ((data.left + this.window.storage.size.width) >= window.innerWidth - 15) {
         forceNoMargin = true
-        data.left = window.innerWidth - this.window.storage.width
+        data.left = window.innerWidth - this.window.storage.size.width
       }
 
       if (forceNoMargin) {
         this.$store.dispatch('core/windows/windowUpdatePosition', {
           data: this.window,
-          x: data.left,
-          y: data.top,
-          width: data.width,
-          height: data.height
+          position: { x: data.left, y: data.top }
+        })
+
+        this.$store.dispatch('core/windows/windowUpdateSize', {
+          data: this.window,
+          size: { width: data.width, height: data.height }
         })
       }
     },
 
-
     /**
-       * Window stop drag event
-       * @param data
-       */
+     * Window stop drag event
+     * @param data
+     */
     onDragEnd: function (data) {
       // emit to parent component
       this.$emit('drag:end', data)
@@ -328,20 +326,17 @@ export default {
       this.dragging = false
 
       if (
-        this.window.storage.x !== data.left ||
-          this.window.storage.y !== data.top ||
-          this.window.storage.width !== data.width ||
-          this.window.storage.height !== data.height
+        this.window.storage.position.x !== data.left ||
+        this.window.storage.position.y !== data.top ||
+        this.window.storage.size.width !== data.width ||
+        this.window.storage.size.height !== data.height
       ) {
         if (data.top <= 15) data.top = 0
         if (data.left <= 15) data.left = 0
 
         this.$store.dispatch('core/windows/windowUpdatePosition', {
           data: this.window,
-          x: data.left,
-          y: data.top,
-          width: data.width,
-          height: data.height
+          position: { x: data.left, y: data.top }
         })
       }
     }

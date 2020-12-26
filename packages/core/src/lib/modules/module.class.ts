@@ -1,17 +1,24 @@
-import {OwdModuleContext, OwdModuleCommands, OwdModuleInfo, OwdModuleWindow} from "../../../../types";
+import {
+  OwdModule,
+  OwdModuleContext,
+  OwdModuleCommands,
+  OwdModuleWindowConfig,
+  OwdModuleSseEvents, OwdModuleInfo
+} from "../../../../types";
 import {MutationPayload, Store} from "vuex";
 import merge from 'lodash.merge'
 
-export default abstract class OwdModule {
-  private readonly moduleInfo
+export default abstract class Module implements OwdModule {
   private readonly app
   private readonly store
   private readonly terminal
 
-  private moduleStore: any
-  private moduleStoreConfig: any
-  private moduleStoreInstance: any
-  private moduleWindows: {[key: string]: any}
+  public moduleInfo: OwdModuleInfo;
+  public moduleStore: any
+  public moduleStoreConfig: any
+  public moduleStoreInstance: any
+
+  public windowsInstances: any
 
   constructor(context: OwdModuleContext) {
     this.moduleInfo = context.moduleInfo
@@ -19,8 +26,9 @@ export default abstract class OwdModule {
     this.store = context.store
     this.terminal = context.terminal
 
-    this.moduleWindows = {}
+    this.windowsInstances = {}
 
+    this.checkModuleInfo(context.moduleInfo)
     this.loadModuleStoreConfig()
     this.loadModuleStore()
     this.loadModuleStoreInstance()
@@ -37,7 +45,7 @@ export default abstract class OwdModule {
   abstract loadSseEvents(context: {
     store: Store<any>,
     terminal: any
-  }): OwdModuleCommands
+  }): OwdModuleSseEvents
   abstract loadStore(): void
   abstract loadStoreInstance(context: {
     store: Store<any>,
@@ -48,6 +56,23 @@ export default abstract class OwdModule {
    * Check module dependencies (todo)
    */
   checkDependencies() {}
+
+  /**
+   * Parse module info to fix errors or missing values
+   */
+  checkModuleInfo(moduleInfo: OwdModuleInfo) {
+    this.moduleInfo = moduleInfo
+
+    if (this.moduleInfo.windows) {
+      let i = 0;
+      for (const moduleWindow of this.moduleInfo.windows) {
+        if (!moduleWindow.titleShort) {
+          // titleShort always available
+          this.moduleInfo.windows[i].titleShort = moduleWindow.title
+        }
+      }
+    }
+  }
 
   // ### MODULE ASSETS
 
@@ -120,7 +145,7 @@ export default abstract class OwdModule {
    *
    * @param storeName
    */
-  registerModuleStoreInstance(storeName: string) {
+  public registerModuleStoreInstance(storeName: string) {
     const storeModule = {
       namespaced: true,
       ...this.moduleStoreInstance
@@ -135,7 +160,7 @@ export default abstract class OwdModule {
    *
    * @param storeName
    */
-  destroyModuleStoreInstance(storeName: string) {
+  public unregisterModuleStoreInstance(storeName: string) {
     this.store.unregisterModule(storeName)
   }
 
@@ -181,9 +206,10 @@ export default abstract class OwdModule {
 
       // register commands to OWD global terminal commands
       if (moduleCommands) {
-        Object.keys(moduleCommands).forEach((commandName) => {
-          this.terminal.addCommand(commandName, moduleCommands[commandName])
-        })
+        for (const commandName in moduleCommands) {
+          if (Object.prototype.hasOwnProperty.call(moduleCommands, commandName))
+            this.terminal.addCommand(commandName, moduleCommands[commandName])
+        }
       }
     }
   }
@@ -221,31 +247,27 @@ export default abstract class OwdModule {
   loadModuleWindowComponents() {
     // load all module window components
     if (Array.isArray(this.moduleInfo.windows)) {
-      this.moduleInfo.windows.forEach((windowComponent: OwdModuleWindow) => {
-        if (!windowComponent.name) {
-          if (this.app.config.debug) console.error(`[OWD] Component name is missing in ${windowComponent.name}.`)
+      this.moduleInfo.windows.forEach((windowConfig: OwdModuleWindowConfig) => {
+        if (!windowConfig.name) {
+          if (this.app.config.debug) console.error(`[OWD] Component name is missing in ${windowConfig.name}.`)
 
           return false
         }
 
-        const moduleComponent = this.registerModuleWindowComponent(windowComponent.name)
-
-        if (moduleComponent) {
-          // sync vue component registration
-          // todo make it async with defineAsyncComponent
-          this.app.component(windowComponent.name, moduleComponent)
-
-          // add module info to loaded modules
-          // maybe not more needed
-          this.moduleWindows[windowComponent.name] = windowComponent
-        }
+        this.registerModuleWindowComponent(windowConfig.name)
       })
     }
   }
 
-  registerModuleWindowComponent(windowName: string) {
+  private registerModuleWindowComponent(windowName: string) {
     try {
-      return require('@/../src/modules/' + this.moduleInfo.name + '/windows/' + windowName + '.vue').default
+      const windowComponent = require('@/../src/modules/' + this.moduleInfo.name + '/windows/' + windowName + '.vue').default
+
+      if (windowComponent) {
+        // sync vue component registration
+        // todo make it async with defineAsyncComponent
+        this.app.component(windowName, windowComponent)
+      }
     } catch(e) {
       if (this.app.config.debug) console.error(`[OWD] Unable to load "/modules/${this.moduleInfo.name}/windows/${windowName}.vue"`, e)
     }

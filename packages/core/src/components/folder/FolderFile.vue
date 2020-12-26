@@ -1,22 +1,8 @@
 <template>
-  <li
-    class="file"
-    :class="{ inactive }"
-  >
-    <a
-      :target="target"
-      :href="url"
-      :title="title"
-      @click="fn"
-    >
-      <img
-        :src="icon"
-        :alt="title"
-      >
-      <div
-        class="name"
-        v-html="name"
-      />
+  <li :class="['file', { inactive }]">
+    <a :href="url" :target="target" :title="title" @click="fn">
+      <img :src="icon" :alt="title" />
+      <div class="name" v-html="name" />
     </a>
   </li>
 </template>

@@ -1,14 +1,18 @@
-// register service worker
-// import './lib/service-worker/registerServiceWorker'
-
-import owdCreateStore from './store'
-import owdCreateRouter from './router'
+import { owdCreateStore } from './store'
+import { owdCreateRouter } from './router'
 import owdTerminalExtend from './lib/terminal/extend/terminalExtend.class'
 import owdModulesExtend from './lib/modules/extend/modulesExtend.class'
 
 import {App, OwdCoreBootContext, OwdCoreModulesContext} from "../../types";
 
+// import libraries
 import deviceDetector from "./plugins/deviceDetector";
+
+// register service worker
+import './lib/service-worker/registerServiceWorker'
+
+// global components
+import VIcon from "./components/shared/icon/VIcon.vue";
 
 interface Boot {
   loaded: boolean;
@@ -30,6 +34,10 @@ export default class OwdBoot implements Boot {
     }
   }
 
+  hasLoaded(): boolean {
+    return this.loaded
+  }
+
   /**
    * Initialize OWD
    * @param context
@@ -37,6 +45,9 @@ export default class OwdBoot implements Boot {
   initialize(context: OwdCoreBootContext) {
     // config
     this.initializeConfig(context);
+
+    // global components
+    this.initializeGlobalCompanents(context);
 
     // assets
     this.initializeAssets();
@@ -74,6 +85,11 @@ export default class OwdBoot implements Boot {
     }
   }
 
+  initializeGlobalCompanents(context: OwdCoreBootContext) {
+    // @ts-ignore / temporary VIcon (until Vuetify 3 is ready)
+    context.app.component('v-icon', VIcon)
+  }
+
   /**
    * Initialize assets
    */
@@ -94,10 +110,20 @@ export default class OwdBoot implements Boot {
     // Vue.prototype.$vuetify = this.config.vuetify
   }
 
+  /**
+   * Initialize plugins
+   *
+   * @param app
+   */
   initializePlugins(app: App) {
     app.use(deviceDetector)
   }
 
+  /**
+   * Initialize store
+   *
+   * @param app
+   */
   initializeStore(app: App) {
     // create owd store
     const owdStore = owdCreateStore()
@@ -108,9 +134,13 @@ export default class OwdBoot implements Boot {
     return owdStore
   }
 
+  /**
+   * Initialize router
+   *
+   * @param app
+   */
   initializeRouter(app: App) {
     // create owd router
-    // @ts-ignore
     const owdRouter = owdCreateRouter(app.config.owd.routes)
 
     // initialize owd router

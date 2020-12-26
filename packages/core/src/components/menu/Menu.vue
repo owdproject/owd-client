@@ -3,19 +3,19 @@
     <ul class="menu-group">
       <slot name="prepend" />
 
-      <template v-for="windowInstance of windowInstances">
+      <template v-for="windowInstance of windowsInstances">
         <li
           v-if="windowInstance.config.menu || typeof windowInstance.config.menu === 'boolean' && windowInstance.storage.menu"
           :class="{ active: !windowInstance.storage.closed && !windowInstance.storage.minimized }"
           :data-window="windowInstance.name"
-          @click="(e) => windowToggle(e, windowInstance)"
         >
           <MenuItem
-            :title="windowInstance.titleShort || windowInstance.title"
-            :color="windowInstance.color"
-            :icon="windowInstance.icon"
+            :title="windowInstance.config.titleShort || windowInstance.config.title"
+            :color="windowInstance.config.color"
+            :icon="windowInstance.config.icon"
             :data-menu-id="windowInstance.uniqueID"
             :key="windowInstance.uniqueID"
+            @click="(e) => windowToggle(e, windowInstance)"
           />
         </li>
       </template>
@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      windowInstances: 'core/windows/windowInstances'
+      windowsInstances: 'core/windows/windowsInstances'
     })
   },
   methods: {
@@ -44,7 +44,6 @@ export default {
      * Toggle window visibility
      */
     windowToggle: function (event, windowInstance) {
-      /*
       if (this.$device.mobile) {
 
         if (!windowInstance.storage.closed) {
@@ -55,7 +54,6 @@ export default {
         }
 
       } else {
-       */
 
         if (event.shiftKey) {
 
@@ -76,7 +74,7 @@ export default {
           }
         }
 
-      //}
+      }
     }
   }
 }

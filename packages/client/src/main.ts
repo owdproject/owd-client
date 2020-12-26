@@ -12,6 +12,6 @@ const app: ReturnType<typeof createApp> = createApp(App)
 // load Open Web Desktop & its modules
 const owdInstance = new boot({ app, config });
 
-if (owdInstance.loaded) {
+if (owdInstance.hasLoaded()) {
   app.mount('#app');
 }

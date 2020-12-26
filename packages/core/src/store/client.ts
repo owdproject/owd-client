@@ -2,17 +2,19 @@ import {VuexModule, Module, Mutation, Action, RegisterOptions} from "vuex-class-
 import DebugModule from "./debug";
 
 const clientLocalStorageName = 'client-storage'
-const clientDefaultTitle = process.env.VUE_APP_NAME
+
+const clientDefaultTitle = process.env.VUE_APP_NAME || ''
+const clientVersion = process.env.VUE_APP_VERSION || '2.0.0'
 
 @Module
 export default class ClientModule extends VuexModule {
   private readonly debugModule: DebugModule
 
   // client title
-  private title: string = clientDefaultTitle
+  public title: string = clientDefaultTitle
 
   // client version
-  private version: string = process.env.VUE_APP_VERSION
+  public version: string = clientVersion
 
   constructor(
     debugModule: DebugModule,
@@ -29,15 +31,12 @@ export default class ClientModule extends VuexModule {
 
   @Mutation
   TITLE_RESET() {
-    this.title = clientDefaultTitle
+    this.title = '' // clientDefaultTitle
   }
 
   @Action
   async initialize() {
     this.debugModule.LOG('App initialized')
-
-    // load windows positions from local storage
-    // await dispatch('core/windows/initialize', null, {root: true})
   }
 
   /**

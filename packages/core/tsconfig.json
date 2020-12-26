@@ -17,7 +17,9 @@
     "rootDir": ".",
     "types": [
       "webpack-env",
-      "@types/lodash.merge"
+      "@types/lodash.merge",
+      "@types/md5",
+      "@vuetify/types"
     ],
     "paths": {
       "@/*": [

@@ -40,7 +40,14 @@ export default {
 
 <style scoped lang="scss">
 #system-bar {
+  display: grid;
+  grid-template-columns: 30% 40% 30%;
+  color: #CCC;
   cursor: default;
+  height: 32px;
+  line-height: 33px;
+  font-size: 14px;
+  font-weight: bold;
   user-select: none;
 
   .system-bar-applications-component {

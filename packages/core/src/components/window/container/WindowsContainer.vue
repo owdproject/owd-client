@@ -1,13 +1,12 @@
 <template>
   <div id="windows-container">
-    <div v-for="windowInstance of windowInstances" :key="windowInstance.uniqueID">
-      <component
-        :is="windowInstance.name"
-        :data="windowInstance"
-        :data-window-id="windowInstance.uniqueID"
-        :key="windowInstance.uniqueID"
-      />
-    </div>
+    <component
+      v-for="windowInstance of windowsInstances"
+      :key="windowInstance.uniqueID"
+      :is="windowInstance.config.name"
+      :data="windowInstance"
+      :data-window-id="windowInstance.uniqueID"
+    />
   </div>
 </template>
 
@@ -18,7 +17,7 @@ export default {
   name: 'WindowsContainer',
   computed: {
     ...mapGetters({
-      windowInstances: 'core/windows/windowInstances'
+      windowsInstances: 'core/windows/windowsInstances'
     })
   }
 }

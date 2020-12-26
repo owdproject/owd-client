@@ -84,10 +84,13 @@
     display: flex;
     flex-flow: column;
     height: 100vh;
+    background: black;
 
     .desktop-content {
       position: relative;
       flex: 1;
+      border-radius: 8px 8px 0 0;
+      background: #161616;
     }
   }
 </style>

@@ -31,12 +31,12 @@ export interface OwdDeviceDetector {
 
 // OWD CLIENT
 
-export interface OwdClientConfigurationModulesEnabled {
-  [key: string]: {
-    name: string
-    version: string
-    url: string
-  };
+export interface OwdClientConfiguration {
+  debug: boolean
+  routes: any[]
+  modules: OwdClientConfigurationModules
+  icons: OwdClientConfigurationIcons
+  vuetify: any
 }
 
 export interface OwdClientConfigurationModules {
@@ -48,25 +48,25 @@ export interface OwdClientConfigurationIcons {
   [key: string]: any
 }
 
-export interface OwdClientConfiguration {
-  debug: boolean
-  routes: any[]
-  modules: OwdClientConfigurationModules
-  icons: OwdClientConfigurationIcons
-  vuetify: any
+export interface OwdClientConfigurationModulesEnabled {
+  [key: string]: {
+    name: string
+    version: string
+    url: string
+  };
 }
 
 // OWD CORE
 
 export interface OwdCoreBootContext {
   app: App
-  config: any
+  config: OwdClientConfiguration
 }
 
 // modulesExtend.class
 export interface OwdCoreModulesContext {
-  config: OwdClientConfiguration
   app: App
+  config: OwdClientConfiguration
   store: any
   terminal: any
 }
@@ -78,54 +78,103 @@ export interface OwdModuleContext extends OwdCoreModulesContext {
 
 // OWD MODULES
 
-export interface OwdModuleWindowIcon {
-  name?: string
-  offset?: {
-    x?: number
-    y?: number
-  }
-}
-
-export interface OwdModuleWindow {
-  name: string
-  title: string
-  titleShort: string
-  icon: string|OwdModuleWindowIcon
-  config: {
-    menu: boolean
-    closed: boolean
-    hidden: boolean
-    resizable: boolean
-    size: {
-      width: number
-      height: number
-    }
-    position: {
-      x: number
-      y: number
-      z: number
-    }
-  }
+export interface OwdModule {
+  moduleInfo: OwdModuleInfo
+  moduleStore: any
+  moduleStoreConfig: any;
+  moduleStoreInstance: any
+  windowsInstances: OwdModuleWindowsInstances;
+  registerModuleStoreInstance(storeName: string): void;
 }
 
 export interface OwdModuleInfo {
   name: string
   version: string
 
-  license?: string
-  homepage?: string
-  author?: {
-    name: string
-    url: string
-  }
-
   config: boolean
   singleton: boolean
   autostart: boolean
 
-  windows: OwdModuleWindow[]
+  windows: OwdModuleWindowConfig[]
 }
 
 export interface OwdModuleCommands {
   [key: string]: any
+}
+
+export interface OwdModuleSseEvents {
+  [key: string]: any
+}
+
+export interface OwdModuleWindowConfig {
+  name: string
+  category: string
+  title: string
+  titleShort: string
+  icon: string|OwdModuleWindowConfigIcon
+
+  menu: boolean
+  closed: boolean
+  hidden: boolean
+  resizable: boolean
+  minimized: boolean
+  maximized: boolean
+  maximizable: boolean
+  autoCloseBeforePageUnload?: boolean
+  autoDestroyBeforePageUnload?: boolean
+  size: OwdModuleWindowConfigSize
+  position: OwdModuleWindowConfigPosition
+}
+
+export interface OwdModuleWindowConfigSize {
+  width: number
+  height: number
+}
+
+export interface OwdModuleWindowConfigPosition {
+  x: number
+  y: number
+  z?: number
+}
+
+export interface OwdModuleWindowCreateInstanceData {
+  name?: string
+  uniqueID?: string
+  module: OwdModule
+  config: OwdModuleWindowConfig
+  storage?: any
+}
+
+export interface OwdModuleWindowInstance extends OwdModuleWindowCreateInstanceData {
+  uniqueID?: string
+}
+
+export interface OwdModuleWindowsInstances {
+  // WindowSample
+  [key: string]: {
+    // uniqueID
+    [key: string]: OwdModuleWindowInstance
+  }
+}
+
+export interface OwdModuleWindowsStorage {
+  // WindowSample
+  [key: string]: {
+    // uniqueID
+    [key: string]: {
+      position: OwdModuleWindowConfigPosition
+      size: OwdModuleWindowConfigSize
+      closed: boolean
+      minimized: boolean
+      maximized: boolean
+    }
+  }
+}
+
+export interface OwdModuleWindowConfigIcon {
+  name?: string
+  offset?: {
+    x?: number
+    y?: number
+  }
 }

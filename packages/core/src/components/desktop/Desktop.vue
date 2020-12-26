@@ -1,5 +1,5 @@
 <template>
-  <div id="desktop">
+  <div id="desktop" :class="{'with-system-bar': systemBar.enabled}">
     <SystemBar v-if="systemBar.enabled" :system-bar="systemBar">
       <template v-slot:system-bar-status-prepend>
         <slot name="system-bar-status-prepend" />
@@ -84,13 +84,19 @@
     display: flex;
     flex-flow: column;
     height: 100vh;
-    background: black;
+
+    &.with-system-bar {
+      background: black;
+
+      .desktop-content {
+        border-radius: 8px 8px 0 0;
+        background: #161616;
+      }
+    }
 
     .desktop-content {
       position: relative;
       flex: 1;
-      border-radius: 8px 8px 0 0;
-      background: #161616;
     }
   }
 </style>

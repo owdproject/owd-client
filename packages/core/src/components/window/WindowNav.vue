@@ -27,7 +27,6 @@ export default {
     height: 38px;
     line-height: 40px;
     user-select: none;
-    z-index: 10;
 
     .window-nav-title {
       display: inline-block;

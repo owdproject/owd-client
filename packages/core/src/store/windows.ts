@@ -18,7 +18,7 @@ import {
   OwdModule,
   OwdModuleWindowConfig, OwdModuleWindowConfigPosition, OwdModuleWindowConfigSize,
   OwdModuleWindowCreateInstanceData,
-  OwdModuleWindowInstance, OwdModuleWindowsStorage
+  OwdModuleWindowInstance, OwdModuleWindowsStorage, OwdWindowFocuses
 } from "../../../types";
 import * as windowsStorageUtils from "../utils/windows/windowsLocalStorage.utils";
 
@@ -30,10 +30,7 @@ export default class WindowsModule extends VuexModule {
   private readonly modulesModule: ModulesModule
   private readonly fullscreenModule: FullScreenModule
 
-  private windowFocuses: OwdWindowFocuses = {
-    list: [],
-    counter: 0
-  };
+  private windowFocuses: OwdWindowFocuses = windowsStorageUtils.loadWindowStorageFocuses()
 
   constructor(
     debugModule: DebugModule,
@@ -192,6 +189,9 @@ export default class WindowsModule extends VuexModule {
   @Mutation
   SET_WINDOW_FOCUSES(focuses: any) {
     this.windowFocuses = focuses
+
+    // save
+    windowsStorageUtils.saveWindowStorageFocuses(this.windowFocuses)
   }
 
   /**
@@ -744,7 +744,6 @@ export default class WindowsModule extends VuexModule {
 
   /**
    * Increment window focus
-   * todo
    *
    * @param data
    */
@@ -767,15 +766,24 @@ export default class WindowsModule extends VuexModule {
       owdWindowFocuses.list.splice(owdWindowFocusIndex, 1)
     }
 
-    owdWindowFocuses.list.unshift(owdWindow.uniqueID)
-    owdWindowFocuses.counter++
+    const tsFirstDayOfTheMonth = (+new Date(new Date().getFullYear(), 0, 1)) / 100;
+    const ts = +new Date() / 100
+    const counterString = (ts - tsFirstDayOfTheMonth).toString()
+    const counter = parseInt(counterString)
 
-    console.log('owdWindowFocuses', owdWindowFocuses)
+    owdWindowFocuses.list.unshift(owdWindow.uniqueID)
+    owdWindowFocuses.counter = counter
+
+    if (counter < owdWindowFocuses.counter) {
+      await forEachWindowInstance(owdWindow => {
+        owdWindow.storage.position.z = 0
+      })
+    }
 
     this.SET_WINDOW_FOCUSES(owdWindowFocuses)
 
     // handle storage position
-    owdWindow.storage.position.z = owdWindowFocuses.counter
+    owdWindow.storage.position.z = counter
 
     // update
     this.SET_WINDOW(owdWindow)

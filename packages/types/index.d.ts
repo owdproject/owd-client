@@ -33,6 +33,7 @@ export interface OwdDeviceDetector {
 
 export interface OwdClientConfiguration {
   debug: boolean
+  theme: string
   routes: any[]
   modules: OwdClientConfigurationModules
   desktop: OwdClientConfigurationDesktop
@@ -156,7 +157,7 @@ export interface OwdModuleWindowCreateInstanceData {
 }
 
 export interface OwdModuleWindowInstance extends OwdModuleWindowCreateInstanceData {
-  uniqueID?: string
+  uniqueID: string
 }
 
 export interface OwdModuleWindowsInstances {
@@ -187,4 +188,9 @@ export interface OwdModuleWindowConfigIcon {
     x?: number
     y?: number
   }
+}
+
+export interface OwdWindowFocuses {
+  list: string[]
+  counter: number
 }

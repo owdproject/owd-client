@@ -11,7 +11,7 @@
     :left="window.storage.position.x"
     :top="window.storage.position.y"
     :style="{
-      zIndex: window.storage.position.z
+      'z-index': window.storage.position.z
     }"
     fit-parent
     drag-selector=".window-nav .window-nav-title"
@@ -157,9 +157,9 @@ export default {
   watch: {
     'window.storage': {
       handler: function () {
-        clearTimeout(this.saveToLocalStorage)
+        clearTimeout(this.timeoutSaveToLocalStorage)
 
-        this.saveToLocalStorage = setTimeout(() => {
+        this.timeoutSaveToLocalStorage = setTimeout(() => {
           this.$store.dispatch('core/windows/saveWindowsStorage')
         }, 500)
       },
@@ -256,7 +256,7 @@ export default {
 
       this.$store.dispatch('core/windows/windowUpdatePosition', {
         data: this.window,
-        position: { x: data.left, y: data.top }
+        position: { x: data.left, y: data.top, z: this.window.storage.position.z }
       })
 
       this.$store.dispatch('core/windows/windowUpdateSize', {
@@ -305,7 +305,7 @@ export default {
       if (forceNoMargin) {
         this.$store.dispatch('core/windows/windowUpdatePosition', {
           data: this.window,
-          position: { x: data.left, y: data.top }
+          position: { x: data.left, y: data.top, z: this.window.storage.position.z }
         })
 
         this.$store.dispatch('core/windows/windowUpdateSize', {
@@ -336,7 +336,7 @@ export default {
 
         this.$store.dispatch('core/windows/windowUpdatePosition', {
           data: this.window,
-          position: { x: data.left, y: data.top }
+          position: { x: data.left, y: data.top, z: this.window.storage.position.z }
         })
       }
     }

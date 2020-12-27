@@ -19,7 +19,7 @@ export function generateWindowUniqueId(): string {
  * @param value
  */
 export function findWindowInstanceByAttr(attr: string, value: string) {
-  return store.getters['core/windows/windowsInstances']
+  return store.getters['core/windows/windowInstances']
     .find((owdWindow: OwdModuleWindowInstance) => {
       if (attr === 'uniqueID') {
         return owdWindow.uniqueID === value
@@ -36,7 +36,7 @@ export function findWindowInstanceByAttr(attr: string, value: string) {
  * @param cb
  */
 export async function forEachWindowInstance(cb: CallbackWindowInstance<OwdModuleWindowInstance>) {
-  for (const owdWindow of store.getters['core/windows/windowsInstances']) {
+  for (const owdWindow of store.getters['core/windows/windowInstances']) {
     await cb(owdWindow)
   }
 }

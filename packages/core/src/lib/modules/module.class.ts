@@ -18,7 +18,7 @@ export default abstract class Module implements OwdModule {
   public moduleStoreConfig: any
   public moduleStoreInstance: any
 
-  public windowsInstances: any
+  public windowInstances: any
 
   constructor(context: OwdModuleContext) {
     this.moduleInfo = context.moduleInfo
@@ -26,7 +26,7 @@ export default abstract class Module implements OwdModule {
     this.store = context.store
     this.terminal = context.terminal
 
-    this.windowsInstances = {}
+    this.windowInstances = {}
 
     this.checkModuleInfo(context.moduleInfo)
     this.loadModuleStoreConfig()

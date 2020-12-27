@@ -3,7 +3,7 @@
     <ul class="menu-group">
       <slot name="prepend" />
 
-      <template v-for="windowInstance of windowsInstances">
+      <template v-for="windowInstance of windowInstances">
         <li
           v-if="windowInstance.config.menu || typeof windowInstance.config.menu === 'boolean' && windowInstance.storage.menu"
           :class="{ active: !windowInstance.storage.closed && !windowInstance.storage.minimized }"
@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      windowsInstances: 'core/windows/windowsInstances'
+      windowInstances: 'core/windows/windowInstances'
     })
   },
   methods: {

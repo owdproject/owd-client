@@ -95,7 +95,7 @@ export interface OwdModule {
   moduleStore: any
   moduleStoreConfig: any;
   moduleStoreInstance: any
-  windowsInstances: OwdModuleWindowsInstances;
+  windowInstances: OwdModuleWindowsInstances;
   registerModuleStoreInstance(storeName: string): void;
 }
 

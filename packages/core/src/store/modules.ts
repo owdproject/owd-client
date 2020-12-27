@@ -11,17 +11,17 @@ export default class ModulesModule extends VuexModule {
   }
 
   get modulesWindowsNameKeyMap() {
-    const modulesWindowsNameKeyMap: any = {}
+    const owdModuleWindowNameKeyMap: any = {}
 
-    for (const moduleLoaded of Object.values(this.modules)) {
-      for (const moduleWindows of Object.values(moduleLoaded.windowsInstances)) {
-        for (const moduleWindow of Object.values(moduleWindows)) {
-          modulesWindowsNameKeyMap[moduleWindow.config.name] = moduleLoaded
+    for (const owdModule of Object.values(this.modules)) {
+      for (const owdWindows of Object.values(owdModule.windowInstances)) {
+        for (const owdWindow of Object.values(owdWindows)) {
+          owdModuleWindowNameKeyMap[owdWindow.config.name] = owdWindow
         }
       }
     }
 
-    return modulesWindowsNameKeyMap
+    return owdModuleWindowNameKeyMap
   }
 
   get modulesCategories() {

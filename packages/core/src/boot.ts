@@ -106,10 +106,9 @@ export default class OwdBoot implements Boot {
     try { require(`@/assets/themes/${app.config.owd.theme}/app.scss`) } catch(e) {}
 
     // import Oswald font with typeface
-    require('typeface-oswald')
-
-    // import Jetbrains Mono font with typeface
-    require('typeface-jetbrains-mono')
+    require('@fontsource/cantarell')
+    require('@fontsource/oswald')
+    require('@fontsource/jetbrains-mono')
 
     // assign vuetify config to $vuetify
     // Vue.prototype.$vuetify = this.config.vuetify

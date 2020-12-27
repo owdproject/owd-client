@@ -39,6 +39,9 @@
     "root": true
   },
   "dependencies": {
+    "@fontsource/cantarell": "^4.0.1",
+    "@fontsource/jetbrains-mono": "^4.0.1",
+    "@fontsource/oswald": "^4.0.1",
     "@types/lodash.merge": "^4.6.6",
     "@types/md5": "^2.2.1",
     "axios": "^0.21.0",
@@ -46,8 +49,6 @@
     "lodash.merge": "^4.6.2",
     "md5": "^2.3.0",
     "register-service-worker": "^1.7.1",
-    "typeface-jetbrains-mono": "^2.0.0",
-    "typeface-oswald": "1.1.13",
     "vue": "^3.0.2",
     "vue-resizable": "^1.2.5",
     "vue-router": "^4.0.0-rc.2",

@@ -30,6 +30,11 @@ export default class WindowsModule extends VuexModule {
   private readonly modulesModule: ModulesModule
   private readonly fullscreenModule: FullScreenModule
 
+  private windowFocuses: OwdWindowFocuses = {
+    list: [],
+    counter: 0
+  };
+
   constructor(
     debugModule: DebugModule,
     modulesModule: ModulesModule,
@@ -182,6 +187,11 @@ export default class WindowsModule extends VuexModule {
     // console.log('SET WINDOW', data)
     // keep this mutation just for vuex logging cuz
     // window object properties are changed directly
+  }
+
+  @Mutation
+  SET_WINDOW_FOCUSES(focuses: any) {
+    this.windowFocuses = focuses
   }
 
   /**
@@ -740,34 +750,35 @@ export default class WindowsModule extends VuexModule {
    */
   @Action
   async windowFocus(data: any) {
-    /*
-    const windowFocuses = [...state.windowFocuses]
+    const owdWindow = await this.getWindow(data)
 
-    if (windowFocuses.length === 0) {
-      // set first item null cuz index should start from 1
-      windowFocuses.push(null)
+    // is window in memory?
+    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window not found')
+
+    // handle windowFocuses positions
+    const owdWindowFocuses = { ...this.windowFocuses };
+    const owdWindowFocusIndex = owdWindowFocuses.list.indexOf(owdWindow.uniqueID)
+
+    if (owdWindowFocuses.list[0] == owdWindow.uniqueID) {
+      return false
     }
 
-    if (windowFocuses.includes(data.uniqueID)) {
-      windowFocuses.splice(windowFocuses.indexOf(data.uniqueID), 1)
+    if (owdWindowFocusIndex > -1) {
+      owdWindowFocuses.list.splice(owdWindowFocusIndex, 1)
     }
 
-    windowFocuses.push(data.uniqueID)
+    owdWindowFocuses.list.unshift(owdWindow.uniqueID)
+    owdWindowFocuses.counter++
 
-    this.forEachWindowInstance((window: any) => {
-      let index = windowFocuses.indexOf(window.uniqueID)
+    console.log('owdWindowFocuses', owdWindowFocuses)
 
-      if (index < 0) {
-        index = 0
-      }
+    this.SET_WINDOW_FOCUSES(owdWindowFocuses)
 
-      window.storage.z = index
-    })
+    // handle storage position
+    owdWindow.storage.position.z = owdWindowFocuses.counter
 
-    if (JSON.stringify(windowFocuses) !== JSON.stringify(state.windowFocuses)) {
-      commit('SET_WINDOW_FOCUSES', windowFocuses)
-    }
-     */
+    // update
+    this.SET_WINDOW(owdWindow)
   }
 
   /**

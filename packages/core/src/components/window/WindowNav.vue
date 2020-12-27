@@ -25,7 +25,7 @@ export default {
     position: relative;
     display: flex;
     height: 38px;
-    line-height: 42px;
+    line-height: 40px;
     user-select: none;
     z-index: 10;
 

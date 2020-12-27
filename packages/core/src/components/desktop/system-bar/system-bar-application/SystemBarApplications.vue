@@ -17,7 +17,7 @@
           <ul v-if="categoryApps && categoryApps.length > 0">
             <li v-for="(app, i) of categoryApps" :key="i">
               <a @click="windowToggle(app)">
-                <span :class="['mdi', app.config.icon.name]" />
+                <span :class="['mdi', app.config.icon.name || app.config.icon]" :style="`color: ${app.config.color};`" />
                 {{app.config.titleShort}}
               </a>
             </li>
@@ -49,6 +49,7 @@ export default {
 
     const windowToggle = function(windowInstance) {
       if (windowInstance.storage && (windowInstance.storage.closed || windowInstance.storage.minimized)) {
+        this.applicationDropdown = false;
         store.dispatch('core/windows/windowOpen', windowInstance)
       } else {
         // don't close if window has to stay minimized
@@ -96,11 +97,12 @@ ul.system-bar-applications {
 
 .applications-container {
   position: absolute;
-  top: 45px;
-  left: 13px;
-  padding: 15px 20px;
-  background: #333;
-  color: white;
+  top: 46px;
+  left: 14px;
+  padding: 20px;
+  background: $windowBackground;
+  box-shadow: 0 0 0 1px $windowBorder;
+  color: $windowColor;
   border-radius: 5px;
   line-height: 25px;
   font-weight: normal;
@@ -115,7 +117,7 @@ ul.system-bar-applications {
 
   .applications-categories {
     ul {
-      margin: 0;
+      margin: -5px 0 0 0;
       padding: 0;
       list-style-type: none;
 
@@ -124,6 +126,7 @@ ul.system-bar-applications {
 
         a {
           display: block;
+          cursor: pointer;
         }
       }
     }
@@ -140,12 +143,20 @@ ul.system-bar-applications {
 
         a {
           display: block;
-          line-height: 24px;
+          cursor: pointer;
+          line-height: 40px;
+          padding: 0 24px;
+          border-radius: 4px;
+
+          &:hover {
+            background: $windowContentItemBackgroundHover;
+          }
 
           span {
             font-size: 24px;
             vertical-align: middle;
-            margin-right: 10px;
+            margin-right: 12px;
+            color: $windowColorActive;
           }
         }
       }

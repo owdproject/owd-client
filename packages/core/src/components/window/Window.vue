@@ -417,7 +417,6 @@ export default {
       height: 100%;
 
       .window-content {
-        height: calc(100% - 44px);
         padding: 0 12px 12px 12px;
         overflow: hidden;
 

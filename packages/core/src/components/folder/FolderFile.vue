@@ -52,8 +52,8 @@ export default {
 
     @media(min-width: 480px) {
       &:not(.inactive):hover {
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid $windowContentItemBorder;
+        background: $windowContentItemBackgroundHover;
       }
     }
 

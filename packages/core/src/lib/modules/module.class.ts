@@ -68,7 +68,7 @@ export default abstract class Module implements OwdModule {
       for (const moduleWindow of this.moduleInfo.windows) {
         if (!moduleWindow.titleShort) {
           // titleShort always available
-          this.moduleInfo.windows[i].titleShort = moduleWindow.title
+          this.moduleInfo.windows[i].titleShort = this.moduleInfo.windows[i].title
         }
       }
     }

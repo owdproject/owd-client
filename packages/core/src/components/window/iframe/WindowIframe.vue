@@ -1,5 +1,5 @@
 <template>
-  <Window class="window-iframe" :title="data.title" :window="data">
+  <Window class="window-iframe" :title="data.config.title" :window="data">
     <div class="iframe-container" v-click-outside="focusOut">
       <iframe
         :src="url" :id="`${data.module.moduleInfo.name+'-iframe'}`"

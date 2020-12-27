@@ -265,7 +265,6 @@ export default abstract class Module implements OwdModule {
 
       if (windowComponent) {
         // sync vue component registration
-        // todo make it async with defineAsyncComponent
         this.app.component(windowName, windowComponent)
       }
     } catch(e) {

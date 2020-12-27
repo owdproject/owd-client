@@ -61,7 +61,6 @@ export default class ClientModule extends VuexModule {
   reset(reload: boolean) {
     localStorage.clear();
     sessionStorage.clear();
-    // dispatch('core/windows/resetWindowsStorage', null, {root: true})
 
     if (reload) window.location.reload()
   }

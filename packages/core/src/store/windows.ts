@@ -4,7 +4,6 @@ import {
   generateWindowUniqueId,
   findWindowInstanceByAttr,
   forEachWindowInstanceInWindowGroup,
-  getWindowGroup,
   getWindowGroupWindowIndex,
   isWindowGroupExisting,
   isWindowGroupWindowIndexExisting, forEachWindowInstance
@@ -248,85 +247,6 @@ export default class WindowsModule extends VuexModule {
 
     // check windows position on load
     this.windowsHandlePageResize()
-
-    // for each module
-
-      /*
-      const module = this.modulesModule.modulesLoaded[moduleName]
-
-      // does module contain any windows?
-      if (
-        module.moduleInfo &&
-        module.moduleInfo.windows && Array.isArray(module.moduleInfo.windows) &&
-        module.moduleInfo.windows.length > 0
-      ) {
-
-        // for each window in module
-        for (const moduleWindowComponent of module.moduleInfo.windows) {
-          // is component effectively a window?
-          if (moduleWindowComponent.window) {
-
-            // for example WindowSample
-            const windowName = moduleWindowComponent.name
-
-            console.log('[OWD] Load module component: ' + windowName)
-
-            const storageWindows = await dispatch('getInitialWindowsStorageByWindowName', windowName)
-
-            const windowData = {
-              name: windowName,
-              config: moduleWindowComponent,
-              module
-            }
-
-            // has windowsStorage filtered by windowName (from local storage) some windows for us?
-            if (Array.isArray(storageWindows) && storageWindows.length > 0) {
-
-              // for each window storage
-              for (const windowStorage of storageWindows) {
-
-                windowInstancesRegistrationPool.push({
-                  ...windowData,
-                  storage: windowStorage
-                })
-
-              }
-
-            } else {
-
-              // there is no window stored in local storage so generate
-              // at least one instance if .autostart is set to true
-              if (module.moduleInfo.autostart) {
-                windowInstancesRegistrationPool.push(windowData)
-              }
-
-            }
-
-          }
-        }
-
-      }
-       */
-
-    /*
-    if (windowInstancesRegistrationPool.length > 0) {
-      for (const windowData of windowInstancesRegistrationPool) {
-        const windowInstance = await dispatch('windowCreateInstance', windowData)
-
-        // add unique id to windowFocuses list
-        if (windowInstance) {
-          windowFocuses.push(windowInstance.uniqueID)
-        }
-      }
-    }
-
-    // check windows position on load
-    dispatch('windowsHandlePageResize')
-
-    if (JSON.stringify(windowFocuses) !== JSON.stringify(getters['windowFocuses'])) {
-      commit('SET_WINDOW_FOCUSES', windowFocuses)
-    }
-     */
   }
 
   /**
@@ -362,6 +282,7 @@ export default class WindowsModule extends VuexModule {
   @Action
   resetWindowsStorage() {
     windowsStorageUtils.resetWindowsStorage()
+    windowsStorageUtils.resetWindowsStorageFocuses()
   }
 
   /**
@@ -390,18 +311,18 @@ export default class WindowsModule extends VuexModule {
         break
     }
 
-    let windowInstance
+    let owdWindow
 
     if (uniqueID) {
-      windowInstance = findWindowInstanceByAttr('uniqueID', uniqueID)
+      owdWindow = findWindowInstanceByAttr('uniqueID', uniqueID)
     }
 
     if (groupName) {
-      windowInstance = findWindowInstanceByAttr('name', groupName)
+      owdWindow = findWindowInstanceByAttr('name', groupName)
     }
 
-    if (windowInstance) {
-      return windowInstance
+    if (owdWindow) {
+      return owdWindow
     }
 
     return null
@@ -424,7 +345,7 @@ export default class WindowsModule extends VuexModule {
     const module = this.modulesModule.getModuleFromWindowName(windowName)
 
     if (!module) {
-      return console.log('[OWD] This module window doesn\'t exists')
+      return console.error(`[OWD] Unable to create new window because "${windowName}" module doesn\'t exists`)
     }
 
     // check if there is already one window created in this window group
@@ -449,7 +370,7 @@ export default class WindowsModule extends VuexModule {
     }
 
     if (!data) {
-      return console.log('[OWD] Unable to create new window')
+      return console.error(`[OWD] Unable to create "${windowName}" window`)
     }
 
     data.storage.closed = false
@@ -580,7 +501,7 @@ export default class WindowsModule extends VuexModule {
     const owdWindow = await this.getWindow(data)
 
     // is window in memory?
-    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window missing')
+    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window not found')
 
     owdWindow.storage.minimized = true
 
@@ -598,7 +519,7 @@ export default class WindowsModule extends VuexModule {
     const owdWindow = await this.getWindow(data)
 
     // is window in memory?
-    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window missing')
+    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window not found')
 
     if (owdWindow.config.maximizable) {
       owdWindow.storage.maximized = true
@@ -619,7 +540,7 @@ export default class WindowsModule extends VuexModule {
     const owdWindow = await this.getWindow(data)
 
     // is window in memory?
-    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window missing')
+    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window not found')
 
     if (owdWindow.config.maximizable) {
       owdWindow.storage.maximized = false
@@ -639,7 +560,7 @@ export default class WindowsModule extends VuexModule {
     const owdWindow = await this.getWindow(data)
 
     // is window in memory?
-    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window missing')
+    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window not found')
 
     if (owdWindow.config.maximizable) {
       owdWindow.storage.maximized = !owdWindow.storage.maximized
@@ -665,7 +586,7 @@ export default class WindowsModule extends VuexModule {
     const window = await this.getWindow(data)
 
     // is window in memory?
-    if (!window || !window.storage) return console.log('[OWD] Window missing')
+    if (!window || !window.storage) return console.log('[OWD] Window not found')
 
     if (window.config.expandable) {
       window.storage.expanded = !window.storage.expanded
@@ -686,7 +607,7 @@ export default class WindowsModule extends VuexModule {
     const owdWindow = await this.getWindow(data)
 
     // is window in memory?
-    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window missing')
+    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window not found')
 
     owdWindow.storage.x = data.position.x
     owdWindow.storage.x = await this.calcPositionX({window: owdWindow})
@@ -734,7 +655,7 @@ export default class WindowsModule extends VuexModule {
     const owdWindow = await this.getWindow(data)
 
     // is window in memory?
-    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window missing')
+    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window not found')
 
     return {
       x: owdWindow.storage.x,
@@ -799,7 +720,7 @@ export default class WindowsModule extends VuexModule {
     const owdWindow = await this.getWindow(data)
 
     // is window in memory?
-    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window missing')
+    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window not found')
 
     return owdWindow.storage.z
   }
@@ -814,7 +735,7 @@ export default class WindowsModule extends VuexModule {
     const owdWindow = await this.getWindow(data.data)
 
     // is window in memory?
-    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window missing')
+    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window not found')
 
     owdWindow.storage.position = data.position
 
@@ -832,7 +753,7 @@ export default class WindowsModule extends VuexModule {
     const owdWindow = await this.getWindow(data.data)
 
     // is window in memory?
-    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window missing')
+    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window not found')
 
     owdWindow.storage.size = data.size
 
@@ -850,7 +771,7 @@ export default class WindowsModule extends VuexModule {
     const owdWindow = await this.getWindow(data)
 
     // is window in memory?
-    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window missing');
+    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window not found');
 
     if (
       (!!owdWindow.module.moduleInfo.autostart === false && !!owdWindow.config.menu === false) ||
@@ -899,7 +820,7 @@ export default class WindowsModule extends VuexModule {
     const owdWindow = await this.getWindow(data)
 
     // is window in memory?
-    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window missing')
+    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window not found')
 
     owdWindow.storage.closed = true
 
@@ -940,7 +861,7 @@ export default class WindowsModule extends VuexModule {
     const owdWindow = await this.getWindow(data.data)
 
     // is window in memory?
-    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window missing')
+    if (!owdWindow || !owdWindow.storage) return console.log('[OWD] Window not found')
 
     // window.title = data.title
 
@@ -965,7 +886,7 @@ export default class WindowsModule extends VuexModule {
     if (typeof data.forceRight === 'undefined') data.forceRight = false
 
     // is window in memory?
-    if (!data || !owdWindow.storage) return console.log('[OWD] Window missing')
+    if (!data || !owdWindow.storage) return console.log('[OWD] Window not found')
 
     let x = owdWindow.storage.position.x
 
@@ -997,7 +918,7 @@ export default class WindowsModule extends VuexModule {
     if (typeof data.forceRight === 'undefined') data.forceRight = false
 
     // is window in memory?
-    if (!data || !owdWindow.storage) return console.log('[OWD] Window missing')
+    if (!data || !owdWindow.storage) return console.log('[OWD] Window not found')
 
     let y = owdWindow.storage.position.y
 

@@ -56,7 +56,6 @@ export default class {
       if (!this.isModuleInfoValid(moduleName, moduleInfo)) {
         continue;
       }
-      console.log('MODULE INFO', moduleInfo)
 
       try {
         // add module info to loaded modules

@@ -51,10 +51,11 @@ export interface OwdClientConfigurationIcons {
 }
 
 export interface OwdClientConfigurationDesktop {
+  systemBar: boolean
   offset: {
-    top: number,
-    left: number,
-    right: number,
+    top: number
+    left: number
+    right: number
     bottom: number
   }
 }

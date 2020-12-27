@@ -1,0 +1,34 @@
+// global scss variables
+
+$fontTitle: "Oswald", Tahoma, sans-serif;
+$fontMono: "JetBrains Mono", monospace, FreeMono;
+
+$bodyBackground: #161616;
+$bodyColor: white;
+
+// menu
+$menuItemSquareBackground: #4987c1;
+$menuItemSquareColor: #FFFFFF;
+$menuItemTitleBackground: #212121;
+$menuItemTitleColor: #EEEEEE;
+
+// desktop
+$desktopSystemBarBackground: black;
+$desktopSystemBarColor: #CCC;
+
+// window
+$windowBackground: rgb(17, 17, 17);
+$windowColor: #888;
+$windowColorActive: #FFF;
+$windowBorder: #242424;
+$windowBorderRadius: 2px;
+$windowShadow: 0 0 0 1px rgba(21, 21, 21, 0.5);
+$windowNavTitleColor: #fff;
+$windowNavButtonColor: #aaa;
+
+// window content
+$windowContentInputBackground: #141414;
+$windowContentInputColor: #CCC;
+$windowContentBorder: #1f1f1f;
+$windowContentSeparator: #1a1a1a;
+$windowContentItemHover: rgba(0, 0, 0, 0.2);

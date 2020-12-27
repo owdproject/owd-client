@@ -7,11 +7,17 @@ import routesMain from '@/pages/main/routes'
 // import modules configuration
 import modulesConfig from '@/../config/modules.json'
 
+// active theme
+const themesConfig = require('./src/assets/themes/index.js')
+
 // types
 import {OwdClientConfiguration} from "../types";
 
 export default {
   debug: false,
+
+  // owd theme
+  theme: themesConfig.active,
 
   // owd routes
   routes: [
@@ -23,6 +29,7 @@ export default {
 
   // owd desktop
   desktop: {
+    systemBar: false,
     offset: {
       top: 24,
       left: 96,

@@ -4,7 +4,7 @@ $fontTitle: "Oswald", Tahoma, sans-serif;
 $fontMono: "JetBrains Mono", monospace, FreeMono;
 
 $bodyBackground: #161616;
-$bodyColor: red;
+$bodyColor: white;
 
 // menu
 $menuItemSquareBackground: #4987c1;
@@ -12,9 +12,14 @@ $menuItemSquareColor: #FFFFFF;
 $menuItemTitleBackground: #212121;
 $menuItemTitleColor: #EEEEEE;
 
+// desktop
+$desktopSystemBarBackground: black;
+$desktopSystemBarColor: white;
+
 // window
-$windowBackground: rgb(17, 17, 17);
-$windowTextColor: #b4b4b4;
+$windowBackground: #353535;
+$windowColor: #b4b4b4;
+$windowColorActive: #fff;
 $windowBorder: #242424;
 $windowBorderRadius: 2px;
 $windowShadow: 0 0 0 1px rgba(21, 21, 21, 0.5);
@@ -22,7 +27,8 @@ $windowNavTitleColor: #fff;
 $windowNavButtonColor: #aaa;
 
 // window content
-$windowContentInputBackground: #141414;
+$windowContentInputBackground: #2d2d2d;
 $windowContentInputColor: #CCC;
 $windowContentBorder: #222;
-$windowContentItemHover: rgba(0, 0, 0, 0.2);
+$windowContentSeparator: #2C2C2C;
+$windowContentItemHover: rgba(0, 0, 0, 0.1);

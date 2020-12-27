@@ -50,7 +50,7 @@ export default class OwdBoot implements Boot {
     this.initializeGlobalCompanents(context);
 
     // assets
-    this.initializeAssets();
+    this.initializeAssets(context.app);
 
     // plugins
     this.initializePlugins(context.app);
@@ -80,7 +80,9 @@ export default class OwdBoot implements Boot {
     context.app.config.globalProperties.$owd = {
       config: {
         debug: context.app.config.owd.debug,
-        icons: context.app.config.owd.icons
+        theme: context.app.config.owd.theme,
+        icons: context.app.config.owd.icons,
+        desktop: context.app.config.owd.desktop
       }
     }
   }
@@ -93,12 +95,15 @@ export default class OwdBoot implements Boot {
   /**
    * Initialize assets
    */
-  initializeAssets() {
+  initializeAssets(app: App) {
     // import app core styles
     require('./assets/css/app.scss')
 
     // import app custom styles from owd-client
     require('@/assets/css/app.scss')
+
+    // try to load custom theme styles
+    try { require(`@/assets/themes/${app.config.owd.theme}/app.scss`) } catch(e) {}
 
     // import Oswald font with typeface
     require('typeface-oswald')

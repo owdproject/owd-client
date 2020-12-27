@@ -1,3 +1,5 @@
+const themesConfig = require('./src/assets/themes/index.js')
+
 // import version from package.json
 process.env.VUE_APP_VERSION = require('./package.json').version;
 
@@ -15,7 +17,7 @@ module.exports = {
     loaderOptions: {
       scss: {
         additionalData:
-          '@import "@/assets/css/variables.scss";'
+          `@import "@/assets/themes/${themesConfig.active}/variables.scss";`,
       }
     }
   },

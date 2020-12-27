@@ -1,13 +1,13 @@
 <template>
-  <div id="desktop" :class="{'with-system-bar': systemBar.enabled}">
-    <SystemBar v-if="systemBar.enabled" :system-bar="systemBar">
+  <div id="desktop" :class="{'with-system-bar': systemBar}">
+    <DesktopSystemBar v-if="systemBar">
       <template v-slot:system-bar-status-prepend>
         <slot name="system-bar-status-prepend" />
       </template>
       <template v-slot:system-bar-status-append>
         <slot name="system-bar-status-append" />
       </template>
-    </SystemBar>
+    </DesktopSystemBar>
 
     <div class="desktop-content">
       <slot />
@@ -16,19 +16,20 @@
 </template>
 
 <script>
-  import SystemBar from "./system-bar/SystemBar";
+  import DesktopSystemBar from "./system-bar/DesktopSystemBar";
   import mixinServer from "../../mixins/mixinServer";
   export default {
     name: "Desktop",
     mixins: [mixinServer],
-    components: {SystemBar},
-    props: {
-      systemBar: {
-        type: Object,
-        default: {
-          enabled: false,
-          dark: true
-        }
+    components: {DesktopSystemBar},
+    data() {
+      return {
+        timeoutHandlePageResize: null
+      }
+    },
+    computed: {
+      systemBar() {
+        return this.$owd.config.desktop.systemBar
       }
     },
     beforeMount() {
@@ -49,32 +50,24 @@
       // CREATED EVENT
 
       // initialize client
-      // this.$store.dispatch('core/client/initialize')
+      this.$store.dispatch('core/client/initialize')
 
       // add window resize event
-      /*
       window.addEventListener('resize', function () {
-        clearTimeout(this.handlePageResize)
+        clearTimeout(self.timeoutHandlePageResize)
 
-        this.handlePageResize = setTimeout(() => {
-          self.$store.commit('core/windows/SET_DESKTOP_WIDTH', window.innerWidth)
-          self.$store.commit('core/windows/SET_DESKTOP_HEIGHT', window.innerHeight)
-
-          // windows position
+        self.timeoutHandlePageResize = setTimeout(() => {
           self.$store.dispatch('core/windows/windowsHandlePageResize')
         }, 100)
       })
-       */
     },
     unmounted() {
       const self = this
 
       // remove window resize event
-      /*
       window.removeEventListener('resize', function () {
         self.$store.dispatch('core/windows/windowsHandlePageResize')
       })
-       */
     }
   }
 </script>
@@ -86,11 +79,12 @@
     height: 100vh;
 
     &.with-system-bar {
-      background: black;
+      background: $desktopSystemBarBackground;
 
       .desktop-content {
         border-radius: 8px 8px 0 0;
-        background: #161616;
+        background: $bodyBackground;
+        color: $desktopSystemBarColor;
       }
     }
 

@@ -1,0 +1,28 @@
+#desktop {
+  .window {
+    .window-nav {
+      .window-nav-title {
+        display: inline-block;
+        width: 100%;
+        padding-left: 12px;
+        font-family: $fontMono;
+        font-size: 14px;
+      }
+
+      .window-nav-btn-group {
+        .btn {
+          .v-icon {
+            &.mdi-open-in-new {
+              font-size: 15px;
+            }
+
+            &.mdi-window-maximize {
+              font-size: 18px;
+              vertical-align: -3px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

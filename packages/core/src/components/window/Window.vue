@@ -353,7 +353,7 @@ export default {
     background: $windowBackground;
     box-shadow: $windowShadow;
     border-radius: $windowBorderRadius;
-    color: $windowTextColor;
+    color: $windowColor;
     overflow: hidden;
     user-select: none;
     pointer-events: initial;
@@ -418,7 +418,7 @@ export default {
 
       .window-content {
         height: calc(100% - 44px);
-        margin: 0 12px 12px 12px;
+        padding: 0 12px 12px 12px;
         overflow: hidden;
 
         &:before {

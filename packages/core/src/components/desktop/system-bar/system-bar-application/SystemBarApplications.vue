@@ -79,11 +79,11 @@ ul.system-bar-applications {
   margin: 0;
   padding: 0;
 
-  li {
+  > li {
     display: inline-block;
     margin-right: 25px;
 
-    a {
+    > a {
       display: block;
       padding: 0 12px;
     }
@@ -96,9 +96,9 @@ ul.system-bar-applications {
 
 .applications-container {
   position: absolute;
-  top: 50px;
-  left: 18px;
-  padding: 24px;
+  top: 45px;
+  left: 13px;
+  padding: 15px 20px;
   background: #333;
   color: white;
   border-radius: 5px;
@@ -106,6 +106,8 @@ ul.system-bar-applications {
   font-weight: normal;
   font-size: 13px;
   z-index: 999;
+  height: 500px;
+  max-height: 60vh;
 
   display: grid;
   width: 410px;
@@ -115,6 +117,7 @@ ul.system-bar-applications {
     ul {
       margin: 0;
       padding: 0;
+      list-style-type: none;
 
       li {
         width: 100%;
@@ -130,6 +133,7 @@ ul.system-bar-applications {
     ul {
       margin: 0;
       padding: 0;
+      list-style-type: none;
 
       li {
         width: 100%;

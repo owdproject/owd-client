@@ -7,7 +7,12 @@ import { createApp } from 'vue'
 // vuex
 type ModuleType = any //{ app: AppStateType; console: ConsoleStateType }
 
-export type App = ReturnType<typeof createApp>
+export type App = ReturnType<typeof createApp> & {
+  config: {
+    owd: OwdClientConfiguration
+  }
+}
+
 export type StateType = ModuleType
 
 // DEVICE DETECTOR

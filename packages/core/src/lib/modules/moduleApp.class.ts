@@ -251,7 +251,7 @@ export default abstract class Module implements OwdModuleApp {
     if (Array.isArray(this.moduleInfo.windows)) {
       this.moduleInfo.windows.forEach((windowConfig: OwdModuleAppWindowConfig) => {
         if (!windowConfig.name) {
-          if (this.app.config.debug) console.error(`[OWD] Component name is missing in ${windowConfig.name}.`)
+          if (this.app.config.owd.debug) console.error(`[OWD] Component name is missing in ${windowConfig.name}.`)
 
           return false
         }
@@ -270,7 +270,7 @@ export default abstract class Module implements OwdModuleApp {
         this.app.component(windowName, windowComponent)
       }
     } catch(e) {
-      if (this.app.config.debug) console.error(`[OWD] Unable to load "/modules/${this.moduleInfo.name}/windows/${windowName}.vue"`, e)
+      if (this.app.config.owd.debug) console.error(`[OWD] Unable to load "/modules/${this.moduleInfo.name}/windows/${windowName}.vue"`, e)
     }
   }
 }

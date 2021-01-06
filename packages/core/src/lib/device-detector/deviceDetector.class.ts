@@ -1,4 +1,5 @@
-// based on https://github.com/dreambo8563/vue-device-detector
+// Device Detector for Vue 3, adapted to OWD
+// forked from https://github.com/dreambo8563/vue-device-detector
 
 const appVersion = window.navigator.appVersion.toLowerCase();
 const userAgent = window.navigator.userAgent.toLowerCase();
@@ -25,14 +26,14 @@ export default class DeviceDetector {
   readonly mobile: boolean
 
   constructor() {
-    this.windows = this.findUserAgent("windows");
-    this.mac = this.findAppVersion("mac");
-    this.unix = this.findAppVersion("x11");
-    this.linux = this.findAppVersion("linux");
+    this.windows = DeviceDetector.findUserAgent("windows");
+    this.mac = DeviceDetector.findAppVersion("mac");
+    this.unix = DeviceDetector.findAppVersion("x11");
+    this.linux = DeviceDetector.findAppVersion("linux");
 
-    this.ipod = this.findUserAgent("ipod");
-    this.ipad = this.findUserAgent("ipad") || ipadOS13Up;
-    this.iphone = !this.windows && this.findUserAgent("iphone");
+    this.ipod = DeviceDetector.findUserAgent("ipod");
+    this.ipad = DeviceDetector.findUserAgent("ipad") || ipadOS13Up;
+    this.iphone = !this.windows && DeviceDetector.findUserAgent("iphone");
     this.iphoneX =
       this.iphone &&
       devicePixelRatio === 3 &&
@@ -52,8 +53,8 @@ export default class DeviceDetector {
       window.screen.height === 896;
 
     this.ios = this.iphone || this.ipod || this.ipad;
-    this.android = !this.windows && this.findUserAgent("android");
-    this.androidPhone = this.android && this.findUserAgent("mobile");
+    this.android = !this.windows && DeviceDetector.findUserAgent("android");
+    this.androidPhone = this.android && DeviceDetector.findUserAgent("mobile");
     this.mobile = this.androidPhone || this.iphone || this.ipod;
   }
 
@@ -63,7 +64,7 @@ export default class DeviceDetector {
    * @param needle
    * @private
    */
-  private findUserAgent(needle: string) {
+  static findUserAgent(needle: string) {
     return userAgent.indexOf(needle) !== -1;
   }
 
@@ -73,15 +74,15 @@ export default class DeviceDetector {
    * @param needle
    * @private
    */
-  private findAppVersion(needle: string) {
+  static findAppVersion(needle: string) {
     return appVersion.indexOf(needle) !== -1;
   }
 
   /**
    * Get device classes for document body
    */
-  public getAppClassList(): string[] {
-    const appClasses: string[] = []
+  public getBodyClassList(): string[] {
+    const appClasses = []
 
     // device
     appClasses.push(this.mobile ? 'is-mobile' : 'is-desktop')

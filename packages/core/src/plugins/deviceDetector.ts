@@ -7,7 +7,7 @@ export default {
 
     // append device classes to document body
     app.config.globalProperties.$device
-      .getAppClassList()
+      .getBodyClassList()
       .forEach((deviceClass: string) => {
         window.document.body.classList.add(deviceClass)
       })

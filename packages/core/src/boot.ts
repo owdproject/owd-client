@@ -16,13 +16,12 @@ import './lib/service-worker/registerServiceWorker'
 import VIcon from "./components/shared/icon/VIcon.vue";
 
 interface Boot {
-  loaded: boolean;
   store: any;
   terminal: any;
 }
 
 export default class OwdBoot implements Boot {
-  loaded: boolean = false
+  private readonly loaded: boolean = false
   store: any
   terminal: any
 

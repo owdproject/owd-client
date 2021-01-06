@@ -12,7 +12,7 @@ export default class ModulesDesktop {
   }
 
   /**
-   * Load desktop system modules
+   * Load OWD desktop system modules
    *
    * @param context
    */

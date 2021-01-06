@@ -1,13 +1,13 @@
 import {OwdCoreModulesContext, OwdModuleApp, OwdModuleAppInfo} from "../../../../../types";
 
+const modulesApp: {[key: string]: OwdModuleApp} = {};
+const modulesAppCategories: {[key: string]: any} = {};
+
 export default class ModulesApp {
   config: any
   app: any
   terminal = null
   store: any = null
-
-  modulesLoaded: {[key: string]: OwdModuleApp}
-  modulesCategories: {[key: string]: any}
 
   constructor(context: OwdCoreModulesContext) {
     this.config = context.config
@@ -15,10 +15,7 @@ export default class ModulesApp {
     this.terminal = context.terminal
     this.store = context.store
 
-    this.modulesLoaded = {}
-    this.modulesCategories = {}
-
-    this.initialize()
+    this.loadAppModules()
   }
 
   /**
@@ -43,54 +40,62 @@ export default class ModulesApp {
   }
 
   /**
-   * Load OWD modules
+   * Load OWD app modules from owd config
    */
-  initialize() {
+  loadAppModules() {
     // get names of the modules
     const modulesNames = Object.keys(this.app.config.owd.modules.modulesEnabled)
 
     for (const moduleName of modulesNames) {
       // load module info
-      const moduleInfo = this.loadModuleInfo(moduleName)
+      const moduleInfo = ModulesApp.loadModuleInfo(moduleName)
 
-      if (!this.isModuleInfoValid(moduleName, moduleInfo)) {
+      if (!ModulesApp.isModuleInfoValid(moduleName, moduleInfo)) {
         continue;
       }
 
       try {
-        // add module info to loaded modules
-        this.modulesLoaded[moduleInfo.name] = this.loadModule( {
+        ModulesApp.registerModule( {
           moduleInfo,
           app: this.app,
           store: this.store,
           terminal: this.terminal
         })
-
-        if (moduleInfo.category) {
-          if (!Object.prototype.hasOwnProperty.call(this.modulesCategories, moduleInfo.category)) {
-            this.modulesCategories[moduleInfo.category] = []
-          }
-
-          this.modulesCategories[moduleInfo.category].push(moduleInfo.name)
-        }
       } catch(e) {
         console.error(e)
       }
     }
 
-    this.store.commit('core/modules/SET_MODULES_LOADED', this.modulesLoaded)
+    this.store.commit('core/modules/SET_MODULES_LOADED', modulesApp)
   }
 
   /**
-   * Load module class initializer
+   * Register app module
    *
    * @param context
    */
-  loadModule(context: any) {
-    const moduleClass = require('@/../src/modules/' + context.moduleInfo.name + '/index').default
+  static registerModule(context: any) {
+    const moduleInfo = context.moduleInfo;
+    const moduleAppClass = require('@/../src/modules/' + moduleInfo.name + '/index').default
 
-    if (moduleClass && typeof moduleClass === 'function') {
-      return new moduleClass(context)
+    if (moduleAppClass && typeof moduleAppClass === 'function') {
+      const moduleAppLoaded = new moduleAppClass(context)
+
+      if (moduleAppLoaded) {
+
+        // assign loaded owd module to modulesApp
+        modulesApp[moduleInfo.name] = moduleAppLoaded
+
+        // add loaded module name to modulesAppCategories
+        if (moduleInfo.category) {
+          if (!Object.prototype.hasOwnProperty.call(modulesAppCategories, moduleInfo.category)) {
+            modulesAppCategories[moduleInfo.category] = []
+          }
+
+          modulesAppCategories[moduleInfo.category].push(moduleInfo.name)
+        }
+
+      }
     }
   }
 
@@ -121,32 +126,32 @@ export default class ModulesApp {
    */
 
   /**
+   * Load module app info
+   *
+   * @param moduleFolder
+   * @returns {any}
+   */
+  static loadModuleInfo(moduleFolder: string) {
+    try {
+      return require('@/../src/modules/' + moduleFolder + '/module.json')
+    } catch(e) {
+      console.error(`[OWD] Unable to load "/modules/${moduleFolder}/module.json"`, e)
+    }
+  }
+
+  /**
    * Check if this module info is valid
    *
    * @param moduleName
    * @param moduleInfo
    * @returns {any}
    */
-  isModuleInfoValid(moduleName: string, moduleInfo: OwdModuleAppInfo) {
+  static isModuleInfoValid(moduleName: string, moduleInfo: OwdModuleAppInfo) {
     if (!moduleInfo) {
       console.error(`[OWD] Config "${moduleName}/modules.json" is not valid`)
       return false;
     }
 
     return true;
-  }
-
-  /**
-   * Load module info
-   *
-   * @param moduleFolder
-   * @returns {any}
-   */
-  loadModuleInfo(moduleFolder: string) {
-    try {
-      return require('@/../src/modules/' + moduleFolder + '/module.json')
-    } catch(e) {
-      if (this.config.debug) console.error(`[OWD] Unable to load "/modules/${moduleFolder}/module.json"`, e)
-    }
   }
 }

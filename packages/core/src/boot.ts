@@ -66,9 +66,17 @@ export default class OwdBoot implements Boot {
     // terminal
     this.terminal = this.initializeTerminal()
 
+    // modules extend
     this.initializeModules({
       config: context.config,
       app: context.app,
+      store: this.store,
+      terminal: this.terminal
+    })
+
+    // provide owd boot instance for easy access to store and terminal instances
+    context.app.provide('owd', {
+      config: context.config,
       store: this.store,
       terminal: this.terminal
     })

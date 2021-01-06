@@ -13,14 +13,17 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "sourceMap": false,
-    "baseUrl": ".",
+    "baseUrl": "..",
     "rootDir": ".",
     "types": [
       "webpack-env"
     ],
     "paths": {
       "@/*": [
-        "src/*"
+        "client/src/*"
+      ],
+      "@core/*": [
+        "core/src/*"
       ]
     },
     "lib": [

@@ -37,10 +37,18 @@ export default class {
   /**
    * Run terminal global command
    *
+   * @param instance (localEcho)
    * @param name
    * @param args
    */
-  execCommand(name: string, args: any) {
+  execCommand(instance: any, name: string, args: any) {
+    // @ts-ignore
+    this.echo = function(msg) {
+      if (instance) {
+        instance.println(msg + '\n\r')
+      }
+    }
+
     if (this.existCommand(name)) {
       this.commands[name](...args)
     }

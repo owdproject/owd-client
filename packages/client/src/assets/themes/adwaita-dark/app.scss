@@ -6,12 +6,9 @@ $fontWindowTitle: 'Cantarell';
     border-radius: 8px 8px 1px 1px;
 
     .window-container {
-      display: grid;
-      grid-template-rows: 38px calc(100% - 38px);
       box-shadow: none;
 
       .window-nav {
-        margin-bottom: 1px;
         height: 36px;
         line-height: 36px;
         font-family: $fontWindowTitle;
@@ -30,9 +27,17 @@ $fontWindowTitle: 'Cantarell';
           right: 0;
         }
       }
+    }
 
-      .window-content {
+    &:not(.no-content-spacing) {
+      .window-container .window-content {
         padding: 12px;
+      }
+    }
+
+    &:not(.borderless) {
+      .window-container {
+        grid-template-rows: 37px calc(100% - 37px);
       }
     }
   }

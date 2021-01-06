@@ -2,8 +2,14 @@
   <router-view />
 </template>
 
-<script lang="ts">
+<script>
 export default {
-  name: 'App'
+  name: 'App',
+  beforeMount() {
+    // redirect to homepage on 404
+    if (!this.$route.name) {
+      this.$router.push({ name: 'index' })
+    }
+  }
 }
 </script>

@@ -1,8 +1,8 @@
-import {Module} from '@owd-client/core';
-import {OwdModule} from "../../../../types";
+import {ModuleApp} from '@owd-client/core';
+import {OwdModuleApp} from "../../../../types";
 
-export default class SampleModule extends Module {
-  constructor(context: OwdModule) {
+export default class SampleModule extends ModuleApp {
+  constructor(context: OwdModuleApp) {
     super(context)
     Object.setPrototypeOf(this, new.target.prototype);
   }

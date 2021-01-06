@@ -1,27 +1,52 @@
 import {VuexModule, Module, Mutation, Action} from "vuex-class-modules";
-import {OwdModule} from "../../../types";
+import {OwdModuleApp, OwdModuleAppWindowConfig, OwdModuleAppWindowInstance} from "../../../types";
 
 @Module
 export default class ModulesModule extends VuexModule {
-  private modules: {[key: string]: OwdModule} = {}
+  private modules: {[key: string]: OwdModuleApp} = {}
   private categories: any = {}
 
   get modulesLoaded() {
     return this.modules
   }
 
-  get modulesWindowsNameKeyMap() {
-    const owdModuleWindowNameKeyMap: any = {}
 
-    for (const owdModule of Object.values(this.modules)) {
-      for (const owdWindows of Object.values(owdModule.windowInstances)) {
-        for (const owdWindow of Object.values(owdWindows)) {
-          owdModuleWindowNameKeyMap[owdWindow.config.name] = owdWindow
+  /**
+   * Getter of windows instances grouped by category (productivity, etc)
+   */
+  get moduleApps(): {[key: string]: OwdModuleAppWindowConfig[]} {
+    let owdWindowCategories: {[key: string]: OwdModuleAppWindowConfig[]} = {}
+
+    // for each loaded module
+    for (const owdModuleApp of Object.values(this.modulesLoaded)) {
+
+      // cycle windowName in each module window instances (WindowSample)
+      for (const owdModuleAppWindow of owdModuleApp.moduleInfo.windows) {
+        if (typeof owdWindowCategories[owdModuleAppWindow.category] === 'undefined') {
+          owdWindowCategories[owdModuleAppWindow.category] = []
+        }
+
+        owdWindowCategories[owdModuleAppWindow.category].push(owdModuleAppWindow)
+      }
+
+    }
+
+    return owdWindowCategories
+  }
+
+  get infoWindowNameKeyMap() {
+    const owdModuleAppWindowNameKeyMap: any = {}
+
+    for (const owdModuleApp of Object.values(this.modules)) {
+      for (const owdModuleAppWindow of owdModuleApp.moduleInfo.windows) {
+        owdModuleAppWindowNameKeyMap[owdModuleAppWindow.name] = {
+          module: owdModuleApp,
+          window: owdModuleAppWindow
         }
       }
     }
 
-    return owdModuleWindowNameKeyMap
+    return owdModuleAppWindowNameKeyMap
   }
 
   get modulesCategories() {
@@ -44,9 +69,9 @@ export default class ModulesModule extends VuexModule {
   }
 
   @Action
-  getModuleFromWindowName(windowName: string): OwdModule|undefined {
-    if (typeof this.modulesWindowsNameKeyMap[windowName] !== 'undefined') {
-      return this.modulesWindowsNameKeyMap[windowName]
+  getDetailFromWindowName(windowName: string): { window: OwdModuleAppWindowConfig, module: OwdModuleApp } | undefined {
+    if (typeof this.infoWindowNameKeyMap[windowName] !== 'undefined') {
+      return this.infoWindowNameKeyMap[windowName]
     }
   }
 }

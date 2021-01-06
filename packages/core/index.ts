@@ -1,7 +1,10 @@
 import Boot from './src/boot'
-import ModuleClass from './src/lib/modules/module.class'
+import ModuleAppClass from './src/lib/modules/moduleApp.class'
 
 export const boot: any = Boot
 
+// todo
+export const getCurrentInstance = null
+
 // classes
-export const Module: any = ModuleClass
+export const ModuleApp: any = ModuleAppClass

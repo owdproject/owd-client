@@ -27,10 +27,6 @@ export default {
     WindowsContainer,
     Notifications,
     NoticePressToExitFullScreen
-  },
-  mounted() {
-    this.$store.dispatch('core/client/initialize')
-    this.$store.dispatch('core/windows/initialize')
   }
 }
 </script>

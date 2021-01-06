@@ -29,10 +29,9 @@
         'dragging': dragging,
         'resizing': resizing,
         'fullscreen': window.config.fullscreen && window.storage.fullscreen,
+        'borderless': window.config.borderless,
         'no-resizable': !window.config.resizable,
-        'no-content-margin': window.config.noContentMargin,
-        'no-window-margin': window.config.noWindowMargin,
-        'fullscreen-mobile': window.config.forceMobileMaximized
+        'no-content-spacing': window.config.noContentSpacing
       }
     ]"
   >
@@ -359,6 +358,7 @@ export default {
     pointer-events: initial;
 
     .window-container {
+      display: grid;
       box-shadow: inset 0 0 0 1px $windowBorder;
     }
 
@@ -379,15 +379,21 @@ export default {
       }
     }
 
-    &.no-window-margin .window-container > .window-content {
+    &.no-content-spacing .window-container > .window-content {
       height: 100%;
-      margin: -34px 0 0 0;
       padding: 0;
     }
 
-    &.no-content-margin .window-container > .window-content {
-      height: 100%;
-      margin: -34px 0 0 0;
+    &.borderless .window-container {
+      grid-template-rows: 0 100%;
+
+      > .window-nav {
+        display: none;
+      }
+
+      > .window-content {
+        padding: 0;
+      }
     }
 
     &.maximized {
@@ -441,16 +447,6 @@ export default {
       top: 0 !important;
       left: auto !important;
       right: 0 !important;
-
-      &.fullscreen-mobile {
-        @media (max-width: 823px) and (max-height: 823px) {
-          width: auto !important;
-          min-width: 100%;
-          max-width: 100%;
-          height: 100% !important;
-          max-height: 100% !important;
-        }
-      }
     }
   }
 </style>

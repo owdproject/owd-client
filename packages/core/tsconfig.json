@@ -22,7 +22,7 @@
       "@vuetify/types"
     ],
     "paths": {
-      "@/*": [
+      "@core/*": [
         "src/*"
       ]
     },

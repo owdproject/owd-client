@@ -1,10 +1,6 @@
 #desktop {
   .window {
-
     .window-container {
-      display: grid;
-      grid-template-rows: 38px calc(100% - 38px);
-
       .window-nav {
         .window-nav-title {
           display: inline-block;
@@ -28,6 +24,12 @@
             }
           }
         }
+      }
+    }
+
+    &:not(.borderless) {
+      .window-container {
+        grid-template-rows: 38px calc(100% - 38px);
       }
     }
   }

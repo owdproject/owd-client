@@ -1,7 +1,7 @@
 import { owdCreateStore } from './store'
 import { owdCreateRouter } from './router'
 import owdTerminalExtend from './lib/terminal/extend/terminalExtend.class'
-import owdModulesExtend from './lib/modules/extend/modulesExtend.class'
+import owdModulesAppExtend from './lib/modules/extend/modulesApp.class'
 import owdModulesDesktopExtend from "./lib/modules/extend/modulesDesktop.class";
 
 import {App, OwdCoreBootContext, OwdCoreModulesContext} from "../../types";
@@ -41,6 +41,7 @@ export default class OwdBoot implements Boot {
 
   /**
    * Initialize OWD
+   *
    * @param context
    */
   initialize(context: OwdCoreBootContext) {

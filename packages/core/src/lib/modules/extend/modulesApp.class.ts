@@ -1,12 +1,12 @@
-import {OwdCoreModulesContext, OwdModule, OwdModuleInfo} from "../../../../../types";
+import {OwdCoreModulesContext, OwdModuleApp, OwdModuleAppInfo} from "../../../../../types";
 
-export default class {
+export default class ModulesApp {
   config: any
   app: any
   terminal = null
   store: any = null
 
-  modulesLoaded: {[key: string]: OwdModule}
+  modulesLoaded: {[key: string]: OwdModuleApp}
   modulesCategories: {[key: string]: any}
 
   constructor(context: OwdCoreModulesContext) {
@@ -127,7 +127,7 @@ export default class {
    * @param moduleInfo
    * @returns {any}
    */
-  isModuleInfoValid(moduleName: string, moduleInfo: OwdModuleInfo) {
+  isModuleInfoValid(moduleName: string, moduleInfo: OwdModuleAppInfo) {
     if (!moduleInfo) {
       console.error(`[OWD] Config "${moduleName}/modules.json" is not valid`)
       return false;

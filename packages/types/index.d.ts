@@ -87,22 +87,22 @@ export interface OwdCoreModulesContext {
 }
 
 // module.class
-export interface OwdModuleContext extends OwdCoreModulesContext {
-  moduleInfo: OwdModuleInfo
+export interface OwdModuleAppContext extends OwdCoreModulesContext {
+  moduleInfo: OwdModuleAppInfo
 }
 
-// OWD MODULES
+// OWD MODULES APP
 
-export interface OwdModule {
-  moduleInfo: OwdModuleInfo
+export interface OwdModuleApp {
+  moduleInfo: OwdModuleAppInfo
   moduleStore: any
   moduleStoreConfig: any;
   moduleStoreInstance: any
-  windowInstances: OwdModuleWindowsInstances;
+  windowInstances: OwdModuleAppWindowsInstances;
   registerModuleStoreInstance(storeName: string): void;
 }
 
-export interface OwdModuleInfo {
+export interface OwdModuleAppInfo {
   name: string
   version: string
 
@@ -110,23 +110,23 @@ export interface OwdModuleInfo {
   singleton: boolean
   autostart: boolean
 
-  windows: OwdModuleWindowConfig[]
+  windows: OwdModuleAppWindowConfig[]
 }
 
-export interface OwdModuleCommands {
+export interface OwdModuleAppCommands {
   [key: string]: any
 }
 
-export interface OwdModuleSseEvents {
+export interface OwdModuleAppSseEvents {
   [key: string]: any
 }
 
-export interface OwdModuleWindowConfig {
+export interface OwdModuleAppWindowConfig {
   name: string
   category: string
   title: string
   titleShort: string
-  icon: string|OwdModuleWindowConfigIcon
+  icon: string|OwdModuleAppWindowConfigIcon
 
   menu: boolean
   closed: boolean
@@ -135,50 +135,52 @@ export interface OwdModuleWindowConfig {
   minimized: boolean
   maximized: boolean
   maximizable: boolean
+  borderless?: boolean
+  noContentSpacing?: boolean
   autoCloseBeforePageUnload?: boolean
   autoDestroyBeforePageUnload?: boolean
-  size: OwdModuleWindowConfigSize
-  position: OwdModuleWindowConfigPosition
+  size: OwdModuleAppWindowConfigSize
+  position: OwdModuleAppWindowConfigPosition
 }
 
-export interface OwdModuleWindowConfigSize {
+export interface OwdModuleAppWindowConfigSize {
   width: number
   height: number
 }
 
-export interface OwdModuleWindowConfigPosition {
+export interface OwdModuleAppWindowConfigPosition {
   x: number
   y: number
   z?: number
 }
 
-export interface OwdModuleWindowCreateInstanceData {
+export interface OwdModuleAppWindowCreateInstanceData {
   name?: string
   uniqueID?: string
-  module: OwdModule
-  config: OwdModuleWindowConfig
+  module: OwdModuleApp
+  config: OwdModuleAppWindowConfig
   storage?: any
 }
 
-export interface OwdModuleWindowInstance extends OwdModuleWindowCreateInstanceData {
+export interface OwdModuleAppWindowInstance extends OwdModuleAppWindowCreateInstanceData {
   uniqueID: string
 }
 
-export interface OwdModuleWindowsInstances {
+export interface OwdModuleAppWindowsInstances {
   // WindowSample
   [key: string]: {
     // uniqueID
-    [key: string]: OwdModuleWindowInstance
+    [key: string]: OwdModuleAppWindowInstance
   }
 }
 
-export interface OwdModuleWindowsStorage {
+export interface OwdModuleAppWindowsStorage {
   // WindowSample
   [key: string]: {
     // uniqueID
     [key: string]: {
-      position: OwdModuleWindowConfigPosition
-      size: OwdModuleWindowConfigSize
+      position: OwdModuleAppWindowConfigPosition
+      size: OwdModuleAppWindowConfigSize
       closed: boolean
       minimized: boolean
       maximized: boolean
@@ -186,7 +188,7 @@ export interface OwdModuleWindowsStorage {
   }
 }
 
-export interface OwdModuleWindowConfigIcon {
+export interface OwdModuleAppWindowConfigIcon {
   name?: string
   offset?: {
     x?: number

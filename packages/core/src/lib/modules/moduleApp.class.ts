@@ -1,26 +1,27 @@
 import {
-  OwdModule,
-  OwdModuleContext,
-  OwdModuleCommands,
-  OwdModuleWindowConfig,
-  OwdModuleSseEvents, OwdModuleInfo
+  OwdModuleApp,
+  OwdModuleAppContext,
+  OwdModuleAppCommands,
+  OwdModuleAppWindowConfig,
+  OwdModuleAppSseEvents,
+  OwdModuleAppInfo
 } from "../../../../types";
 import {MutationPayload, Store} from "vuex";
 import merge from 'lodash.merge'
 
-export default abstract class Module implements OwdModule {
+export default abstract class Module implements OwdModuleApp {
   private readonly app
   private readonly store
   private readonly terminal
 
-  public moduleInfo: OwdModuleInfo;
+  public moduleInfo: OwdModuleAppInfo;
   public moduleStore: any
   public moduleStoreConfig: any
   public moduleStoreInstance: any
 
   public windowInstances: any
 
-  constructor(context: OwdModuleContext) {
+  constructor(context: OwdModuleAppContext) {
     this.moduleInfo = context.moduleInfo
     this.app = context.app
     this.store = context.store
@@ -34,6 +35,7 @@ export default abstract class Module implements OwdModule {
     this.loadModuleStoreInstance()
     this.loadModuleWindowComponents()
     this.loadModuleCommands()
+    this.loadModuleAssets()
     this.loadModuleSseEvents()
   }
 
@@ -41,11 +43,11 @@ export default abstract class Module implements OwdModule {
   abstract loadCommands(context: {
     store: Store<any>,
     terminal: any
-  }): OwdModuleCommands
+  }): OwdModuleAppCommands
   abstract loadSseEvents(context: {
     store: Store<any>,
     terminal: any
-  }): OwdModuleSseEvents
+  }): OwdModuleAppSseEvents
   abstract loadStore(): void
   abstract loadStoreInstance(context: {
     store: Store<any>,
@@ -60,7 +62,7 @@ export default abstract class Module implements OwdModule {
   /**
    * Parse module info to fix errors or missing values
    */
-  checkModuleInfo(moduleInfo: OwdModuleInfo) {
+  checkModuleInfo(moduleInfo: OwdModuleAppInfo) {
     this.moduleInfo = moduleInfo
 
     if (this.moduleInfo.windows) {
@@ -247,7 +249,7 @@ export default abstract class Module implements OwdModule {
   loadModuleWindowComponents() {
     // load all module window components
     if (Array.isArray(this.moduleInfo.windows)) {
-      this.moduleInfo.windows.forEach((windowConfig: OwdModuleWindowConfig) => {
+      this.moduleInfo.windows.forEach((windowConfig: OwdModuleAppWindowConfig) => {
         if (!windowConfig.name) {
           if (this.app.config.debug) console.error(`[OWD] Component name is missing in ${windowConfig.name}.`)
 

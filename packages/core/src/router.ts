@@ -7,6 +7,11 @@ export const owdCreateRouter = function(owdPageRoutes: any) {
   })
 }
 
+/**
+ * Merge provided client/src/pages/:page/routes
+ *
+ * @param owdPageRoutes
+ */
 function owdMergeRoutes(owdPageRoutes: any) {
   let vueRoutes: any[] = []
 

@@ -12,7 +12,7 @@
   "windows": [
     {
       "name": "WindowExample",
-      "category": "system-utils",
+      "category": "system-tools",
       "title": "OWD Sample Module",
       "titleShort": "Open Web Desktop",
       "icon": {

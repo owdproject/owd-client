@@ -51,7 +51,10 @@ export interface OwdClientConfigurationIcons {
 }
 
 export interface OwdClientConfigurationDesktop {
-  systemBar: boolean
+  systemBar: {
+    active: boolean,
+    modules: { [key: string]: boolean }
+  }
   offset: {
     top: number
     left: number
@@ -194,4 +197,26 @@ export interface OwdModuleWindowConfigIcon {
 export interface OwdWindowFocuses {
   list: string[]
   counter: number
+}
+
+// OWD MODULES DESKTOP
+
+export interface OwdModulesDesktop {
+  [key: string]: {
+    [key: string]: OwdModuleDesktop[]
+  }
+}
+
+export interface OwdModuleDesktop {
+  config: OwdModuleDesktopConfig,
+  components: {
+    [key: string]: any
+  }
+}
+
+export interface OwdModuleDesktopConfig {
+  name: string,
+  area: string,
+  position: string,
+  opened?: boolean
 }

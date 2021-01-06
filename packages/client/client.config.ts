@@ -29,7 +29,13 @@ export default {
 
   // owd desktop
   desktop: {
-    systemBar: false,
+    systemBar: {
+      active: true,
+      modules: {
+        'applications-menu': true,
+        'notifications': true,
+      }
+    },
     offset: {
       top: 24,
       left: 96,

@@ -1,39 +1,63 @@
 <template>
-  <v-system-bar id="system-bar">
+  <v-system-bar id="desktop-system-bar">
 
-    <SystemBarApplications class="system-bar-applications-component" />
+    <div id="desktop-system-bar-left">
+      <slot name="system-bar-left-prepend" />
 
-    <v-spacer class="system-bar-applications-component" />
-    <SystemBarDate />
-    <v-spacer />
-
-    <SystemBarStatus>
-      <template>
-        <slot name="system-bar-status-prepend" />
+      <template v-for="(module, i) of modules.left" :key="i">
+        <component :is="module.components.menu" :config="module.config" @click="openSystemBarModule(module)" />
+        <component :is="module.components.content" :opened="module.config.opened" />
       </template>
-      <template v-slot:append>
-        <slot name="system-bar-status-append" />
+
+      <slot name="system-bar-left-append" />
+    </div>
+
+    <div id="desktop-system-bar-center">
+      <template v-for="(module, i) of modules.center" :key="i">
+        <component :is="module.components.menu" :config="module.config" @click="openSystemBarModule(module)" />
+        <component :is="module.components.content" :opened="module.config.opened" />
       </template>
-    </SystemBarStatus>
+    </div>
+
+    <div id="desktop-system-bar-right">
+      <slot name="system-bar-right-prepend" />
+
+      <template v-for="(module, i) of modules.right" :key="i">
+        <component :is="module.components.menu" :config="module.config" @click="openSystemBarModule(module)" />
+        <component :is="module.components.content" :opened="module.config.opened" />
+      </template>
+
+      <slot name="system-bar-right-append" />
+    </div>
 
   </v-system-bar>
 </template>
 
 <script>
-import SystemBarApplications from "./system-bar-application/SystemBarApplications";
-import SystemBarDate from "./system-bar-date/SystemBarDate";
-import SystemBarStatus from "./system-bar-status/SystemBarStatus";
+import {reactive} from 'vue';
+import ModulesDesktop from '../../../lib/modules/extend/modulesDesktop.class'
+
 export default {
-  name: "DesktopSystemBar",
-  components: {SystemBarStatus, SystemBarDate, SystemBarApplications},
   props: {
     systemBar: Boolean
+  },
+  setup() {
+    const modulesDesktopSystemBar = reactive(ModulesDesktop.getModules('system-bar'))
+
+    const openSystemBarModule = (module) => {
+      module.config.opened = !module.config.opened
+    }
+
+    return {
+      modules: modulesDesktopSystemBar,
+      openSystemBarModule
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
-#system-bar {
+#desktop-system-bar {
   display: grid;
   grid-template-columns: 30% 40% 30%;
   cursor: default;
@@ -43,10 +67,12 @@ export default {
   font-weight: bold;
   user-select: none;
 
-  .system-bar-applications-component {
-    @media(max-width: 768px) {
-      display: none;
-    }
+  #desktop-system-bar-center {
+    text-align: center;
+  }
+
+  #desktop-system-bar-right {
+    text-align: right;
   }
 }
 </style>

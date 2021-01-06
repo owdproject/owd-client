@@ -1,12 +1,21 @@
 <template>
   <div id="desktop" :class="{'with-system-bar': systemBar}">
     <DesktopSystemBar v-if="systemBar">
-      <template v-slot:system-bar-status-prepend>
-        <slot name="system-bar-status-prepend" />
+
+      <template v-slot:system-bar-left-prepend>
+        <slot name="system-bar-left-prepend" />
       </template>
-      <template v-slot:system-bar-status-append>
-        <slot name="system-bar-status-append" />
+      <template v-slot:system-bar-left-append>
+        <slot name="system-bar-left-append" />
       </template>
+
+      <template v-slot:system-bar-right-prepend>
+        <slot name="system-bar-right-prepend" />
+      </template>
+      <template v-slot:system-bar-right-append>
+        <slot name="system-bar-right-append" />
+      </template>
+
     </DesktopSystemBar>
 
     <div class="desktop-content">
@@ -16,58 +25,58 @@
 </template>
 
 <script>
+  import { getCurrentInstance } from 'vue'
   import DesktopSystemBar from "./system-bar/DesktopSystemBar";
   import mixinServer from "../../mixins/mixinServer";
+  import {useStore} from "vuex";
+
   export default {
     name: "Desktop",
     mixins: [mixinServer],
     components: {DesktopSystemBar},
-    data() {
-      return {
-        timeoutHandlePageResize: null
+    setup() {
+      const app = getCurrentInstance()
+      const store = useStore()
+
+      const handleDesktopResize = () => {
+        clearTimeout(timeoutHandleDesktopResize)
+
+        timeoutHandleDesktopResize = setTimeout(() => {
+          self.$store.dispatch('core/windows/windowsHandlePageResize')
+        }, 100)
       }
-    },
-    computed: {
-      systemBar() {
-        return this.$owd.config.desktop.systemBar
+
+      let timeoutHandleDesktopResize = null
+
+      return {
+        systemBar: app.appContext.config.globalProperties.$owd.config.desktop.systemBar.active,
+
+        coreClientInitialize: () => {
+          store.dispatch('core/client/initialize')
+          store.dispatch('core/windows/initialize')
+        },
+        coreSseConnect: () => {
+          store.dispatch('core/sse/connect', 'once')
+        },
+        handleDesktopResize
       }
     },
     beforeMount() {
-      const self = this
-
-      // redirect to homepage on 404
-      if (!this.$route.name) {
-        this.$router.push({ name: 'index' })
-      }
-
+      // initialize client
+      this.coreClientInitialize()
+    },
+    mounted() {
       // on page ready, connect to SSE
       if (this.isServerAvailable) {
-        window.addEventListener('load', function() {
-          self.$store.dispatch('core/sse/connect', 'once')
-        })
+        window.addEventListener('load', this.coreSseConnect)
       }
 
-      // CREATED EVENT
-
-      // initialize client
-      this.$store.dispatch('core/client/initialize')
-
-      // add window resize event
-      window.addEventListener('resize', function () {
-        clearTimeout(self.timeoutHandlePageResize)
-
-        self.timeoutHandlePageResize = setTimeout(() => {
-          self.$store.dispatch('core/windows/windowsHandlePageResize')
-        }, 100)
-      })
+      // add desktop resize event
+      window.addEventListener('resize', this.handleDesktopResize)
     },
     unmounted() {
-      const self = this
-
-      // remove window resize event
-      window.removeEventListener('resize', function () {
-        self.$store.dispatch('core/windows/windowsHandlePageResize')
-      })
+      // remove desktop resize event
+      window.removeEventListener('resize', this.handleDesktopResize)
     }
   }
 </script>

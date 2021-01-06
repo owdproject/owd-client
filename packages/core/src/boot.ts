@@ -2,6 +2,7 @@ import { owdCreateStore } from './store'
 import { owdCreateRouter } from './router'
 import owdTerminalExtend from './lib/terminal/extend/terminalExtend.class'
 import owdModulesExtend from './lib/modules/extend/modulesExtend.class'
+import owdModulesDesktopExtend from "./lib/modules/extend/modulesDesktop.class";
 
 import {App, OwdCoreBootContext, OwdCoreModulesContext} from "../../types";
 
@@ -162,6 +163,7 @@ export default class OwdBoot implements Boot {
    * Initialize modules
    */
   initializeModules(context: OwdCoreModulesContext) {
-    return new owdModulesExtend(context)
+    new owdModulesAppExtend(context)
+    new owdModulesDesktopExtend(context)
   }
 }

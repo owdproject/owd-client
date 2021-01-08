@@ -75,7 +75,7 @@ export default class AuthModule extends VuexModule {
     return new Promise((resolve, reject) => {
       axios
         .post(API_BASE_URL + 'auth/check', { token: this.account.token })
-        .then(() => resolve())
+        .then(() => resolve(true))
         .catch(() => {
           this.ACCOUNT_RESET()
           reject()

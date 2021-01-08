@@ -1,5 +1,6 @@
 import { owdCreateStore } from './store'
 import { owdCreateRouter } from './router'
+import { owdCreateI18n } from './i18n'
 import owdTerminalExtend from './lib/terminal/extend/terminalExtend.class'
 import owdModulesAppExtend from './lib/modules/extend/modulesApp.class'
 import owdModulesDesktopExtend from "./lib/modules/extend/modulesDesktop.class";
@@ -45,19 +46,22 @@ export default class OwdBoot implements Boot {
    */
   initialize(context: OwdCoreBootContext) {
     // config
-    this.initializeConfig(context);
+    this.initializeConfig(context)
 
     // global components
-    this.initializeGlobalCompanents(context);
+    this.initializeGlobalCompanents(context)
 
     // assets
-    this.initializeAssets(context.app);
+    this.initializeAssets(context.app)
 
     // plugins
-    this.initializePlugins(context.app);
+    this.initializePlugins(context.app)
+
+    // internationalization
+    this.initializeRouter(context.app)
 
     // router
-    this.initializeRouter(context.app)
+    this.initializeInternationalization(context.app)
 
     // store
     this.store = this.initializeStore(context.app)
@@ -158,6 +162,17 @@ export default class OwdBoot implements Boot {
 
     // initialize owd router
     app.use(owdRouter)
+  }
+
+  /**
+   * Initialize internationalization
+   *
+   * @param app
+   */
+  initializeInternationalization(app: App) {
+    const i18n = owdCreateI18n()
+
+    app.use(i18n)
   }
 
   /**

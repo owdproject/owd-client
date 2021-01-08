@@ -4,7 +4,10 @@
     <div class="applications-categories">
       <ul>
         <li v-for="(category, i) in Object.keys(moduleApps)" :key="i">
-          <a @click="categorySelected = category" v-text="category"/>
+          <a
+              @click="categorySelected = category"
+              v-text="$t(`desktop.system-bar.applications-menu.categories.${category}`)"
+          />
         </li>
       </ul>
     </div>

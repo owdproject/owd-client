@@ -1,5 +1,5 @@
 <template>
-  <DesktopSystemBarMenu v-text="config.name" />
+  <DesktopSystemBarMenu v-text="$t(`desktop.system-bar.${config.name}.menu`)" />
 </template>
 
 <script>

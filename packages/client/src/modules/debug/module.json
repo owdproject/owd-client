@@ -16,7 +16,10 @@
       "title": "OWD Debug Module",
       "titleShort": "Debug",
       "icon": {
-        "name": "mdi-hexagon-multiple-outline"
+        "name": "mdi-bug",
+        "offset": {
+          "x": -1
+        }
       },
       "menu": true,
       "closed": true,

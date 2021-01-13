@@ -1,0 +1,36 @@
+{
+  "name": "debug",
+  "version": "3.0.0",
+  "singleton": true,
+  "autostart": true,
+  "license": "MIT",
+  "homepage": "https://github.com/hacklover/owd-debug",
+  "author": {
+    "name": "hacklover",
+    "url": "https://hacklover.net"
+  },
+  "windows": [
+    {
+      "name": "WindowDebug",
+      "category": "system-tools",
+      "title": "OWD Debug Module",
+      "titleShort": "Debug",
+      "icon": {
+        "name": "mdi-hexagon-multiple-outline"
+      },
+      "menu": true,
+      "closed": true,
+      "hidden": false,
+      "resizable": false,
+      "size": {
+        "width": 448,
+        "height": 240
+      },
+      "position": {
+        "x": -1,
+        "y": 0,
+        "z": 0
+      }
+    }
+  ]
+}

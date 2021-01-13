@@ -29,12 +29,6 @@ $fontWindowTitle: 'Cantarell';
       }
     }
 
-    &:not(.no-content-spacing) {
-      .window-container .window-content {
-        padding: 12px;
-      }
-    }
-
     &:not(.borderless) {
       .window-container {
         grid-template-rows: 37px calc(100% - 37px);

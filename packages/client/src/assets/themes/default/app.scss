@@ -27,6 +27,12 @@
       }
     }
 
+    &:not(.no-content-spacing):not(.borderless) {
+      .window-container .window-content {
+        padding-top: 0;
+      }
+    }
+
     &:not(.borderless) {
       .window-container {
         grid-template-rows: 38px calc(100% - 38px);

@@ -359,7 +359,12 @@ export default {
 
     .window-container {
       display: grid;
+      grid-template-rows: 100%;
       box-shadow: inset 0 0 0 1px $windowBorder;
+
+      .window-content {
+        height: 100%;
+      }
     }
 
     &.dragging, &.resizing {
@@ -384,15 +389,15 @@ export default {
       padding: 0;
     }
 
-    &.borderless .window-container {
-      grid-template-rows: 0 100%;
+    &:not(.no-content-spacing) {
+      .window-container .window-content {
+        padding: 12px;
+      }
+    }
 
+    &.borderless .window-container {
       > .window-nav {
         display: none;
-      }
-
-      > .window-content {
-        padding: 0;
       }
     }
 

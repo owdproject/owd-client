@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      windowInstances: 'core/windows/windowInstances'
+      windowInstances: 'core/window/windowInstances'
     })
   },
   methods: {
@@ -47,10 +47,10 @@ export default {
       if (this.$device.mobile) {
 
         if (!windowInstance.storage.closed) {
-          this.$store.dispatch('core/windows/windowClose', windowInstance)
+          this.$store.dispatch('core/window/windowClose', windowInstance)
         } else {
-          this.$store.dispatch('core/windows/windowCloseAll')
-          this.$store.dispatch('core/windows/windowOpen', windowInstance)
+          this.$store.dispatch('core/window/windowCloseAll')
+          this.$store.dispatch('core/window/windowOpen', windowInstance)
         }
 
       } else {
@@ -58,18 +58,18 @@ export default {
         if (event.shiftKey) {
 
           // force close with shiftkey
-          this.$store.dispatch('core/windows/windowMinimize', windowInstance)
+          this.$store.dispatch('core/window/windowMinimize', windowInstance)
 
         } else {
 
           if (windowInstance.storage && (windowInstance.storage.closed || windowInstance.storage.minimized)) {
-            this.$store.dispatch('core/windows/windowOpen', windowInstance)
+            this.$store.dispatch('core/window/windowOpen', windowInstance)
           } else {
             // don't close if window has to stay minimized
             if (windowInstance.config.menu === true) {
-              this.$store.dispatch('core/windows/windowClose', windowInstance)
+              this.$store.dispatch('core/window/windowClose', windowInstance)
             } else {
-              this.$store.dispatch('core/windows/windowMinimize', windowInstance)
+              this.$store.dispatch('core/window/windowMinimize', windowInstance)
             }
           }
         }

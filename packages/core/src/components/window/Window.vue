@@ -188,7 +188,7 @@ export default {
         clearTimeout(this.timeoutSaveToLocalStorage)
 
         this.timeoutSaveToLocalStorage = setTimeout(() => {
-          this.$store.dispatch('core/windows/saveWindowsStorage')
+          this.$store.dispatch('core/window/saveWindowsStorage')
         }, 500)
       },
       deep: true
@@ -200,7 +200,7 @@ export default {
     // when press ESC and a window is in full-screen mode
     window.addEventListener('keydown', function (e) {
       if (e.keyCode === 27) {
-        self.$store.dispatch('core/windows/windowUnmaximizeAll')
+        self.$store.dispatch('core/window/windowUnmaximizeAll')
       }
     })
 
@@ -208,8 +208,8 @@ export default {
       window.addEventListener(
           'beforeunload',
           async () => {
-            await self.$store.dispatch('core/windows/windowClose', self.window)
-            await self.$store.dispatch('core/windows/saveWindowsStorage')
+            await self.$store.dispatch('core/window/windowClose', self.window)
+            await self.$store.dispatch('core/window/saveWindowsStorage')
           }
       )
     }
@@ -218,8 +218,8 @@ export default {
       window.addEventListener(
           'beforeunload',
           async () => {
-            await self.$store.dispatch('core/windows/windowDestroy', self.window)
-            await self.$store.dispatch('core/windows/saveWindowsStorage')
+            await self.$store.dispatch('core/window/windowDestroy', self.window)
+            await self.$store.dispatch('core/window/saveWindowsStorage')
           }
       )
     }
@@ -229,21 +229,21 @@ export default {
      * Window minimize event
      */
     onMinimize: function () {
-      this.$store.dispatch('core/windows/windowMinimize', this.window)
+      this.$store.dispatch('core/window/windowMinimize', this.window)
     },
 
     /**
      * Window maximize event
      */
     onToggleMaximize: function () {
-      this.$store.dispatch('core/windows/windowToggleMaximize', this.window)
+      this.$store.dispatch('core/window/windowToggleMaximize', this.window)
     },
 
     /**
      * Window close event
      */
     onClose: function () {
-      this.$store.dispatch('core/windows/windowDestroy', this.window)
+      this.$store.dispatch('core/window/windowDestroy', this.window)
     },
 
     /**
@@ -254,7 +254,7 @@ export default {
 
       // prevent focus when minimizing or closing
       setTimeout(() => {
-        self.$store.dispatch('core/windows/windowFocus', self.window)
+        self.$store.dispatch('core/window/windowFocus', self.window)
       }, 100)
     },
 
@@ -282,12 +282,12 @@ export default {
       // emit to parent component
       this.$emit('resize:end', data)
 
-      this.$store.dispatch('core/windows/windowUpdatePosition', {
+      this.$store.dispatch('core/window/windowUpdatePosition', {
         data: this.window,
         position: {x: data.left, y: data.top, z: this.window.storage.position.z}
       })
 
-      this.$store.dispatch('core/windows/windowUpdateSize', {
+      this.$store.dispatch('core/window/windowUpdateSize', {
         data: this.window,
         size: {width: data.width, height: data.height}
       })
@@ -331,12 +331,12 @@ export default {
       }
 
       if (forceNoMargin) {
-        this.$store.dispatch('core/windows/windowUpdatePosition', {
+        this.$store.dispatch('core/window/windowUpdatePosition', {
           data: this.window,
           position: {x: data.left, y: data.top, z: this.window.storage.position.z}
         })
 
-        this.$store.dispatch('core/windows/windowUpdateSize', {
+        this.$store.dispatch('core/window/windowUpdateSize', {
           data: this.window,
           size: {width: data.width, height: data.height}
         })
@@ -362,7 +362,7 @@ export default {
         if (data.top <= 15) data.top = 0
         if (data.left <= 15) data.left = 0
 
-        this.$store.dispatch('core/windows/windowUpdatePosition', {
+        this.$store.dispatch('core/window/windowUpdatePosition', {
           data: this.window,
           position: {x: data.left, y: data.top, z: this.window.storage.position.z}
         })

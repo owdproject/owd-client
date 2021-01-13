@@ -42,7 +42,7 @@
         clearTimeout(timeoutHandleDesktopResize)
 
         timeoutHandleDesktopResize = setTimeout(() => {
-          self.$store.dispatch('core/windows/windowsHandlePageResize')
+          self.$store.dispatch('core/window/windowsHandlePageResize')
         }, 100)
       }
 
@@ -53,7 +53,7 @@
 
         coreClientInitialize: () => {
           store.dispatch('core/client/initialize')
-          store.dispatch('core/windows/initialize')
+          store.dispatch('core/window/initialize')
         },
         coreSseConnect: () => {
           store.dispatch('core/sse/connect', 'once')

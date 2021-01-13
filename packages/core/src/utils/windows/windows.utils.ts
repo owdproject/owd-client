@@ -19,7 +19,7 @@ export function generateWindowUniqueId(): string {
  * @param value
  */
 export function findWindowInstanceByAttr(attr: string, value: string) {
-  return store.getters['core/windows/windowInstances']
+  return store.getters['core/window/windowInstances']
     .find((owdModuleAppWindowInstance: OwdModuleAppWindowInstance) => {
       if (attr === 'uniqueID') {
         return owdModuleAppWindowInstance.uniqueID === value
@@ -36,7 +36,7 @@ export function findWindowInstanceByAttr(attr: string, value: string) {
  * @param cb
  */
 export async function forEachWindowInstance(cb: CallbackWindowInstance<OwdModuleAppWindowInstance>) {
-  for (const owdModuleAppWindowInstance of store.getters['core/windows/windowInstances']) {
+  for (const owdModuleAppWindowInstance of store.getters['core/window/windowInstances']) {
     await cb(owdModuleAppWindowInstance)
   }
 }
@@ -44,19 +44,19 @@ export async function forEachWindowInstance(cb: CallbackWindowInstance<OwdModule
 // WINDOW GROUPS
 
 export function isWindowGroupExisting(name: string) {
-  return typeof store.getters['core/windows/windowGroups'][name] !== 'undefined'
+  return typeof store.getters['core/window/windowGroups'][name] !== 'undefined'
 }
 
 export function getWindowGroup(name: string) {
-  return  store.getters['core/windows/windowGroups'][name]
+  return  store.getters['core/window/windowGroups'][name]
 }
 
 export function isWindowGroupWindowIndexExisting(name: string, i: number) {
-  return typeof store.getters['core/windows/windowGroups'][name][i] !== 'undefined'
+  return typeof store.getters['core/window/windowGroups'][name][i] !== 'undefined'
 }
 
 export function getWindowGroupWindowIndex(name: string, i: number) {
-  return store.getters['core/windows/windowGroups'][name][i]
+  return store.getters['core/window/windowGroups'][name][i]
 }
 
 /**
@@ -69,8 +69,8 @@ export async function forEachWindowInstanceInWindowGroup(
   windowGroup: string,
   cb: CallbackWindowInstance<OwdModuleAppWindowInstance>
 ) {
-  if (store.getters['core/windows/windowGroups'][windowGroup]) {
-    for (const owdModuleAppWindowInstance of store.getters['core/windows/windowGroups'][windowGroup]) {
+  if (store.getters['core/window/windowGroups'][windowGroup]) {
+    for (const owdModuleAppWindowInstance of store.getters['core/window/windowGroups'][windowGroup]) {
       await cb(owdModuleAppWindowInstance)
     }
   }

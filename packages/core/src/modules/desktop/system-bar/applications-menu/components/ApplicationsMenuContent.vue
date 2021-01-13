@@ -54,7 +54,7 @@ export default {
     })
 
     const windowToggle = (owdModuleAppWindow) => {
-      store.dispatch('core/windows/windowOpen', owdModuleAppWindow.name)
+      store.dispatch('core/window/windowOpen', owdModuleAppWindow.name)
     }
 
     return {

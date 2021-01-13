@@ -17,7 +17,7 @@ export default {
   name: 'WindowsContainer',
   computed: {
     ...mapGetters({
-      windowInstances: 'core/windows/windowInstances'
+      windowInstances: 'core/window/windowInstances'
     })
   }
 }

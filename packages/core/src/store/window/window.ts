@@ -7,22 +7,22 @@ import {
   getWindowGroupWindowIndex,
   isWindowGroupExisting,
   isWindowGroupWindowIndexExisting, forEachWindowInstance
-} from '../utils/windows/windows.utils'
+} from '../../utils/windows/windows.utils'
 
-import DebugModule from "./debug";
-import ModulesModule from "./modules";
-import FullScreenModule from "./fullscreen";
+import DebugModule from "../debug";
+import ModulesModule from "../modules";
+import FullScreenModule from "../fullscreen";
 import {
   OwdModuleAppWindowConfigPosition, OwdModuleAppWindowConfigSize,
   OwdModuleAppWindowCreateInstanceData,
   OwdModuleAppWindowInstance, OwdModuleAppWindowsStorage, OwdWindowFocuses
-} from "../../../types";
-import * as owdModuleAppWindowsStorageUtils from "../utils/windows/windowsLocalStorage.utils";
+} from "../../../../types";
+import * as owdModuleAppWindowsStorageUtils from "../../utils/windows/windowsLocalStorage.utils";
 
 const owdModuleAppWindowsLocalStorage = owdModuleAppWindowsStorageUtils.loadWindowsStorage()
 
 @Module
-export default class WindowsModule extends VuexModule {
+export default class WindowModule extends VuexModule {
   private readonly debugModule: DebugModule
   private readonly modulesModule: ModulesModule
   private readonly fullscreenModule: FullScreenModule

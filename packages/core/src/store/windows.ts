@@ -418,8 +418,11 @@ export default class WindowsModule extends VuexModule {
 
     // calculate pos x and y
     if (owdModuleAppWindow.storage) {
-      owdModuleAppWindow.storage.position.x = await this.calcPositionX({window: owdModuleAppWindow})
-      owdModuleAppWindow.storage.position.y = await this.calcPositionY({window: owdModuleAppWindow})
+      const newPositionX = await this.calcPositionX({window: owdModuleAppWindow})
+      if (typeof newPositionX === 'number') owdModuleAppWindow.storage.position.x = newPositionX
+
+      const newPositionY = await this.calcPositionY({window: owdModuleAppWindow})
+      if (typeof newPositionY === 'number') owdModuleAppWindow.storage.position.y = newPositionY
     }
 
     if (!owdModuleAppWindow) {
@@ -450,8 +453,11 @@ export default class WindowsModule extends VuexModule {
     owdModuleAppWindow.storage.menu = true
 
     // recalculate pos x and y
-    owdModuleAppWindow.storage.x = await this.calcPositionX({window: owdModuleAppWindow})
-    owdModuleAppWindow.storage.y = await this.calcPositionY({window: owdModuleAppWindow})
+    const newPositionX = await this.calcPositionX({window: owdModuleAppWindow})
+    if (typeof newPositionX === 'number') owdModuleAppWindow.storage.position.x = newPositionX
+
+    const newPositionY = await this.calcPositionY({window: owdModuleAppWindow})
+    if (typeof newPositionY === 'number') owdModuleAppWindow.storage.position.y = newPositionY
 
     // update
     this.SET_WINDOW(owdModuleAppWindow)
@@ -583,11 +589,14 @@ export default class WindowsModule extends VuexModule {
     // is window in memory?
     if (!owdModuleAppWindow || !owdModuleAppWindow.storage) return console.log('[OWD] Window not found')
 
-    owdModuleAppWindow.storage.x = data.position.x
-    owdModuleAppWindow.storage.x = await this.calcPositionX({window: owdModuleAppWindow})
+    owdModuleAppWindow.storage.position.x = data.position.x
+    owdModuleAppWindow.storage.position.y = data.position.y
 
-    owdModuleAppWindow.storage.y = data.position.y
-    owdModuleAppWindow.storage.y = await this.calcPositionY({window: owdModuleAppWindow})
+    const newPositionX = await this.calcPositionX({window: owdModuleAppWindow})
+    if (typeof newPositionX === 'number') owdModuleAppWindow.storage.position.x = newPositionX
+
+    const newPositionY = await this.calcPositionY({window: owdModuleAppWindow})
+    if (typeof newPositionY === 'number') owdModuleAppWindow.storage.position.y = newPositionY
 
     // update
     this.SET_WINDOW(owdModuleAppWindow)
@@ -844,6 +853,7 @@ export default class WindowsModule extends VuexModule {
 
   /**
    * Calculate x position for new opened windows
+   * todo method move in a helper
    *
    * @param data
    * @returns {Promise<void>}
@@ -882,6 +892,7 @@ export default class WindowsModule extends VuexModule {
 
   /**
    * Calculate y position for new opened windows
+   * todo method move in a helper
    *
    * @param data
    * @returns {Promise<unknown>}
@@ -936,17 +947,19 @@ export default class WindowsModule extends VuexModule {
 
         // calculate max top/left position allowed
         if (maxLeft < owdModuleAppWindow.storage.size.width || maxLeft > pageWindow.innerWidth) {
-          owdModuleAppWindow.storage.position.x = await this.calcPositionX({
+          const newPositionX = await this.calcPositionX({
             window: owdModuleAppWindow,
             forceRight: true
           })
+          if (typeof newPositionX === 'number') owdModuleAppWindow.storage.position.x = newPositionX
           changed = true
         }
         if (maxTop < owdModuleAppWindow.storage.size.height || maxTop > pageWindow.innerHeight) {
-          owdModuleAppWindow.storage.position.y = await this.calcPositionY({
+          const newPositionY = await this.calcPositionY({
             window: owdModuleAppWindow,
             forceRight: true
           })
+          if (typeof newPositionY === 'number') owdModuleAppWindow.storage.position.y = newPositionY
           changed = true
         }
       }

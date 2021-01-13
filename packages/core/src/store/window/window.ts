@@ -15,9 +15,10 @@ import FullScreenModule from "../fullscreen";
 import {
   OwdModuleAppWindowConfigPosition, OwdModuleAppWindowConfigSize,
   OwdModuleAppWindowCreateInstanceData,
-  OwdModuleAppWindowInstance, OwdModuleAppWindowsStorage, OwdWindowFocuses
+  OwdModuleAppWindowInstance, OwdModuleAppWindowsStorage
 } from "../../../../types";
 import * as owdModuleAppWindowsStorageUtils from "../../utils/windows/windowsLocalStorage.utils";
+import WindowFocusModule from "./windowFocus";
 
 const owdModuleAppWindowsLocalStorage = owdModuleAppWindowsStorageUtils.loadWindowsStorage()
 
@@ -26,19 +27,20 @@ export default class WindowModule extends VuexModule {
   private readonly debugModule: DebugModule
   private readonly modulesModule: ModulesModule
   private readonly fullscreenModule: FullScreenModule
-
-  private windowFocuses: OwdWindowFocuses = owdModuleAppWindowsStorageUtils.loadWindowStorageFocuses()
+  private readonly windowFocusModule: WindowFocusModule
 
   constructor(
     debugModule: DebugModule,
     modulesModule: ModulesModule,
     fullscreenModule: FullScreenModule,
+    windowFocusModule: WindowFocusModule,
     options: RegisterOptions
   ) {
     super(options);
     this.debugModule = debugModule
     this.modulesModule = modulesModule
     this.fullscreenModule = fullscreenModule
+    this.windowFocusModule = windowFocusModule
   }
 
   /**
@@ -143,14 +145,6 @@ export default class WindowModule extends VuexModule {
     // console.log('SET WINDOW', data)
     // keep this mutation just for vuex logging cuz
     // window object properties are changed directly
-  }
-
-  @Mutation
-  SET_WINDOW_FOCUSES(windowFocuses: any) {
-    this.windowFocuses = windowFocuses
-
-    // save
-    owdModuleAppWindowsStorageUtils.saveWindowStorageFocuses(this.windowFocuses)
   }
 
   /**
@@ -654,36 +648,18 @@ export default class WindowModule extends VuexModule {
     // is window in memory?
     if (!owdModuleAppWindow || !owdModuleAppWindow.storage) return console.log('[OWD] Window not found')
 
+    // focus window
+    this.windowFocusModule.SET_WINDOW_FOCUS(owdModuleAppWindow.uniqueID)
+
     // handle windowFocuses positions
-    const owdWindowFocuses = { ...this.windowFocuses };
-    const owdWindowFocusIndex = owdWindowFocuses.list.indexOf(owdModuleAppWindow.uniqueID)
+    const owdWindowFocuses = this.windowFocusModule.windowFocusList;
 
-    if (owdWindowFocuses.list[0] == owdModuleAppWindow.uniqueID) {
-      return false
-    }
+    await forEachWindowInstance(owdWindow => {
+      owdWindow.storage.position.z = owdWindowFocuses.indexOf(owdWindow.uniqueID)
 
-    if (owdWindowFocusIndex > -1) {
-      owdWindowFocuses.list.splice(owdWindowFocusIndex, 1)
-    }
-
-    const tsFirstDayOfTheMonth = (+new Date(new Date().getFullYear(), 0, 1)) / 100;
-    const ts = +new Date() / 100
-    const counterString = (ts - tsFirstDayOfTheMonth).toString()
-    const counter = parseInt(counterString)
-
-    owdWindowFocuses.list.unshift(owdModuleAppWindow.uniqueID)
-    owdWindowFocuses.counter = counter
-
-    if (owdWindowFocuses.counter > counter) {
-      await forEachWindowInstance(owdWindow => {
-        owdWindow.storage.position.z = 0
-      })
-    }
-
-    this.SET_WINDOW_FOCUSES(owdWindowFocuses)
-
-    // handle storage position
-    owdModuleAppWindow.storage.position.z = counter
+      // set focused if window has just been focused
+      owdWindow.storage.focused = (owdModuleAppWindow.uniqueID === owdWindow.uniqueID)
+    })
 
     // update
     this.SET_WINDOW(owdModuleAppWindow)
@@ -701,7 +677,7 @@ export default class WindowModule extends VuexModule {
     // is window in memory?
     if (!owdModuleAppWindow || !owdModuleAppWindow.storage) return console.log('[OWD] Window not found')
 
-    return owdModuleAppWindow.storage.z
+    return owdModuleAppWindow.storage.position.z
   }
 
   /**

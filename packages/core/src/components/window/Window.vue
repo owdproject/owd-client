@@ -24,6 +24,7 @@
       windowNameClass,
       'window',
       {
+        'focused': window.storage.focused,
         'expanded': window.storage.expanded,
         'maximized': window.config.maximizable && window.storage.maximized,
         'dragging': dragging,
@@ -386,13 +387,31 @@ export default {
     user-select: none;
     pointer-events: initial;
 
+    @media (max-width: 768px) and (min-width: 561px) {
+      max-width: calc(100% - 76px) !important;
+    }
+
     .window-container {
       display: grid;
       grid-template-rows: 100%;
+      height: 100%;
       box-shadow: inset 0 0 0 1px $windowBorder;
 
       .window-content {
         height: 100%;
+        padding: 0 12px 12px 12px;
+        overflow: hidden;
+
+        &:before {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          pointer-events: none;
+          background-size: cover;
+          content: '';
+        }
       }
     }
 
@@ -424,9 +443,21 @@ export default {
       }
     }
 
-    &.borderless .window-container {
-      > .window-nav {
-        display: none;
+    &.focused {
+      .window-container {
+        > .window-nav {
+          .window-nav-btn-group .btn {
+            color: white;
+          }
+        }
+      }
+    }
+
+    &.borderless {
+      .window-container {
+        > .window-nav {
+          display: none;
+        }
       }
     }
 
@@ -445,30 +476,6 @@ export default {
 
         @media (max-width: 768px) {
           left: auto !important;
-        }
-      }
-    }
-
-    @media (max-width: 768px) and (min-width: 561px) {
-      max-width: calc(100% - 76px) !important;
-    }
-
-    .window-container {
-      height: 100%;
-
-      .window-content {
-        padding: 0 12px 12px 12px;
-        overflow: hidden;
-
-        &:before {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          pointer-events: none;
-          background-size: cover;
-          content: '';
         }
       }
     }

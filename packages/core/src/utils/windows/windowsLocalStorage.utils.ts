@@ -1,5 +1,3 @@
-import {OwdWindowFocuses} from "../../../../types";
-
 const windowsLocalStorageName = 'windows-storage'
 const windowsLocalStorageFocusesName = 'windows-focuses-storage'
 
@@ -41,7 +39,7 @@ export function resetWindowsStorage() {
 /**
  * Load window focuses storage
  */
-export function loadWindowStorageFocuses(): OwdWindowFocuses {
+export function loadWindowStorageFocuses(): string[] {
   try {
     const windowsStorageFocuses = localStorage.getItem(windowsLocalStorageFocusesName)
 
@@ -52,17 +50,14 @@ export function loadWindowStorageFocuses(): OwdWindowFocuses {
     console.error(e)
   }
 
-  return  {
-    list: [],
-    counter: 0
-  }
+  return []
 }
 
 /**
  * Save window focuses storage
  */
-export function saveWindowStorageFocuses(data: OwdWindowFocuses) {
-  localStorage.setItem(windowsLocalStorageFocusesName, JSON.stringify(data))
+export function saveWindowStorageFocuses(list: string[]) {
+  localStorage.setItem(windowsLocalStorageFocusesName, JSON.stringify(list))
 }
 
 /**

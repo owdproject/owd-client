@@ -8,6 +8,7 @@ import storeFullScreenModule from './fullscreen'
 import storeNotificationModule from './notification'
 import storeSseModule from './sse'
 import storeModulesModule from './modules'
+import storeWindowFocusModule from './window/windowFocus'
 import storeWindowModule from './window/window'
 
 
@@ -27,7 +28,8 @@ export const storeFullScreen = new storeFullScreenModule({ store, name: 'core/fu
 export const storeNotification = new storeNotificationModule({ store, name: 'core/notification' })
 export const storeSse = new storeSseModule({ store, name: 'core/sse' })
 export const storeModules = new storeModulesModule({ store, name: 'core/modules' })
-export const storeWindow = new storeWindowModule(storeDebug, storeModules, storeFullScreen, { store, name: 'core/window' })
+export const storeWindowFocus = new storeWindowFocusModule( { store, name: 'core/windowFocus' })
+export const storeWindow = new storeWindowModule(storeDebug, storeModules, storeFullScreen, storeWindowFocus, { store, name: 'core/window' })
 
 export default store
 

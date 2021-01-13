@@ -191,6 +191,7 @@ export interface OwdModuleAppWindowsStorage {
       closed: boolean
       minimized: boolean
       maximized: boolean
+      focused: boolean
     }
   }
 }
@@ -201,11 +202,6 @@ export interface OwdModuleAppWindowConfigIcon {
     x?: number
     y?: number
   }
-}
-
-export interface OwdWindowFocuses {
-  list: string[]
-  counter: number
 }
 
 // OWD MODULES DESKTOP

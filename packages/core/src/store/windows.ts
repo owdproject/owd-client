@@ -134,11 +134,7 @@ export default class WindowsModule extends VuexModule {
 
     // remove from module windows
     if (typeof owdModuleAppWindowInstances[data.config.name] !== 'undefined') {
-      const indexGroup = Object.keys(owdModuleAppWindowInstances[data.config.name]).indexOf(data.uniqueID)
-
-      if (indexGroup > -1) {
-        delete owdModuleAppWindowInstances[data.config.name][indexGroup]
-      }
+      delete owdModuleAppWindowInstances[data.config.name][data.uniqueID]
     }
   }
 
@@ -756,26 +752,52 @@ export default class WindowsModule extends VuexModule {
     // is window in memory?
     if (!owdModuleAppWindow || !owdModuleAppWindow.storage) return console.log('[OWD] Window not found');
 
+    // destroy window if > 1
     if (
       (!!owdModuleAppWindow.module.moduleInfo.autostart === false && !!owdModuleAppWindow.config.menu === false) ||
-      Object.keys(owdModuleAppWindow.module.windowInstances).length > 1
+      await this.getWindowInstancesCount(owdModuleAppWindow) > 1
     ) {
-      // destroy window if > 1
+      // destroy module window instance
       this.UNREGISTER_WINDOW(owdModuleAppWindow);
 
-      const storeName = `${data.module.moduleInfo.name}-${data.uniqueID}`
+      // unregister module window vuex store
+      const storeName = `${owdModuleAppWindow.module.moduleInfo.name}-${owdModuleAppWindow.uniqueID}`
 
-      if (!data.module.moduleInfo.singleton) {
-        if (typeof data.module.moduleInfo.storeInstance === 'function') {
-          return data.module.unregisterModuleStoreInstance(storeName)
+      if (!owdModuleAppWindow.module.moduleInfo.singleton) {
+        if (owdModuleAppWindow.module.hasModuleStoreInstance()) {
+          owdModuleAppWindow.module.unregisterModuleStoreInstance(storeName)
+
+          // force window save because watch event isn't triggered on component destroy
+          await this.saveWindowsStorage()
+
+          return true
         }
       }
     }
 
+    // otherwise, just close the window
     await this.windowClose(owdModuleAppWindow)
+  }
 
-    // force window save because watch event isn't triggered on component destroy
-    await this.saveWindowsStorage()
+  /**
+   * Get window instances count
+   *
+   * @param data
+   */
+  @Action
+  async getWindowInstancesCount(data: any) {
+    const owdModuleAppWindow = await this.getWindow(data)
+
+    // is window in memory?
+    if (!owdModuleAppWindow || !owdModuleAppWindow.storage) return console.log('[OWD] Window not found');
+
+    const windowInstances = owdModuleAppWindow.module.windowInstances[owdModuleAppWindow.config.name]
+
+    if (windowInstances) {
+      return Object.keys(windowInstances).length
+    }
+
+    return 0
   }
 
   /**

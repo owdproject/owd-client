@@ -105,6 +105,8 @@ export interface OwdModuleApp {
   moduleStoreInstance: any
   windowInstances: OwdModuleAppWindowsInstances;
   registerModuleStoreInstance(storeName: string): void;
+  unregisterModuleStoreInstance(storeName: string): void;
+  hasModuleStoreInstance(): boolean;
 }
 
 export interface OwdModuleAppInfo {

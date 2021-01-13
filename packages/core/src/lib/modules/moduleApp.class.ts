@@ -166,6 +166,17 @@ export default abstract class Module implements OwdModuleApp {
     this.store.unregisterModule(storeName)
   }
 
+  /**
+   * Check if has module store instance
+   */
+  public hasModuleStoreInstance() {
+    if (this.moduleStoreInstance) {
+      return true
+    }
+
+    return false
+  }
+
   // ### MODULE STORE CONFIG
 
   /**

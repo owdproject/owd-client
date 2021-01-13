@@ -1,26 +1,26 @@
 <template>
   <vue-resizable
-    v-show="!window.storage.closed && !window.storage.minimized"
-    :data-window="window.name"
-    :max-width="windowMaxWidth"
-    :max-height="windowMaxHeight"
-    :min-width="windowMinWidth"
-    :min-height="windowMinHeight"
-    :width="window.storage.size.width"
-    :height="window.storage.size.height"
-    :left="window.storage.position.x"
-    :top="window.storage.position.y"
-    :style="{
+      v-show="!window.storage.closed && !window.storage.minimized"
+      :data-window="window.name"
+      :max-width="windowMaxWidth"
+      :max-height="windowMaxHeight"
+      :min-width="windowMinWidth"
+      :min-height="windowMinHeight"
+      :width="window.storage.size.width"
+      :height="window.storage.size.height"
+      :left="window.storage.position.x"
+      :top="window.storage.position.y"
+      :style="{
       'z-index': window.storage.position.z
     }"
-    fit-parent
-    drag-selector=".window-nav .window-nav-title"
-    @drag:start="onDragStart"
-    @drag:move="onDragMove"
-    @drag:end="onDragEnd"
-    @resize:start="onResizeStart"
-    @resize:end="onResizeEnd"
-    :class="[
+      fit-parent
+      drag-selector=".window-nav .window-nav-title"
+      @drag:start="onDragStart"
+      @drag:move="onDragMove"
+      @drag:end="onDragEnd"
+      @resize:start="onResizeStart"
+      @resize:end="onResizeEnd"
+      :class="[
       windowNameClass,
       'window',
       {
@@ -36,50 +36,50 @@
     ]"
   >
     <div
-      class="window-container"
-      @mousedown="onActivated"
+        class="window-container"
+        @mousedown="onActivated"
     >
       <WindowNav :title="title" @toggleMaximize="onToggleMaximize">
         <a
-          class="btn btn-minimize"
-          @click="onMinimize"
-          v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable"
+            class="btn btn-minimize"
+            @click="onMinimize"
+            v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable"
         >
-          <v-icon v-text="$owd.config.icons.windows.minimize" />
+          <v-icon v-text="$owd.config.icons.windows.minimize"/>
         </a>
         <a
-          class="btn btn-maximize"
-          @click="onToggleMaximize"
-          v-if="window.config.maximizable"
+            class="btn btn-maximize"
+            @click="onToggleMaximize"
+            v-if="window.config.maximizable"
         >
-          <v-icon v-text="$owd.config.icons.windows.maximize" />
+          <v-icon v-text="$owd.config.icons.windows.maximize"/>
         </a>
         <a
-          class="btn btn-external-url"
-          :href="window.externalUrl"
-          target="_blank"
-          v-if="window.externalUrl"
+            class="btn btn-external-url"
+            :href="window.externalUrl"
+            target="_blank"
+            v-if="window.externalUrl"
         >
-          <v-icon v-text="$owd.config.icons.windows.external" />
+          <v-icon v-text="$owd.config.icons.windows.external"/>
         </a>
         <a
-          class="btn btn-close"
-          @click="onClose"
+            class="btn btn-close"
+            @click="onClose"
         >
-          <v-icon v-text="$owd.config.icons.windows.close" />
+          <v-icon v-text="$owd.config.icons.windows.close"/>
         </a>
       </WindowNav>
       <WindowContent>
-        <slot />
+        <slot/>
       </WindowContent>
 
-      <slot name="append-outer" />
+      <slot name="append-outer"/>
     </div>
   </vue-resizable>
 </template>
 
 <script>
-import {ref, computed} from 'vue'
+import {computed, ref} from 'vue'
 import VueResizable from '../../../../vue-resizable/src/components/vue-resizable'
 import WindowNav from './WindowNav'
 import WindowContent from './WindowContent'
@@ -98,6 +98,20 @@ export default {
     },
     window: Object
   },
+  emits: [
+    'resize:start',
+    'resize:move',
+    'resize:end',
+    'drag:start',
+    'drag:move',
+    'drag:end',
+    'close',
+    'open',
+    'minimize',
+    'restore',
+    'maximize',
+    'unmaximize'
+  ],
   setup(props) {
     const resizing = ref(false)
     const dragging = ref(false)
@@ -107,7 +121,7 @@ export default {
       const kebabCase = require('kebab-case')
       const kebabCaseName = kebabCase(props.window.config.name)
 
-      return kebabCaseName.substr(1, kebabCaseName.length+1)
+      return kebabCaseName.substr(1, kebabCaseName.length + 1)
     })
 
     // window max width
@@ -154,6 +168,21 @@ export default {
     }
   },
   watch: {
+    'window.storage.closed': {
+      handler: function (closed) {
+        this.$nextTick(() => this.$emit(closed ? 'close' : 'open'))
+      }
+    },
+    'window.storage.minimized': {
+      handler: function (minimized) {
+        this.$nextTick(() => this.$emit(minimized ? 'minimize' : 'restore'))
+      }
+    },
+    'window.storage.maximized': {
+      handler: function (maximized) {
+        this.$nextTick(() => this.$emit(maximized ? 'maximize' : 'unmaximize'))
+      }
+    },
     'window.storage': {
       handler: function () {
         clearTimeout(this.timeoutSaveToLocalStorage)
@@ -169,7 +198,7 @@ export default {
     const self = this
 
     // when press ESC and a window is in full-screen mode
-    window.addEventListener('keydown', function(e) {
+    window.addEventListener('keydown', function (e) {
       if (e.keyCode === 27) {
         self.$store.dispatch('core/windows/windowUnmaximizeAll')
       }
@@ -239,7 +268,7 @@ export default {
     /**
      * Window start resize event
      */
-    onResizeStart: function(data) {
+    onResizeStart: function (data) {
       // emit to parent component
       this.$emit('resize:start', data)
 
@@ -249,18 +278,18 @@ export default {
     /**
      * Window end resize event
      */
-    onResizeEnd: function(data) {
+    onResizeEnd: function (data) {
       // emit to parent component
       this.$emit('resize:end', data)
 
       this.$store.dispatch('core/windows/windowUpdatePosition', {
         data: this.window,
-        position: { x: data.left, y: data.top, z: this.window.storage.position.z }
+        position: {x: data.left, y: data.top, z: this.window.storage.position.z}
       })
 
       this.$store.dispatch('core/windows/windowUpdateSize', {
         data: this.window,
-        size: { width: data.width, height: data.height }
+        size: {width: data.width, height: data.height}
       })
 
       this.resizing = false
@@ -269,7 +298,7 @@ export default {
     /**
      * Window start drag event
      */
-    onDragStart: function(data) {
+    onDragStart: function (data) {
       // emit to parent component
       this.$emit('drag:start', data)
 
@@ -279,7 +308,7 @@ export default {
     /**
      * On drag event, force no-margin when straight to borders
      */
-    onDragMove: function(data) {
+    onDragMove: function (data) {
       let forceNoMargin = false
 
       if (data.top <= 15) {
@@ -304,12 +333,12 @@ export default {
       if (forceNoMargin) {
         this.$store.dispatch('core/windows/windowUpdatePosition', {
           data: this.window,
-          position: { x: data.left, y: data.top, z: this.window.storage.position.z }
+          position: {x: data.left, y: data.top, z: this.window.storage.position.z}
         })
 
         this.$store.dispatch('core/windows/windowUpdateSize', {
           data: this.window,
-          size: { width: data.width, height: data.height }
+          size: {width: data.width, height: data.height}
         })
       }
     },
@@ -325,17 +354,17 @@ export default {
       this.dragging = false
 
       if (
-        this.window.storage.position.x !== data.left ||
-        this.window.storage.position.y !== data.top ||
-        this.window.storage.size.width !== data.width ||
-        this.window.storage.size.height !== data.height
+          this.window.storage.position.x !== data.left ||
+          this.window.storage.position.y !== data.top ||
+          this.window.storage.size.width !== data.width ||
+          this.window.storage.size.height !== data.height
       ) {
         if (data.top <= 15) data.top = 0
         if (data.left <= 15) data.left = 0
 
         this.$store.dispatch('core/windows/windowUpdatePosition', {
           data: this.window,
-          position: { x: data.left, y: data.top, z: this.window.storage.position.z }
+          position: {x: data.left, y: data.top, z: this.window.storage.position.z}
         })
       }
     }

@@ -98,6 +98,17 @@
                 dragState: false, calcMap: 0b1111
             }
         },
+        emits: [
+          'mount',
+          'destroy',
+          'resize:start',
+          'resize:move',
+          'resize:end',
+          'drag:start',
+          'drag:move',
+          'drag:end',
+          'maximize'
+        ],
         watch: {
             maxWidth(value) {
                 this.maxW = value;

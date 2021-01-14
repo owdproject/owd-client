@@ -81,7 +81,7 @@
 
 <script>
 import {computed, ref} from 'vue'
-import VueResizable from '../../../../vue-resizable/src/components/vue-resizable'
+import VueResizable from 'vue-resizable/src'
 import WindowNav from './WindowNav'
 import WindowContent from './WindowContent'
 

@@ -34,6 +34,14 @@ export default {
       modules: {
         'applications-menu': true,
         'notifications': true,
+      },
+      options: {
+        notifications: {
+          bar: {
+            dateFormat: 'MMM D',
+            timeFormat: 'HH:mm'
+          }
+        }
       }
     },
     offset: {

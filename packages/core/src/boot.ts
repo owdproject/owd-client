@@ -7,7 +7,8 @@ import owdModulesDesktopExtend from "./lib/modules/extend/modulesDesktop.class";
 
 import {App, OwdCoreBootContext, OwdCoreModulesContext} from "../../types";
 
-// import libraries
+// import plugins
+import moment from "./plugins/moment";
 import deviceDetector from "./plugins/deviceDetector";
 
 // register service worker
@@ -134,6 +135,7 @@ export default class OwdBoot implements Boot {
    */
   initializePlugins(app: App) {
     app.use(deviceDetector)
+    app.use(moment)
   }
 
   /**

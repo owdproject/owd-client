@@ -3,9 +3,10 @@
 
     <div class="applications-categories">
       <ul>
-        <li v-for="(category, i) in Object.keys(moduleApps)" :key="i">
+        <li v-for="(category, i) in Object.keys(appWindowCategories)" :key="i">
           <a
-              @click="categorySelected = category"
+              @click="categoryClick(category)"
+              @mouseover="categoryMouseOver(category)"
               v-text="$t(`desktop.system-bar.applications-menu.categories.${category}`)"
           />
         </li>
@@ -14,10 +15,11 @@
 
     <div class="applications-list">
       <ul v-if="categoryApps && categoryApps.length > 0">
-        <li v-for="(app, i) of categoryApps" :key="i">
-          <a @click="windowToggle(app)">
-            <span :class="['mdi', app.icon.name || app.icon]" :style="`color: ${app.color};`"/>
-            {{ app.titleShort }}
+        <li v-for="(moduleAppWindow, i) of categoryApps" :key="i">
+          <a @click="windowCreate(moduleAppWindow)">
+            <span :class="['mdi', moduleAppWindow.icon.name || moduleAppWindow.icon]"
+                  :style="`color: ${moduleAppWindow.color};`"/>
+            {{ moduleAppWindow.titleShort }}
           </a>
         </li>
       </ul>
@@ -27,9 +29,10 @@
 </template>
 
 <script>
-import {computed, ref} from 'vue'
+import {computed, ref, getCurrentInstance} from 'vue'
 import {useStore} from "vuex";
-import DesktopSystemBarMenuContent from '../../../../../components/desktop/system-bar/components/DesktopSystemBarMenuContent'
+import DesktopSystemBarMenuContent
+  from '../../../../../components/desktop/system-bar/components/DesktopSystemBarMenuContent'
 
 export default {
   components: {
@@ -39,33 +42,43 @@ export default {
     opened: Boolean
   },
   setup() {
+    const app = getCurrentInstance();
     const store = useStore()
+    const options = app.appContext.config.owd.desktop.systemBar.options.applicationsMenu
 
-    const moduleApps = computed(() => store.getters['core/modules/moduleApps'])
-    const applicationDropdown = ref(false)
+    const appWindowCategories = computed(() => store.getters['core/modules/modulesAppWindowCategories'])
 
     const categorySelected = ref('')
+    const categoryAppsTriggerType = options.categoryAppsTriggerType
     const categoryApps = computed(() => {
       if (!categorySelected.value) {
         return []
       }
 
-      return store.getters['core/modules/moduleApps'][categorySelected.value]
+      return appWindowCategories.value[categorySelected.value]
     })
 
-    const windowToggle = (owdModuleAppWindow) => {
-      store.dispatch('core/window/windowOpen', owdModuleAppWindow.name)
-    }
-
     return {
-      moduleApps,
-
-      applicationDropdown,
+      appWindowCategories,
 
       categorySelected,
       categoryApps,
 
-      windowToggle
+      categoryClick: (category) => {
+        if (categoryAppsTriggerType === 'click') {
+          categorySelected.value = category
+        }
+      },
+
+      categoryMouseOver: (category) => {
+        if (!categoryAppsTriggerType || categoryAppsTriggerType === 'mouseover') {
+          categorySelected.value = category
+        }
+      },
+
+      windowCreate: async (owdModuleAppWindow) => {
+        await store.dispatch('core/window/windowCreate', owdModuleAppWindow.name)
+      }
     }
   }
 }
@@ -78,7 +91,7 @@ export default {
   height: 500px;
   max-height: 60vh;
   grid-template-columns: 40% 60%;
-  padding: 18px 16px 18px 0;
+  padding: 16px 16px 16px 0;
   line-height: 32px;
   left: 16px;
 

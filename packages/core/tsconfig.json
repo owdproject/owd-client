@@ -1,22 +1,7 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "strict": true,
-    "declaration": true,
-    "jsx": "preserve",
-    "importHelpers": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "skipLibCheck": false,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
-    "sourceMap": false,
-    "baseUrl": ".",
-    "rootDir": ".",
     "types": [
-      "webpack-env",
       "@types/lodash.merge",
       "@types/md5",
       "@vuetify/types"
@@ -25,12 +10,7 @@
       "@core/*": [
         "src/*"
       ]
-    },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable"
-    ]
+    }
   },
   "exclude": [
     "node_modules",

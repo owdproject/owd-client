@@ -1,28 +1,28 @@
 <template>
   <vue-resizable
-      v-show="!window.storage.closed && !window.storage.minimized"
-      :data-window="window.name"
-      :max-width="windowMaxWidth"
-      :max-height="windowMaxHeight"
-      :min-width="windowMinWidth"
-      :min-height="windowMinHeight"
-      :width="window.storage.size.width"
-      :height="window.storage.size.height"
-      :left="window.storage.position.x"
-      :top="window.storage.position.y"
-      :style="{
+    v-show="!window.storage.closed && !window.storage.minimized"
+    :data-window="window.name"
+    :max-width="windowMaxWidth"
+    :max-height="windowMaxHeight"
+    :min-width="windowMinWidth"
+    :min-height="windowMinHeight"
+    :width="window.storage.size.width"
+    :height="window.storage.size.height"
+    :left="window.storage.position.x"
+    :top="window.storage.position.y"
+    :style="{
       'z-index': window.storage.position.z
     }"
-      fit-parent
-      drag-selector=".window-nav .window-nav-title"
-      @drag:start="onDragStart"
-      @drag:move="onDragMove"
-      @drag:end="onDragEnd"
-      @resize:start="onResizeStart"
-      @resize:end="onResizeEnd"
-      :class="[
-      windowNameClass,
-      'window',
+    fit-parent
+    drag-selector=".window-nav .window-nav-title"
+    @drag:start="onDragStart"
+    @drag:move="onDragMove"
+    @drag:end="onDragEnd"
+    @resize:start="onResizeStart"
+    @resize:end="onResizeEnd"
+    :class="[
+    windowNameClass,
+    'window',
       {
         'focused': window.storage.focused,
         'expanded': window.storage.expanded,
@@ -38,12 +38,12 @@
   >
     <div
         class="window-container"
-        @mousedown="onActivated"
+        @click="onActivated"
     >
       <WindowNav :title="title" @toggleMaximize="onToggleMaximize">
         <a
             class="btn btn-minimize"
-            @click="onMinimize"
+            @click.stop="onMinimize"
             v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable"
         >
           <v-icon v-text="$owd.config.icons.windows.minimize"/>
@@ -65,7 +65,7 @@
         </a>
         <a
             class="btn btn-close"
-            @click="onClose"
+            @click.stop="onClose"
         >
           <v-icon v-text="$owd.config.icons.windows.close"/>
         </a>
@@ -198,6 +198,10 @@ export default {
   mounted() {
     const self = this
 
+    if (!this.window.storage.closed) {
+      this.$nextTick(() => this.$emit('open'))
+    }
+
     // when press ESC and a window is in full-screen mode
     window.addEventListener('keydown', function (e) {
       if (e.keyCode === 27) {
@@ -256,14 +260,14 @@ export default {
       // prevent focus when minimizing or closing
       setTimeout(() => {
         self.$store.dispatch('core/window/windowFocus', self.window)
-      }, 100)
+      }, 20)
     },
 
     /**
      * Window actived event
      */
     onActivated: function () {
-      if (!this.window.storage.closed) this.onFocus()
+      if (!this.window.storage.closed && !this.window.storage.minimized) this.onFocus()
     },
 
     /**
@@ -400,6 +404,7 @@ export default {
       .window-content {
         height: 100%;
         padding: 0 12px 12px 12px;
+        box-sizing: border-box;
         overflow: hidden;
 
         &:before {

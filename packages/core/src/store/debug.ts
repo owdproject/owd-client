@@ -1,7 +1,7 @@
 import {VuexModule, Module, Mutation, Action} from "vuex-class-modules";
 
 @Module
-export default class DebugModule extends VuexModule {
+export default class DebugVuexModule extends VuexModule {
   private logs: string[] = []
 
   @Mutation

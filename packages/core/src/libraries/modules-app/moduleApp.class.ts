@@ -4,12 +4,12 @@ import {
   OwdModuleAppCommands,
   OwdModuleAppWindowConfig,
   OwdModuleAppSseEvents,
-  OwdModuleAppInfo
+  OwdModuleAppInfo, OwdModuleAppWindowsInstances
 } from "../../../../types";
 import {MutationPayload, Store} from "vuex";
 import merge from 'lodash.merge'
 
-export default abstract class Module implements OwdModuleApp {
+export default abstract class ModuleApp implements OwdModuleApp {
   private readonly app
   private readonly store
   private readonly terminal
@@ -19,7 +19,7 @@ export default abstract class Module implements OwdModuleApp {
   public moduleStoreConfig: any
   public moduleStoreInstance: any
 
-  public windowInstances: any
+  public windowInstances: OwdModuleAppWindowsInstances
 
   constructor(context: OwdModuleAppContext) {
     this.moduleInfo = context.moduleInfo
@@ -57,7 +57,30 @@ export default abstract class Module implements OwdModuleApp {
   /**
    * Check module dependencies (todo)
    */
-  checkDependencies() {}
+  private checkDependencies() {}
+
+  static isGitModule(moduleName: string): boolean {
+    try {
+      require.resolve(moduleName)
+      return true
+    } catch(e) {
+      return false
+    }
+  }
+
+  public get isSingleton() {
+    return (
+      typeof this.moduleInfo.singleton === 'undefined' ||
+      typeof this.moduleInfo.singleton === 'boolean' && this.moduleInfo.singleton === true
+    )
+  }
+
+  public get hasAutostart() {
+    return (
+      typeof this.moduleInfo.autostart === 'undefined' ||
+      typeof this.moduleInfo.autostart === 'boolean' && this.moduleInfo.autostart === true
+    )
+  }
 
   /**
    * Parse module info to fix errors or missing values
@@ -195,7 +218,11 @@ export default abstract class Module implements OwdModuleApp {
   loadModuleStoreConfigFile() {
     if (this.moduleInfo.config) {
       try {
-        return require('@/../config/' + this.moduleInfo.name + '/config.json')
+        if (ModuleApp.isGitModule(this.moduleInfo.name)) {
+          return require(this.moduleInfo.name + '/client/config.json')
+        } else {
+          return require('@/../config/' + this.moduleInfo.name + '/config.json')
+        }
       } catch(e) {
         console.error(`[OWD] Unable to load "/modules/${this.moduleInfo.name}/config.json"`, e)
       }
@@ -274,7 +301,13 @@ export default abstract class Module implements OwdModuleApp {
 
   private registerModuleWindowComponent(windowName: string) {
     try {
-      const windowComponent = require('@/../src/modules/' + this.moduleInfo.name + '/windows/' + windowName + '.vue').default
+      let windowComponent
+
+      if (ModuleApp.isGitModule(this.moduleInfo.name)) {
+        windowComponent = require(this.moduleInfo.name + '/client/windows/' + windowName + '.vue').default
+      } else {
+        windowComponent = require('@/../src/modules/' + this.moduleInfo.name + '/windows/' + windowName + '.vue').default
+      }
 
       if (windowComponent) {
         // sync vue component registration

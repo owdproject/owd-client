@@ -3,9 +3,9 @@
     <ul class="menu-group">
       <slot name="prepend" />
 
-      <template v-for="windowInstance of windowInstances">
+      <template v-for="windowInstance of windowInstances.list">
         <li
-          v-if="windowInstance.config.menu || typeof windowInstance.config.menu === 'boolean' && windowInstance.storage.menu"
+          v-if="windowInstance.config.menu"
           :class="{ active: !windowInstance.storage.closed && !windowInstance.storage.minimized }"
           :data-window="windowInstance.name"
         >
@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      windowInstances: 'core/window/windowInstances'
+      windowInstances: 'core/modules/modulesAppWindowInstances'
     })
   },
   methods: {

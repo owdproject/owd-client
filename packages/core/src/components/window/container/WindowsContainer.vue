@@ -1,7 +1,7 @@
 <template>
   <div id="windows-container">
     <component
-      v-for="windowInstance of windowInstances"
+      v-for="windowInstance of windowInstances.list"
       :key="windowInstance.uniqueID"
       :is="windowInstance.config.name"
       :data="windowInstance"
@@ -17,7 +17,7 @@ export default {
   name: 'WindowsContainer',
   computed: {
     ...mapGetters({
-      windowInstances: 'core/window/windowInstances'
+      windowInstances: 'core/modules/modulesAppWindowInstances'
     })
   }
 }

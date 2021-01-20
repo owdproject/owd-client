@@ -1,4 +1,4 @@
-import ModuleDesktopSystemBar from "../../../../lib/modules/extend/modulesDesktop.class";
+import ModuleDesktopSystemBar from "../../../../libraries/modules-desktop/extend/modulesDesktopExtend.class";
 import ApplicationsMenu from './components/ApplicationsMenu.vue'
 import ApplicationsMenuContent from './components/ApplicationsMenuContent.vue'
 

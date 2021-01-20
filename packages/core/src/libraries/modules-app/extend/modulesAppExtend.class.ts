@@ -1,7 +1,7 @@
 import {OwdCoreModulesContext, OwdModuleApp, OwdModuleAppInfo} from "../../../../../types";
+import ModuleApp from "../moduleApp.class";
 
-const modulesApp: {[key: string]: OwdModuleApp} = {};
-const modulesAppCategories: {[key: string]: any} = {};
+const modulesApps: {[key: string]: OwdModuleApp} = {};
 
 export default class ModulesApp {
   config: any
@@ -15,7 +15,7 @@ export default class ModulesApp {
     this.terminal = context.terminal
     this.store = context.store
 
-    this.loadAppModules()
+    this.loadModulesApp()
   }
 
   /**
@@ -42,21 +42,18 @@ export default class ModulesApp {
   /**
    * Load OWD app modules from owd config
    */
-  loadAppModules() {
+  loadModulesApp() {
     // get names of the modules
-    const modulesNames = Object.keys(this.app.config.owd.modules.modulesEnabled)
+    const modulesEnabled: {
+      name: string,
+      version: string,
+      url: string,
+      git?: boolean
+    }[] = Object.values(this.app.config.owd.modules.modulesEnabled)
 
-    for (const moduleName of modulesNames) {
-      // load module info
-      const moduleInfo = ModulesApp.loadModuleInfo(moduleName)
-
-      if (!ModulesApp.isModuleInfoValid(moduleName, moduleInfo)) {
-        continue;
-      }
-
+    for (const module of modulesEnabled) {
       try {
-        ModulesApp.registerModule( {
-          moduleInfo,
+        ModulesApp.registerModule(module, {
           app: this.app,
           store: this.store,
           terminal: this.terminal
@@ -66,34 +63,32 @@ export default class ModulesApp {
       }
     }
 
-    this.store.commit('core/modules/SET_MODULES_LOADED', modulesApp)
+    this.store.commit('core/modules/SET_MODULES_LOADED', modulesApps)
   }
 
   /**
    * Register app module
    *
+   * @param module
    * @param context
    */
-  static registerModule(context: any) {
-    const moduleInfo = context.moduleInfo;
-    const moduleAppClass = require('@/../src/modules/' + moduleInfo.name + '/index').default
+  static registerModule(module: any, context: any) {
+    // load module info
+    const moduleInfo = ModulesApp.loadModuleInfo(module)
 
-    if (moduleAppClass && typeof moduleAppClass === 'function') {
-      const moduleAppLoaded = new moduleAppClass(context)
+    if (!ModulesApp.isModuleInfoValid(module.name, moduleInfo)) {
+      return false;
+    }
+
+    const moduleAppClass = ModulesApp.getModuleFile(module, 'index')
+
+    if (moduleAppClass.default && typeof moduleAppClass.default === 'function') {
+      const moduleAppLoaded = new moduleAppClass.default({ ...context, moduleInfo })
 
       if (moduleAppLoaded) {
 
         // assign loaded owd module to modulesApp
-        modulesApp[moduleInfo.name] = moduleAppLoaded
-
-        // add loaded module name to modulesAppCategories
-        if (moduleInfo.category) {
-          if (!Object.prototype.hasOwnProperty.call(modulesAppCategories, moduleInfo.category)) {
-            modulesAppCategories[moduleInfo.category] = []
-          }
-
-          modulesAppCategories[moduleInfo.category].push(moduleInfo.name)
-        }
+        modulesApps[moduleInfo.name] = moduleAppLoaded
 
       }
     }
@@ -128,15 +123,11 @@ export default class ModulesApp {
   /**
    * Load module app info
    *
-   * @param moduleFolder
+   * @param module
    * @returns {any}
    */
-  static loadModuleInfo(moduleFolder: string) {
-    try {
-      return require('@/../src/modules/' + moduleFolder + '/module.json')
-    } catch(e) {
-      console.error(`[OWD] Unable to load "/modules/${moduleFolder}/module.json"`, e)
-    }
+  static loadModuleInfo(module: any) {
+    return ModulesApp.getModuleFile(module, 'module.json')
   }
 
   /**
@@ -153,5 +144,21 @@ export default class ModulesApp {
     }
 
     return true;
+  }
+
+  static getModuleFile(module: any, moduleFile: string) {
+    try {
+      if (ModuleApp.isGitModule(module.name)) {
+        try {
+          return require(`@/../node_modules/${module.name}/client/${moduleFile}`)
+        } catch(e) {
+          return require(`@/../node_modules/${module.name}/client/dist/${moduleFile}`)
+        }
+      } else {
+        return require(`@/../src/modules/${module.name}/${moduleFile}`)
+      }
+    } catch(e) {
+      return null
+    }
   }
 }

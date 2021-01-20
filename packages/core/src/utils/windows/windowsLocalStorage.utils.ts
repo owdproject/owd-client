@@ -1,5 +1,5 @@
-const windowsLocalStorageName = 'windows-storage'
-const windowsLocalStorageFocusesName = 'windows-focuses-storage'
+const localStorageNameWindow = 'storage-window'
+const localStorageNameWindowFocus = 'storage-window-focus'
 
 // windows
 
@@ -8,7 +8,7 @@ const windowsLocalStorageFocusesName = 'windows-focuses-storage'
  */
 export function loadWindowsStorage() {
   try {
-    const windowsStorage = localStorage.getItem(windowsLocalStorageName)
+    const windowsStorage = localStorage.getItem(localStorageNameWindow)
 
     if (windowsStorage) {
       return JSON.parse(windowsStorage)
@@ -24,14 +24,14 @@ export function loadWindowsStorage() {
  * Save window storage
  */
 export function saveWindowsStorage(data: any) {
-  localStorage.setItem(windowsLocalStorageName, data)
+  localStorage.setItem(localStorageNameWindow, data)
 }
 
 /**
  * Reset window storage
  */
 export function resetWindowsStorage() {
-  localStorage.removeItem(windowsLocalStorageName)
+  localStorage.removeItem(localStorageNameWindow)
 }
 
 // window focuses
@@ -41,7 +41,7 @@ export function resetWindowsStorage() {
  */
 export function loadWindowStorageFocuses(): string[] {
   try {
-    const windowsStorageFocuses = localStorage.getItem(windowsLocalStorageFocusesName)
+    const windowsStorageFocuses = localStorage.getItem(localStorageNameWindowFocus)
 
     if (windowsStorageFocuses) {
       return JSON.parse(windowsStorageFocuses)
@@ -57,12 +57,12 @@ export function loadWindowStorageFocuses(): string[] {
  * Save window focuses storage
  */
 export function saveWindowStorageFocuses(list: string[]) {
-  localStorage.setItem(windowsLocalStorageFocusesName, JSON.stringify(list))
+  localStorage.setItem(localStorageNameWindowFocus, JSON.stringify(list))
 }
 
 /**
  * Remove window focuses storage
  */
 export function resetWindowsStorageFocuses() {
-  localStorage.removeItem(windowsLocalStorageFocusesName)
+  localStorage.removeItem(localStorageNameWindowFocus)
 }

@@ -1,9 +1,9 @@
 import { owdCreateStore } from './store'
 import { owdCreateRouter } from './router'
 import { owdCreateI18n } from './i18n'
-import owdTerminalExtend from './lib/terminal/extend/terminalExtend.class'
-import owdModulesAppExtend from './lib/modules/extend/modulesApp.class'
-import owdModulesDesktopExtend from "./lib/modules/extend/modulesDesktop.class";
+import owdTerminalExtend from './libraries/terminal/extend/terminalExtend.class'
+import owdModulesAppExtend from './libraries/modules-app/extend/modulesAppExtend.class'
+import owdModulesDesktopExtend from "./libraries/modules-desktop/extend/modulesDesktopExtend.class";
 
 import {App, OwdCoreBootContext, OwdCoreModulesContext} from "../../types";
 
@@ -12,7 +12,7 @@ import moment from "./plugins/moment";
 import deviceDetector from "./plugins/deviceDetector";
 
 // register service worker
-import './lib/service-worker/registerServiceWorker'
+import './libraries/service-worker/registerServiceWorker'
 
 // global components
 import VIcon from "./components/shared/icon/VIcon.vue";
@@ -110,6 +110,8 @@ export default class OwdBoot implements Boot {
    * Initialize assets
    */
   initializeAssets(app: App) {
+    const themeName = app.config.owd.theme
+
     // import app core styles
     require('./assets/css/app.scss')
 
@@ -117,7 +119,11 @@ export default class OwdBoot implements Boot {
     require('@/assets/css/app.scss')
 
     // try to load custom theme styles
-    try { require(`@/assets/themes/${app.config.owd.theme}/app.scss`) } catch(e) {}
+    try {
+      require(`@/assets/themes/${themeName}/app.scss`)
+    } catch(e) {
+      console.error(`[OWD] Error while loading "${themeName}" theme app.scss`)
+    }
 
     // import Oswald font with typeface
     require('@fontsource/cantarell')

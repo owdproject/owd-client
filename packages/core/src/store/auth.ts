@@ -11,7 +11,7 @@ interface StoreClientAccount {
 }
 
 @Module
-export default class AuthModule extends VuexModule {
+export default class AuthVuexModule extends VuexModule {
   private account: StoreClientAccount = {
     username: authDefaultUsername,
     token: ''

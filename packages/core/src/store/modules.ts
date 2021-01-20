@@ -1,56 +1,115 @@
 import {VuexModule, Module, Mutation, Action} from "vuex-class-modules";
-import {OwdModuleApp, OwdModuleAppWindowConfig, OwdModuleAppWindowInstance} from "../../../types";
+import {
+  OwdModuleApp,
+  OwdModuleAppWindowConfig, OwdModuleAppWindowDetail, OwdModuleAppWindowInstance
+} from "../../../types";
 
 @Module
-export default class ModulesModule extends VuexModule {
-  private modules: {[key: string]: OwdModuleApp} = {}
-  private categories: any = {}
+export default class ModulesVuexModule extends VuexModule {
+  private modules: { [key: string]: OwdModuleApp } = {}
 
-  get modulesLoaded() {
+  /**
+   * App installed
+   */
+  get modulesAppInstalled() {
+    return Object.values(this.modules)
+  }
+
+  /**
+   * App installed (keymap)
+   */
+  get modulesAppKeyMap() {
     return this.modules
   }
 
-
   /**
-   * Getter of windows instances grouped by category (productivity, etc)
+   * App window categories (window categories of each installed module)
+   * keymap by window category
    */
-  get moduleApps(): {[key: string]: OwdModuleAppWindowConfig[]} {
-    let owdWindowCategories: {[key: string]: OwdModuleAppWindowConfig[]} = {}
+  get modulesAppWindowCategories() {
+    const windowCategories: { [key: string]: OwdModuleAppWindowConfig[] } = {}
 
     // for each loaded module
-    for (const owdModuleApp of Object.values(this.modulesLoaded)) {
+    for (const owdModuleApp of this.modulesAppInstalled) {
 
-      // cycle windowName in each module window instances (WindowSample)
-      for (const owdModuleAppWindow of owdModuleApp.moduleInfo.windows) {
-        if (typeof owdWindowCategories[owdModuleAppWindow.category] === 'undefined') {
-          owdWindowCategories[owdModuleAppWindow.category] = []
+      // for each window config
+      for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
+
+        // map window categories
+        if (!Object.prototype.hasOwnProperty.call(windowCategories, owdModuleAppWindowConfig.category)) {
+          windowCategories[owdModuleAppWindowConfig.category] = []
         }
 
-        owdWindowCategories[owdModuleAppWindow.category].push(owdModuleAppWindow)
+        windowCategories[owdModuleAppWindowConfig.category].push(owdModuleAppWindowConfig)
       }
 
     }
 
-    return owdWindowCategories
+    return windowCategories
   }
 
-  get infoWindowNameKeyMap() {
-    const owdModuleAppWindowNameKeyMap: any = {}
+  /**
+   * App window details (module config + window config)
+   * keymap by window name
+   */
+  get modulesAppWindowDetails() {
+    const windowDetailsKeyMap: { [key: string]: OwdModuleAppWindowDetail } = {};
 
-    for (const owdModuleApp of Object.values(this.modules)) {
-      for (const owdModuleAppWindow of owdModuleApp.moduleInfo.windows) {
-        owdModuleAppWindowNameKeyMap[owdModuleAppWindow.name] = {
+    // for each loaded module
+    for (const owdModuleApp of this.modulesAppInstalled) {
+
+      // for each window config
+      for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
+
+        // map window details
+        windowDetailsKeyMap[owdModuleAppWindowConfig.name] = {
           module: owdModuleApp,
-          window: owdModuleAppWindow
+          window: owdModuleAppWindowConfig
         }
+      }
+
+    }
+
+    return windowDetailsKeyMap
+  }
+
+  /**
+   * App window instances (array of window instances)
+   */
+  get modulesAppWindowInstances() {
+    const owdModuleAppWindowInstances: {
+      list: OwdModuleAppWindowInstance[],
+      groups: { [key: string]: OwdModuleAppWindowInstance[] }
+    } = {
+      list: [],
+      groups: {}
+    }
+
+    // for each loaded module
+    for (const owdModuleApp of this.modulesAppInstalled) {
+
+      // for each window config
+      for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
+        const windowName = owdModuleAppWindowConfig.name
+
+        for (const uniqueID in owdModuleApp.windowInstances[windowName]) {
+          const windowInstance = owdModuleApp.windowInstances[windowName][uniqueID]
+
+          // add to instances list
+          owdModuleAppWindowInstances.list.push(windowInstance)
+
+          // add to instances groups
+          if (!Object.prototype.hasOwnProperty.call(owdModuleAppWindowInstances.groups, windowName)) {
+            owdModuleAppWindowInstances.groups[windowName] = []
+          }
+
+          owdModuleAppWindowInstances.groups[windowName].push(windowInstance)
+        }
+
       }
     }
 
-    return owdModuleAppWindowNameKeyMap
-  }
-
-  get modulesCategories() {
-    return this.categories
+    return owdModuleAppWindowInstances
   }
 
   @Mutation
@@ -58,20 +117,8 @@ export default class ModulesModule extends VuexModule {
     this.modules = modulesLoaded
   }
 
-  @Mutation
-  SET_MODULES_CATEGORIES(modulesCategories: any) {
-    this.categories = modulesCategories
-  }
-
   @Action
-  isModuleLoaded(module: string): boolean {
-    return Object.keys(this.modulesLoaded).includes(module)
-  }
-
-  @Action
-  getDetailFromWindowName(windowName: string): { window: OwdModuleAppWindowConfig, module: OwdModuleApp } | undefined {
-    if (typeof this.infoWindowNameKeyMap[windowName] !== 'undefined') {
-      return this.infoWindowNameKeyMap[windowName]
-    }
+  isModuleLoaded(moduleName: string): boolean {
+    return Object.keys(this.modulesAppInstalled).includes(moduleName)
   }
 }

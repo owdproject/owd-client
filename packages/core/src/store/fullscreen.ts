@@ -1,7 +1,7 @@
 import {VuexModule, Module, Mutation, Action, RegisterOptions} from "vuex-class-modules";
 
 @Module
-export default class FullScreenModule extends VuexModule {
+export default class FullScreenVuexModule extends VuexModule {
   private fullscreen: boolean = false
 
   get active() {

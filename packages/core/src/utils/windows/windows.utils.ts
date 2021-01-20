@@ -1,6 +1,9 @@
 import md5 from 'md5'
 import store from '../../store'
-import {OwdModuleAppWindowInstance} from "../../../../types";
+import {
+  OwdModuleAppWindowDetail,
+  OwdModuleAppWindowInstance
+} from "../../../../types";
 
 interface CallbackWindowInstance<T1, T2 = void> {
   (windowInstance: T1): T2;
@@ -8,6 +11,14 @@ interface CallbackWindowInstance<T1, T2 = void> {
 
 export function generateWindowUniqueId(): string {
   return md5(Date.now().toString() + Math.random())
+}
+
+// WINDOW DETAILS
+
+export function getWindowDetailsFromWindowName(windowName: string): OwdModuleAppWindowDetail | undefined {
+  if (typeof store.getters['core/modules/modulesAppWindowDetails'][windowName] !== 'undefined') {
+    return store.getters['core/modules/modulesAppWindowDetails'][windowName]
+  }
 }
 
 // WINDOW INSTANCES
@@ -19,7 +30,7 @@ export function generateWindowUniqueId(): string {
  * @param value
  */
 export function findWindowInstanceByAttr(attr: string, value: string) {
-  return store.getters['core/window/windowInstances']
+  return store.getters['core/modules/modulesAppWindowInstances'].list
     .find((owdModuleAppWindowInstance: OwdModuleAppWindowInstance) => {
       if (attr === 'uniqueID') {
         return owdModuleAppWindowInstance.uniqueID === value
@@ -36,42 +47,48 @@ export function findWindowInstanceByAttr(attr: string, value: string) {
  * @param cb
  */
 export async function forEachWindowInstance(cb: CallbackWindowInstance<OwdModuleAppWindowInstance>) {
-  for (const owdModuleAppWindowInstance of store.getters['core/window/windowInstances']) {
+  for (const owdModuleAppWindowInstance of store.getters['core/modules/modulesAppWindowInstances'].list) {
     await cb(owdModuleAppWindowInstance)
   }
-}
-
-// WINDOW GROUPS
-
-export function isWindowGroupExisting(name: string) {
-  return typeof store.getters['core/window/windowGroups'][name] !== 'undefined'
-}
-
-export function getWindowGroup(name: string) {
-  return  store.getters['core/window/windowGroups'][name]
-}
-
-export function isWindowGroupWindowIndexExisting(name: string, i: number) {
-  return typeof store.getters['core/window/windowGroups'][name][i] !== 'undefined'
-}
-
-export function getWindowGroupWindowIndex(name: string, i: number) {
-  return store.getters['core/window/windowGroups'][name][i]
 }
 
 /**
  * For each window instance in window group
  *
- * @param windowGroup
+ * @param windowName
  * @param cb
  */
-export async function forEachWindowInstanceInWindowGroup(
-  windowGroup: string,
+export async function forEachWindowGroupInstance(
+  windowName: string,
   cb: CallbackWindowInstance<OwdModuleAppWindowInstance>
 ) {
-  if (store.getters['core/window/windowGroups'][windowGroup]) {
-    for (const owdModuleAppWindowInstance of store.getters['core/window/windowGroups'][windowGroup]) {
+  if (store.getters['core/modules/modulesAppWindowInstances'].groups) {
+    for (const owdModuleAppWindowInstance of store.getters['core/modules/modulesAppWindowInstances'].groups[windowName]) {
       await cb(owdModuleAppWindowInstance)
     }
   }
+}
+
+export function isWindowNameExisting(windowName: string) {
+  return typeof store.getters['core/modules/modulesAppWindowDetails'][windowName] !== 'undefined'
+}
+
+export function getWindowGroupInstances(windowName: string) {
+  return store.getters['core/modules/modulesAppWindowInstances'].groups[windowName]
+}
+
+export function getWindowGroupInstancesCount(windowName: string): number {
+  return store.getters['core/modules/modulesAppWindowInstances'].groups[windowName].length
+}
+
+export function isWindowGroupInstanceIndexExisting(windowName: string, index: number) {
+  return typeof store.getters['core/modules/modulesAppWindowInstances'].groups[windowName][index] !== 'undefined'
+}
+
+export function getWindowGroupInstanceByIndex(windowName: string, index: number) {
+  return store.getters['core/modules/modulesAppWindowInstances'].groups[windowName][index]
+}
+
+export function getWindowGroupFirstInstance(windowName: string) {
+  return store.getters['core/modules/modulesAppWindowInstances'].groups[windowName][0]
 }

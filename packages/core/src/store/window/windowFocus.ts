@@ -9,6 +9,14 @@ export default class WindowFocusModule extends VuexModule {
     return this.windowFocusIds
   }
 
+  get windowFocusActiveUniqueID() {
+    if (this.windowFocusIds.length > 0) {
+      return this.windowFocusIds[this.windowFocusIds.length - 1]
+    }
+
+    return null
+  }
+
   @Mutation
   SET_WINDOW_FOCUS(uniqueID: string) {
     const windowFocusIndex = this.windowFocusIds.indexOf(uniqueID)
@@ -18,5 +26,16 @@ export default class WindowFocusModule extends VuexModule {
     }
 
     this.windowFocusIds.push(uniqueID)
+
+    owdModuleAppWindowsStorageUtils.saveWindowStorageFocuses(this.windowFocusIds)
+  }
+
+  @Mutation
+  UNSET_WINDOW_FOCUS(uniqueID: string) {
+    const windowFocusIndex = this.windowFocusIds.indexOf(uniqueID)
+
+    if (windowFocusIndex > -1) {
+      this.windowFocusIds.splice(windowFocusIndex, 1)
+    }
   }
 }

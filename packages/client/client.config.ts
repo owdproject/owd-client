@@ -31,11 +31,14 @@ export default {
   desktop: {
     systemBar: {
       active: true,
-      modules: {
-        'applications-menu': true,
-        'notifications': true,
-      },
+      modules: [
+        'applications-menu',
+        'notifications'
+      ],
       options: {
+        applicationsMenu: {
+          categoryAppsTriggerType: 'mouseover'
+        },
         notifications: {
           bar: {
             dateFormat: 'MMM D',

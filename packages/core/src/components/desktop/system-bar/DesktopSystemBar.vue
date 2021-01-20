@@ -35,7 +35,7 @@
 
 <script>
 import {reactive} from 'vue';
-import ModulesDesktop from '../../../lib/modules/extend/modulesDesktop.class'
+import ModulesDesktop from '../../../libraries/modules-desktop/extend/modulesDesktopExtend.class'
 
 export default {
   props: {

@@ -1,4 +1,4 @@
-import deviceDetector from '../lib/device-detector/deviceDetector.class'
+import deviceDetector from '../libraries/device-detector/deviceDetector.class'
 
 export default {
   install: (app: any) => {

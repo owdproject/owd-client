@@ -8,7 +8,7 @@ const clientVersion = process.env.VUE_APP_VERSION || '2.0.0'
 const clientWebsite = process.env.VUE_APP_WEBSITE || 'owdproject.com'
 
 @Module
-export default class ClientModule extends VuexModule {
+export default class ClientVuexModule extends VuexModule {
   private readonly debugModule: DebugModule
 
   // client title

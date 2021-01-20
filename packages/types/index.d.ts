@@ -58,7 +58,7 @@ export interface OwdClientConfigurationIcons {
 export interface OwdClientConfigurationDesktop {
   systemBar: {
     active: boolean,
-    modules: { [key: string]: boolean }
+    modules: string[]
   }
   offset: {
     top: number
@@ -107,6 +107,8 @@ export interface OwdModuleApp {
   registerModuleStoreInstance(storeName: string): void;
   unregisterModuleStoreInstance(storeName: string): void;
   hasModuleStoreInstance(): boolean;
+  isSingleton: boolean;
+  hasAutostart: boolean;
 }
 
 export interface OwdModuleAppInfo {
@@ -114,8 +116,8 @@ export interface OwdModuleAppInfo {
   version: string
 
   config: boolean
-  singleton: boolean
-  autostart: boolean
+  singleton?: boolean
+  autostart?: boolean
 
   windows: OwdModuleAppWindowConfig[]
 }
@@ -143,6 +145,7 @@ export interface OwdModuleAppWindowConfig {
   maximized: boolean
   maximizable: boolean
   borderless?: boolean
+  autoOpen?: boolean
   noContentSpacing?: boolean
   autoCloseBeforePageUnload?: boolean
   autoDestroyBeforePageUnload?: boolean
@@ -170,7 +173,9 @@ export interface OwdModuleAppWindowCreateInstanceData {
 }
 
 export interface OwdModuleAppWindowInstance extends OwdModuleAppWindowCreateInstanceData {
+  name: string
   uniqueID: string
+  storeUniqueName: string
 }
 
 export interface OwdModuleAppWindowsInstances {
@@ -191,7 +196,6 @@ export interface OwdModuleAppWindowsStorage {
       closed: boolean
       minimized: boolean
       maximized: boolean
-      focused: boolean
     }
   }
 }
@@ -202,6 +206,13 @@ export interface OwdModuleAppWindowConfigIcon {
     x?: number
     y?: number
   }
+}
+
+// window details
+
+export interface OwdModuleAppWindowDetail {
+  module: OwdModuleApp
+  window: OwdModuleAppWindowConfig
 }
 
 // OWD MODULES DESKTOP

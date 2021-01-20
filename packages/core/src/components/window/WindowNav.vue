@@ -47,7 +47,8 @@ export default {
 
     .window-nav-btn-group {
       display: flex;
-      text-align: right;
+      position: absolute;
+      right: 0;
 
       .btn {
         display: inline-block;

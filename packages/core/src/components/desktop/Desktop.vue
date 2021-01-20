@@ -38,14 +38,6 @@
       const app = getCurrentInstance()
       const store = useStore()
 
-      const handleDesktopResize = () => {
-        clearTimeout(timeoutHandleDesktopResize)
-
-        timeoutHandleDesktopResize = setTimeout(() => {
-          self.$store.dispatch('core/window/windowsHandlePageResize')
-        }, 100)
-      }
-
       let timeoutHandleDesktopResize = null
 
       return {
@@ -58,7 +50,13 @@
         coreSseConnect: () => {
           store.dispatch('core/sse/connect', 'once')
         },
-        handleDesktopResize
+        handleDesktopResize: () => {
+          clearTimeout(timeoutHandleDesktopResize)
+
+          timeoutHandleDesktopResize = setTimeout(() => {
+            store.dispatch('core/window/windowsHandlePageResize')
+          }, 100)
+        }
       }
     },
     beforeMount() {
@@ -86,16 +84,6 @@
     display: flex;
     flex-flow: column;
     height: 100vh;
-
-    &.with-system-bar {
-      background: $desktopSystemBarBackground;
-
-      .desktop-content {
-        border-radius: 8px 8px 0 0;
-        background: $bodyBackground;
-        color: $desktopSystemBarColor;
-      }
-    }
 
     .desktop-content {
       position: relative;

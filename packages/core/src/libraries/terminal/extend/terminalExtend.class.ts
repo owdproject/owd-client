@@ -22,6 +22,10 @@ export default class {
    * @param fn
    */
   addCommand(name: string, fn: any) {
+    if (this.existCommand(name)) {
+      return console.error(`[OWD] Cannot add "${name}" command, already defined`)
+    }
+
     this.commands[name] = fn
   }
 

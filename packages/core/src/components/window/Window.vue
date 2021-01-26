@@ -229,6 +229,9 @@ export default {
       )
     }
   },
+  beforeUnmount() {
+    this.$nextTick(() => this.$emit('close'))
+  },
   methods: {
     /**
      * Window minimize event

@@ -42,7 +42,7 @@ export default {
     systemBar: Boolean
   },
   setup() {
-    const modulesDesktopSystemBar = reactive(ModulesDesktop.getModules('system-bar'))
+    const modulesDesktopSystemBar = reactive(ModulesDesktop.getModules('SystemBar'))
 
     const openSystemBarModule = (module) => {
       module.config.opened = !module.config.opened
@@ -61,8 +61,8 @@ export default {
   display: grid;
   grid-template-columns: 30% 40% 30%;
   cursor: default;
-  height: 32px;
-  line-height: 33px;
+  height: 30px;
+  line-height: 30px;
   font-size: 13.5px;
   font-weight: bold;
   user-select: none;

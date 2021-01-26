@@ -29,30 +29,42 @@ export default {
 
   // owd desktop
   desktop: {
-    systemBar: {
-      active: true,
-      modules: [
-        'applications-menu',
-        'notifications'
-      ],
-      options: {
-        applicationsMenu: {
-          categoryAppsTriggerType: 'mouseover'
-        },
-        notifications: {
-          bar: {
-            dateFormat: 'MMM D',
-            timeFormat: 'HH:mm'
-          }
-        }
-      }
-    },
     offset: {
       top: 24,
       left: 96,
       right: 24,
       bottom: 24
-    }
+    },
+    systemBar: {
+      active: true,
+      modules: [
+        'ApplicationMenu',
+        'NotificationMenu'
+      ],
+      options: {
+        ApplicationMenu: {
+          categoryAppsTriggerType: 'mouseover'
+        },
+        NotificationMenu: {
+          menu: {
+            dateFormat: 'MMM D',
+            timeFormat: 'HH:mm'
+          },
+          content: {
+            calendar: {
+              header: {
+                dayOfWeekFormat: 'dddd',
+                dateFormat: 'MMMM D YYYY'
+              }
+            },
+            floatingNotification: {
+              max: 2,
+              duration: 8000
+            }
+          }
+        }
+      }
+    },
   },
 
   // owd icons

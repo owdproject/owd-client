@@ -1,6 +1,6 @@
 export default {
-  'system-bar': {
-    'applications-menu': {
+  SystemBar: {
+    ApplicationMenu: {
       menu: 'Applications',
       categories: {
         'system-tools': 'System tools',

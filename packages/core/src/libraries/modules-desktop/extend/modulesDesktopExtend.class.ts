@@ -22,7 +22,8 @@ export default class ModulesDesktop {
 
     for (const moduleName of owdModulesDesktopSystemBar) {
       try {
-        require(`../../../modules/desktop/system-bar/${moduleName}`)
+        // todo require only if system-bar is enabled
+        require(`../../../modules/desktop/SystemBar/${moduleName}/index.ts`)
       } catch(e) {
         console.error(`[OWD] Error while loading "${moduleName}" desktop module`)
       }

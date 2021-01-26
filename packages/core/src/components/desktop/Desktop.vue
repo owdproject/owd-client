@@ -26,7 +26,7 @@
 
 <script>
   import { getCurrentInstance } from 'vue'
-  import DesktopSystemBar from "./system-bar/DesktopSystemBar";
+  import DesktopSystemBar from "./SystemBar/DesktopSystemBar";
   import mixinServer from "../../mixins/mixinServer";
   import {useStore} from "vuex";
 

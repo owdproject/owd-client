@@ -1,13 +1,13 @@
 <template>
-  <DesktopSystemBarMenuContent class="applications-container" v-if="opened">
+  <DesktopSystemBarMenuContent class="application-container" v-if="opened">
 
     <div class="applications-categories">
       <ul>
         <li v-for="(category, i) in Object.keys(appWindowCategories)" :key="i">
           <a
-              @click="categoryClick(category)"
               @mouseover="categoryMouseOver(category)"
-              v-text="$t(`desktop.system-bar.applications-menu.categories.${category}`)"
+              @click="categoryClick(category)"
+              v-text="$t(`desktop.SystemBar.ApplicationMenu.categories.${category}`)"
           />
         </li>
       </ul>
@@ -32,7 +32,7 @@
 import {computed, ref, getCurrentInstance} from 'vue'
 import {useStore} from "vuex";
 import DesktopSystemBarMenuContent
-  from '../../../../../components/desktop/system-bar/components/DesktopSystemBarMenuContent'
+  from '../../../../../components/desktop/SystemBar/components/DesktopSystemBarMenuContent'
 
 export default {
   components: {
@@ -44,7 +44,7 @@ export default {
   setup() {
     const app = getCurrentInstance();
     const store = useStore()
-    const options = app.appContext.config.owd.desktop.systemBar.options.applicationsMenu
+    const options = app.appContext.config.owd.desktop.systemBar.options.ApplicationMenu
 
     const appWindowCategories = computed(() => store.getters['core/modules/modulesAppWindowCategories'])
 
@@ -85,13 +85,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.applications-container {
+.application-container {
   display: grid;
   width: 410px;
   height: 500px;
   max-height: 60vh;
   grid-template-columns: 40% 60%;
-  padding: 16px 16px 16px 0;
   line-height: 32px;
   left: 16px;
 
@@ -105,6 +104,8 @@ export default {
   }
 
   .applications-categories {
+    padding: 16px 0;
+
     ul {
       margin: 0;
       padding: 0;
@@ -127,6 +128,9 @@ export default {
   }
 
   .applications-list {
+    overflow-y: auto;
+    padding: 16px 14px 16px 0;
+
     ul {
       margin: 0;
       padding: 0;

@@ -1,0 +1,36 @@
+{
+  "name": "sample",
+  "version": "2.0.0",
+  "singleton": true,
+  "autostart": true,
+  "license": "MIT",
+  "homepage": "https://github.com/hacklover/owd-sample",
+  "author": {
+    "name": "hacklover",
+    "url": "https://hacklover.net"
+  },
+  "windows": [
+    {
+      "name": "WindowExample",
+      "title": "OWD Sample Module",
+      "titleShort": "Open Web Desktop",
+      "icon": {
+        "name": "mdi-hexagon-multiple-outline",
+        "offset": {
+          "y": -1
+        }
+      },
+      "window": {
+        "menu": true,
+        "closed": true,
+        "hidden": false,
+        "resizable": false,
+        "width": 448,
+        "height": 240,
+        "x": -1,
+        "y": 0,
+        "z": 0
+      }
+    }
+  ]
+}

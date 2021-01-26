@@ -1,10 +1,9 @@
-# Jetbrains
-/.idea
+# Editors
+.idea
+.vscode
 
-# Docker
-.env
-docker-compose.yml
+# Lerna
+lerna-debug.log
 
 # App
-/src/dist
-/node_modules/
+node_modules

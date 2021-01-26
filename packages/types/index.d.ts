@@ -114,12 +114,20 @@ export interface OwdModuleApp {
 export interface OwdModuleAppInfo {
   name: string
   version: string
+  license?: string
+  homepage?: string
+  author?: {
+    name?: string
+    email?: string
+    url?: string
+  }
 
   config: boolean
   singleton?: boolean
   autostart?: boolean
 
   windows: OwdModuleAppWindowConfig[]
+  dependencies?: {[key: string]: string}
 }
 
 export interface OwdModuleAppCommands {

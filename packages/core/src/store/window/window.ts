@@ -256,15 +256,13 @@ export default class WindowModule extends VuexModule {
       owdModuleAppWindow = await this.windowCreateInstance({
         config: owdModuleAppWindowDetail.window,
         module: owdModuleAppWindowDetail.module,
-        storage: null
+        storage: {
+          closed: false,
+          minimized: false
+        }
       })
     } else {
       owdModuleAppWindow = data
-    }
-
-    if (owdModuleAppWindow.storage) {
-      owdModuleAppWindow.storage.closed = false
-      owdModuleAppWindow.storage.minimized = false
     }
 
     // focus on window
@@ -304,15 +302,27 @@ export default class WindowModule extends VuexModule {
     // overwrite .storage with history (local storage)
     if (data.storage) {
 
-      // parse window positions and more
-      owdModuleAppWindow.storage = {
-        position: data.storage.position,
-        size: data.storage.size,
-        closed: !!data.storage.closed,
-        minimized: !!data.storage.minimized,
-        maximized: !!data.storage.maximized,
-        focused: (owdModuleAppWindow.uniqueID === this.windowFocusModule.windowFocusActiveUniqueID)
+      if (typeof data.storage.position !== 'undefined') {
+        owdModuleAppWindow.storage.position = data.storage.position
       }
+
+      if (typeof data.storage.size !== 'undefined') {
+        owdModuleAppWindow.storage.size = data.storage.size
+      }
+
+      if (typeof data.storage.closed !== 'undefined') {
+        owdModuleAppWindow.storage.closed = !!data.storage.closed
+      }
+
+      if (typeof data.storage.minimized !== 'undefined') {
+        owdModuleAppWindow.storage.minimized = !!data.storage.minimized
+      }
+
+      if (typeof data.storage.maximized !== 'undefined') {
+        owdModuleAppWindow.storage.maximized = !!data.storage.maximized
+      }
+
+      owdModuleAppWindow.storage.focused = (owdModuleAppWindow.uniqueID === this.windowFocusModule.windowFocusActiveUniqueID)
     }
 
     // initialize storeInstance if module isn't a singleton

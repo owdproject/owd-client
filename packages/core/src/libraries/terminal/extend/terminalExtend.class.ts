@@ -2,14 +2,6 @@ export default class {
   public commands: any = {}
   public events: any = {}
 
-  public defaultColors = {
-    menu: 'cyan'
-  }
-
-  private readonly validColors: string[] = ['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']
-  private readonly validTextFormat: string[] = ['b', 's', 'o', 'i', 'u', 'g']
-
-
   constructor() {
     this.commands = {}
     this.events = {}
@@ -61,29 +53,6 @@ export default class {
     }
 
     this.events[event].push(fn)
-  }
-
-  /**
-   * Color helper
-   * todo move to owd-terminal module
-   *
-   * @param text
-   * @param color
-   * @param textFormat
-   * @returns {string}
-   */
-  textColor(text: string, color: string, textFormat: string) {
-    if (!this.validTextFormat.includes(textFormat)) {
-      textFormat = ''
-    } else {
-      textFormat = '!' + textFormat
-    }
-
-    if (!this.validColors.includes(color)) {
-      color = ''
-    }
-
-    return '[[' + textFormat + ';' + color + ';]' + text + ']'
   }
 
   /**

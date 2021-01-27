@@ -56,12 +56,21 @@
   grid-template-rows: calc(100% - 32px) 32px;
 
   .notification-list-container {
+    max-height: 385px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar,
+    &::-webkit-scrollbar-thumb {
+      width: 0;
+      background: transparent;
+    }
+
     ul {
       list-style-type: none;
       margin: 0;
       padding: 0;
 
-      li {
+      li:not(:last-child) {
         margin-bottom: 12px;
       }
     }

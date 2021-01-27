@@ -1,4 +1,20 @@
 #desktop {
+  &.with-system-bar {
+    background: $desktopSystemBarBackground;
+
+    .desktop-content {
+      border-radius: 8px 8px 0 0;
+      background: $bodyBackground;
+      color: $desktopSystemBarColor;
+    }
+
+    .floating-notifications {
+      .notification {
+        background: $windowContentInputBackground;
+      }
+    }
+  }
+
   .window {
     .window-container {
       .window-nav {

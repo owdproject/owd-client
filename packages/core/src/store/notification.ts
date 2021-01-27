@@ -5,8 +5,10 @@ interface StoreNotificationItem {
   service: string;
   icon: string;
   color: string;
-  text: string;
-  details: string
+  title: string;
+  details: string;
+  sticky?: boolean;
+  date: Date;
 }
 
 @Module
@@ -18,14 +20,10 @@ export default class NotificationVuexModule extends VuexModule {
   }
 
   @Mutation
-  ADD(notification: any) {
+  ADD(notification: StoreNotificationItem) {
     this.items.unshift({
-      name: notification.name,
-      service: notification.service,
-      icon: notification.icon,
-      color: notification.color,
-      text: notification.text,
-      details: notification.details
+      ...notification,
+      date: new Date()
     })
 
     /*
@@ -34,6 +32,15 @@ export default class NotificationVuexModule extends VuexModule {
 
     setTimeout(() => this.items.pop(), notification.duration | 30000)
      */
+  }
+
+  @Mutation
+  REMOVE(notification: StoreNotificationItem) {
+    const index = this.items.indexOf(notification)
+
+    if (index > -1) {
+      this.items.splice(index, 1)
+    }
   }
 
   @Mutation

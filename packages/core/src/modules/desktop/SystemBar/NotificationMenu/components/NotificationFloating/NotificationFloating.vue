@@ -2,21 +2,14 @@
   <div class="floating-notifications">
     <ul v-if="notifications.length > 0">
       <li v-for="(notification, key) in notifications" :key="key">
-        <Notification
-            :name="notification.name"
-            :service="notification.service"
-            :color="notification.color"
-            :icon="notification.icon"
-            :text="notification.text"
-            :details="notification.details"
-        />
+        <Notification :notification="notification" />
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import Notification from "../Notification/Notification";
+import Notification from "./Notification";
 
 import {getCurrentInstance, ref} from "vue";
 import {useStore} from "vuex";

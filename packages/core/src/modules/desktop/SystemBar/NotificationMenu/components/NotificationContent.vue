@@ -15,7 +15,7 @@
 import DesktopSystemBarMenuContent from '../../../../../components/desktop/SystemBar/components/DesktopSystemBarMenuContent'
 import NotificationList from "./NotificationColumnList/NotificationList";
 import NotificationCalendar from "./NotificationColumnCalendar/NotificationCalendar";
-import NotificationFloating from "./Notifications/NotificationFloating/NotificationFloating";
+import NotificationFloating from "./NotificationFloating/NotificationFloating";
 
 export default {
   components: {

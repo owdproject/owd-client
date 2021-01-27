@@ -2,22 +2,16 @@
   <div
     :class="[
         'notification',
-        `notification-service-${service}`
+        `notification-service-${notification.service}`
     ]"
   >
     <div class="notification-icon">
-      <v-icon :style="`color: ${color};`" v-text="icon" />
+      <v-icon :style="`color: ${notification.color};`" v-text="notification.icon" />
     </div>
 
     <div class="notification-text">
-      <div
-          class="title"
-          v-text="text"
-      />
-      <div
-          class="details"
-          v-text="details"
-      />
+      <div class="title" v-text="notification.title" />
+      <div class="details" v-text="notification.details" />
     </div>
   </div>
 </template>
@@ -25,12 +19,7 @@
 <script>
 export default {
   props: {
-    name: String,
-    service: String,
-    icon: String,
-    color: String,
-    text: String,
-    details: String
+    notification: Object
   },
 }
 </script>

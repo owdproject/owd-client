@@ -39,7 +39,7 @@ that will be released on [GitHub](https://github.com/topics/owd-modules) and [Pa
 ## Getting started
 In the future there will be a tool to easily bootstrap your OWD client.
 
-For now, you have to follow some steps:
+For now, you have to follow these steps:
 
 ```
 # Clone the repository
@@ -70,14 +70,14 @@ Each OWD Module may include a `client` or a `server` folder.
 There is no CLI available for module installation at the moment, so you have to install each module manually (aaah, fuck this shit).
 
 ### Install a new module
-You can install modules by copying the content of a `<module>/client` folder into
-`src/modules/<module>`.
+You can install new modules by copying the content of `<module>/client` folder into
+`<your-path>/my-client/src/modules/<module>`. Some modules like `sample` and `debug` comes pre-installed, take a look.
 
 #### Install module dependencies
 Some modules may require other modules installed, or additional [npm](https://www.npmjs.com) packages.
-Check the "dependencies" property in the `<module>/client/module.json` folder and the "dependencies" property in the `<module>/package.json` folder.  
+Check the "dependencies" property in `<module>/client/module.json` and the "dependencies" property in `<module>/package.json`.  
 
-Navigate to your OWD Client root folder and install each module package defined in the `<module>/package.json` by running `npm install <package-name>`. Then, if any module is defined in `<module>/client/module.json`, you should install each one with its package dependencies like just explained.
+Navigate to your OWD Client root folder and install each package defined in `<module>/package.json` by running `npm install <package-name>`. Then, if any module is defined in `<module>/client/module.json`, you should install each one with its package dependencies like just explained.
 
 #### Define the installed module
 To be able to load installed modules into your OWD Client instance, you have to define them under `<your-path>/my-client/config/modules.json`.

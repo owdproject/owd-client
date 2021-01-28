@@ -1,28 +1,12 @@
 <template>
   <div id="logo">
     <h2 v-text="title" />
-    <!--
-    <h2>
-      <vue-typer
-        :text="title"
-        shuffle
-        :repeat="0"
-        :type-delay="50"
-        erase-style="select-back"
-      />
-    </h2>
-    -->
   </div>
 </template>
 
 <script>
-// import {VueTyper} from 'vue-typer'
-
 export default {
   name: 'Logo',
-  components: {
-    // VueTyper
-  },
   props: {
     title: {
       type: String,

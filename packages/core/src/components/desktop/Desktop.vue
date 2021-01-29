@@ -1,6 +1,10 @@
 <template>
-  <div id="desktop" :class="{'with-system-bar': systemBar}">
-    <DesktopSystemBar v-if="systemBar">
+  <div id="desktop" :class="{
+    'system-bar-enabled': systemBarEnabled,
+    'system-bar-position-top': systemBarPosition === 'top',
+    'system-bar-position-bottom': systemBarPosition === 'bottom',
+  }">
+    <DesktopSystemBar v-if="systemBarEnabled">
 
       <template v-slot:system-bar-left-prepend>
         <slot name="system-bar-left-prepend" />
@@ -36,12 +40,14 @@
     components: {DesktopSystemBar},
     setup() {
       const app = getCurrentInstance()
+      const systemBarOptions = app.appContext.config.owd.desktop.SystemBar.options
       const store = useStore()
 
       let timeoutHandleDesktopResize = null
 
       return {
-        systemBar: app.appContext.config.globalProperties.$owd.config.desktop.systemBar.active,
+        systemBarEnabled: systemBarOptions.enabled,
+        systemBarPosition: systemBarOptions.position,
 
         coreClientInitialize: () => {
           store.dispatch('core/client/initialize')
@@ -84,6 +90,21 @@
     display: flex;
     flex-flow: column;
     height: 100vh;
+
+    &.system-bar-enabled {
+      &.system-bar-position-top {
+        .desktop-content {
+          border-radius: 8px 8px 0 0;
+        }
+      }
+      &.system-bar-position-bottom {
+        flex-direction: column-reverse;
+
+        .desktop-content {
+          border-radius: 0 0 8px 8px;
+        }
+      }
+    }
 
     .desktop-content {
       position: relative;

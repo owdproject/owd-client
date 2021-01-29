@@ -32,7 +32,7 @@
 import {computed, ref, getCurrentInstance} from 'vue'
 import {useStore} from "vuex";
 import DesktopSystemBarMenuContent
-  from '../../../../../components/desktop/SystemBar/components/DesktopSystemBarMenuContent'
+  from '../../../../../components/desktop/SystemBar/components/SystemBarMenuContent'
 
 export default {
   components: {
@@ -44,7 +44,7 @@ export default {
   setup() {
     const app = getCurrentInstance();
     const store = useStore()
-    const options = app.appContext.config.owd.desktop.systemBar.options.ApplicationMenu
+    const options = app.appContext.config.owd.desktop.SystemBar.options.modules.ApplicationMenu
 
     const appWindowCategories = computed(() => store.getters['core/modules/modulesAppWindowCategories'])
 

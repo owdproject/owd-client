@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { getCurrentInstance } from 'vue'
-import DesktopSystemBarMenu from "../../../../../components/desktop/SystemBar/components/DesktopSystemBarMenu.vue";
+import DesktopSystemBarMenu from "../../../../../components/desktop/SystemBar/components/SystemBarMenu.vue";
 import {ref} from "vue";
 
 export default {
@@ -18,7 +18,7 @@ export default {
   setup() {
     const app = getCurrentInstance();
     const $moment = app.appContext.config.globalProperties.$moment
-    const options = app.appContext.config.owd.desktop.systemBar.options.NotificationMenu
+    const options = app.appContext.config.owd.desktop.SystemBar.options.modules.NotificationMenu
 
     const getDate = () => {
       return $moment().format(options.menu.dateFormat)

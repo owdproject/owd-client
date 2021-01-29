@@ -21,7 +21,7 @@ export default {
   setup() {
     const app = getCurrentInstance();
     const store = useStore()
-    const options = app.appContext.config.owd.desktop.systemBar.options.NotificationMenu
+    const options = app.appContext.config.owd.desktop.SystemBar.options.modules.NotificationMenu
 
     let notifications = ref([])
 
@@ -30,12 +30,12 @@ export default {
         notifications.value.push(mutation.payload)
 
         // remove other notifications if max allowed is X
-        if (notifications.value.length > options.content.floatingNotification.max) {
+        if (notifications.value.length > options.floatingNotification.max) {
           notifications.value.shift()
         }
 
         // remove after X seconds
-        setTimeout(() => notifications.value.shift(), options.content.floatingNotification.duration)
+        setTimeout(() => notifications.value.shift(), options.floatingNotification.duration)
       }
     })
 

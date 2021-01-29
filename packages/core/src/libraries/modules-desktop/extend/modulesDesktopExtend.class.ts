@@ -18,7 +18,7 @@ export default class ModulesDesktop {
    */
   loadModulesDesktopSystem(context: OwdCoreModulesContext) {
     // @ts-ignore
-    const owdModulesDesktopSystemBar = context.app.config.owd.desktop.systemBar.modules
+    const owdModulesDesktopSystemBar = context.app.config.owd.desktop.SystemBar.modules
 
     for (const moduleName of owdModulesDesktopSystemBar) {
       try {

@@ -1,9 +1,8 @@
 #desktop {
-  &.with-system-bar {
+  &.system-bar-enabled {
     background: $desktopSystemBarBackground;
 
     .desktop-content {
-      border-radius: 8px 8px 0 0;
       background: $bodyBackground;
       color: $desktopSystemBarColor;
     }

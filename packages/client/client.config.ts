@@ -35,22 +35,23 @@ export default {
       right: 24,
       bottom: 24
     },
-    systemBar: {
-      active: true,
+    SystemBar: {
       modules: [
         'ApplicationMenu',
         'NotificationMenu'
       ],
       options: {
-        ApplicationMenu: {
-          categoryAppsTriggerType: 'mouseover'
-        },
-        NotificationMenu: {
-          menu: {
-            dateFormat: 'MMM D',
-            timeFormat: 'HH:mm'
+        enabled: true,
+        position: 'bottom',
+        modules: {
+          ApplicationMenu: {
+            categoryAppsTriggerType: 'mouseover'
           },
-          content: {
+          NotificationMenu: {
+            menu: {
+              dateFormat: 'MMM D',
+              timeFormat: 'HH:mm'
+            },
             calendar: {
               header: {
                 dayOfWeekFormat: 'dddd',

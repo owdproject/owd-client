@@ -56,9 +56,13 @@ export interface OwdClientConfigurationIcons {
 }
 
 export interface OwdClientConfigurationDesktop {
-  systemBar: {
-    active: boolean,
-    modules: string[]
+  SystemBar: {
+    modules: string[],
+    options: {
+      enabled: boolean,
+      position: string,
+      modules: {[key: string]: any}
+    }
   }
   offset: {
     top: number

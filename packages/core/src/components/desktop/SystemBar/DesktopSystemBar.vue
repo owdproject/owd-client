@@ -67,6 +67,14 @@ export default {
   font-weight: bold;
   user-select: none;
 
+  &.position-top {
+
+  }
+
+  &.position-bottom {
+
+  }
+
   #desktop-system-bar-center {
     text-align: center;
   }

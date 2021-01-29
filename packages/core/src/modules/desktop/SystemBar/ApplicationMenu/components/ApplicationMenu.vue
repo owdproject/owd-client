@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import DesktopSystemBarMenu from "../../../../../components/desktop/SystemBar/components/DesktopSystemBarMenu";
+import DesktopSystemBarMenu from "../../../../../components/desktop/SystemBar/components/SystemBarMenu";
 
 export default {
   components: {DesktopSystemBarMenu},

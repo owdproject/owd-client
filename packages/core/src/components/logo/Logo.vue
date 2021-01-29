@@ -1,10 +1,12 @@
 <template>
-  <div id="logo">
+  <div id="logo" v-if="enabled">
     <h2 v-text="title" />
   </div>
 </template>
 
 <script>
+import {getCurrentInstance} from "vue";
+
 export default {
   name: 'Logo',
   props: {
@@ -12,13 +14,21 @@ export default {
       type: String,
       default: 'owd-client'
     }
+  },
+  setup() {
+    const app = getCurrentInstance()
+    const logoOptions = app.appContext.config.owd.desktop.Logo.options
+
+    return {
+      enabled: logoOptions.enabled
+    }
   }
 }
 </script>
 
 <style lang="scss">
   #logo {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0;
     right: 0;

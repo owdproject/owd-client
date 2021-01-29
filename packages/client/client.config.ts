@@ -35,6 +35,11 @@ export default {
       right: 24,
       bottom: 24
     },
+    Logo: {
+      options: {
+        enabled: true
+      }
+    },
     SystemBar: {
       modules: [
         'ApplicationMenu',

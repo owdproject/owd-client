@@ -112,7 +112,6 @@ export interface OwdModuleApp {
   unregisterModuleStoreInstance(storeName: string): void;
   hasModuleStoreInstance(): boolean;
   isSingleton: boolean;
-  hasAutostart: boolean;
 }
 
 export interface OwdModuleAppInfo {
@@ -128,7 +127,6 @@ export interface OwdModuleAppInfo {
 
   config: boolean
   singleton?: boolean
-  autostart?: boolean
 
   windows: OwdModuleAppWindowConfig[]
   dependencies?: {[key: string]: string}
@@ -146,23 +144,22 @@ export interface OwdModuleAppWindowConfig {
   name: string
   category: string
   title: string
-  titleShort: string
+  titleShort?: string
   icon: string|OwdModuleAppWindowConfigIcon
 
-  menu: boolean
-  closed: boolean
-  hidden: boolean
-  resizable: boolean
-  minimized: boolean
-  maximized: boolean
-  maximizable: boolean
-  borderless?: boolean
-  autoOpen?: boolean
-  noContentSpacing?: boolean
-  autoCloseBeforePageUnload?: boolean
-  autoDestroyBeforePageUnload?: boolean
   size: OwdModuleAppWindowConfigSize
   position: OwdModuleAppWindowConfigPosition
+  favorite?: boolean
+  menu?: boolean
+  resizable?: boolean
+  minimized?: boolean
+  maximized?: boolean
+  maximizable?: boolean
+  borderless?: boolean
+  noContentSpacing?: boolean
+  autoOpen?: boolean
+  autoCloseBeforePageUnload?: boolean
+  autoDestroyBeforePageUnload?: boolean
 }
 
 export interface OwdModuleAppWindowConfigSize {
@@ -187,7 +184,7 @@ export interface OwdModuleAppWindowCreateInstanceData {
 export interface OwdModuleAppWindowInstance extends OwdModuleAppWindowCreateInstanceData {
   name: string
   uniqueID: string
-  storeUniqueName: string
+  uniqueName: string
 }
 
 export interface OwdModuleAppWindowsInstances {
@@ -205,7 +202,7 @@ export interface OwdModuleAppWindowsStorage {
     [key: string]: {
       position: OwdModuleAppWindowConfigPosition
       size: OwdModuleAppWindowConfigSize
-      closed: boolean
+      opened: boolean
       minimized: boolean
       maximized: boolean
     }

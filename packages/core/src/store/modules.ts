@@ -49,8 +49,7 @@ export default class ModulesVuexModule extends VuexModule {
   }
 
   /**
-   * App window details (module config + window config)
-   * keymap by window name
+   * App window details keymap by window name (module config + window config)
    */
   get modulesAppWindowDetails() {
     const windowDetailsKeyMap: { [key: string]: OwdModuleAppWindowDetail } = {};

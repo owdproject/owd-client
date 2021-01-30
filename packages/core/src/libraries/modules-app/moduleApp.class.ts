@@ -75,13 +75,6 @@ export default abstract class ModuleApp implements OwdModuleApp {
     )
   }
 
-  public get hasAutostart() {
-    return (
-      typeof this.moduleInfo.autostart === 'undefined' ||
-      typeof this.moduleInfo.autostart === 'boolean' && this.moduleInfo.autostart === true
-    )
-  }
-
   /**
    * Parse module info to fix errors or missing values
    */

@@ -1,7 +1,7 @@
 <template>
   <vue-resizable
-    v-show="!window.storage.closed && !window.storage.minimized"
-    :data-window="window.name"
+    v-show="window.storage.opened && !window.storage.minimized"
+    :data-window="window.config.name"
     :max-width="windowMaxWidth"
     :max-height="windowMaxHeight"
     :min-width="windowMinWidth"
@@ -25,7 +25,6 @@
     'window',
       {
         'focused': window.storage.focused,
-        'expanded': window.storage.expanded,
         'maximized': window.config.maximizable && window.storage.maximized,
         'dragging': dragging,
         'resizing': resizing,
@@ -36,30 +35,27 @@
       }
     ]"
   >
-    <div
-        class="window-container"
-        @click="onActivated"
-    >
+    <div class="window-container" @click="onActivated">
       <WindowNav :title="title" @toggleMaximize="onToggleMaximize">
         <a
+            v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable"
             class="btn btn-minimize"
             @click.stop="onMinimize"
-            v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable"
         >
           <v-icon v-text="$owd.config.icons.windows.minimize"/>
         </a>
         <a
+            v-if="window.config.maximizable"
             class="btn btn-maximize"
             @click="onToggleMaximize"
-            v-if="window.config.maximizable"
         >
           <v-icon v-text="$owd.config.icons.windows.maximize"/>
         </a>
         <a
+            v-if="window.externalUrl"
             class="btn btn-external-url"
             :href="window.externalUrl"
             target="_blank"
-            v-if="window.externalUrl"
         >
           <v-icon v-text="$owd.config.icons.windows.external"/>
         </a>
@@ -169,19 +165,19 @@ export default {
     }
   },
   watch: {
-    'window.storage.closed': {
-      handler: function (closed) {
-        this.$nextTick(() => this.$emit(closed ? 'close' : 'open'))
+    'window.storage.opened': {
+      handler: function (opened) {
+        this.$emit(opened ? 'open' : 'close')
       }
     },
     'window.storage.minimized': {
       handler: function (minimized) {
-        this.$nextTick(() => this.$emit(minimized ? 'minimize' : 'restore'))
+        this.$emit(minimized ? 'minimize' : 'restore')
       }
     },
     'window.storage.maximized': {
       handler: function (maximized) {
-        this.$nextTick(() => this.$emit(maximized ? 'maximize' : 'unmaximize'))
+        this.$emit(maximized ? 'maximize' : 'unmaximize')
       }
     },
     'window.storage': {
@@ -196,11 +192,7 @@ export default {
     }
   },
   mounted() {
-    const self = this
-
-    if (!this.window.storage.closed) {
-      this.$nextTick(() => this.$emit('open'))
-    }
+    this.$emit('open')
 
     // when press ESC and a window is in full-screen mode
     window.addEventListener('keydown', function (e) {
@@ -230,7 +222,7 @@ export default {
     }
   },
   beforeUnmount() {
-    this.$nextTick(() => this.$emit('close'))
+    this.$emit('close')
   },
   methods: {
     /**
@@ -270,7 +262,7 @@ export default {
      * Window actived event
      */
     onActivated: function () {
-      if (!this.window.storage.closed && !this.window.storage.minimized) this.onFocus()
+      if (this.window.storage.opened && !this.window.storage.minimized) this.onFocus()
     },
 
     /**

@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     visible() {
-      return !this.data.storage.closed
+      return this.data.storage.opened
     }
   },
   watch: {

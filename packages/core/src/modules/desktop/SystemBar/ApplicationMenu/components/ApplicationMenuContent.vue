@@ -48,7 +48,7 @@ export default {
     const store = useStore()
     const options = app.appContext.config.owd.desktop.SystemBar.options.modules.ApplicationMenu
 
-    const appWindowCategories = computed(() => store.getters['core/modules/modulesAppWindowCategories'])
+    const appWindowCategories = computed(() => store.getters['core/window/modulesAppWindowCategories'])
 
     const categorySelected = ref('')
     const categoryAppsTriggerType = options.categoryAppsTriggerType

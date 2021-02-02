@@ -1,7 +1,7 @@
 <template>
   <div id="windows-container">
     <component
-      v-for="windowInstance of windowInstances.list"
+      v-for="windowInstance of windowInstances"
       :key="windowInstance.uniqueID"
       :is="windowInstance.config.name"
       :data="windowInstance"
@@ -20,7 +20,7 @@ export default {
 
     return {
       windowInstances: computed(() => {
-        return store.getters['core/modules/modulesAppWindowInstances']
+        return store.getters['core/window/modulesAppWindowInstancesList']
       })
     }
   }

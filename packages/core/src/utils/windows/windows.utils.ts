@@ -102,8 +102,8 @@ export function calcPositionY(data: { window: any, forceLeft?: boolean, forceRig
  * @param windowName
  */
 export function getWindowDetailsFromWindowName(windowName: string): OwdModuleAppWindowDetail | undefined {
-  if (typeof store.getters['core/modules/modulesAppWindowDetails'][windowName] !== 'undefined') {
-    return store.getters['core/modules/modulesAppWindowDetails'][windowName]
+  if (typeof store.getters['core/window/modulesAppWindowDetails'][windowName] !== 'undefined') {
+    return store.getters['core/window/modulesAppWindowDetails'][windowName]
   }
 }
 
@@ -116,7 +116,7 @@ export function getWindowDetailsFromWindowName(windowName: string): OwdModuleApp
  * @param value
  */
 export function findWindowInstanceByAttr(attr: string, value: string) {
-  return store.getters['core/modules/modulesAppWindowInstances'].list
+  return store.getters['core/window/modulesAppWindowInstancesList']
     .find((owdModuleAppWindowInstance: OwdModuleAppWindowInstance) => {
       if (attr === 'uniqueID') {
         return owdModuleAppWindowInstance.uniqueID === value
@@ -136,7 +136,7 @@ export function findWindowInstanceByAttr(attr: string, value: string) {
  * @param cb
  */
 export async function forEachWindowInstance(cb: CallbackWindowInstance<OwdModuleAppWindowInstance>) {
-  for (const owdModuleAppWindowInstance of store.getters['core/modules/modulesAppWindowInstances'].list) {
+  for (const owdModuleAppWindowInstance of store.getters['core/window/modulesAppWindowInstancesList']) {
     await cb(owdModuleAppWindowInstance)
   }
 }
@@ -161,37 +161,37 @@ export async function forEachWindowGroupInstance(
   windowName: string,
   cb: CallbackWindowInstance<OwdModuleAppWindowInstance>
 ) {
-  if (store.getters['core/modules/modulesAppWindowInstances'].groups) {
-    for (const owdModuleAppWindowInstance of store.getters['core/modules/modulesAppWindowInstances'].groups[windowName].list) {
+  if (store.getters['core/window/modulesAppWindowGroupInstances']) {
+    for (const owdModuleAppWindowInstance of store.getters['core/window/modulesAppWindowGroupInstances'][windowName].list) {
       await cb(owdModuleAppWindowInstance)
     }
   }
 }
 
 export function isWindowNameExisting(windowName: string) {
-  return typeof store.getters['core/modules/modulesAppWindowDetails'][windowName] !== 'undefined'
+  return typeof store.getters['core/window/modulesAppWindowDetails'][windowName] !== 'undefined'
 }
 
 export function getWindowGroupInstances(windowName: string) {
-  return store.getters['core/modules/modulesAppWindowInstances'].groups[windowName].list
+  return store.getters['core/window/modulesAppWindowGroupInstances'][windowName].list
 }
 
 export function getWindowGroupInstancesCount(windowName: string): number {
-  if (typeof store.getters['core/modules/modulesAppWindowInstances'].groups[windowName] !== 'undefined') {
-    return store.getters['core/modules/modulesAppWindowInstances'].groups[windowName].list.length
+  if (typeof store.getters['core/window/modulesAppWindowGroupInstances'][windowName] !== 'undefined') {
+    return store.getters['core/window/modulesAppWindowGroupInstances'][windowName].list.length
   }
 
   return 0
 }
 
 export function isWindowGroupInstanceIndexExisting(windowName: string, index: number) {
-  return typeof store.getters['core/modules/modulesAppWindowInstances'].groups[windowName].list[index] !== 'undefined'
+  return typeof store.getters['core/window/modulesAppWindowGroupInstances'][windowName].list[index] !== 'undefined'
 }
 
 export function getWindowGroupInstanceByIndex(windowName: string, index: number) {
-  return store.getters['core/modules/modulesAppWindowInstances'].groups[windowName].list[index]
+  return store.getters['core/window/modulesAppWindowGroupInstances'][windowName].list[index]
 }
 
 export function getWindowGroupFirstInstance(windowName: string) {
-  return store.getters['core/modules/modulesAppWindowInstances'].groups[windowName].list[0]
+  return store.getters['core/window/modulesAppWindowGroupInstances'][windowName].list[0]
 }

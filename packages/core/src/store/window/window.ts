@@ -6,8 +6,9 @@ import DebugModule from "../debug";
 import ModulesModule from "../modules";
 import FullScreenModule from "../fullscreen";
 import {
+  OwdModuleAppWindowConfig,
   OwdModuleAppWindowConfigPosition, OwdModuleAppWindowConfigSize,
-  OwdModuleAppWindowCreateInstanceData,
+  OwdModuleAppWindowCreateInstanceData, OwdModuleAppWindowDetail,
   OwdModuleAppWindowInstance, OwdModuleAppWindowsStorage
 } from "../../../../types";
 import * as owdModuleAppWindowsStorageUtils from "../../utils/windows/windowsLocalStorage.utils";
@@ -34,6 +35,167 @@ export default class WindowModule extends VuexModule {
     this.modulesModule = modulesModule
     this.fullscreenModule = fullscreenModule
     this.windowFocusModule = windowFocusModule
+  }
+
+  /**
+   * App window categories (window categories of each installed module)
+   * keymap by window category
+   */
+  get modulesAppWindowCategories() {
+    const windowCategories: { [key: string]: OwdModuleAppWindowConfig[] } = {}
+
+    // for each loaded module
+    for (const owdModuleApp of this.modulesModule.modulesAppInstalled) {
+
+      // for each window config
+      for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
+
+        // map window categories
+        if (!Object.prototype.hasOwnProperty.call(windowCategories, owdModuleAppWindowConfig.category)) {
+          windowCategories[owdModuleAppWindowConfig.category] = []
+        }
+
+        windowCategories[owdModuleAppWindowConfig.category].push(owdModuleAppWindowConfig)
+      }
+
+    }
+
+    return windowCategories
+  }
+
+  /**
+   * App window details keymap by window name (module config + window config)
+   */
+  get modulesAppWindowDetails() {
+    const windowDetailsKeyMap: { [key: string]: OwdModuleAppWindowDetail } = {};
+
+    // for each loaded module
+    for (const owdModuleApp of this.modulesModule.modulesAppInstalled) {
+
+      // for each window config
+      for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
+
+        // map window details
+        windowDetailsKeyMap[owdModuleAppWindowConfig.name] = {
+          module: owdModuleApp,
+          window: owdModuleAppWindowConfig
+        }
+      }
+
+    }
+
+    return windowDetailsKeyMap
+  }
+
+  /**
+   * App window instances (array of window instances)
+   */
+  get modulesAppWindowInstancesList() {
+    const owdModuleAppWindowInstances: OwdModuleAppWindowInstance[] = []
+
+    // for each loaded module
+    for (const owdModuleApp of this.modulesModule.modulesAppInstalled) {
+
+      // for each window config
+      for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
+        const windowName: string = owdModuleAppWindowConfig.name
+
+        for (const uniqueID in owdModuleApp.windowInstances[windowName]) {
+          const windowInstance = owdModuleApp.windowInstances[windowName][uniqueID]
+
+          // add to instances list
+          owdModuleAppWindowInstances.push(windowInstance)
+
+        }
+      }
+
+    }
+
+    return owdModuleAppWindowInstances
+  }
+
+  /**
+   * App window instances (array of window instances)
+   */
+  get modulesAppWindowGroupInstances() {
+    const owdModuleAppWindowInstances: {
+      [key: string]: {
+        config: OwdModuleAppWindowConfig | undefined,
+        list: OwdModuleAppWindowInstance[]
+      }
+    } = {}
+
+    // for each loaded module
+    for (const owdModuleApp of this.modulesModule.modulesAppInstalled) {
+
+      // for each window config
+      for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
+        const windowName: string = owdModuleAppWindowConfig.name
+
+        // add to instances groups
+        owdModuleAppWindowInstances[windowName] = {
+          config: owdModuleAppWindowConfig,
+          list: []
+        }
+
+        for (const uniqueID in owdModuleApp.windowInstances[windowName]) {
+          const windowInstance = owdModuleApp.windowInstances[windowName][uniqueID]
+
+          // add to instances list
+          owdModuleAppWindowInstances[windowName].list.push(windowInstance)
+
+        }
+      }
+
+    }
+
+    return owdModuleAppWindowInstances
+  }
+
+  /**
+   * Items for the docks
+   */
+  get modulesAppWindowDocks() {
+    let items: any[] = []
+
+    for (const owdModuleApp of this.modulesModule.modulesAppInstalled) {
+
+      // does module contain any windows?
+      if (owdModuleApp.moduleInfo.windows && owdModuleApp.moduleInfo.windows.length > 0) {
+
+        for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
+
+          let windowInstances: any[] = []
+
+          if (owdModuleApp.windowInstances[owdModuleAppWindowConfig.name]) {
+            windowInstances = Object.values(owdModuleApp.windowInstances[owdModuleAppWindowConfig.name])
+          }
+
+          if (windowInstances.length === 0) {
+
+            // add dummy item to dock
+            items.push({
+              config: owdModuleAppWindowConfig,
+              storage: {
+                opened: false,
+                minimized: false
+              },
+              dummy: true
+            })
+
+          } else {
+            if (windowInstances.length > 0) {
+              items = items.concat(windowInstances)
+            }
+          }
+
+        }
+
+      }
+
+    }
+
+    return items
   }
 
   @Mutation

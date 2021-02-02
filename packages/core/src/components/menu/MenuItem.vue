@@ -63,7 +63,7 @@ export default {
           if (window.dummy) {
 
             // create new window
-            this.store.dispatch('core/window/windowCreate', window.config.name)
+            store.dispatch('core/window/windowCreate', window.config.name)
 
           } else {
 

@@ -455,7 +455,7 @@ export default class WindowModule extends VuexModule {
   async windowCreateInstance(data: OwdModuleAppWindowCreateInstanceData): Promise<OwdModuleAppWindowInstance> {
     // check if window is given or...
     // get a copy of the module window configuration
-    const windowInstance: any = {...data}
+    let windowInstance: any = {...data}
 
     const moduleName = windowInstance.module.moduleInfo.name
 
@@ -508,18 +508,15 @@ export default class WindowModule extends VuexModule {
       windowInstance.module.registerModuleStoreInstance(windowInstance.uniqueName)
     }
 
-    // calculate pos x and y
-    /*
-    const newPositionX = WindowUtils.calcPositionX({window: owdModuleAppWindow})
-    if (typeof newPositionX === 'number') owdModuleAppWindow.storage.position.x = newPositionX
-
-    const newPositionY = WindowUtils.calcPositionY({window: owdModuleAppWindow})
-    if (typeof newPositionY === 'number') owdModuleAppWindow.storage.position.y = newPositionY
-    */
-
     this.REGISTER_WINDOW(windowInstance)
 
-    return WindowUtils.getWindowInstance(moduleName, windowInstance.config.name, windowInstance.uniqueID)
+    // get window instance once set
+    windowInstance = WindowUtils.getWindowInstance(moduleName, windowInstance.config.name, windowInstance.uniqueID)
+
+    // calculate pos x and y
+    this.calcPosition(windowInstance)
+
+    return windowInstance
   }
 
   /**
@@ -536,19 +533,13 @@ export default class WindowModule extends VuexModule {
         windowInstance.storage.minimized = false
 
         // recalculate pos x and y
-        /*
-        const newPositionX = WindowUtils.calcPositionX({window: owdModuleAppWindow})
-        if (typeof newPositionX === 'number') owdModuleAppWindow.storage.position.x = newPositionX
-
-        const newPositionY = WindowUtils.calcPositionY({window: owdModuleAppWindow})
-        if (typeof newPositionY === 'number') owdModuleAppWindow.storage.position.y = newPositionY
-        */
-
-        // check windows position on load
-        await this.windowsHandlePageResize()
+        this.calcPosition(windowInstance)
 
         // focus on window
         await this.windowFocus(windowInstance)
+
+        // check windows position on load
+        await this.windowsHandlePageResize()
 
         return windowInstance
       })
@@ -645,13 +636,8 @@ export default class WindowModule extends VuexModule {
         windowInstance.storage.position.x = data.position.x
         windowInstance.storage.position.y = data.position.y
 
-        /*
-        const newPositionX = WindowUtils.calcPositionX({window: owdModuleAppWindow})
-        if (typeof newPositionX === 'number') owdModuleAppWindow.storage.position.x = newPositionX
-
-        const newPositionY = WindowUtils.calcPositionY({window: owdModuleAppWindow})
-        if (typeof newPositionY === 'number') owdModuleAppWindow.storage.position.y = newPositionY
-        */
+        // recalculate pos x and y
+        this.calcPosition(windowInstance)
 
         return true
       })
@@ -904,6 +890,23 @@ export default class WindowModule extends VuexModule {
       .getWindow(data.window)
       .then((windowInstance: OwdModuleAppWindowInstance) => {
         // window.title = data.title
+
+        return true
+      })
+      .catch(() => false)
+  }
+
+  @Action
+  calcPosition(data: any): OwdModuleAppWindowInstance {
+    return this
+      .getWindow(data)
+      .then(async (windowInstance: OwdModuleAppWindowInstance) => {
+
+        const newPositionX = WindowUtils.calcPositionX({window: windowInstance})
+        if (typeof newPositionX === 'number') windowInstance.storage.position.x = newPositionX
+
+        const newPositionY = WindowUtils.calcPositionY({window: windowInstance})
+        if (typeof newPositionY === 'number') windowInstance.storage.position.y = newPositionY
 
         return true
       })

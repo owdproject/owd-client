@@ -5,9 +5,9 @@
       <ul>
         <li v-for="(category, i) in Object.keys(appWindowCategories)" :key="i">
           <a
-              @mouseover="categoryMouseOver(category)"
-              @click="categoryClick(category)"
-              v-text="$t(`desktop.SystemBar.ApplicationMenu.categories.${category}`)"
+            @mouseover="categoryMouseOver(category)"
+            @click="categoryClick(category)"
+            v-text="$t(`desktop.SystemBar.ApplicationMenu.categories.${category}`)"
           />
         </li>
       </ul>
@@ -17,8 +17,10 @@
       <ul v-if="categoryApps && categoryApps.length > 0">
         <li v-for="(moduleAppWindow, i) of categoryApps" :key="i">
           <a @click="windowCreate(moduleAppWindow)">
-            <span :class="['mdi', moduleAppWindow.icon.name || moduleAppWindow.icon]"
-                  :style="`color: ${moduleAppWindow.color};`"/>
+            <span
+              :class="['mdi', moduleAppWindow.icon.name || moduleAppWindow.icon]"
+              :style="`color: ${moduleAppWindow.color};`"
+            />
             {{ moduleAppWindow.titleShort }}
           </a>
         </li>

@@ -59,7 +59,7 @@ export default {
       position: relative;
       display: block;
       color: #DCDCDC;
-      height: 24px;
+      height: 28px;
       line-height: 24px;
       margin: 0 0 0 -1px;
       font-size: 28px;

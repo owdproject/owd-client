@@ -11,14 +11,18 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {computed} from "vue";
+import {useStore} from 'vuex'
 
 export default {
-  name: 'WindowsContainer',
-  computed: {
-    ...mapGetters({
-      windowInstances: 'core/modules/modulesAppWindowInstances'
-    })
+  setup() {
+    const store = useStore()
+
+    return {
+      windowInstances: computed(() => {
+        return store.getters['core/modules/modulesAppWindowInstances']
+      })
+    }
   }
 }
 </script>

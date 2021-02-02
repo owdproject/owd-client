@@ -1,36 +1,82 @@
 <template>
-  <div class="menu-item">
+  <li>
     <div
-      :class="['menu-item-square']"
-      :style="menuItemStyles"
+        :class="['menu-item', { active: window.storage.opened && !window.storage.minimized }]"
+        @click="(e) => windowToggle(e, window)"
     >
-      <!-- v-ripple.500="'rgba(255, 255, 255, 0.1)'" -->
-      <MenuItemIcon :icon="icon" />
+      <div class="menu-item-square" :style="menuItemStyles">
+        <MenuItemIcon :icon="window.config.icon"/>
+      </div>
+      <div class="menu-item-name">
+        <div class="menu-item-name-inner" v-html="window.config.titleShort || window.config.title"/>
+      </div>
     </div>
-    <div class="menu-item-name">
-      <div class="menu-item-name-inner" v-html="title" />
-    </div>
-  </div>
+
+  </li>
 </template>
 
 <script>
 import MenuItemIcon from './MenuItemIcon'
+import {getCurrentInstance} from "vue";
+import {useStore} from "vuex";
 
 export default {
   name: 'MenuItem',
   components: {MenuItemIcon},
   props: {
-    title: String,
-    icon: String|Object,
-    color: String,
+    window: Object
   },
-  computed: {
-    menuItemStyles() {
-      if (!this.icon || (this.icon && !this.icon.image)) {
-        return `background: ${this.color}`
-      }
+  setup() {
+    const app = getCurrentInstance();
+    const store = useStore()
+    const $device = app.appContext.config.globalProperties.$device
 
-      return ''
+    return {
+      menuItemStyles: () => {
+        if (!this.window.icon || (this.window.color && !this.window.icon.image)) {
+          return `background: ${this.window.color}`
+        }
+
+        return ''
+      },
+      windowToggle: (event, window) => {
+        // from mobile
+        if ($device.mobile) {
+
+          if (window.storage.opened) {
+            store.dispatch('core/window/windowClose', window)
+          } else {
+            store.dispatch('core/window/windowCloseAll')
+            store.dispatch('core/window/windowOpen', window)
+          }
+
+        }
+
+        // from desktop
+        if (event.shiftKey) {
+
+          // force close with shiftkey
+          store.dispatch('core/window/windowMinimize', window)
+
+        } else {
+
+          if (window.dummy) {
+
+            // create new window
+            this.store.dispatch('core/window/windowCreate', window.config.name)
+
+          } else {
+
+            if (window.storage && (!window.storage.opened || window.storage.minimized)) {
+              store.dispatch('core/window/windowOpen', window)
+            } else {
+              store.dispatch('core/window/windowMinimize', window)
+            }
+
+          }
+
+        }
+      }
     }
   }
 }
@@ -38,6 +84,33 @@ export default {
 
 <style scoped lang="scss">
 .menu-item {
+  height: 48px;
+  line-height: 48px;
+  margin-bottom: 4px;
+  padding: 0;
+  font-family: $fontTitle;
+  font-size: 17px;
+  text-align: left;
+  cursor: pointer;
+
+  &:after {
+    display: block;
+    content: '';
+    clear: both;
+  }
+
+  @media (min-width: 559px) {
+    &:hover {
+      .menu-item-name {
+        width: 148px;
+      }
+    }
+  }
+
+  &.active .menu-item-square:not(.custom-icon) {
+    background: $menuItemSquareBackground;
+  }
+
   .menu-item-square {
     width: 48px;
     height: 48px;

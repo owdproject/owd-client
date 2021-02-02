@@ -82,7 +82,7 @@ export default class WindowModule extends VuexModule {
       // does module contain any windows?
       if (owdModuleApp.moduleInfo.windows && owdModuleApp.moduleInfo.windows.length > 0) {
 
-        // for each window in moduleInfo.windows (for example WindowSample)
+        // for each window config in moduleInfo.windows (for example WindowSample)
         for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
 
           console.log('[OWD] Initialize module window: ' + owdModuleAppWindowConfig.name)
@@ -247,12 +247,10 @@ export default class WindowModule extends VuexModule {
    * @param data
    */
   @Action
-  async windowCreate(data: string | OwdModuleAppWindowInstance): Promise<OwdModuleAppWindowInstance | void> {
-    let windowInstance
-
+  windowCreate(data: string | OwdModuleAppWindowInstance): OwdModuleAppWindowInstance | void {
     if (typeof data === 'string') {
       const windowName = data
-      const owdModuleAppWindowDetail = await WindowUtils.getWindowDetailsFromWindowName(windowName)
+      const owdModuleAppWindowDetail = WindowUtils.getWindowDetailsFromWindowName(windowName)
 
       if (!owdModuleAppWindowDetail) {
         return console.error(`[OWD] Unable to create new window because "${windowName}" window doesn\'t exist`)
@@ -266,28 +264,24 @@ export default class WindowModule extends VuexModule {
           const windowInstance = WindowUtils.getWindowGroupFirstInstance(windowName)
 
           if (windowInstance) {
+            console.log('CREATE OPEN MA QUI 1')
             return this.windowOpen(windowInstance)
           }
         }
       }
 
       // data was a string, create a new window instance
-      windowInstance = await this.windowCreateInstance({
+      this.windowCreateInstance({
         config: owdModuleAppWindowDetail.window,
-        module: owdModuleAppWindowDetail.module,
-        storage: {
-          opened: false,
-          minimized: false
-        }
+        module: owdModuleAppWindowDetail.module
+      }).then(windowInstance => {
+        this.windowOpen(windowInstance)
+        return windowInstance
       })
+
     } else {
-      windowInstance = data
+      this.windowOpen(data)
     }
-
-    // open window
-    await this.windowOpen(windowInstance)
-
-    return windowInstance
   }
 
   /**
@@ -296,18 +290,20 @@ export default class WindowModule extends VuexModule {
    * @param data
    */
   @Action
-  windowCreateInstance(data: OwdModuleAppWindowCreateInstanceData): OwdModuleAppWindowInstance | void {
+  async windowCreateInstance(data: OwdModuleAppWindowCreateInstanceData): Promise<OwdModuleAppWindowInstance> {
     // check if window is given or...
     // get a copy of the module window configuration
     const windowInstance: any = {...data}
 
+    const moduleName = windowInstance.module.moduleInfo.name
+
     // assign unique instance id
     if (!windowInstance.uniqueID) {
-      windowInstance.uniqueID = WindowUtils.generateWindowUniqueId()
+      windowInstance.uniqueID = WindowUtils.generateWindowInstanceUniqueId()
     }
 
     // assign unique instance name
-    windowInstance.uniqueName = `${windowInstance.module.moduleInfo.name}-${windowInstance.uniqueID}`
+    windowInstance.uniqueName = `${moduleName}-${windowInstance.uniqueID}`
 
     // add storage (clone from owdModuleAppWindow.config)
     windowInstance.storage = {
@@ -359,13 +355,9 @@ export default class WindowModule extends VuexModule {
     if (typeof newPositionY === 'number') owdModuleAppWindow.storage.position.y = newPositionY
     */
 
-    if (!windowInstance) {
-      return console.log('[OWD] Unable to create new window')
-    }
-
     this.REGISTER_WINDOW(windowInstance)
 
-    return windowInstance
+    return WindowUtils.getWindowInstance(moduleName, windowInstance.config.name, windowInstance.uniqueID)
   }
 
   /**

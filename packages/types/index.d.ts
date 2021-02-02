@@ -179,6 +179,7 @@ export interface OwdModuleAppWindowCreateInstanceData {
   module: OwdModuleApp
   config: OwdModuleAppWindowConfig
   storage?: any
+  dummy?: boolean
 }
 
 export interface OwdModuleAppWindowInstance extends OwdModuleAppWindowCreateInstanceData {

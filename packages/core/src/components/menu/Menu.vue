@@ -3,22 +3,11 @@
     <ul class="menu-group">
       <slot name="prepend" />
 
-      <template v-for="windowInstance of windowInstances.list">
-        <li
-          v-if="windowInstance.config.menu"
-          :class="{ active: !windowInstance.storage.closed && !windowInstance.storage.minimized }"
-          :data-window="windowInstance.name"
-        >
-          <MenuItem
-            :title="windowInstance.config.titleShort || windowInstance.config.title"
-            :color="windowInstance.config.color"
-            :icon="windowInstance.config.icon"
-            :data-menu-id="windowInstance.uniqueID"
-            :key="windowInstance.uniqueID"
-            @click="(e) => windowToggle(e, windowInstance)"
-          />
-        </li>
-      </template>
+      <MenuItem
+        v-for="windowInstance of docks"
+        :key="windowInstance.uniqueID"
+        :window="windowInstance"
+      />
 
       <slot name="append" />
     </ul>
@@ -26,55 +15,21 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {computed} from "vue"
+import {useStore} from 'vuex'
 import MenuItem from './MenuItem.vue'
 
 export default {
-  name: 'Menu',
   components: {
     MenuItem
   },
-  computed: {
-    ...mapGetters({
-      windowInstances: 'core/modules/modulesAppWindowInstances'
-    })
-  },
-  methods: {
-    /**
-     * Toggle window visibility
-     */
-    windowToggle: function (event, windowInstance) {
-      if (this.$device.mobile) {
+  setup() {
+    const store = useStore()
 
-        if (!windowInstance.storage.closed) {
-          this.$store.dispatch('core/window/windowClose', windowInstance)
-        } else {
-          this.$store.dispatch('core/window/windowCloseAll')
-          this.$store.dispatch('core/window/windowOpen', windowInstance)
-        }
-
-      } else {
-
-        if (event.shiftKey) {
-
-          // force close with shiftkey
-          this.$store.dispatch('core/window/windowMinimize', windowInstance)
-
-        } else {
-
-          if (windowInstance.storage && (windowInstance.storage.closed || windowInstance.storage.minimized)) {
-            this.$store.dispatch('core/window/windowOpen', windowInstance)
-          } else {
-            // don't close if window has to stay minimized
-            if (windowInstance.config.menu === true) {
-              this.$store.dispatch('core/window/windowClose', windowInstance)
-            } else {
-              this.$store.dispatch('core/window/windowMinimize', windowInstance)
-            }
-          }
-        }
-
-      }
+    return {
+      docks: computed(() => {
+        return store.getters['core/modules/modulesAppWindowDocks']
+      })
     }
   }
 }
@@ -105,36 +60,6 @@ export default {
     margin: 0;
     padding: 0;
     list-style-type: none;
-
-    li {
-      color: $menuItemTitleColor;
-      height: 48px;
-      line-height: 48px;
-      margin-bottom: 4px;
-      padding: 0;
-      font-family: $fontTitle;
-      font-size: 17px;
-      text-align: left;
-      cursor: pointer;
-
-      &:after {
-        display: block;
-        content: '';
-        clear: both;
-      }
-
-      @media (min-width: 559px) {
-        &:hover {
-          .menu-item-name {
-            width: 148px;
-          }
-        }
-      }
-
-      &.active .menu-item-square:not(.custom-icon) {
-        background: $menuItemSquareBackground;
-      }
-    }
   }
 
   @media (max-width: 560px) {

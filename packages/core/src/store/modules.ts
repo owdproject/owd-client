@@ -6,7 +6,7 @@ import {
 
 @Module
 export default class ModulesVuexModule extends VuexModule {
-  private modules: { [key: string]: OwdModuleApp } = {}
+  private modules: { [moduleName: string]: OwdModuleApp } = {}
 
   /**
    * App installed
@@ -78,7 +78,12 @@ export default class ModulesVuexModule extends VuexModule {
   get modulesAppWindowInstances() {
     const owdModuleAppWindowInstances: {
       list: OwdModuleAppWindowInstance[],
-      groups: { [key: string]: OwdModuleAppWindowInstance[] }
+      groups: {
+        [key: string]: {
+          config: OwdModuleAppWindowConfig | undefined,
+          list: OwdModuleAppWindowInstance[]
+        }
+      }
     } = {
       list: [],
       groups: {}
@@ -89,26 +94,73 @@ export default class ModulesVuexModule extends VuexModule {
 
       // for each window config
       for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
-        const windowName = owdModuleAppWindowConfig.name
+        const windowName: string = owdModuleAppWindowConfig.name
+
+        // add to instances groups
+        owdModuleAppWindowInstances.groups[windowName] = {
+          config: owdModuleAppWindowConfig,
+          list: []
+        }
 
         for (const uniqueID in owdModuleApp.windowInstances[windowName]) {
           const windowInstance = owdModuleApp.windowInstances[windowName][uniqueID]
 
           // add to instances list
           owdModuleAppWindowInstances.list.push(windowInstance)
+          owdModuleAppWindowInstances.groups[windowName].list.push(windowInstance)
 
-          // add to instances groups
-          if (!Object.prototype.hasOwnProperty.call(owdModuleAppWindowInstances.groups, windowName)) {
-            owdModuleAppWindowInstances.groups[windowName] = []
-          }
-
-          owdModuleAppWindowInstances.groups[windowName].push(windowInstance)
         }
-
       }
+
     }
 
     return owdModuleAppWindowInstances
+  }
+
+  /**
+   * Items for the docks
+   */
+  get modulesAppWindowDocks() {
+    let items: any[] = []
+
+    for (const owdModuleApp of this.modulesAppInstalled) {
+
+      // does module contain any windows?
+      if (owdModuleApp.moduleInfo.windows && owdModuleApp.moduleInfo.windows.length > 0) {
+
+        for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
+
+          let windowInstances: any[] = []
+
+          if (owdModuleApp.windowInstances[owdModuleAppWindowConfig.name]) {
+            windowInstances = Object.values(owdModuleApp.windowInstances[owdModuleAppWindowConfig.name])
+          }
+
+          if (windowInstances.length === 0) {
+
+            // add dummy item to dock
+            items.push({
+              config: owdModuleAppWindowConfig,
+              storage: {
+                opened: false,
+                minimized: false
+              },
+              dummy: true
+            })
+
+          } else {
+            if (windowInstances.length > 0) {
+              items = items.concat(windowInstances)
+            }
+          }
+
+        }
+
+      }
+
+    }
+
+    return items
   }
 
   @Mutation

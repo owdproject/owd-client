@@ -10,7 +10,15 @@ interface CallbackWindowInstance<T1, T2 = void> {
 }
 
 /**
+ * Generate window instance uniqueID
+ */
+export function generateWindowInstanceUniqueId(): string {
+  return md5(Date.now().toString() + Math.random())
+}
+
+/**
  * Calculate x position for new opened windows
+ * todo refactor
  *
  * @param data
  * @returns {Promise<void>}
@@ -48,7 +56,7 @@ export function calcPositionX(data: { window: any, forceLeft?: boolean, forceRig
 
 /**
  * Calculate y position for new opened windows
- * todo method move in a helper
+ * todo refactor
  *
  * @param data
  * @returns {Promise<unknown>}
@@ -86,12 +94,13 @@ export function calcPositionY(data: { window: any, forceLeft?: boolean, forceRig
   return y
 }
 
-export function generateWindowUniqueId(): string {
-  return md5(Date.now().toString() + Math.random())
-}
-
 // WINDOW DETAILS
 
+/**
+ * Get window details (moduleInfo + window.config)
+ *
+ * @param windowName
+ */
 export function getWindowDetailsFromWindowName(windowName: string): OwdModuleAppWindowDetail | undefined {
   if (typeof store.getters['core/modules/modulesAppWindowDetails'][windowName] !== 'undefined') {
     return store.getters['core/modules/modulesAppWindowDetails'][windowName]
@@ -112,6 +121,9 @@ export function findWindowInstanceByAttr(attr: string, value: string) {
       if (attr === 'uniqueID') {
         return owdModuleAppWindowInstance.uniqueID === value
       }
+      if (attr === 'uniqueName') {
+        return owdModuleAppWindowInstance.uniqueName === value
+      }
       if (attr === 'name') {
         return owdModuleAppWindowInstance.config.name === value
       }
@@ -129,6 +141,16 @@ export async function forEachWindowInstance(cb: CallbackWindowInstance<OwdModule
   }
 }
 
+export function getWindowInstances(moduleName: string) {
+  return store.getters['core/modules/modulesAppKeyMap'][moduleName]
+}
+
+export function getWindowInstance(moduleName: string, windowName: string, uniqueID: string) {
+  return store.getters['core/modules/modulesAppKeyMap'][moduleName].windowInstances[windowName][uniqueID]
+}
+
+// WINDOW GROUPS
+
 /**
  * For each window instance in window group
  *
@@ -140,7 +162,7 @@ export async function forEachWindowGroupInstance(
   cb: CallbackWindowInstance<OwdModuleAppWindowInstance>
 ) {
   if (store.getters['core/modules/modulesAppWindowInstances'].groups) {
-    for (const owdModuleAppWindowInstance of store.getters['core/modules/modulesAppWindowInstances'].groups[windowName]) {
+    for (const owdModuleAppWindowInstance of store.getters['core/modules/modulesAppWindowInstances'].groups[windowName].list) {
       await cb(owdModuleAppWindowInstance)
     }
   }
@@ -151,25 +173,25 @@ export function isWindowNameExisting(windowName: string) {
 }
 
 export function getWindowGroupInstances(windowName: string) {
-  return store.getters['core/modules/modulesAppWindowInstances'].groups[windowName]
+  return store.getters['core/modules/modulesAppWindowInstances'].groups[windowName].list
 }
 
 export function getWindowGroupInstancesCount(windowName: string): number {
   if (typeof store.getters['core/modules/modulesAppWindowInstances'].groups[windowName] !== 'undefined') {
-    return store.getters['core/modules/modulesAppWindowInstances'].groups[windowName].length
+    return store.getters['core/modules/modulesAppWindowInstances'].groups[windowName].list.length
   }
 
   return 0
 }
 
 export function isWindowGroupInstanceIndexExisting(windowName: string, index: number) {
-  return typeof store.getters['core/modules/modulesAppWindowInstances'].groups[windowName][index] !== 'undefined'
+  return typeof store.getters['core/modules/modulesAppWindowInstances'].groups[windowName].list[index] !== 'undefined'
 }
 
 export function getWindowGroupInstanceByIndex(windowName: string, index: number) {
-  return store.getters['core/modules/modulesAppWindowInstances'].groups[windowName][index]
+  return store.getters['core/modules/modulesAppWindowInstances'].groups[windowName].list[index]
 }
 
 export function getWindowGroupFirstInstance(windowName: string) {
-  return store.getters['core/modules/modulesAppWindowInstances'].groups[windowName][0]
+  return store.getters['core/modules/modulesAppWindowInstances'].groups[windowName].list[0]
 }

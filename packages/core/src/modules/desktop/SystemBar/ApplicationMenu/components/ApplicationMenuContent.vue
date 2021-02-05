@@ -1,6 +1,7 @@
 <template>
   <DesktopSystemBarMenuContent
       v-if="opened"
+      arrow-position="left"
       class="owd-desktop__application-menu__container"
   >
 

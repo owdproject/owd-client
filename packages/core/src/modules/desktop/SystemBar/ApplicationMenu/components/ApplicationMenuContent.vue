@@ -1,7 +1,10 @@
 <template>
-  <DesktopSystemBarMenuContent class="application-container" v-if="opened">
+  <DesktopSystemBarMenuContent
+      v-if="opened"
+      class="owd-desktop__application-menu__container"
+  >
 
-    <div class="applications-categories">
+    <div class="owd-desktop__application-menu__categories">
       <ul>
         <li v-for="(category, i) in Object.keys(appWindowCategories)" :key="i">
           <a
@@ -13,7 +16,7 @@
       </ul>
     </div>
 
-    <div class="applications-list">
+    <div class="owd-desktop__application-menu__list">
       <ul v-if="categoryApps && categoryApps.length > 0">
         <li v-for="(moduleAppWindow, i) of categoryApps" :key="i">
           <a @click="windowCreate(moduleAppWindow)">
@@ -87,25 +90,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.application-container {
-  display: grid;
-  width: 410px;
-  height: 500px;
-  max-height: 60vh;
-  grid-template-columns: 40% 60%;
-  line-height: 32px;
-  left: 16px;
-
-  .arrow {
-    border: solid $windowBorder;
-    background: $windowBackground;
-    border-width: 0 3px 3px 0;
-    display: inline-block;
-    padding: 8px;
-    transform: rotate(-135deg);
+.owd-desktop__application-menu {
+  &__container {
+    display: grid;
+    width: 410px;
+    height: 500px;
+    max-height: 60vh;
+    grid-template-columns: 40% 60%;
+    line-height: 32px;
+    left: 16px;
   }
 
-  .applications-categories {
+  &__categories {
     padding: 16px 0;
 
     ul {
@@ -129,7 +125,7 @@ export default {
     }
   }
 
-  .applications-list {
+  &__list {
     overflow-y: auto;
     padding: 16px 14px 16px 0;
 

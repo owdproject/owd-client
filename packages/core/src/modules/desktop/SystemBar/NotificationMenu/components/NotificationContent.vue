@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DesktopSystemBarMenuContent v-if="opened" class="notification-container">
+    <DesktopSystemBarMenuContent v-if="opened" class="owd-desktop__notification__container">
 
       <NotificationList class="col col-notification-list" />
       <NotificationCalendar class="col col-calendar" />
@@ -31,12 +31,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.notification-container {
+.owd-desktop__notification__container {
   display: grid;
   width: 700px;
   height: 500px;
   max-height: 60vh;
-  grid-template-columns: 55% 45%;
+  grid-template-columns: 58% 42%;
   line-height: 32px;
   padding: 16px 0;
   left: 50%;

@@ -1,11 +1,5 @@
 <template>
-  <div class="window-content">
+  <div class="owd-window__content">
     <slot />
   </div>
 </template>
-
-<script lang="ts">
-export default {
-  name: 'WindowContent',
-}
-</script>

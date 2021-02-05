@@ -1,5 +1,5 @@
 <template>
-  <div id="logo" v-if="enabled">
+  <div class="owd-logo" v-if="enabled">
     <h2 v-text="title" />
   </div>
 </template>
@@ -8,7 +8,6 @@
 import {getCurrentInstance} from "vue";
 
 export default {
-  name: 'Logo',
   props: {
     title: {
       type: String,
@@ -27,7 +26,7 @@ export default {
 </script>
 
 <style lang="scss">
-  #logo {
+  .owd-logo {
     position: absolute;
     bottom: 0;
     left: 0;

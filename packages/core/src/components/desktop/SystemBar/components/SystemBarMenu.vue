@@ -1,17 +1,11 @@
 <template>
-  <a class="system-bar-menu">
+  <a class="owd-desktop__system-bar__menu">
     <slot />
   </a>
 </template>
 
-<script>
-  export default {
-    name: "SystemBarMenu"
-  }
-</script>
-
 <style scoped lang="scss">
-a.system-bar-menu {
+a.owd-desktop__system-bar__menu {
   display: inline-block;
   padding: 0 12px;
 

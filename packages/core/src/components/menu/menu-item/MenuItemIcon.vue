@@ -1,11 +1,10 @@
 <template>
-  <div class="menu-icon-image" v-if="icon.image" :style="imageStyle" />
+  <div class="owd-menu__item__icon-image" v-if="icon.image" :style="imageStyle" />
   <v-icon v-else :style="iconStyle" v-text="iconName" />
 </template>
 
 <script>
 export default {
-  name: 'MenuItemIcon',
   props: {
     icon: [String,Object]
   },
@@ -84,7 +83,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.menu-icon-image {
+.owd-menu__item__icon-image {
   background-position: center;
   width: 100%;
   height: 100%;

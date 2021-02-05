@@ -1,7 +1,7 @@
 <template>
-  <v-system-bar id="desktop-system-bar">
+  <v-system-bar class="owd-desktop__system-bar">
 
-    <div id="desktop-system-bar-left">
+    <div class="owd-desktop__system-bar__left">
       <slot name="system-bar-left-prepend" />
 
       <template v-for="(module, i) of modules.left" :key="i">
@@ -12,14 +12,14 @@
       <slot name="system-bar-left-append" />
     </div>
 
-    <div id="desktop-system-bar-center">
+    <div class="owd-desktop__system-bar__center">
       <template v-for="(module, i) of modules.center" :key="i">
         <component :is="module.components.menu" :config="module.config" @click="openSystemBarModule(module)" />
         <component :is="module.components.content" :opened="module.config.opened" />
       </template>
     </div>
 
-    <div id="desktop-system-bar-right">
+    <div class="owd-desktop__system-bar__right">
       <slot name="system-bar-right-prepend" />
 
       <template v-for="(module, i) of modules.right" :key="i">
@@ -57,7 +57,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-#desktop-system-bar {
+.owd-desktop__system-bar {
   display: grid;
   grid-template-columns: 30% 40% 30%;
   cursor: default;
@@ -67,19 +67,11 @@ export default {
   font-weight: bold;
   user-select: none;
 
-  &.position-top {
-
-  }
-
-  &.position-bottom {
-
-  }
-
-  #desktop-system-bar-center {
+  &__center {
     text-align: center;
   }
 
-  #desktop-system-bar-right {
+  &__right {
     text-align: right;
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="floating-notifications">
+  <div class="owd-desktop__floating-notifications">
     <ul v-if="notifications.length > 0">
       <li v-for="(notification, key) in notifications" :key="key">
         <Notification :notification="notification" />
@@ -47,7 +47,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.floating-notifications {
+.owd-desktop__floating-notifications {
   position: absolute;
   top: 50px;
   left: 50%;

@@ -6,7 +6,6 @@
 
 <script>
 export default {
-  name: "SystemBarStatusBattery",
   data() {
     return {
       batteryStatus: 'idle',

@@ -1,5 +1,7 @@
 <template>
-  <div id="windows-container">
+  <div class="owd-windows-container">
+    <div class="window-initialize-area" />
+
     <component
       v-for="windowInstance of windowInstances"
       :key="windowInstance.uniqueID"
@@ -29,7 +31,7 @@ export default {
 
 <style lang="scss">
 #app {
-  #windows-container {
+  .owd-windows-container {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -44,7 +46,7 @@ export default {
   }
 
   &.is-mobile {
-    #windows-container {
+    .owd-windows-container {
       top: 24px;
       bottom: 24px;
       left: 24px;

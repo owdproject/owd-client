@@ -1,6 +1,6 @@
 <template>
-  <div id="menu">
-    <ul class="menu-group">
+  <div class="owd-menu">
+    <ul class="owd-menu__group">
       <slot name="prepend" />
 
       <MenuItem
@@ -17,7 +17,7 @@
 <script>
 import {computed} from "vue"
 import {useStore} from 'vuex'
-import MenuItem from './MenuItem.vue'
+import MenuItem from './menu-item/MenuItem.vue'
 
 export default {
   components: {
@@ -36,7 +36,7 @@ export default {
 </script>
 
 <style lang="scss">
-#menu {
+.owd-menu {
   position: absolute;
   top: 0;
   left: 24px;
@@ -48,12 +48,6 @@ export default {
 
   &:hover {
     z-index: 12;
-  }
-
-  &:not(:hover).autohide {
-    @media (min-width: 560px) {
-      transform: translateX(-80px);
-    }
   }
 
   ul {

@@ -1,19 +1,21 @@
 <template>
-  <div class="window-nav">
+  <div class="owd-window__nav">
+
     <div
-      class="window-nav-title"
+      class="owd-window__nav__title"
       v-text="title"
       @dblclick="$emit('toggleMaximize')"
     />
-    <div class="window-nav-btn-group">
+
+    <div class="owd-window__nav__btn-group">
       <slot />
     </div>
+
   </div>
 </template>
 
 <script>
 export default {
-  name: 'WindowNav',
   props: {
     title: String
   }
@@ -21,14 +23,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .window-nav {
+  .owd-window__nav {
     position: relative;
     display: flex;
-    height: 38px;
+    height: 40px;
     line-height: 40px;
     user-select: none;
 
-    .window-nav-title {
+    &__title {
       display: inline-block;
       width: 100%;
       padding-left: 12px;
@@ -45,7 +47,7 @@ export default {
       }
     }
 
-    .window-nav-btn-group {
+    &__btn-group {
       display: flex;
       position: absolute;
       right: 0;

@@ -9,7 +9,6 @@
 
 <script>
 export default {
-  name: 'FolderFile',
   props: {
     name: String,
     title: String,

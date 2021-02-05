@@ -1,14 +1,16 @@
 <template>
   <li>
     <div
-        :class="['menu-item', { active: window.storage.opened && !window.storage.minimized }]"
+        :class="['owd-menu__item', {
+          'owd-menu__item--active': window.storage.opened && !window.storage.minimized
+        }]"
         @click="(e) => windowToggle(e, window)"
     >
-      <div class="menu-item-square" :style="menuItemStyles">
+      <div class="owd-menu__item__square" :style="menuItemStyles">
         <MenuItemIcon :icon="window.config.icon"/>
       </div>
-      <div class="menu-item-name">
-        <div class="menu-item-name-inner" v-html="window.config.titleShort || window.config.title"/>
+      <div class="owd-menu__item__name">
+        <div class="owd-menu__item__name-inner" v-html="window.config.titleShort || window.config.title"/>
       </div>
     </div>
 
@@ -21,7 +23,6 @@ import {getCurrentInstance} from "vue";
 import {useStore} from "vuex";
 
 export default {
-  name: 'MenuItem',
   components: {MenuItemIcon},
   props: {
     window: Object
@@ -83,7 +84,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.menu-item {
+.owd-menu__item {
   height: 48px;
   line-height: 48px;
   margin-bottom: 4px;
@@ -93,25 +94,31 @@ export default {
   text-align: left;
   cursor: pointer;
 
-  &:after {
-    display: block;
-    content: '';
-    clear: both;
-  }
-
-  @media (min-width: 559px) {
-    &:hover {
-      .menu-item-name {
+  &:hover {
+    .owd-menu__item__name {
         width: 148px;
-      }
     }
   }
 
-  &.active .menu-item-square:not(.custom-icon) {
-    background: $menuItemSquareBackground;
+  &__name {
+    background: $menuItemTitleBackground;
+    transition: width 0.3s ease-in-out;
+    overflow: hidden;
+    float: left;
+    width: 0;
+    height: 48px;
+    line-height: 48px;
+    border-radius: 2px;
+    word-spacing: -1px;
+    font-size: 18px;
+    margin-left: 4px;
+
+    &-inner {
+      padding: 0 12px;
+    }
   }
 
-  .menu-item-square {
+  &__square {
     width: 48px;
     height: 48px;
     font-size: 24px;
@@ -128,26 +135,12 @@ export default {
     }
   }
 
-  .menu-item-name {
-    background: $menuItemTitleBackground;
-    transition: width 0.3s ease-in-out;
-    overflow: hidden;
-    float: left;
-    width: 0;
-    height: 48px;
-    line-height: 48px;
-    border-radius: 2px;
-    word-spacing: -1px;
-    font-size: 18px;
-    margin-left: 4px;
-
-    .menu-item-name-inner {
-      padding: 0 12px;
-    }
+  &--active &__square {
+    background: $menuItemSquareBackground;
   }
 
   @media (max-width: 560px) {
-    .menu-square {
+    &__square {
       position: relative !important;
       width: 48px;
       z-index: 3;
@@ -156,7 +149,7 @@ export default {
       box-shadow: -4px 0 0 0 #171717;
     }
 
-    .menu-item-name {
+    &__name {
       position: fixed;
       left: 15px;
       right: 15px;
@@ -171,7 +164,7 @@ export default {
     }
 
     &:hover {
-      .menu-item-name {
+      .owd-menu__item__name {
         display: block;
       }
     }

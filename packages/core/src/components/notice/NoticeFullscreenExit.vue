@@ -15,7 +15,6 @@
 <script>
 import {ref} from 'vue'
 export default {
-  name: 'NoticePressToExitFullscreen',
   setup() {
     const visible = ref(false)
     const timeout = ref(0)

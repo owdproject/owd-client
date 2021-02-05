@@ -9,10 +9,9 @@
 </template>
 
 <script>
-import SystemBarStatusBattery
-  from "./battery/SystemBarStatusBattery";
+import SystemBarStatusBattery from "./battery/SystemBarStatusBattery";
+
 export default {
-  name: "SystemBarStatus",
   components: {SystemBarStatusBattery}
 }
 </script>

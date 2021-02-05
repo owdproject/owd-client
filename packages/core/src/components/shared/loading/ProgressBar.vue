@@ -10,12 +10,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'ProgressBar'
-}
-</script>
-
 <style scoped lang="scss">
   // styles from Vuetify
   .v-progress-linear {

@@ -1,78 +1,82 @@
 $fontWindowTitle: 'Cantarell';
 
-#desktop {
-  &.system-bar-enabled {
-    background: $desktopSystemBarBackground;
+#app {
+  .owd-desktop {
+    &--system-bar-enabled {
+      background: $desktopSystemBarBackground;
 
-    .desktop-content {
-      background: $bodyBackground;
-      color: $desktopSystemBarColor;
-    }
+      .owd-desktop__content {
+        background: $bodyBackground;
+        color: $desktopSystemBarColor;
+      }
 
-    .floating-notifications {
-      .notification {
-        background: $windowContentInputBackground;
+      .owd-desktop__floating-notifications {
+        .notification {
+          background: $windowContentInputBackground;
+        }
       }
     }
-  }
 
-  .window {
-    border-radius: 8px 8px 1px 1px;
+    .owd-window {
+      border-radius: 8px 8px 1px 1px;
 
-    .window-container {
-      box-shadow: none;
+      &__container {
+        box-shadow: none;
+      }
 
-      .window-nav {
-        height: 36px;
-        line-height: 36px;
+      &__nav {
         font-family: $fontWindowTitle;
         font-weight: bold;
         font-size: 13.5px;
         background: #353535;
-        box-shadow: inset 0 1px 0 0 #383838, 0 1px 0 0 #202020;
+        box-shadow: inset 0 1px 0 0 #383838;
+        border-bottom: 1px solid #202020;
 
-        .window-nav-title {
+        &__title {
           text-align: center;
           padding: 0;
         }
 
-        .window-nav-btn-group {
+        &__btn-group {
           .btn {
             border-radius: 50%;
-            margin: 4px 4px 4px 0;
+            margin: 6px 4px 6px 0;
             width: 28px;
             height: 28px;
             line-height: 28px;
           }
         }
       }
-    }
 
-    &.focused {
-      .window-container {
-        .window-nav {
-          background: linear-gradient(to bottom, #2b2b2b, #262626);
-          box-shadow: inset 0 1px 0 0 #383838, 0 1px 0 0 #070707;
+      &--focused {
+        .owd-window__container {
+          .owd-window__nav {
+            background: linear-gradient(to bottom, #2b2b2b, #262626);
+            box-shadow: inset 0 1px 0 0 #383838;
+            border-bottom: 1px solid #070707;
 
-          .window-nav-btn-group {
-            .btn {
-              &:hover {
-                background: #373737;
-                box-shadow: inset 0 0 0 1px #1b1b1b;
-              }
-              &:active {
-                background: #1e1e1e;
-                box-shadow: inset 0 0 0 1px #1c1c1c;
+            &__btn-group {
+              .btn {
+
+                &:hover {
+                  background: #373737;
+                  box-shadow: inset 0 0 0 1px #1b1b1b;
+                }
+
+                &:active {
+                  background: #1e1e1e;
+                  box-shadow: inset 0 0 0 1px #1c1c1c;
+                }
               }
             }
           }
         }
       }
-    }
 
-    &:not(.borderless) {
-      .window-container {
-        grid-template-rows: 37px calc(100% - 37px);
+      &:not(&--borderless) {
+        .owd-window__container {
+          grid-template-rows: 40px calc(100% - 40px);
+        }
       }
     }
   }

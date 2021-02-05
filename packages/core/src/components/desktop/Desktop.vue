@@ -1,8 +1,8 @@
 <template>
-  <div id="desktop" :class="{
-    'system-bar-enabled': systemBarEnabled,
-    'system-bar-position-top': systemBarPosition === 'top',
-    'system-bar-position-bottom': systemBarPosition === 'bottom',
+  <div class="owd-desktop" :class="{
+    'owd-desktop--system-bar-enabled': systemBarEnabled,
+    'owd-desktop--system-bar-position-top': systemBarPosition === 'top',
+    'owd-desktop--system-bar-position-bottom': systemBarPosition === 'bottom',
   }">
     <DesktopSystemBar v-if="systemBarEnabled">
 
@@ -22,7 +22,7 @@
 
     </DesktopSystemBar>
 
-    <div class="desktop-content">
+    <div class="owd-desktop__content">
       <slot />
     </div>
   </div>
@@ -35,7 +35,6 @@
   import {useStore} from "vuex";
 
   export default {
-    name: "Desktop",
     mixins: [mixinServer],
     components: {DesktopSystemBar},
     setup() {
@@ -86,27 +85,26 @@
 </script>
 
 <style scoped lang="scss">
-  #desktop {
+  .owd-desktop {
     display: flex;
     flex-flow: column;
     height: 100vh;
 
-    &.system-bar-enabled {
-      &.system-bar-position-top {
-        .desktop-content {
-          border-radius: 8px 8px 0 0;
-        }
-      }
-      &.system-bar-position-bottom {
-        flex-direction: column-reverse;
-
-        .desktop-content {
-          border-radius: 0 0 8px 8px;
-        }
+    &--system-bar-position-top {
+      .owd-desktop__content {
+        border-radius: 8px 8px 0 0;
       }
     }
 
-    .desktop-content {
+    &--system-bar-position-bottom {
+      flex-direction: column-reverse;
+
+      .owd-desktop__content {
+        border-radius: 0 0 8px 8px;
+      }
+    }
+
+    &__content {
       position: relative;
       flex: 1;
     }

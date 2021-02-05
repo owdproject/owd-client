@@ -8,7 +8,6 @@
 
 <script>
 export default {
-  name: 'Folder',
   props: {
     projects: Object
   }

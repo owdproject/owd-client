@@ -1,15 +1,9 @@
 <template>
-  <div id="background-image" />
+  <div class="owd-background" />
 </template>
 
-<script>
-export default {
-  name: 'Background'
-}
-</script>
-
 <style scoped lang="scss">
-  #background-image {
+  .owd-background {
     position: absolute;
     top: 0;
     left: 0;

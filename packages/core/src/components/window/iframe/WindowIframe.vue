@@ -1,12 +1,12 @@
 <template>
-  <Window class="window-iframe" :title="data.config.title" :window="data">
-    <div class="iframe-container" v-click-outside="focusOut">
+  <Window class="owd-window-iframe" :title="data.config.title" :window="data">
+    <div class="owd-window-iframe__content" v-click-outside="focusOut">
       <iframe
         :src="url" :id="`${data.module.moduleInfo.name+'-iframe'}`"
         @load="iframeLoaded"
       />
 
-      <div v-if="!focus" class="iframe-focus-in-detect" @click="focusIn"/>
+      <div v-if="!focus" class="detect-focus-in" @click="focusIn"/>
     </div>
 
     <v-progress-linear
@@ -21,7 +21,6 @@
 import Window from '../Window'
 
 export default {
-  name: 'WindowIframe',
   components: {
     Window
   },
@@ -78,35 +77,31 @@ export default {
 </script>
 
 <style lang="scss">
-.window-iframe {
-  .window-content {
+.owd-window-iframe {
+  &__content {
     position: relative;
 
-    .iframe-container {
+    iframe {
+      border: 0;
+      padding: 0;
+      margin: 0;
+      width: 100%;
       height: 100%;
+    }
 
-      iframe {
-        border: 0;
-        padding: 0;
-        margin: 0;
-        width: 100%;
-        height: 100%;
-      }
+    .detect-focus-in {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
 
-      .iframe-focus-in-detect {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-      }
-
-      .v-progress-linear {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-      }
+    .v-progress-linear {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
     }
   }
 }

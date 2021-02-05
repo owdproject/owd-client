@@ -1,6 +1,6 @@
 <template>
   <Window :title="data.config.title" :window="data">
-    <div class="window-content-debug">
+    <div class="owd-window__content__debug">
       <div class="options">
 
         <div>
@@ -69,18 +69,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.window-debug {
-  .window-content {
-    position: relative;
-    padding: 12px;
-    box-sizing: border-box;
-  }
-}
-</style>
-
 <style scoped lang="scss">
-.window-content-debug {
+.owd-window__content__debug {
   display: grid;
   grid-template-columns: 60% 40%;
 

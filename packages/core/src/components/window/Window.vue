@@ -1,6 +1,6 @@
 <template>
   <vue-resizable
-    v-show="window.storage.opened && !window.storage.minimized"
+    v-if="window.storage.opened && !window.storage.minimized"
     :data-window="window.config.name"
     :max-width="windowMaxWidth"
     :max-height="windowMaxHeight"
@@ -14,7 +14,7 @@
       'z-index': window.storage.position.z
     }"
     fit-parent
-    drag-selector=".window-nav .window-nav-title"
+    drag-selector=".owd-window__nav .owd-window__nav__title"
     @drag:start="onDragStart"
     @drag:move="onDragMove"
     @drag:end="onDragEnd"
@@ -22,20 +22,21 @@
     @resize:end="onResizeEnd"
     :class="[
     windowNameClass,
-    'window',
+    'owd-window',
       {
-        'focused': window.storage.focused,
-        'maximized': window.config.maximizable && window.storage.maximized,
-        'dragging': dragging,
-        'resizing': resizing,
-        'fullscreen': window.config.fullscreen && window.storage.fullscreen,
-        'borderless': window.config.borderless,
-        'no-resizable': !window.config.resizable,
-        'no-content-spacing': window.config.noContentSpacing
+        'owd-window--focused': window.storage.focused,
+        'owd-window--maximized': window.config.maximizable && window.storage.maximized,
+        'owd-window--dragging': dragging,
+        'owd-window--resizing': resizing,
+        'owd-window--fullscreen': window.config.fullscreen && window.storage.fullscreen,
+        'owd-window--borderless': window.config.borderless,
+        'owd-window--no-resizable': !window.config.resizable,
+        'owd-window--no-content-spacing': window.config.noContentSpacing
       }
     ]"
   >
-    <div class="window-container" @click="onActivated">
+    <div class="owd-window__container" @click="onActivated">
+
       <WindowNav :title="title" @toggleMaximize="onToggleMaximize">
         <a
             v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable"
@@ -66,11 +67,13 @@
           <v-icon v-text="$owd.config.icons.windows.close"/>
         </a>
       </WindowNav>
+
       <WindowContent>
         <slot/>
       </WindowContent>
 
-      <slot name="append-outer"/>
+      <slot name="append-outer" />
+
     </div>
   </vue-resizable>
 </template>
@@ -82,7 +85,6 @@ import WindowNav from './WindowNav'
 import WindowContent from './WindowContent'
 
 export default {
-  name: 'Window',
   components: {
     WindowContent,
     WindowNav,
@@ -118,7 +120,7 @@ export default {
       const kebabCase = require('kebab-case')
       const kebabCaseName = kebabCase(props.window.config.name)
 
-      return kebabCaseName.substr(1, kebabCaseName.length + 1)
+      return 'owd-'+kebabCaseName.substr(1, kebabCaseName.length + 1)
     })
 
     // window max width
@@ -192,8 +194,6 @@ export default {
     }
   },
   mounted() {
-    this.$emit('open')
-
     // when press ESC and a window is in full-screen mode
     window.addEventListener('keydown', function (e) {
       if (e.keyCode === 27) {
@@ -373,11 +373,7 @@ export default {
 </script>
 
 <style lang="scss">
-  .resizable-component {
-    position: absolute !important;
-  }
-
-  .window {
+  .owd-window {
     background: $windowBackground;
     box-shadow: $windowShadow;
     border-radius: $windowBorderRadius;
@@ -390,33 +386,37 @@ export default {
       max-width: calc(100% - 76px) !important;
     }
 
-    .window-container {
+    &.resizable-component {
+      position: absolute !important;
+    }
+
+    &__container {
       display: grid;
       grid-template-rows: 100%;
       height: 100%;
       box-shadow: inset 0 0 0 1px $windowBorder;
+    }
 
-      .window-content {
-        height: 100%;
-        padding: 0 12px 12px 12px;
-        box-sizing: border-box;
-        overflow: hidden;
+    &__content {
+      height: 100%;
+      padding: 0 12px 12px 12px;
+      box-sizing: border-box;
+      overflow: hidden;
 
-        &:before {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          pointer-events: none;
-          background-size: cover;
-          content: '';
-        }
+      &:before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        background-size: cover;
+        content: '';
       }
     }
 
-    &.dragging, &.resizing {
-      .window-content:after {
+    &--dragging, &--resizing {
+      .owd-window__content:after {
         position: absolute;
         top: 0;
         left: 0;
@@ -426,63 +426,71 @@ export default {
       }
     }
 
-    &.no-resizable {
+    &--no-resizable {
       > [class^="resizable"] {
         display: none !important;
       }
     }
 
-    &.no-content-spacing .window-container > .window-content {
-      height: 100%;
-      padding: 0;
-    }
-
-    &:not(.no-content-spacing) {
-      .window-container .window-content {
-        padding: 12px;
+    &--no-content-spacing {
+      .owd-window__container {
+        > .owd-window__content {
+          height: 100%;
+          padding: 0;
+        }
       }
     }
 
-    &.focused {
-      .window-container {
-        > .window-nav {
-          .window-nav-btn-group .btn {
+    &:not(&--no-content-spacing) {
+      .owd-window__container {
+        > .owd-window__content {
+          padding: 14px;
+        }
+      }
+    }
+
+    &--focused {
+      .owd-window__container {
+        > .owd-window__nav {
+          &__btn-group .btn {
             color: white;
           }
         }
       }
     }
 
-    &.borderless {
-      .window-container {
-        > .window-nav {
+    &--borderless {
+      .owd-window__container {
+        > .owd-window__nav {
           display: none;
         }
       }
     }
 
-    &.maximized {
-      .window-content {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        margin: 0 !important;
-        padding: 15px;
-        z-index: 12;
-        background: #111111;
+    &--maximized {
+      .owd-window__container {
+        > .owd-window__content {
+          position: fixed !important;
+          top: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          width: 100% !important;
+          height: 100% !important;
+          margin: 0 !important;
+          padding: 15px;
+          z-index: 12;
+          background: #111111;
 
-        @media (max-width: 768px) {
-          left: auto !important;
+          @media (max-width: 768px) {
+            left: auto !important;
+          }
         }
       }
     }
   }
 
   #app.is-mobile {
-    .window {
+    .owd-window {
       max-width: 100%;
       max-height: 100%;
       top: 0 !important;

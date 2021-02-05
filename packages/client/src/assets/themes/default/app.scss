@@ -1,56 +1,54 @@
-#desktop {
-  &.system-bar-enabled {
+.owd-desktop {
+  &--system-bar-enabled {
     background: $desktopSystemBarBackground;
 
-    .desktop-content {
+    .owd-desktop__content {
       background: $bodyBackground;
       color: $desktopSystemBarColor;
     }
 
-    .floating-notifications {
+    .owd-desktop__floating-notifications {
       .notification {
         background: $windowContentInputBackground;
       }
     }
   }
 
-  .window {
-    .window-container {
-      .window-nav {
-        .window-nav-title {
-          display: inline-block;
-          width: 100%;
-          padding-left: 12px;
-          font-family: $fontMono;
-          font-size: 14px;
-        }
+  .owd-window {
+    &__nav {
+      &__title {
+        display: inline-block;
+        width: 100%;
+        padding-left: 12px;
+        font-family: $fontMono;
+        font-size: 14px;
+      }
 
-        .window-nav-btn-group {
-          .btn {
-            .v-icon {
-              &.mdi-open-in-new {
-                font-size: 15px;
-              }
+      &__btn-group {
+        .btn {
+          .v-icon {
+            &.mdi-open-in-new {
+              font-size: 15px;
+            }
 
-              &.mdi-window-maximize {
-                font-size: 18px;
-                vertical-align: -3px;
-              }
+            &.mdi-window-maximize {
+              font-size: 18px;
+              vertical-align: -3px;
             }
           }
         }
       }
     }
 
-    &:not(.no-content-spacing):not(.borderless) {
-      .window-container .window-content {
+    &:not(&--no-content-spacing):not(&--borderless) {
+      .owd-window__container > .owd-window__content {
         padding-top: 0;
       }
     }
 
-    &:not(.borderless) {
-      .window-container {
-        grid-template-rows: 38px calc(100% - 38px);
+    &:not(&--borderless) {
+      .owd-window__container {
+        grid-template-rows: 40px calc(100% - 38px);
       }
     }
   }

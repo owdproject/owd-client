@@ -26,8 +26,8 @@ export default {
   .owd-window__nav {
     position: relative;
     display: flex;
-    height: 40px;
-    line-height: 40px;
+    height: 38px;
+    line-height: 38px;
     user-select: none;
 
     &__title {

@@ -1,5 +1,5 @@
 <template>
-  <div class="folder">
+  <div class="owd-folder">
     <ul>
       <slot />
     </ul>
@@ -15,7 +15,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .folder {
+  .owd-folder {
     ul {
       margin: 0;
       padding: 0;

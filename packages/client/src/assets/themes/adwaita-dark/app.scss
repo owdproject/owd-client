@@ -40,7 +40,7 @@ $fontWindowTitle: 'Cantarell';
         &__btn-group {
           .btn {
             border-radius: 50%;
-            margin: 6px 4px 6px 0;
+            margin: 5px 4px 5px 0;
             width: 28px;
             height: 28px;
             line-height: 28px;
@@ -57,7 +57,6 @@ $fontWindowTitle: 'Cantarell';
 
             &__btn-group {
               .btn {
-
                 &:hover {
                   background: #373737;
                   box-shadow: inset 0 0 0 1px #1b1b1b;
@@ -75,7 +74,7 @@ $fontWindowTitle: 'Cantarell';
 
       &:not(&--borderless) {
         .owd-window__container {
-          grid-template-rows: 40px calc(100% - 40px);
+          grid-template-rows: 38px calc(100% - 38px);
         }
       }
     }

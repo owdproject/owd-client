@@ -68,9 +68,9 @@
         </a>
       </WindowNav>
 
-      <WindowContent>
-        <slot/>
-      </WindowContent>
+      <div class="owd-window__content">
+        <slot />
+      </div>
 
       <slot name="append-outer" />
 
@@ -82,13 +82,11 @@
 import {computed, ref} from 'vue'
 import VueResizable from 'vue-resizable/src'
 import WindowNav from './WindowNav'
-import WindowContent from './WindowContent'
 
 export default {
   components: {
-    WindowContent,
-    WindowNav,
-    VueResizable
+    VueResizable,
+    WindowNav
   },
   props: {
     title: {

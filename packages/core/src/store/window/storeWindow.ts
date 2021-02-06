@@ -254,7 +254,17 @@ export default class WindowModule extends VuexModule {
                 owdModuleAppWindowInstanceData.uniqueID = uniqueID
                 owdModuleAppWindowInstanceData.storage = owdModuleAppWindowInstanceLocalStorage
 
-                await this.windowCreateInstance(owdModuleAppWindowInstanceData)
+                const toOpen = owdModuleAppWindowInstanceData.storage.opened
+
+                if (owdModuleAppWindowInstanceData.storage.opened) {
+                  owdModuleAppWindowInstanceData.storage.opened = false
+                }
+
+                const windowInstance = await this.windowCreateInstance(owdModuleAppWindowInstanceData)
+
+                if (windowInstance && toOpen) {
+                  await this.windowOpen(windowInstance)
+                }
               }
             }
 

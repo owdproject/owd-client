@@ -1,6 +1,6 @@
 <template>
   <vue-resizable
-    v-if="window.storage.opened && !window.storage.minimized"
+    v-show="window.storage.opened && !window.storage.minimized"
     :data-window="window.config.name"
     :max-width="windowMaxWidth"
     :max-height="windowMaxHeight"
@@ -167,7 +167,7 @@ export default {
   watch: {
     'window.storage.opened': {
       handler: function (opened) {
-        this.$emit(opened ? 'open' : 'close')
+        if (opened) { this.$emit('open') }
       }
     },
     'window.storage.minimized': {

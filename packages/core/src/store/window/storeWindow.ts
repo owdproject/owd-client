@@ -507,7 +507,7 @@ export default class WindowModule extends VuexModule {
     windowInstance = helperWindow.getWindowInstance(moduleName, windowInstance.config.name, windowInstance.uniqueID)
 
     // calculate pos x and y
-    this.calcPosition(windowInstance)
+    this.windowCalcPosition(windowInstance)
 
     return windowInstance
   }
@@ -526,7 +526,7 @@ export default class WindowModule extends VuexModule {
         windowInstance.storage.minimized = false
 
         // recalculate pos x and y
-        this.calcPosition(windowInstance)
+        this.windowCalcPosition(windowInstance)
 
         // focus on window
         await this.windowFocus(windowInstance)
@@ -630,7 +630,7 @@ export default class WindowModule extends VuexModule {
         windowInstance.storage.position.y = data.position.y
 
         // recalculate pos x and y
-        this.calcPosition(windowInstance)
+        this.windowCalcPosition(windowInstance)
 
         return true
       })
@@ -890,7 +890,7 @@ export default class WindowModule extends VuexModule {
   }
 
   @Action
-  calcPosition(data: any): OwdModuleAppWindowInstance {
+  windowCalcPosition(data: any): OwdModuleAppWindowInstance {
     return this
       .getWindow(data)
       .then(async (windowInstance: OwdModuleAppWindowInstance) => {
@@ -911,23 +911,9 @@ export default class WindowModule extends VuexModule {
    */
   @Action
   async windowsHandlePageResize(): Promise<void> {
-    const pageWindow = window
-
     await helperWindow.forEachWindowInstance(async (windowInstance: any) => {
       if (windowInstance.storage && windowInstance.storage.opened) {
-        const maxLeft = windowInstance.storage.position.x + windowInstance.storage.size.width
-        const maxTop = windowInstance.storage.position.y + windowInstance.storage.size.height
-
-        // calculate max top/left position allowed
-        if (maxLeft > pageWindow.innerWidth) {
-          const newPositionX = helperWindow.calcPositionX(windowInstance)
-
-          if (typeof newPositionX === 'number') windowInstance.storage.position.x = newPositionX
-        }
-        if (maxTop > pageWindow.innerHeight) {
-          const newPositionY = helperWindow.calcPositionY(windowInstance)
-          if (typeof newPositionY === 'number') windowInstance.storage.position.y = newPositionY
-        }
+        await this.windowCalcPosition(windowInstance)
       }
     })
   }

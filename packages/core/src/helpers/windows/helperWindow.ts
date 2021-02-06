@@ -18,11 +18,12 @@ export function generateWindowInstanceUniqueId(): string {
 
 /**
  * Calculate x position for new opened windows
- * todo refactor
  *
  * @returns {Promise<void>}
  */
 export function calcPositionX(owdModuleAppWindow: any) {
+  const pageWindow = window
+
   const desktopWindowsContainer = document.querySelector('.owd-windows-container')
   const desktopWindowsContainerArea = document.querySelector('.owd-windows-container__initialize-area')
 
@@ -30,11 +31,17 @@ export function calcPositionX(owdModuleAppWindow: any) {
     const desktopWindowsContainerOffset = desktopWindowsContainer.getBoundingClientRect()
     const desktopWindowsContainerAreaOffset = desktopWindowsContainerArea.getBoundingClientRect()
 
+    const maxPositionLeft = owdModuleAppWindow.storage.position.x + owdModuleAppWindow.storage.size.width + desktopWindowsContainerOffset.left
+
     let x = owdModuleAppWindow.storage ? owdModuleAppWindow.storage.position.x : desktopWindowsContainerOffset.left
 
     // if > 0, window pos was loaded from local storage
     if (owdModuleAppWindow.storage.position.x === 0) {
       return desktopWindowsContainerAreaOffset.left - desktopWindowsContainerOffset.left
+    }
+
+    if (owdModuleAppWindow.storage.position.x < 0 || maxPositionLeft > pageWindow.innerWidth) {
+      return desktopWindowsContainerAreaOffset.width + desktopWindowsContainerAreaOffset.left - desktopWindowsContainerOffset.left - owdModuleAppWindow.config.size.width
     }
 
     if (owdModuleAppWindow.storage.position.x > 0) {
@@ -45,10 +52,6 @@ export function calcPositionX(owdModuleAppWindow: any) {
       return owdModuleAppWindow.storage.position.x
     }
 
-    if (owdModuleAppWindow.storage.position.x < 0) {
-      return desktopWindowsContainerAreaOffset.width + desktopWindowsContainerAreaOffset.left - owdModuleAppWindow.config.size.width
-    }
-
     return x
   }
 
@@ -57,18 +60,21 @@ export function calcPositionX(owdModuleAppWindow: any) {
 
 /**
  * Calculate y position for new opened windows
- * todo refactor
  *
  * @param owdModuleAppWindow
  * @returns {Promise<unknown>}
  */
 export function calcPositionY(owdModuleAppWindow: any) {
+  const pageWindow = window
+
   const desktopWindowsContainer = document.querySelector('.owd-windows-container')
   const desktopWindowsContainerArea = document.querySelector('.owd-windows-container__initialize-area')
 
   if (desktopWindowsContainerArea && desktopWindowsContainer) {
     const desktopWindowsContainerOffset = desktopWindowsContainer.getBoundingClientRect()
     const desktopWindowsContainerAreaOffset = desktopWindowsContainerArea.getBoundingClientRect()
+
+    const maxPositionTop = owdModuleAppWindow.storage.position.y + owdModuleAppWindow.storage.size.height + desktopWindowsContainerOffset.top
 
     // is window in memory?
     if (!owdModuleAppWindow || !owdModuleAppWindow.storage) return console.log('[OWD] Window not found')
@@ -77,16 +83,17 @@ export function calcPositionY(owdModuleAppWindow: any) {
     if (owdModuleAppWindow.storage.position.y === 0) {
       return desktopWindowsContainerAreaOffset.top - desktopWindowsContainerOffset.top
     }
+
+    if (owdModuleAppWindow.storage.position.y < 0 || maxPositionTop >= pageWindow.innerHeight) {
+      return desktopWindowsContainerAreaOffset.height + desktopWindowsContainerAreaOffset.top - desktopWindowsContainerOffset.top - owdModuleAppWindow.config.size.height
+    }
+
     if (owdModuleAppWindow.storage.position.y > 0) {
       if (owdModuleAppWindow.storage.position.y > (desktopWindowsContainerAreaOffset.height - desktopWindowsContainerAreaOffset.top)) {
         return desktopWindowsContainerAreaOffset.top - desktopWindowsContainerOffset.top
       }
 
       return owdModuleAppWindow.storage.position.y
-    }
-
-    if (owdModuleAppWindow.storage.position.y < 0) {
-      return desktopWindowsContainerAreaOffset.height - owdModuleAppWindow.config.size.height + desktopWindowsContainerOffset.top
     }
   }
 

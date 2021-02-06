@@ -1,7 +1,7 @@
 <template>
   <transition name="fade-transition">
     <v-btn
-      class="btn-exit-full-screen"
+      class="owd-notice-fullscreen-exit"
       rounded
       dark
       disabled
@@ -43,7 +43,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.v-btn.btn-exit-full-screen.v-btn--disabled {
+.v-btn.owd-notice-fullscreen-exit.v-btn--disabled {
   position: absolute;
   top: 24px;
   left: 50%;

@@ -30,7 +30,6 @@ export default {
     position: absolute;
     bottom: 0;
     left: 0;
-    right: 0;
     padding: 24px;
     cursor: default;
     user-select: none;

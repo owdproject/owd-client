@@ -1,9 +1,9 @@
 import {Module, Mutation, VuexModule} from "vuex-class-modules";
-import * as owdModuleAppWindowsStorageUtils from "../../utils/windows/windowsLocalStorage.utils";
+import * as helperStorage from "../../helpers/windows/helperStorage.utils";
 
 @Module
 export default class WindowFocusModule extends VuexModule {
-  public windowFocusIds: string[] = owdModuleAppWindowsStorageUtils.loadWindowStorageFocuses()
+  public windowFocusIds: string[] = helperStorage.loadStorage('window-focus') || []
 
   get windowFocusList() {
     return this.windowFocusIds
@@ -27,7 +27,7 @@ export default class WindowFocusModule extends VuexModule {
 
     this.windowFocusIds.push(uniqueID)
 
-    owdModuleAppWindowsStorageUtils.saveWindowStorageFocuses(this.windowFocusIds)
+    helperStorage.saveStorage('window-focus', this.windowFocusIds)
   }
 
   @Mutation

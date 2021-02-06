@@ -20,78 +20,77 @@ export function generateWindowInstanceUniqueId(): string {
  * Calculate x position for new opened windows
  * todo refactor
  *
- * @param data
  * @returns {Promise<void>}
  */
-export function calcPositionX(data: { window: any, forceLeft?: boolean, forceRight?: boolean }) {
-  const desktopElement = document.getElementById('desktop')
+export function calcPositionX(owdModuleAppWindow: any) {
+  const desktopWindowsContainer = document.querySelector('.owd-windows-container')
+  const desktopWindowsContainerArea = document.querySelector('.owd-windows-container__initialize-area')
 
-  if (!desktopElement) {
-    return false;
+  if (desktopWindowsContainerArea && desktopWindowsContainer) {
+    const desktopWindowsContainerOffset = desktopWindowsContainer.getBoundingClientRect()
+    const desktopWindowsContainerAreaOffset = desktopWindowsContainerArea.getBoundingClientRect()
+
+    let x = owdModuleAppWindow.storage ? owdModuleAppWindow.storage.position.x : desktopWindowsContainerOffset.left
+
+    // if > 0, window pos was loaded from local storage
+    if (owdModuleAppWindow.storage.position.x === 0) {
+      return desktopWindowsContainerAreaOffset.left - desktopWindowsContainerOffset.left
+    }
+
+    if (owdModuleAppWindow.storage.position.x > 0) {
+      if (owdModuleAppWindow.storage.position.x > (desktopWindowsContainerAreaOffset.width - desktopWindowsContainerAreaOffset.left)) {
+        return desktopWindowsContainerAreaOffset.left - desktopWindowsContainerOffset.left
+      }
+
+      return owdModuleAppWindow.storage.position.x
+    }
+
+    if (owdModuleAppWindow.storage.position.x < 0) {
+      return desktopWindowsContainerAreaOffset.width + desktopWindowsContainerAreaOffset.left - owdModuleAppWindow.config.size.width
+    }
+
+    return x
   }
 
-  const desktopElementContent = desktopElement.getElementsByClassName('desktop-content')[0]
-  const owdModuleAppWindow = data.window
-
-  const owdConfigDesktopOffset = owdModuleAppWindow.module.app.config.owd.desktop.offset
-
-  if (typeof data.forceLeft === 'undefined') data.forceLeft = false
-  if (typeof data.forceRight === 'undefined') data.forceRight = false
-
-  // is window in memory?
-  if (!data || !owdModuleAppWindow.storage) return console.log('[OWD] Window not found')
-
-  let x = owdModuleAppWindow.storage ? owdModuleAppWindow.storage.position.x : owdConfigDesktopOffset.left
-
-  // if > 0, window pos was loaded from local storage
-  if (owdModuleAppWindow.storage.position.x === 0 || data.forceLeft) {
-    x = owdConfigDesktopOffset.left
-  } else if (owdModuleAppWindow.storage.position.x < 0 || data.forceRight) {
-    x = desktopElementContent.clientWidth - owdModuleAppWindow.config.size.width - owdConfigDesktopOffset.right // right
-    if (owdModuleAppWindow.storage.position.x < 0) x = x + owdModuleAppWindow.storage.position.x
-  }
-
-  return x
+  return 0
 }
 
 /**
  * Calculate y position for new opened windows
  * todo refactor
  *
- * @param data
+ * @param owdModuleAppWindow
  * @returns {Promise<unknown>}
  */
-export function calcPositionY(data: { window: any, forceLeft?: boolean, forceRight?: boolean }) {
-  const desktopElement = document.getElementById('desktop')
+export function calcPositionY(owdModuleAppWindow: any) {
+  const desktopWindowsContainer = document.querySelector('.owd-windows-container')
+  const desktopWindowsContainerArea = document.querySelector('.owd-windows-container__initialize-area')
 
-  if (!desktopElement) {
-    return false;
-  }
+  if (desktopWindowsContainerArea && desktopWindowsContainer) {
+    const desktopWindowsContainerOffset = desktopWindowsContainer.getBoundingClientRect()
+    const desktopWindowsContainerAreaOffset = desktopWindowsContainerArea.getBoundingClientRect()
 
-  const desktopElementContent = desktopElement.getElementsByClassName('desktop-content')[0]
-  const owdModuleAppWindow = data.window
+    // is window in memory?
+    if (!owdModuleAppWindow || !owdModuleAppWindow.storage) return console.log('[OWD] Window not found')
 
-  const owdConfigDesktopOffset = owdModuleAppWindow.module.app.config.owd.desktop.offset
+    // if > 0, window pos was loaded from local storage
+    if (owdModuleAppWindow.storage.position.y === 0) {
+      return desktopWindowsContainerAreaOffset.top - desktopWindowsContainerOffset.top
+    }
+    if (owdModuleAppWindow.storage.position.y > 0) {
+      if (owdModuleAppWindow.storage.position.y > (desktopWindowsContainerAreaOffset.height - desktopWindowsContainerAreaOffset.top)) {
+        return desktopWindowsContainerAreaOffset.top - desktopWindowsContainerOffset.top
+      }
 
-  if (typeof data.forceLeft === 'undefined') data.forceLeft = false
-  if (typeof data.forceRight === 'undefined') data.forceRight = false
+      return owdModuleAppWindow.storage.position.y
+    }
 
-  // is window in memory?
-  if (!data || !owdModuleAppWindow.storage) return console.log('[OWD] Window not found')
-
-  let y = owdModuleAppWindow.storage.position.y || owdConfigDesktopOffset.top
-
-  // if > 0, window pos was loaded from local storage
-  if (owdModuleAppWindow.storage.position.y === 0 || data.forceLeft) {
-    y = owdConfigDesktopOffset.top
-  } else if (owdModuleAppWindow.storage.position.y < 0 || data.forceRight) {
-    if (owdModuleAppWindow.config) {
-      y = desktopElementContent.clientHeight - owdModuleAppWindow.config.size.height - owdConfigDesktopOffset.bottom
-      if (owdModuleAppWindow.storage.position.y < 0) y = y + owdModuleAppWindow.storage.position.y
+    if (owdModuleAppWindow.storage.position.y < 0) {
+      return desktopWindowsContainerAreaOffset.height - owdModuleAppWindow.config.size.height + desktopWindowsContainerOffset.top
     }
   }
 
-  return y
+  return 0
 }
 
 // WINDOW DETAILS
@@ -102,8 +101,11 @@ export function calcPositionY(data: { window: any, forceLeft?: boolean, forceRig
  * @param windowName
  */
 export function getWindowDetailsFromWindowName(windowName: string): OwdModuleAppWindowDetail | undefined {
-  if (typeof store.getters['core/window/modulesAppWindowDetails'][windowName] !== 'undefined') {
-    return store.getters['core/window/modulesAppWindowDetails'][windowName]
+  if (typeof store.getters['core/window/modulesAppWindowGroupInstances'][windowName].config !== 'undefined') {
+    return {
+      window: store.getters['core/window/modulesAppWindowGroupInstances'][windowName].config,
+      module: store.getters['core/window/modulesAppWindowGroupInstances'][windowName].module
+    }
   }
 }
 
@@ -169,7 +171,7 @@ export async function forEachWindowGroupInstance(
 }
 
 export function isWindowNameExisting(windowName: string) {
-  return typeof store.getters['core/window/modulesAppWindowDetails'][windowName] !== 'undefined'
+  return typeof store.getters['core/window/modulesAppWindowGroupInstances'][windowName] !== 'undefined'
 }
 
 export function getWindowGroupInstances(windowName: string) {

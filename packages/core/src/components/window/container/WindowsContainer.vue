@@ -1,6 +1,6 @@
 <template>
   <div class="owd-windows-container">
-    <div class="window-initialize-area" />
+    <div class="owd-windows-container__initialize-area" />
 
     <component
       v-for="windowInstance of windowInstances"
@@ -40,8 +40,12 @@ export default {
     pointer-events: none;
     z-index: 10;
 
-    .windows-group {
-      min-height: 100%;
+    &__initialize-area {
+      position: absolute;
+      top: 24px;
+      bottom: 24px;
+      left: 96px;
+      right: 24px;
     }
   }
 

@@ -41,7 +41,7 @@ export function calcPositionX(owdModuleAppWindow: any) {
     }
 
     if (owdModuleAppWindow.storage.position.x < 0 || maxPositionLeft > pageWindow.innerWidth) {
-      return desktopWindowsContainerAreaOffset.width + desktopWindowsContainerAreaOffset.left - desktopWindowsContainerOffset.left - owdModuleAppWindow.config.size.width
+      return desktopWindowsContainerAreaOffset.width + desktopWindowsContainerAreaOffset.left - desktopWindowsContainerOffset.left - owdModuleAppWindow.storage.size.width
     }
 
     if (owdModuleAppWindow.storage.position.x > 0) {
@@ -85,7 +85,7 @@ export function calcPositionY(owdModuleAppWindow: any) {
     }
 
     if (owdModuleAppWindow.storage.position.y < 0 || maxPositionTop >= pageWindow.innerHeight) {
-      return desktopWindowsContainerAreaOffset.height + desktopWindowsContainerAreaOffset.top - desktopWindowsContainerOffset.top - owdModuleAppWindow.config.size.height
+      return desktopWindowsContainerAreaOffset.height + desktopWindowsContainerAreaOffset.top - desktopWindowsContainerOffset.top - owdModuleAppWindow.storage.size.height
     }
 
     if (owdModuleAppWindow.storage.position.y > 0) {

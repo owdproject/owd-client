@@ -44,6 +44,8 @@ export default class WindowModule extends VuexModule {
   get modulesAppWindowCategories() {
     const windowCategories: { [key: string]: OwdModuleAppWindowConfig[] } = {}
 
+    windowCategories['favorites'] = []
+
     // for each loaded module
     for (const owdModuleApp of this.modulesModule.modulesAppInstalled) {
 
@@ -56,6 +58,10 @@ export default class WindowModule extends VuexModule {
         }
 
         windowCategories[owdModuleAppWindowConfig.category].push(owdModuleAppWindowConfig)
+
+        if (owdModuleAppWindowConfig.favorite) {
+          windowCategories['favorites'].push(owdModuleAppWindowConfig)
+        }
       }
 
     }

@@ -1,8 +1,8 @@
 import {VuexModule, Module, Mutation, Action, RegisterOptions} from "vuex-class-modules";
 
-import DebugModule from "../debug";
-import ModulesModule from "../modules";
-import FullScreenModule from "../fullscreen";
+import DebugModule from "../storeDebug";
+import ModulesModule from "../storeModules";
+import FullScreenModule from "../storeFullscreen";
 import {
   OwdModuleApp,
   OwdModuleAppWindowConfig,
@@ -12,7 +12,7 @@ import {
 } from "../../../../types";
 import * as helperWindow from '../../helpers/windows/helperWindow'
 import * as helperStorage from "../../helpers/windows/helperStorage.utils";
-import WindowFocusModule from "./windowFocus";
+import WindowFocusModule from "./storeWindowFocus";
 
 const owdModuleAppWindowsLocalStorage = helperStorage.loadStorage('window') || []
 

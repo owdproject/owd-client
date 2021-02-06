@@ -1,18 +1,18 @@
 import { createStore } from 'vuex'
 
 // VUEX INIT
-import storeDebugModule from './debug'
-import storeAuthModule from './auth'
-import storeClientModule from './client'
-import storeFullScreenModule from './fullscreen'
-import storeNotificationModule from './notification'
-import storeSseModule from './sse'
-import storeModulesModule from './modules'
-import storeWindowFocusModule from './window/windowFocus'
-import storeWindowModule from './window/window'
-
+import storeDebugModule from './storeDebug'
+import storeAuthModule from './storeAuth'
+import storeClientModule from './storeClient'
+import storeFullScreenModule from './storeFullscreen'
+import storeNotificationModule from './storeNotification'
+import storeSseModule from './storeSse'
+import storeModulesModule from './storeModules'
+import storeWindowFocusModule from './window/storeWindowFocus'
+import storeWindowModule from './window/storeWindow'
 
 const store = createStore({
+  devtools: true,
   modules: {
     core: {
       namespaced: true,

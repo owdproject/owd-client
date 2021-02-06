@@ -1,5 +1,5 @@
 import {VuexModule, Module, Mutation, Action, RegisterOptions} from "vuex-class-modules";
-import DebugModule from "./debug";
+import DebugModule from "./storeDebug";
 
 const clientLocalStorageName = 'client-storage'
 

@@ -269,7 +269,7 @@ export default class WindowModule extends VuexModule {
                 owdModuleAppWindowInstanceData.uniqueID = uniqueID
                 owdModuleAppWindowInstanceData.storage = owdModuleAppWindowInstanceLocalStorage
 
-                const toOpen = owdModuleAppWindowInstanceData.storage.opened
+                const toOpen = owdModuleAppWindowInstanceData.storage.opened && !owdModuleAppWindowInstanceData.storage.minimized
 
                 if (owdModuleAppWindowInstanceData.storage.opened) {
                   owdModuleAppWindowInstanceData.storage.opened = false
@@ -439,7 +439,12 @@ export default class WindowModule extends VuexModule {
         config: owdModuleAppWindowDetail.window,
         module: owdModuleAppWindowDetail.module
       }).then(windowInstance => {
+        // open window
         this.windowOpen(windowInstance)
+
+        // focus on window
+        this.windowFocus(windowInstance)
+
         return windowInstance
       })
 
@@ -536,9 +541,6 @@ export default class WindowModule extends VuexModule {
 
         // recalculate pos x and y
         this.windowCalcPosition(windowInstance)
-
-        // focus on window
-        await this.windowFocus(windowInstance)
 
         // check windows position on load
         await this.windowsHandlePageResize()
@@ -910,7 +912,7 @@ export default class WindowModule extends VuexModule {
         const newPositionY = helperWindow.calcPositionY(windowInstance)
         if (typeof newPositionY === 'number') windowInstance.storage.position.y = newPositionY
 
-        return true
+        return windowInstance.storage.position
       })
       .catch(() => false)
   }

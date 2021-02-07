@@ -38,7 +38,6 @@ export default {
     left: 0;
     right: 0;
     pointer-events: none;
-    z-index: 10;
 
     &__initialize-area {
       position: absolute;

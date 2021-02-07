@@ -1,4 +1,4 @@
-import {Module, Mutation, VuexModule} from "vuex-class-modules";
+import {Action, Module, Mutation, VuexModule} from "vuex-class-modules";
 import * as helperStorage from "../../helpers/windows/helperStorage.utils";
 
 @Module
@@ -15,6 +15,10 @@ export default class WindowFocusModule extends VuexModule {
     }
 
     return null
+  }
+
+  get windowFocusNewIndex() {
+    return this.windowFocusIds.length - 1
   }
 
   @Mutation
@@ -37,5 +41,10 @@ export default class WindowFocusModule extends VuexModule {
     if (windowFocusIndex > -1) {
       this.windowFocusIds.splice(windowFocusIndex, 1)
     }
+  }
+
+  @Action
+  getWindowFocusIndex(uniqueID: string) {
+    return this.windowFocusIds.indexOf(uniqueID)
   }
 }

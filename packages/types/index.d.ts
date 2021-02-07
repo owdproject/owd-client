@@ -64,12 +64,6 @@ export interface OwdClientConfigurationDesktop {
       modules: {[key: string]: any}
     }
   }
-  offset: {
-    top: number
-    left: number
-    right: number
-    bottom: number
-  }
 }
 
 export interface OwdClientConfigurationModulesEnabled {

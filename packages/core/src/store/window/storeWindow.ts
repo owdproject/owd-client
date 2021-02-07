@@ -177,9 +177,7 @@ export default class WindowModule extends VuexModule {
             })
 
           } else {
-            if (windowInstances.length > 0) {
-              items = items.concat(windowInstances)
-            }
+            items = items.concat(windowInstances)
           }
 
         }

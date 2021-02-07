@@ -19,7 +19,7 @@
 
 <script>
 import MenuItemIcon from './MenuItemIcon'
-import {getCurrentInstance} from "vue";
+import {getCurrentInstance, computed} from "vue";
 import {useStore} from "vuex";
 
 export default {
@@ -27,19 +27,20 @@ export default {
   props: {
     window: Object
   },
-  setup() {
+  setup(props) {
     const app = getCurrentInstance();
     const store = useStore()
     const $device = app.appContext.config.globalProperties.$device
 
     return {
-      menuItemStyles: () => {
-        if (!this.window.icon || (this.window.color && !this.window.icon.image)) {
-          return `background: ${this.window.color}`
+      menuItemStyles: computed(() => {
+        console.log(props.window.config.color)
+        if (!props.window.config.icon || (props.window.config.color && !props.window.config.icon.image)) {
+          return `background: ${props.window.config.color}`
         }
 
         return ''
-      },
+      }),
       windowToggle: (event, window) => {
         // from mobile
         if ($device.mobile) {
@@ -70,6 +71,7 @@ export default {
 
             if (window.storage && (!window.storage.opened || window.storage.minimized)) {
               store.dispatch('core/window/windowOpen', window)
+              store.dispatch('core/window/windowFocus', window)
             } else {
               store.dispatch('core/window/windowMinimize', window)
             }

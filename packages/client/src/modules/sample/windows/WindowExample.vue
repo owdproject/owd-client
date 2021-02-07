@@ -1,8 +1,11 @@
 <template>
   <Window :title="data.config.title" :window="data">
-    <p>
-      Hello world! I'm an empty window.
-    </p>
+    <div class="container">
+      <h2>
+        Open Web Desktop <span>2.0.0-alpha</span>
+      </h2>
+      <a href="https://github.com/owdproject/owd-client/tree/next">github.com/owdproject/owd-client</a>
+    </div>
   </Window>
 </template>
 
@@ -18,8 +21,21 @@
 </script>
 
 <style scoped lang="scss">
-  p {
-    color: #AAA;
-    margin-top: 0;
+.container {
+  text-align: center;
+  margin-top: 50px;
+
+  h2 {
+    margin-bottom: 6px;
+
+    span {
+      opacity: 0.65;
+    }
   }
+
+  a {
+    color: #5bbcff;
+    opacity: 0.5;
+  }
+}
 </style>

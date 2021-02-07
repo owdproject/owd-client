@@ -6,7 +6,9 @@ export default {
         'favorites': 'Favorites',
         'system-tools': 'System tools',
         'accessories': 'Accessories',
-        'games': 'Games'
+        'games': 'Games',
+        'media': 'Sound & Video',
+        'other': 'Other'
       }
     }
   }

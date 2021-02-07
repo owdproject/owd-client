@@ -2,7 +2,7 @@ import ModuleDesktopSystemBar from "../../../../libraries/modules-desktop/extend
 import NotificationTime from './components/NotificationTime.vue'
 import NotificationContent from './components/NotificationContent.vue'
 
-ModuleDesktopSystemBar.registerModule({
+ModuleDesktopSystemBar.registerDesktopModule({
   name: 'NotificationMenu',
   area: 'SystemBar',
   position: 'center',

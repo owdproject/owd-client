@@ -1,7 +1,6 @@
 <template>
   <DesktopSystemBarMenuContent
       v-if="opened"
-      arrow-position="left"
       class="owd-desktop__application-menu__container"
   >
 
@@ -23,7 +22,6 @@
           <a @click="windowCreate(moduleAppWindow)">
             <span
               :class="['mdi', moduleAppWindow.icon.name || moduleAppWindow.icon]"
-              :style="`color: ${moduleAppWindow.color};`"
             />
             {{ moduleAppWindow.titleShort }}
           </a>

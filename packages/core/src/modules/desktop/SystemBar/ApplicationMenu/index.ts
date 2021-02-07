@@ -2,7 +2,7 @@ import ModuleDesktopSystemBar from "../../../../libraries/modules-desktop/extend
 import ApplicationMenu from './components/ApplicationMenu.vue'
 import ApplicationMenuContent from './components/ApplicationMenuContent.vue'
 
-ModuleDesktopSystemBar.registerModule({
+ModuleDesktopSystemBar.registerDesktopModule({
   name: 'ApplicationMenu',
   area: 'SystemBar',
   position: 'left',

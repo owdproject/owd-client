@@ -52,6 +52,11 @@ export default class WindowModule extends VuexModule {
       // for each window config
       for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
 
+        // assign to "other" category if windowConfig.category is missing
+        if (!owdModuleAppWindowConfig.category) {
+          owdModuleAppWindowConfig.category = 'other'
+        }
+
         // map window categories
         if (!Object.prototype.hasOwnProperty.call(windowCategories, owdModuleAppWindowConfig.category)) {
           windowCategories[owdModuleAppWindowConfig.category] = []
@@ -156,6 +161,10 @@ export default class WindowModule extends VuexModule {
           }
 
           if (windowInstances.length === 0) {
+
+            if (!owdModuleAppWindowConfig.favorite) {
+              continue
+            }
 
             // add dummy item to dock
             items.push({

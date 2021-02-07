@@ -1,6 +1,6 @@
 <template>
   <div class="owd-desktop__system-bar__content">
-    <div :class="['owd-desktop__system-bar__content__arrow', contentAdditionalClass]" />
+    <div :class="['owd-desktop__system-bar__content__arrow', contentAdditionalClass]" :style="contentStyle" />
 
     <slot />
   </div>
@@ -33,8 +33,9 @@ export default {
     },
     contentStyle() {
       if (typeof this.arrowPosition === 'number') {
-        return `owd-desktop__system-bar__content__arrow--right`
+        return `left: ${this.arrowPosition}px;`
       }
+      return ''
     }
   }
 }

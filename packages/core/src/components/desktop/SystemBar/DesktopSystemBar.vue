@@ -4,27 +4,51 @@
     <div class="owd-desktop__system-bar__left">
       <slot name="system-bar-left-prepend" />
 
-      <template v-for="(module, i) of modules.left" :key="i">
-        <component :is="module.components.menu" :config="module.config" @click="openSystemBarModule(module)" />
-        <component :is="module.components.content" :opened="module.config.opened" />
+      <template v-for="(desktopModule, i) of desktopModules.left" :key="i">
+        <component
+            :is="desktopModule.components.menu"
+            :config="desktopModule.config"
+            @click="(e) => openSystemBarDesktopModule(e, desktopModule)"
+        />
+        <component
+            :is="desktopModule.components.content"
+            :arrow-position="desktopModule.config.arrowPosition"
+            :opened="desktopModule.config.opened"
+        />
       </template>
 
       <slot name="system-bar-left-append" />
     </div>
 
     <div class="owd-desktop__system-bar__center">
-      <template v-for="(module, i) of modules.center" :key="i">
-        <component :is="module.components.menu" :config="module.config" @click="openSystemBarModule(module)" />
-        <component :is="module.components.content" :opened="module.config.opened" />
+      <template v-for="(desktopModule, i) of desktopModules.center" :key="i">
+        <component
+            :is="desktopModule.components.menu"
+            :config="desktopModule.config"
+            @click="(e) => openSystemBarDesktopModule(e, desktopModule)"
+        />
+        <component
+            :is="desktopModule.components.content"
+            :arrow-position="desktopModule.config.arrowPosition"
+            :opened="desktopModule.config.opened"
+        />
       </template>
     </div>
 
     <div class="owd-desktop__system-bar__right">
       <slot name="system-bar-right-prepend" />
 
-      <template v-for="(module, i) of modules.right" :key="i">
-        <component :is="module.components.menu" :config="module.config" @click="openSystemBarModule(module)" />
-        <component :is="module.components.content" :opened="module.config.opened" />
+      <template v-for="(desktopModule, i) of desktopModules.right" :key="i">
+        <component
+            :is="desktopModule.components.menu"
+            :config="desktopModule.config"
+            @click="(e) => openSystemBarDesktopModule(e, desktopModule)"
+        />
+        <component
+            :is="desktopModule.components.content"
+            :arrow-position="desktopModule.config.arrowPosition"
+            :opened="desktopModule.config.opened"
+        />
       </template>
 
       <slot name="system-bar-right-append" />
@@ -42,15 +66,19 @@ export default {
     systemBar: Boolean
   },
   setup() {
-    const modulesDesktopSystemBar = reactive(ModulesDesktop.getModules('SystemBar'))
+    const desktopModules = reactive(ModulesDesktop.getDesktopModules('SystemBar'))
 
-    const openSystemBarModule = (module) => {
-      module.config.opened = !module.config.opened
+    const openSystemBarDesktopModule = (event, desktopModule) => {
+      // set desktop module opened
+      desktopModule.config.opened = !desktopModule.config.opened
+
+      // set content arrow position
+      desktopModule.config.arrowPosition = (event.target.offsetWidth / 2) - 24
     }
 
     return {
-      modules: modulesDesktopSystemBar,
-      openSystemBarModule
+      desktopModules,
+      openSystemBarDesktopModule
     }
   }
 }

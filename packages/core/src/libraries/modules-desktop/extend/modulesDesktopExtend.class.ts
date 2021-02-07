@@ -2,13 +2,13 @@
 import {markRaw} from 'vue'
 import {OwdCoreModulesContext, OwdModuleDesktopConfig, OwdModulesDesktop} from "../../../../../types";
 
-const modulesDesktopExtendClass: OwdModulesDesktop = {
+const desktopModules: OwdModulesDesktop = {
   'system-bar': {}
 }
 
 export default class ModulesDesktop {
   constructor(context: OwdCoreModulesContext) {
-    this.loadModulesDesktopSystem(context)
+    this.loadSystemDesktopModules(context)
   }
 
   /**
@@ -16,7 +16,7 @@ export default class ModulesDesktop {
    *
    * @param context
    */
-  loadModulesDesktopSystem(context: OwdCoreModulesContext) {
+  loadSystemDesktopModules(context: OwdCoreModulesContext) {
     // @ts-ignore
     const owdModulesDesktopSystemBar = context.app.config.owd.desktop.SystemBar.modules
 
@@ -36,14 +36,14 @@ export default class ModulesDesktop {
    * @param area
    * @param position
    */
-  static getModules(area?: string, position?: string) {
-    if (area && position && modulesDesktopExtendClass[area]) {
-      return modulesDesktopExtendClass[area][position]
+  static getDesktopModules(area?: string, position?: string) {
+    if (area && position && desktopModules[area]) {
+      return desktopModules[area][position]
     } else if (area) {
-      return modulesDesktopExtendClass[area]
+      return desktopModules[area]
     }
 
-    return modulesDesktopExtendClass
+    return desktopModules
   }
 
   /**
@@ -52,16 +52,16 @@ export default class ModulesDesktop {
    * @param config
    * @param components
    */
-  static registerModule(config: OwdModuleDesktopConfig, components: any) {
-    if (!modulesDesktopExtendClass[config.area]) {
-      modulesDesktopExtendClass[config.area] = {}
+  static registerDesktopModule(config: OwdModuleDesktopConfig, components: any) {
+    if (!desktopModules[config.area]) {
+      desktopModules[config.area] = {}
     }
 
-    if (!modulesDesktopExtendClass[config.area][config.position]) {
-      modulesDesktopExtendClass[config.area][config.position] = []
+    if (!desktopModules[config.area][config.position]) {
+      desktopModules[config.area][config.position] = []
     }
 
-    modulesDesktopExtendClass[config.area][config.position].push({
+    desktopModules[config.area][config.position].push({
       config,
       components: markRaw(components)
     })

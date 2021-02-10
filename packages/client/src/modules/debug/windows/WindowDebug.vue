@@ -1,32 +1,32 @@
 <template>
-  <Window :title="data.config.title" :window="data">
+  <Window :title="window.config.title" :window="window">
     <div class="owd-window__content__debug">
       <div class="options">
 
         <div>
           <label>
-            <input type="checkbox" v-model="data.config.maximizable" />
+            <input type="checkbox" v-model="window.config.maximizable" />
             Maximizable
           </label>
         </div>
 
         <div>
           <label>
-            <input type="checkbox" v-model="data.config.resizable" />
+            <input type="checkbox" v-model="window.config.resizable" />
             Resizable
           </label>
         </div>
 
         <div>
           <label>
-            <input type="checkbox" v-model="data.config.borderless" />
+            <input type="checkbox" v-model="window.config.borderless" />
             Borderless
           </label>
         </div>
 
         <div>
           <label>
-            <input type="checkbox" v-model="data.config.noContentSpacing" />
+            <input type="checkbox" v-model="window.config.noContentSpacing" />
             No content spacing
           </label>
         </div>
@@ -38,17 +38,17 @@
         <div class="position">
           <b>Position</b>
           <ul>
-            <li>x: {{data.storage.position.x}}</li>
-            <li>y: {{data.storage.position.y}}</li>
-            <li>z: {{data.storage.position.z}}</li>
+            <li>x: {{window.storage.position.x}}</li>
+            <li>y: {{window.storage.position.y}}</li>
+            <li>z: {{window.storage.position.z}}</li>
           </ul>
         </div>
 
         <div class="size">
           <b>Size</b>
           <ul>
-            <li>width: {{data.storage.size.width}}</li>
-            <li>height: {{data.storage.size.height}}</li>
+            <li>width: {{window.storage.size.width}}</li>
+            <li>height: {{window.storage.size.height}}</li>
           </ul>
         </div>
 
@@ -64,7 +64,7 @@ export default {
   name: "WindowDebug",
   components: {Window},
   props: {
-    data: Object
+    window: Object
   }
 }
 </script>

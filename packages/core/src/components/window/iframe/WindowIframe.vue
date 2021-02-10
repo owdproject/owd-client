@@ -1,8 +1,11 @@
 <template>
-  <Window class="owd-window-iframe" :title="data.config.title" :window="data">
-    <div class="owd-window-iframe__content" v-click-outside="focusOut">
+  <Window class="owd-window-iframe" :title="window.config.title" :window="window">
+    <div class="owd-window-iframe__content" >
+      <!--
+      v-click-outside="focusOut"
+      -->
       <iframe
-        :src="url" :id="`${data.module.moduleInfo.name+'-iframe'}`"
+        :src="url"
         @load="iframeLoaded"
       />
 
@@ -25,7 +28,7 @@ export default {
     Window
   },
   props: {
-    data: Object,
+    window: Object,
     progressBar: Boolean
   },
   data() {
@@ -37,14 +40,14 @@ export default {
   },
   computed: {
     visible() {
-      return this.data.storage.opened
+      return this.window.storage.opened
     }
   },
   watch: {
     visible(val) {
       if (val === true) {
         if (this.visible === true) {
-          this.url = this.data.iframeUrl
+          this.url = this.window.config.iframeUrl
         }
       } else {
         this.url = ''
@@ -66,7 +69,7 @@ export default {
         this.loaded = true
       } else {
         if (this.visible === true) {
-          this.url = this.data.iframeUrl
+          this.url = this.window.iframeUrl
         }
       }
 
@@ -80,6 +83,7 @@ export default {
 .owd-window-iframe {
   &__content {
     position: relative;
+    height: 100%;
 
     iframe {
       border: 0;
@@ -87,6 +91,7 @@ export default {
       margin: 0;
       width: 100%;
       height: 100%;
+      overflow: hidden;
     }
 
     .detect-focus-in {

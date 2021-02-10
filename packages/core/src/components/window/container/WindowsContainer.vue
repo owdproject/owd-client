@@ -6,7 +6,7 @@
       v-for="windowInstance of windowInstances"
       :key="windowInstance.uniqueID"
       :is="windowInstance.config.name"
-      :data="windowInstance"
+      :window="windowInstance"
       :data-window-id="windowInstance.uniqueID"
     />
   </div>

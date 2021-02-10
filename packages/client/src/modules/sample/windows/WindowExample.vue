@@ -1,5 +1,5 @@
 <template>
-  <Window :title="data.config.title" :window="data">
+  <Window :title="window.config.title" :window="window">
     <div class="container">
       <h2>
         Open Web Desktop <span>2.0.0-alpha</span>
@@ -15,7 +15,7 @@
     name: "WindowExample",
     components: {Window},
     props: {
-      data: Object
+      window: Object
     }
   }
 </script>

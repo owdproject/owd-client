@@ -427,7 +427,13 @@ export default class WindowModule extends VuexModule {
           const windowInstance = helperWindow.getWindowGroupFirstInstance(windowName)
 
           if (windowInstance) {
-            return this.windowOpen(windowInstance)
+            // open window
+            this.windowOpen(windowInstance)
+
+            // focus on window
+            this.windowFocus(windowInstance)
+
+            return windowInstance
           }
         }
       }

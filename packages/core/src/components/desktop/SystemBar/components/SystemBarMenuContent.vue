@@ -82,12 +82,12 @@ export default {
 .owd-desktop {
   &--system-bar-position-top {
     .owd-desktop__system-bar__content {
-      top: 48px;
+      top: 44px;
     }
   }
   &--system-bar-position-bottom {
     .owd-desktop__system-bar__content {
-      bottom: 48px;
+      bottom: 44px;
     }
   }
 }

@@ -475,8 +475,7 @@ export default {
           width: 100% !important;
           height: 100% !important;
           margin: 0 !important;
-          padding: 15px;
-          z-index: 12;
+          z-index: 999;
           background: #111111;
 
           @media (max-width: 768px) {

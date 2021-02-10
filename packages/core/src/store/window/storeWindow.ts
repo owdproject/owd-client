@@ -882,17 +882,17 @@ export default class WindowModule extends VuexModule {
     }
   }
 
-  /**
-   * todo
-   * @param data
-   */
   @Action
   windowSetNavTitle(data: {window: any, title: string}): boolean {
     return this
       .getWindow(data.window)
       .then((windowInstance: OwdModuleAppWindowInstance) => {
-        // window.title = data.title
+        if (!data.title) {
+          windowInstance.storage.title = null
+          return true
+        }
 
+        windowInstance.storage.title = data.title + ' - ' + windowInstance.config.title
         return true
       })
       .catch(() => false)

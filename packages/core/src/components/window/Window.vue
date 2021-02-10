@@ -37,7 +37,7 @@
   >
     <div class="owd-window__container" @click="onActivated">
 
-      <WindowNav :title="title" @toggleMaximize="onToggleMaximize">
+      <WindowNav :title="window.storage.title || window.config.title || title" @toggleMaximize="onToggleMaximize">
         <a
             v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable"
             class="btn btn-minimize"

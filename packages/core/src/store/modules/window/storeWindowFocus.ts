@@ -1,5 +1,5 @@
 import {Action, Module, Mutation, VuexModule} from "vuex-class-modules";
-import * as helperStorage from "../../helpers/windows/helperStorage.utils";
+import * as helperStorage from "../../../helpers/windows/helperStorage.utils";
 
 @Module
 export default class WindowFocusModule extends VuexModule {

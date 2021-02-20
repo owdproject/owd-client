@@ -9,9 +9,9 @@ import {
   OwdModuleAppWindowConfigPosition, OwdModuleAppWindowConfigSize,
   OwdModuleAppWindowCreateInstanceData,
   OwdModuleAppWindowInstance, OwdModuleAppWindowsStorage
-} from "../../../../types";
-import * as helperWindow from '../../helpers/windows/helperWindow'
-import * as helperStorage from "../../helpers/windows/helperStorage.utils";
+} from "../../../../../types";
+import * as helperWindow from '../../../helpers/windows/helperWindow'
+import * as helperStorage from "../../../helpers/windows/helperStorage.utils";
 import WindowFocusModule from "./storeWindowFocus";
 
 const owdModuleAppWindowsLocalStorage = helperStorage.loadStorage('window') || []

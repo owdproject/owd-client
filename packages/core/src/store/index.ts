@@ -1,15 +1,14 @@
 import { createStore } from 'vuex'
 
-// VUEX INIT
-import storeDebugModule from './storeDebug'
-import storeAuthModule from './storeAuth'
-import storeClientModule from './storeClient'
-import storeFullScreenModule from './storeFullscreen'
-import storeNotificationModule from './storeNotification'
-import storeSseModule from './storeSse'
-import storeModulesModule from './storeModules'
-import storeWindowFocusModule from './window/storeWindowFocus'
-import storeWindowModule from './window/storeWindow'
+import storeDebugModule from './modules/storeDebug'
+import storeClientModule from './modules/storeClient'
+import storeFullscreenModule from './modules/storeFullscreen'
+import storeNotificationModule from './modules/storeNotification'
+import storeModulesModule from './modules/storeModules'
+import storeWindowModule from './modules/window/storeWindow'
+import storeWindowFocusModule from './modules/window/storeWindowFocus'
+import storeAuthModule from './modules/storeAuth'
+import storeSseModule from './modules/storeSse'
 
 const store = createStore({
   devtools: true,
@@ -24,7 +23,7 @@ const store = createStore({
 export const storeDebug = new storeDebugModule({ store, name: 'core/debug' })
 export const storeAuth = new storeAuthModule({ store, name: 'core/auth' })
 export const storeClient = new storeClientModule(storeDebug, { store, name: 'core/client' })
-export const storeFullScreen = new storeFullScreenModule({ store, name: 'core/fullscreen' })
+export const storeFullScreen = new storeFullscreenModule({ store, name: 'core/fullscreen' })
 export const storeNotification = new storeNotificationModule({ store, name: 'core/notification' })
 export const storeSse = new storeSseModule({ store, name: 'core/sse' })
 export const storeModules = new storeModulesModule({ store, name: 'core/modules' })

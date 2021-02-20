@@ -48,13 +48,6 @@ export default class ClientVuexModule extends VuexModule {
    */
   @Action
   storageSave(data: any) {
-    /*
-    const clientData = {
-      title: this.title,
-      account: this.authModule.loggedUser
-    }
-
-     */
     localStorage.setItem(clientLocalStorageName, JSON.stringify(data))
   }
 

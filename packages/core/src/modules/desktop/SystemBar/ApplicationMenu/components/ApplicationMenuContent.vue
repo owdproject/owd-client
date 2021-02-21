@@ -6,7 +6,7 @@
 
     <div class="owd-desktop__application-menu__categories">
       <ul>
-        <li v-for="(category, i) in Object.keys(appWindowCategories)" :key="i">
+        <li v-for="(appList, category) in categories" :key="category">
           <a
             @mouseover="categoryMouseOver(category)"
             @click="categoryClick(category)"
@@ -32,11 +32,10 @@
   </DesktopSystemBarMenuContent>
 </template>
 
-<script>
+<script lang="ts">
 import {computed, ref, getCurrentInstance} from 'vue'
 import {useStore} from "vuex";
-import DesktopSystemBarMenuContent
-  from '../../../../../components/desktop/SystemBar/components/SystemBarMenuContent'
+import DesktopSystemBarMenuContent from '@owd-client/core/src/components/desktop/SystemBar/components/SystemBarMenuContent'
 
 export default {
   components: {
@@ -50,32 +49,33 @@ export default {
     const store = useStore()
     const options = app.appContext.config.owd.desktop.SystemBar.options.modules.ApplicationMenu
 
-    const appWindowCategories = computed(() => store.getters['core/window/modulesAppWindowCategories'])
+    // categories
+    const categories = computed(() => store.getters['core/windowCategory/modulesAppWindowCategories'])
 
+    // category > apps
     const categorySelected = ref('')
-    const categoryAppsTriggerType = options.categoryAppsTriggerType
     const categoryApps = computed(() => {
       if (!categorySelected.value) {
         return []
       }
 
-      return appWindowCategories.value[categorySelected.value]
+      return categories.value[categorySelected.value]
     })
 
     return {
-      appWindowCategories,
+      categories,
 
       categorySelected,
       categoryApps,
 
-      categoryClick: (category) => {
-        if (categoryAppsTriggerType === 'click') {
+      categoryClick: (category: string) => {
+        if (options.categoryAppsTriggerType === 'click') {
           categorySelected.value = category
         }
       },
 
-      categoryMouseOver: (category) => {
-        if (!categoryAppsTriggerType || categoryAppsTriggerType === 'mouseover') {
+      categoryMouseOver: (category: string) => {
+        if (!options.categoryAppsTriggerType || options.categoryAppsTriggerType === 'mouseover') {
           categorySelected.value = category
         }
       },

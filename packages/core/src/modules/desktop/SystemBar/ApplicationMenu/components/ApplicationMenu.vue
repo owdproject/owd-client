@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import DesktopSystemBarMenu from "../../../../../components/desktop/SystemBar/components/SystemBarMenu";
+import DesktopSystemBarMenu from "@owd-client/core/src/components/desktop/SystemBar/components/SystemBarMenu";
 
 export default {
   components: {DesktopSystemBarMenu},

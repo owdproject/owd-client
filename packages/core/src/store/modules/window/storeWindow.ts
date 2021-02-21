@@ -38,43 +38,6 @@ export default class WindowModule extends VuexModule {
   }
 
   /**
-   * App window categories (window categories of each installed module)
-   * keymap by window category
-   */
-  get modulesAppWindowCategories() {
-    const windowCategories: { [key: string]: OwdModuleAppWindowConfig[] } = {}
-
-    windowCategories['favorites'] = []
-
-    // for each loaded module
-    for (const owdModuleApp of this.modulesModule.modulesAppInstalled) {
-
-      // for each window config
-      for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
-
-        // assign to "other" category if windowConfig.category is missing
-        if (!owdModuleAppWindowConfig.category) {
-          owdModuleAppWindowConfig.category = 'other'
-        }
-
-        // map window categories
-        if (!Object.prototype.hasOwnProperty.call(windowCategories, owdModuleAppWindowConfig.category)) {
-          windowCategories[owdModuleAppWindowConfig.category] = []
-        }
-
-        windowCategories[owdModuleAppWindowConfig.category].push(owdModuleAppWindowConfig)
-
-        if (owdModuleAppWindowConfig.favorite) {
-          windowCategories['favorites'].push(owdModuleAppWindowConfig)
-        }
-      }
-
-    }
-
-    return windowCategories
-  }
-
-  /**
    * App window instances (array of window instances)
    */
   get modulesAppWindowInstancesList() {

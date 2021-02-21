@@ -104,54 +104,6 @@ export default class WindowModule extends VuexModule {
     return owdModuleAppWindowInstances
   }
 
-  /**
-   * Items for the docks
-   */
-  get modulesAppWindowDocks() {
-    let items: any[] = []
-
-    for (const owdModuleApp of this.modulesModule.modulesAppInstalled) {
-
-      // does module contain any windows?
-      if (owdModuleApp.moduleInfo.windows && owdModuleApp.moduleInfo.windows.length > 0) {
-
-        for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
-
-          let windowInstances: any[] = []
-
-          if (owdModuleApp.windowInstances[owdModuleAppWindowConfig.name]) {
-            windowInstances = Object.values(owdModuleApp.windowInstances[owdModuleAppWindowConfig.name])
-          }
-
-          if (windowInstances.length === 0) {
-
-            if (!owdModuleAppWindowConfig.favorite) {
-              continue
-            }
-
-            // add dummy item to dock
-            items.push({
-              config: owdModuleAppWindowConfig,
-              storage: {
-                opened: false,
-                minimized: false
-              },
-              dummy: true
-            })
-
-          } else {
-            items = items.concat(windowInstances)
-          }
-
-        }
-
-      }
-
-    }
-
-    return items
-  }
-
   @Mutation
   REGISTER_WINDOW_NAMESPACE({ moduleName, windowName }: { moduleName: string, windowName: string }) {
     const owdModuleAppWindowInstances = this.modulesModule.modulesAppKeyMap[moduleName].windowInstances

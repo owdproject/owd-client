@@ -28,7 +28,7 @@ export default {
 
     return {
       docks: computed(() => {
-        return store.getters['core/window/modulesAppWindowDocks']
+        return store.getters['core/windowDock/modulesAppWindowDocks']
       })
     }
   }

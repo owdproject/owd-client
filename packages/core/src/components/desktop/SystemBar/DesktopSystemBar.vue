@@ -59,7 +59,7 @@
 
 <script>
 import {reactive} from 'vue';
-import ModulesDesktop from '../../../libraries/modules-desktop/extend/modulesDesktopExtend.class'
+import ModulesDesktop from '@owd-client/core/src/libraries/modules-desktop/extend/modulesDesktopExtend.class'
 
 export default {
   props: {

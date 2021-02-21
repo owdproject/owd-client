@@ -43,14 +43,14 @@
             class="btn btn-minimize"
             @click.stop="onMinimize"
         >
-          <v-icon v-text="$owd.config.icons.windows.minimize"/>
+          <v-icon v-text="$owd.config.icons.window.minimize"/>
         </a>
         <a
             v-if="window.config.maximizable"
             class="btn btn-maximize"
             @click="onToggleMaximize"
         >
-          <v-icon v-text="$owd.config.icons.windows.maximize"/>
+          <v-icon v-text="$owd.config.icons.window.maximize"/>
         </a>
         <a
             v-if="window.externalUrl"
@@ -58,13 +58,13 @@
             :href="window.externalUrl"
             target="_blank"
         >
-          <v-icon v-text="$owd.config.icons.windows.external"/>
+          <v-icon v-text="$owd.config.icons.window.external"/>
         </a>
         <a
             class="btn btn-close"
             @click.stop="onClose"
         >
-          <v-icon v-text="$owd.config.icons.windows.close"/>
+          <v-icon v-text="$owd.config.icons.window.close"/>
         </a>
       </WindowNav>
 

@@ -6,5 +6,5 @@ export const boot: any = Boot
 // todo
 export const getCurrentInstance = null
 
-// classes
+// new moduleApp class
 export const ModuleApp: any = ModuleAppClass

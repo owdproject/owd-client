@@ -41,7 +41,7 @@ export default {
       ],
       options: {
         enabled: true,
-        position: 'bottom',
+        position: 'top',
         modules: {
           ApplicationMenu: {
             categoryAppsTriggerType: 'mouseover'
@@ -69,14 +69,14 @@ export default {
 
   // owd icons
   icons: {
-    windows: {
+    window: {
       minimize: 'mdi-window-minimize',
       maximize: 'mdi-window-maximize',
       close: 'mdi-window-close',
       external: 'mdi-open-in-new'
     },
     systemBar: {
-      battery: 'mdi-battery',
+      'battery': 'mdi-battery',
       'battery-0': 'mdi-battery-alert-variant-outline',
       'battery-20': 'mdi-battery-20',
       'battery-40': 'mdi-battery-40',

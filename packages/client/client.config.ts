@@ -41,7 +41,7 @@ export default {
       ],
       options: {
         enabled: true,
-        position: 'top',
+        position: 'bottom',
         modules: {
           ApplicationMenu: {
             categoryAppsTriggerType: 'mouseover'

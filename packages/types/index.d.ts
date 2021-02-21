@@ -60,7 +60,7 @@ export interface OwdClientConfigurationDesktop {
     modules: string[],
     options: {
       enabled: boolean,
-      position: string,
+      position: 'top' | 'bottom',
       modules: {[key: string]: any}
     }
   }

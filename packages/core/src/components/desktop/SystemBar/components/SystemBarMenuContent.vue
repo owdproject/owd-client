@@ -88,6 +88,12 @@ export default {
   &--system-bar-position-bottom {
     .owd-desktop__system-bar__content {
       bottom: 44px;
+
+      &__arrow {
+        top: auto;
+        bottom: -11px;
+        transform: rotateX(180deg);
+      }
     }
   }
 }

@@ -29,12 +29,6 @@ export default {
 
   // owd desktop
   desktop: {
-    offset: {
-      top: 24,
-      left: 96,
-      right: 24,
-      bottom: 24
-    },
     Logo: {
       options: {
         enabled: true

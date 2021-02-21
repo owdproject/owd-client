@@ -67,7 +67,7 @@ export default class WindowModule extends VuexModule {
   /**
    * App window instances (array of window instances)
    */
-  get modulesAppWindowGroupInstances() {
+  get modulesAppWindowInstancesGroup() {
     const owdModuleAppWindowInstances: {
       [key: string]: {
         module: OwdModuleApp | undefined,

@@ -35,13 +35,13 @@
       }
     ]"
   >
-    <div class="owd-window__container" @click="onActivated">
+    <div class="owd-window__container" @mousedown="onMouseDown">
 
       <WindowNav :title="window.storage.title || window.config.title || title" @toggleMaximize="onToggleMaximize">
         <a
             v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable"
             class="btn btn-minimize"
-            @click.stop="onMinimize"
+            @click="onMinimize"
         >
           <v-icon v-text="$owd.config.icons.window.minimize"/>
         </a>
@@ -257,10 +257,12 @@ export default {
     },
 
     /**
-     * Window actived event
+     * Window mousedown event
      */
-    onActivated: function () {
-      if (this.window.storage.opened && !this.window.storage.minimized) this.onFocus()
+    onMouseDown: function (e) {
+      if (!e.target.closest('.owd-window__nav__btn-group')) {
+        this.onFocus()
+      }
     },
 
     /**

@@ -138,7 +138,7 @@ export interface OwdModuleAppWindowConfig {
   name: string
   category: string
   title: string
-  titleShort?: string
+  titleShort: string
   icon: string|OwdModuleAppWindowConfigIcon
 
   size: OwdModuleAppWindowConfigSize

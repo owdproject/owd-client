@@ -60,7 +60,8 @@ export default class WindowCategoryModule extends VuexModule {
     windowCategoriesTemp = Object.keys(windowCategoriesTemp)
       .sort()
       .reduce((obj: any, key: string) => {
-        obj[key] = windowCategoriesTemp[key];
+        obj[key] = windowCategoriesTemp[key]
+
         return obj;
       }, {})
 
@@ -75,6 +76,20 @@ export default class WindowCategoryModule extends VuexModule {
     if (windowCategoriesOther.length > 0) {
       windowCategoriesTemp = Object.assign(windowCategoriesTemp, {
         other: windowCategoriesOther
+      })
+    }
+
+    // reorder window list for each category
+    for (const categoryName in windowCategoriesTemp) {
+      windowCategoriesTemp[categoryName] = windowCategoriesTemp[categoryName].sort((a, b) => {
+        if (a.titleShort < b.titleShort) {
+          return -1;
+        }
+        if (a.titleShort > b.titleShort) {
+          return 1;
+        }
+
+        return 0;
       })
     }
 

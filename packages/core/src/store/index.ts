@@ -9,7 +9,6 @@ import storeWindowModule from './modules/window/storeWindow'
 import storeWindowCategoryModule from './modules/window/storeWindowCategory'
 import storeWindowDockModule from './modules/window/storeWindowDock'
 import storeWindowFocusModule from './modules/window/storeWindowFocus'
-import storeAuthModule from './modules/storeAuth'
 import storeSseModule from './modules/storeSse'
 
 const store = createStore({
@@ -23,7 +22,6 @@ const store = createStore({
 })
 
 export const storeDebug = new storeDebugModule({ store, name: 'core/debug' })
-export const storeAuth = new storeAuthModule({ store, name: 'core/auth' })
 export const storeClient = new storeClientModule(storeDebug, { store, name: 'core/client' })
 export const storeFullScreen = new storeFullscreenModule({ store, name: 'core/fullscreen' })
 export const storeNotification = new storeNotificationModule({ store, name: 'core/notification' })

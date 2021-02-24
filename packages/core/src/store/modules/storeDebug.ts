@@ -1,4 +1,4 @@
-import {VuexModule, Module, Mutation, Action} from "vuex-class-modules";
+import {VuexModule, Module, Mutation} from "vuex-class-modules";
 
 @Module
 export default class DebugVuexModule extends VuexModule {
@@ -20,8 +20,6 @@ export default class DebugVuexModule extends VuexModule {
     const time = `${hour}:${minutes}:${seconds}`
 
     const logText = `[${time}] ${txt}`
-
-    console.log(logText)
 
     this.logs.unshift(logText)
   }

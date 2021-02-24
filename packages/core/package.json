@@ -1,7 +1,7 @@
 {
   "name": "@owd-client/core",
   "version": "2.0.0-alpha.0",
-  "description": "OWD Client Core",
+  "description": "OWD Client / Core",
   "homepage": "https://github.com/owdproject/owd-client#readme",
   "bugs": {
     "url": "https://github.com/owdproject/owd-client/issues"
@@ -10,10 +10,10 @@
     "type": "git",
     "url": "git+https://github.com/owdproject/owd-client.git"
   },
-  "license": "MIT",
+  "license": "GPL-3.0",
   "author": {
     "name": "hacklover",
-    "url": "https://hacklover.net"
+    "url": "https://github.com/hacklover"
   },
   "main": "index.js",
   "scripts": {

@@ -1,13 +1,27 @@
 {
   "name": "owd-client",
+  "description": "OWD Client",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "homepage": "https://github.com/owdproject/owd-client#readme",
+  "bugs": {
+    "url": "https://github.com/owdproject/owd-client/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/owdproject/owd-client.git"
   },
+  "license": "GPL-3.0",
+  "author": {
+    "name": "hacklover",
+    "url": "https://github.com/hacklover"
+  },
+  "scripts": {
+    "serve": "lerna bootstrap && cd packages/client && yarn serve",
+    "build": "lerna bootstrap && cd packages/client && yarn build"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
   "devDependencies": {
     "lerna": "^3.22.1"
   }

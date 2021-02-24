@@ -1,12 +1,20 @@
 {
   "name": "owd-client",
   "version": "2.0.0-alpha.0",
+  "description": "OWD Client / Instance",
   "private": true,
-  "homepage": "https://github.com/owdproject/owd-client",
-  "license": "MIT",
+  "homepage": "https://github.com/owdproject/owd-client#readme",
+  "bugs": {
+    "url": "https://github.com/owdproject/owd-client/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/owdproject/owd-client.git"
+  },
+  "license": "GPL-3.0",
   "author": {
     "name": "hacklover",
-    "url": "https://hacklover.net"
+    "url": "https://github.com/hacklover"
   },
   "scripts": {
     "build": "vue-cli-service build",

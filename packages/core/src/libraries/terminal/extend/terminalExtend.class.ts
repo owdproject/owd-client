@@ -14,7 +14,7 @@ export default class {
    * @param fn
    */
   addCommand(name: string, fn: any) {
-    if (this.existCommand(name)) {
+    if (this.hasCommand(name)) {
       return console.error(`[OWD] Cannot add "${name}" command, already defined`)
     }
 
@@ -26,19 +26,19 @@ export default class {
    *
    * @param name
    */
-  existCommand(name: string) {
+  hasCommand(name: string) {
     return typeof this.commands[name] === 'function'
   }
 
   /**
    * Run terminal global command
    *
-   * @param instance (localEcho)
+   * @param instance
    * @param name
    * @param args
    */
-  execCommand(instance: any, name: string, args: any) {
-    this.commands[name](instance, ...args)
+  execCommand(instance: any, name: string, args: string[] = []) {
+    this.commands[name](instance, args)
   }
 
   /**

@@ -3,6 +3,7 @@
 
 // vue
 import { createApp } from 'vue'
+import {Store} from "vuex";
 
 // vuex
 type ModuleType = any //{ app: AppStateType; console: ConsoleStateType }
@@ -131,12 +132,27 @@ export interface OwdModuleAppInfo {
   dependencies?: {[key: string]: string}
 }
 
+export interface OwdModuleAppLoadCommandsContext {
+  store?: Store<any>,
+  terminal?: any
+}
+
 export interface OwdModuleAppCommands {
   [key: string]: any
 }
 
+export interface OwdModuleAppLoadSseEventsContext {
+  store?: Store<any>,
+  terminal?: any
+}
+
 export interface OwdModuleAppSseEvents {
   [key: string]: any
+}
+
+export interface OwdModuleAppLoadStoreContext {
+  store?: Store<any>,
+  terminal?: any
 }
 
 export interface OwdModuleAppWindowConfig {

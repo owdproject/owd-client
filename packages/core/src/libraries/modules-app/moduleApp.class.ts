@@ -4,7 +4,11 @@ import {
   OwdModuleAppCommands,
   OwdModuleAppWindowConfig,
   OwdModuleAppSseEvents,
-  OwdModuleAppInfo, OwdModuleAppWindowsInstances
+  OwdModuleAppInfo,
+  OwdModuleAppWindowsInstances,
+  OwdModuleAppLoadCommandsContext,
+  OwdModuleAppLoadSseEventsContext,
+  OwdModuleAppLoadStoreContext
 } from "../../../../types";
 import {MutationPayload, Store} from "vuex";
 
@@ -39,19 +43,10 @@ export default abstract class ModuleApp implements OwdModuleApp {
   }
 
   abstract loadAssets(): void
-  abstract loadCommands(context: {
-    store: Store<any>,
-    terminal: any
-  }): OwdModuleAppCommands
-  abstract loadSseEvents(context: {
-    store: Store<any>,
-    terminal: any
-  }): OwdModuleAppSseEvents
-  abstract loadStore(): void
-  abstract loadStoreInstance(context: {
-    store: Store<any>,
-    terminal: any
-  }): void
+  abstract loadCommands(context: OwdModuleAppLoadCommandsContext): OwdModuleAppCommands
+  abstract loadSseEvents(context: OwdModuleAppLoadSseEventsContext): OwdModuleAppSseEvents
+  abstract loadStore(context: OwdModuleAppLoadStoreContext): void | any
+  abstract loadStoreInstance(context: OwdModuleAppLoadStoreContext): void
 
   /**
    * Check module dependencies (todo)

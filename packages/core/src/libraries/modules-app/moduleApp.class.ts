@@ -7,7 +7,6 @@ import {
   OwdModuleAppInfo, OwdModuleAppWindowsInstances
 } from "../../../../types";
 import {MutationPayload, Store} from "vuex";
-import merge from 'lodash.merge'
 
 export default abstract class ModuleApp implements OwdModuleApp {
   private readonly app

@@ -14,10 +14,10 @@ import * as helperWindow from '../../../helpers/windows/helperWindow'
 import * as helperStorage from "@owd-client/core/src/helpers/windows/helperStorage";
 import WindowFocusModule from "./storeWindowFocus";
 
-const owdModuleAppWindowsLocalStorage = helperStorage.loadStorage('window') || []
-
 @Module
 export default class WindowModule extends VuexModule {
+  private readonly storage: any
+
   private readonly debugModule: DebugModule
   private readonly modulesModule: ModulesModule
   private readonly fullscreenModule: FullScreenModule
@@ -35,6 +35,8 @@ export default class WindowModule extends VuexModule {
     this.modulesModule = modulesModule
     this.fullscreenModule = fullscreenModule
     this.windowFocusModule = windowFocusModule
+
+    this.storage = helperStorage.loadStorage('window') || []
   }
 
   /**
@@ -169,11 +171,11 @@ export default class WindowModule extends VuexModule {
           // create owdModuleApp window instances restoring previous local storage
 
           if (
-            owdModuleAppWindowsLocalStorage &&
-            Object.prototype.hasOwnProperty.call(owdModuleAppWindowsLocalStorage, owdModuleAppWindowConfig.name)
+            this.storage &&
+            Object.prototype.hasOwnProperty.call(this.storage, owdModuleAppWindowConfig.name)
           ) {
 
-            const owdModuleAppWindowInstancesLocalStorage = owdModuleAppWindowsLocalStorage[owdModuleAppWindowConfig.name]
+            const owdModuleAppWindowInstancesLocalStorage = this.storage[owdModuleAppWindowConfig.name]
 
             for (const uniqueID in owdModuleAppWindowInstancesLocalStorage) {
               if (Object.prototype.hasOwnProperty.call(owdModuleAppWindowInstancesLocalStorage, uniqueID)) {
@@ -555,12 +557,14 @@ export default class WindowModule extends VuexModule {
   windowSetPosition(data: any): boolean {
     return this
       .getWindow(data)
-      .then((windowInstance: OwdModuleAppWindowInstance) => {
+      .then(async (windowInstance: OwdModuleAppWindowInstance) => {
         windowInstance.storage.position.x = data.position.x
         windowInstance.storage.position.y = data.position.y
 
         // recalculate pos x and y
-        this.windowCalcPosition(windowInstance)
+        await this.windowCalcPosition(windowInstance)
+
+        await this.saveWindowsStorage()
 
         return true
       })

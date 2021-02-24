@@ -125,8 +125,8 @@ export default {
     font-size: 24px;
     text-align: center;
     border-radius: 2px;
-    background: darken($menuItemSquareBackground, 7.5%);
-    transition: background 0.6s ease-in-out;
+    background: darken($menuItemSquareBackground, 8%);
+    transition: background 0.5s ease-in-out;
     will-change: background;
     float: left;
 

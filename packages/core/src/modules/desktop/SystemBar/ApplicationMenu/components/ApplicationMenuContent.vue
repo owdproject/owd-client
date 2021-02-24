@@ -139,7 +139,7 @@ export default {
         a {
           display: block;
           cursor: pointer;
-          line-height: 40px;
+          line-height: $desktopSystemBarHeight;
           padding: 0 24px;
           border-radius: 4px;
 

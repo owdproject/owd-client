@@ -26,8 +26,8 @@ export default {
   .owd-window__nav {
     position: relative;
     display: flex;
-    height: 38px;
-    line-height: 38px;
+    height: $desktopSystemBarHeight;
+    line-height: $desktopSystemBarHeight;
     user-select: none;
 
     &__title {
@@ -54,7 +54,7 @@ export default {
 
       .btn {
         display: inline-block;
-        width: 38px;
+        width: $desktopSystemBarHeight;
         text-align: center;
         cursor: pointer;
 

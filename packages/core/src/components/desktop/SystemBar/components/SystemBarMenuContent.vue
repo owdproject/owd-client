@@ -48,8 +48,6 @@ export default {
   box-shadow: 0 0 0 1px $windowBorder;
   color: $windowColor;
   border-radius: 5px;
-  font-weight: normal;
-  font-size: 13px;
   z-index: 999;
 
   &__arrow {

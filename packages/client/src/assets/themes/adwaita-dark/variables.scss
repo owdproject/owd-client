@@ -1,5 +1,4 @@
 // global scss variables
-
 $fontTitle: "Oswald", Tahoma, sans-serif;
 $fontMono: "JetBrains Mono", monospace, FreeMono;
 
@@ -13,8 +12,13 @@ $menuItemTitleBackground: #212121;
 $menuItemTitleColor: #EEEEEE;
 
 // desktop
+$desktopSystemBarHeight: 40px;
 $desktopSystemBarBackground: black;
 $desktopSystemBarColor: white;
+
+$desktopTitleFontFamily: 'Cantarell';
+$desktopTitleFontSize: 14px;
+$desktopTitleFontWeight: 600;
 
 // window
 $windowBackground: #353535;

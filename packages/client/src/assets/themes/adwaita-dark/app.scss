@@ -1,5 +1,3 @@
-$fontWindowTitle: 'Cantarell';
-
 #app {
   .owd-desktop {
     &--system-bar-enabled {
@@ -25,9 +23,9 @@ $fontWindowTitle: 'Cantarell';
       }
 
       &__nav {
-        font-family: $fontWindowTitle;
-        font-weight: bold;
-        font-size: 13.5px;
+        font-family: $desktopTitleFontFamily;
+        font-weight: $desktopTitleFontWeight;
+        font-size: $desktopTitleFontSize;
         background: #353535;
         box-shadow: inset 0 1px 0 0 #383838, 0 1px 0 0 #202020;
 
@@ -39,10 +37,10 @@ $fontWindowTitle: 'Cantarell';
         &__btn-group {
           .btn {
             border-radius: 50%;
-            margin: 5px 4px 5px 0;
-            width: 28px;
-            height: 28px;
-            line-height: 28px;
+            margin: 6px 5px 6px 0;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
           }
         }
       }
@@ -72,7 +70,7 @@ $fontWindowTitle: 'Cantarell';
 
       &:not(&--borderless) {
         .owd-window__container {
-          grid-template-rows: 38px calc(100% - 38px);
+          grid-template-rows: 40px calc(100% - $desktopSystemBarHeight);
         }
       }
     }

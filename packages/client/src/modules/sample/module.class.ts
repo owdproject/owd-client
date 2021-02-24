@@ -1,5 +1,5 @@
 import {ModuleApp} from '@owd-client/core';
-import {OwdModuleApp} from "../../../../types";
+import {OwdModuleApp} from "@owd-client/types";
 
 export default class SampleModule extends ModuleApp {
   constructor(context: OwdModuleApp) {

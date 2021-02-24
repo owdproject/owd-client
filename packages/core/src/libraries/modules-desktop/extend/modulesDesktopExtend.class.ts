@@ -1,6 +1,6 @@
 // @ts-ignore
 import {markRaw} from 'vue'
-import {OwdCoreModulesContext, OwdModuleDesktopConfig, OwdModulesDesktop} from "../../../../../types";
+import {OwdCoreModulesContext, OwdModuleDesktopConfig, OwdModulesDesktop} from "@owd-client/types";
 
 const desktopModules: OwdModulesDesktop = {
   'system-bar': {}

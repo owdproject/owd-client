@@ -9,7 +9,7 @@ import {
   OwdModuleAppLoadCommandsContext,
   OwdModuleAppLoadSseEventsContext,
   OwdModuleAppLoadStoreContext
-} from "../../../../types";
+} from "@owd-client/types";
 import {MutationPayload} from "vuex";
 
 export default abstract class ModuleApp implements OwdModuleApp {

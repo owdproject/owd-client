@@ -1,6 +1,6 @@
 import {Module, RegisterOptions, VuexModule} from "vuex-class-modules";
 import ModulesModule from "../storeModules";
-import {OwdModuleAppWindowConfig} from "../../../../../types";
+import {OwdModuleAppWindowConfig} from "@owd-client/types";
 
 @Module
 export default class WindowCategoryModule extends VuexModule {

@@ -1,4 +1,4 @@
-import {OwdDeviceDetector} from "../../types";
+import {OwdDeviceDetector} from "@owd-client/types";
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {

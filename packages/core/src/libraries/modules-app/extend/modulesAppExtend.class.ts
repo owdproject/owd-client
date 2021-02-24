@@ -1,4 +1,4 @@
-import {OwdCoreModulesContext, OwdModuleApp, OwdModuleAppInfo} from "../../../../../types";
+import {OwdCoreModulesContext, OwdModuleApp, OwdModuleAppInfo} from "@owd-client/types";
 import ModuleApp from "../moduleApp.class";
 
 const modulesApps: {[key: string]: OwdModuleApp} = {};

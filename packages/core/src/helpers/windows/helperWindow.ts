@@ -3,7 +3,7 @@ import store from '../../store'
 import {
   OwdModuleAppWindowDetail,
   OwdModuleAppWindowInstance
-} from "../../../../types";
+} from "@owd-client/types";
 
 interface CallbackWindowInstance<T1, T2 = void> {
   (windowInstance: T1): T2;

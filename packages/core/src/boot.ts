@@ -5,7 +5,7 @@ import owdTerminalExtend from './libraries/terminal/extend/terminalExtend.class'
 import owdModulesAppExtend from './libraries/modules-app/extend/modulesAppExtend.class'
 import owdModulesDesktopExtend from "./libraries/modules-desktop/extend/modulesDesktopExtend.class";
 
-import {App, OwdCoreBootContext, OwdCoreModulesContext} from "../../types";
+import {App, OwdCoreBootContext, OwdCoreModulesContext} from "@owd-client/types";
 
 // import plugins
 import moment from "./plugins/moment";

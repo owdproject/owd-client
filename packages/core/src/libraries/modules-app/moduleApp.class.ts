@@ -10,7 +10,7 @@ import {
   OwdModuleAppLoadSseEventsContext,
   OwdModuleAppLoadStoreContext
 } from "../../../../types";
-import {MutationPayload, Store} from "vuex";
+import {MutationPayload} from "vuex";
 
 export default abstract class ModuleApp implements OwdModuleApp {
   private readonly app
@@ -106,33 +106,86 @@ export default abstract class ModuleApp implements OwdModuleApp {
   loadModuleStore() {
     // load module store
     if (typeof this.loadStore === 'function') {
-      this.moduleStore = this.loadStore()
-      this.registerModuleStore()
+      this.moduleStore = this.loadStore({ store: this.store })
+
+      if (this.moduleStore) {
+        this.registerModuleStore()
+      }
     }
+  }
+
+  /**
+   * Check if store has sub-modules
+   * @private
+   */
+  private get isModuleMultiStore(): boolean {
+    return Object.prototype.hasOwnProperty.call(this.moduleStore, 'modules')
   }
 
   /**
    * Register module store
    */
   registerModuleStore() {
-    let moduleStore = this.moduleStore
-    let moduleStoreMerge = {
-      namespaced: true,
-      state: null
-    }
 
-    if (this.moduleStoreConfig) {
-      moduleStoreMerge = {
-        namespaced: true,
-        state: this.moduleStoreConfig
+    // does store contain multiple vuex modules?
+    // if "strict" = true, register vuex submodules using the Vuex original way
+    // if "strict" = false, register vuex submodules with the OWD way
+    if (this.isModuleMultiStore && !this.moduleStore.strict) {
+
+      // list of vuex modules of this OWD Module
+      const owdModuleMultiStoreModules = this.moduleStore.modules
+
+      // get names of these vuex modules
+      const owdModuleMultiStoreModuleNames = Object.keys(owdModuleMultiStoreModules)
+
+      if (owdModuleMultiStoreModuleNames.length > 0) {
+
+        // for each vuex module of this OWD Module
+        for (const storeName of owdModuleMultiStoreModuleNames) {
+
+          const storeModule = {
+
+            // import vuex store
+            ...owdModuleMultiStoreModules[storeName],
+
+            // set namespaced as true
+            namespaced: true
+
+          }
+
+          if (
+            this.moduleStoreConfig && this.moduleStoreConfig.modules &&
+            Object.prototype.hasOwnProperty.call(this.moduleStoreConfig.modules, storeName)
+          ) {
+
+            // add store state from moduleStoreConfig
+            storeModule.state = {
+              ...storeModule.state,
+              ...this.moduleStoreConfig.modules[storeName]
+            }
+          }
+
+          // register store to Vuex
+          this.store.registerModule(storeName, storeModule)
+        }
       }
+
+      return true;
     }
 
-    // register store to Vuex
-    this.store.registerModule(this.moduleInfo.name, merge(
-      moduleStore,
-      moduleStoreMerge
-    ))
+    // import single store module with basic config (if available)
+    this.store.registerModule(this.moduleInfo.name, {
+
+      // import vuex store
+      ...this.moduleStore,
+
+      // import basic config into state
+      state: this.moduleStoreConfig || {},
+
+      // set namespaced as true
+      namespaced: true
+
+    })
   }
 
   // ### MODULE STORE INSTANCE

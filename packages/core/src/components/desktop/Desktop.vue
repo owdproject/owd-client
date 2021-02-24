@@ -31,11 +31,9 @@
 <script>
   import { getCurrentInstance } from 'vue'
   import DesktopSystemBar from "./SystemBar/DesktopSystemBar";
-  import mixinServer from "../../mixins/mixinServer";
   import {useStore} from "vuex";
 
   export default {
-    mixins: [mixinServer],
     components: {DesktopSystemBar},
     setup() {
       const app = getCurrentInstance()
@@ -53,7 +51,7 @@
           store.dispatch('core/window/initialize')
         },
         coreSseConnect: () => {
-          store.dispatch('core/sse/connect', 'once')
+          store.dispatch('core/sse/connect')
         },
         handleDesktopResize: () => {
           clearTimeout(timeoutHandleDesktopResize)
@@ -70,7 +68,7 @@
     },
     mounted() {
       // on page ready, connect to SSE
-      if (this.isServerAvailable) {
+      if (this.$owd.config.sse.enabled) {
         window.addEventListener('load', this.coreSseConnect)
       }
 

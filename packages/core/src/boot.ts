@@ -96,7 +96,8 @@ export default class OwdBoot implements Boot {
         debug: context.app.config.owd.debug,
         theme: context.app.config.owd.theme,
         icons: context.app.config.owd.icons,
-        desktop: context.app.config.owd.desktop
+        desktop: context.app.config.owd.desktop,
+        sse: context.app.config.owd.sse
       }
     }
   }

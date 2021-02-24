@@ -27,6 +27,11 @@ export default {
   // owd modules
   modules: modulesConfig,
 
+  // owd sse integration
+  sse: {
+    enabled: false
+  },
+
   // owd desktop
   desktop: {
     Logo: {

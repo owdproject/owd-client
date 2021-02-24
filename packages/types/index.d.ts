@@ -40,6 +40,7 @@ export interface OwdClientConfiguration {
   debug: boolean
   theme: string
   routes: any[]
+  sse: OwdClientConfigurationSse
   modules: OwdClientConfigurationModules
   desktop: OwdClientConfigurationDesktop
   icons: OwdClientConfigurationIcons
@@ -53,6 +54,10 @@ export interface OwdClientConfigurationModules {
 
 export interface OwdClientConfigurationIcons {
   [key: string]: any
+}
+
+export interface OwdClientConfigurationSse {
+  enabled: boolean
 }
 
 export interface OwdClientConfigurationDesktop {

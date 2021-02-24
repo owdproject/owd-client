@@ -34,8 +34,7 @@
   }
 
   a {
-    color: #5bbcff;
-    opacity: 0.5;
+    color: #5198ca;
   }
 }
 </style>

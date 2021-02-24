@@ -11,7 +11,7 @@ import {
   OwdModuleAppWindowInstance, OwdModuleAppWindowsStorage
 } from "../../../../../types";
 import * as helperWindow from '../../../helpers/windows/helperWindow'
-import * as helperStorage from "../../../helpers/windows/helperStorage.utils";
+import * as helperStorage from "@owd-client/core/src/helpers/windows/helperStorage";
 import WindowFocusModule from "./storeWindowFocus";
 
 const owdModuleAppWindowsLocalStorage = helperStorage.loadStorage('window') || []

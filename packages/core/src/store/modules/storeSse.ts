@@ -1,4 +1,4 @@
-import {VuexModule, Module, Mutation, Action, RegisterOptions} from "vuex-class-modules";
+import {VuexModule, Module, Mutation, Action} from "vuex-class-modules";
 
 @Module
 export default class SseVuexModule extends VuexModule {
@@ -17,17 +17,23 @@ export default class SseVuexModule extends VuexModule {
 
   @Action
   connect() {
+    if (this.connected) {
+      return console.error('[OWD] Already connected to SSE')
+    }
+
     const sse = new EventSource(process.env.VUE_APP_API_BASE_URL + 'sse')
 
     sse.onerror = () => {
+      // reset connected status
       if (this.connected) {
         this.SET_CONNECTED(false)
       }
 
-      console.error('Unable to connect to sse')
+      console.error('[OWD] Unable to connect to SSE')
 
       sse.close()
 
+      // reconnect after X seconds
       clearInterval(this.intervalReconnect)
       this.intervalReconnect = setInterval(() => this.connect(), 5000)
     }
@@ -35,12 +41,14 @@ export default class SseVuexModule extends VuexModule {
     sse.onmessage = (message) => {
       clearInterval(this.intervalReconnect)
 
+      // set as connected
       if (!this.connected) {
         this.SET_CONNECTED(true)
       }
 
       const data: any = JSON.parse(message.data)
 
+      // log each event using a mutation
       if (Array.isArray(data)) {
         data.forEach((event) => this.LOG_EVENT(event))
       } else {

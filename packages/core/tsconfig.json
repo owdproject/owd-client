@@ -2,7 +2,6 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "types": [
-      "@types/lodash.merge",
       "@types/md5",
       "@vuetify/types"
     ],

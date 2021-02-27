@@ -3,13 +3,13 @@
   "modulesEnabled": {
     "sample": {
       "name": "sample",
-      "version": "3.0.0",
-      "url": "https://www.github.com/hacklover/owd-sample"
+      "version": "2.0.0",
+      "url": "https://github.com/hacklover/owd-sample"
     },
     "debug": {
       "name": "debug",
-      "version": "3.0.0",
-      "url": "https://www.github.com/hacklover/owd-debug"
+      "version": "2.0.0",
+      "url": "https://www.github.com/owdproject/owd-client"
     }
   }
 }

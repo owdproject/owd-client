@@ -1,14 +1,13 @@
 {
   "name": "debug",
-  "version": "3.0.0",
-  "singleton": true,
-  "autostart": true,
+  "version": "2.0.0",
   "license": "MIT",
-  "homepage": "https://github.com/hacklover/owd-debug",
+  "homepage": "https://www.github.com/owdproject/owd-client",
   "author": {
     "name": "hacklover",
-    "url": "https://hacklover.net"
+    "url": "https://github.com/hacklover"
   },
+  "singleton": true,
   "windows": [
     {
       "name": "WindowDebug",
@@ -22,8 +21,6 @@
         }
       },
       "menu": true,
-      "closed": true,
-      "hidden": false,
       "resizable": false,
       "size": {
         "width": 448,

@@ -90,8 +90,7 @@ export default {
   },
   props: {
     title: {
-      type: String,
-      default: 'Empty title'
+      type: String
     },
     window: Object
   },

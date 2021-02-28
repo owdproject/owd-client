@@ -1,7 +1,14 @@
 <template>
-  <Window :title="window.config.title" :window="window">
-    <div class="owd-window__content__debug">
+  <Window :window="window">
+    <div class="container">
       <div class="options">
+
+        <div>
+          <label>
+            <input type="checkbox" v-model="window.config.noContentSpacing" />
+            No content spacing
+          </label>
+        </div>
 
         <div>
           <label>
@@ -26,8 +33,8 @@
 
         <div>
           <label>
-            <input type="checkbox" v-model="window.config.noContentSpacing" />
-            No content spacing
+            <input type="checkbox" onclick="return false" :checked="window.storage.focused" />
+            Focused
           </label>
         </div>
 
@@ -61,7 +68,6 @@
 import Window from "@owd-client/core/src/components/window/Window";
 
 export default {
-  name: "WindowDebug",
   components: {Window},
   props: {
     window: Object
@@ -70,7 +76,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.owd-window__content__debug {
+.container {
   display: grid;
   grid-template-columns: 60% 40%;
 

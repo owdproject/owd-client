@@ -1,5 +1,5 @@
 <template>
-  <Window :title="window.config.title" :window="window">
+  <Window :window="window">
     <div class="container">
       <h2>
         Open Web Desktop <span>2.0.0-alpha</span>
@@ -11,8 +11,8 @@
 
 <script>
   import Window from "@owd-client/core/src/components/window/Window";
+
   export default {
-    name: "WindowExample",
     components: {Window},
     props: {
       window: Object

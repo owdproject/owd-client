@@ -176,6 +176,8 @@ export interface OwdModuleAppWindowConfig {
   autoOpen?: boolean
   autoCloseBeforePageUnload?: boolean
   autoDestroyBeforePageUnload?: boolean
+
+  metaData?: any
 }
 
 export interface OwdModuleAppWindowConfigSize {

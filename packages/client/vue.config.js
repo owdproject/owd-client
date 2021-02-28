@@ -42,5 +42,9 @@ module.exports = {
       swSrc: 'service-worker.js',
       exclude: [/\.map$/, /_redirects/, /robots.txt/]
     }
+  },
+
+  chainWebpack: (config) => {
+    config.resolve.symlinks(false)
   }
 };

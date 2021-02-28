@@ -159,6 +159,7 @@ export interface OwdModuleAppWindowConfig {
   name: string
   category: string
   title: string
+  titleApp?: string
   titleShort: string
   icon: string|OwdModuleAppWindowConfigIcon
 

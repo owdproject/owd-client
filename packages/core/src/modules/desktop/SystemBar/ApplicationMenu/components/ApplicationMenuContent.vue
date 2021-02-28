@@ -23,7 +23,7 @@
             <span
               :class="['mdi', moduleAppWindow.icon.name || moduleAppWindow.icon]"
             />
-            {{ moduleAppWindow.titleShort }}
+            {{ moduleAppWindow.titleApp || moduleAppWindow.titleShort }}
           </a>
         </li>
       </ul>

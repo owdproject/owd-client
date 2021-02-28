@@ -1,8 +1,8 @@
 {
-  "name": "sample",
+  "name": "about",
   "version": "2.0.0",
   "license": "MIT",
-  "homepage": "https://github.com/hacklover/owd-sample",
+  "homepage": "https://www.github.com/owdproject/owd-client",
   "author": {
     "name": "hacklover",
     "url": "https://github.com/hacklover"
@@ -10,9 +10,10 @@
   "singleton": true,
   "windows": [
     {
-      "name": "WindowExample",
+      "name": "WindowAbout",
       "category": "system-tools",
-      "title": "OWD Sample Module",
+      "title": "OWD About Module",
+      "titleApp": "About",
       "titleShort": "Open Web Desktop",
       "icon": {
         "name": "mdi-hexagon-multiple-outline"

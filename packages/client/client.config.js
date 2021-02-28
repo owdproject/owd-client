@@ -39,6 +39,9 @@ export default {
 
   // vuetify config
   vuetify: {
+    icons: {
+      iconfont: 'mdiSvg'
+    },
     rtl: false
   }
 }

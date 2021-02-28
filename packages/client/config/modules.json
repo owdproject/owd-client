@@ -1,9 +1,9 @@
 {
   "type": "client",
   "modulesEnabled": {
-    "sample": {
-      "name": "sample",
-      "version": "1.3.0",
+    "about": {
+      "name": "about",
+      "version": "1.4.4",
       "url": "https://www.github.com/hacklover/owd-sample"
     }
   }

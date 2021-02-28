@@ -27,7 +27,16 @@
     "@types"
   ],
   "dependencies": {
-    "@owd-client/core": "^2.0.0-alpha.0"
+    "@owd-client/core": "^2.0.0-alpha.0",
+    "jquery": "^3.5.1",
+    "jquery.terminal": "^2.20.1",
+    "owd-iframe": "https://github.com/hacklover/owd-iframe",
+    "p5": "^1.2.0",
+    "vue-color": "^2.8.1",
+    "webamp": "^1.4.3-beta.4",
+    "xterm": "^4.9.0",
+    "xterm-addon-fit": "^0.4.0",
+    "xterm-addon-local-echo": "https://github.com/hacklover/owd-xterm-addon-local-echo"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.12.11",

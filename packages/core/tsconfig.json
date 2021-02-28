@@ -4,12 +4,7 @@
     "types": [
       "@types/md5",
       "@vuetify/types"
-    ],
-    "paths": {
-      "@core/*": [
-        "src/*"
-      ]
-    }
+    ]
   },
   "exclude": [
     "node_modules",

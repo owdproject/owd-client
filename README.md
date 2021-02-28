@@ -4,8 +4,6 @@
     <img src="https://i.imgur.com/qiBDv2q.png" alt="Open Web Desktop" />
 </p>
 
-> An open-source web desktop made with Vue.js
-
 <p>
     <a href="https://github.com/owdproject/owd-client/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg" /></a>
     <a href="https://github.com/owdproject/owd-client"><img src="https://img.shields.io/github/release/owdproject/owd-client.svg" /></a>
@@ -16,71 +14,94 @@
 </p>
 
 ## Overview
-Open Web Desktop (previously *hacklover-client*, aka what you can see [on my website](https://hacklover.net))
-is a project that aims to provide a simple environment to create your own web desktop.
-Based on Vue.js, it has been rewritten to be fully modular.
+Open Web Desktop is an experimental project that aims to provide a simple environment to create your own web desktop, and to extend it through modules and other integrations. OWD Client is based on Vue.js.
 
-[Check the demo](https://demo.owdproject.com) of this `owd-client` base repository. 
+[Check the demo](https://demo.owdproject.com) of this `owd-client` base repository decked out with some modules.
 
 ## Features
-- Open-source web desktop client based on Vue.js
+- Open-source web desktop client based on Vue.js 2
 - Fully extendable through client and server modules
-- Fully extendable through pages and components
-- Global terminal commands support
-- Global notifications through SSE
-- Vuetify.js implemented by default
+- Fully extendable through pages and Vue components
+- Global notifications and terminal commands support
+- Vuex, Vue Router & Vuetify implemented by default
 
 ## About this project
-Open Web Desktop is splitted in two main repositories:
-- `owd-client`: Open Web Desktop client, made with Vue.js
+Open Web Desktop is divided in two main repositories:
+- `owd-client`: Open Web Desktop client, made with Vue.js 2
 - `owd-server`: Open Web Desktop server, made with Nest.js (TBA)
 
-The plans are to make it expandable through a series of modules
-that will be released on [GitHub](https://github.com/topics/owd-modules) and [Patreon](https://patreon.com/hacklover).
-
 ## Getting started
-In the future there will be a tool to bootstrap your OWD client.  
-For now, you have to follow some easy steps as explained below.
+Required software:
 
-- Make sure you have Git and Node.js installed
-- Clone this repo with `git clone https://github.com/owd-project/owd-client`
-- Copy the folder `packages/owd-client` in a new location of your choice
-- Enter that directory with `cd <your-path>/owd-client`
-- Install dependencies with `npm install`
-- Run your OWD client with `npm run serve`
+- [Git](https://git-scm.com)
+- [Node.js](https://nodejs.org)
+
+For now, there is no OWD CLI available to bootstrap a new OWD Client instance.  
+You can proceed manually; once you have everything installed, clone the repository.
+
+```
+# using HTTPS
+git clone https://github.com/owdproject/owd-client.git
+
+# or using SSH
+git clone git@github.com:owdproject/owd-client.git
+```
+
+Copy the `owd-client/packages/client` folder somewhere, install dependencies and then you'll ready to go.
+```
+# create your own owd-client instance
+cp owd-client/packages/client my-owd-client
+
+# navigate to your owd-client instance
+cd my-owd-client
+
+# install dependencies
+npm install
+
+# run owd-client in development mode
+npm run serve
+```
+
+If you want to publish your desktop, build the source and deploy the `my-owd-client/dist` folder.
+```
+# build owd-client for production
+npm run build
+```
 
 ## Modules
-Each OWD module may include a `client` or a `server` folder.
-There is no CLI available for modules installation at the moment, so you should install each module manually.
-Here you can find [some modules](https://github.com/topics/owd-modules) available for everyone.
+Each OWD Module may include a `client` or a `server` folder.
+For now, there is no OWD CLI available for module installation, so you have to install each module manually too.
+Here you can find [some modules](https://github.com/topics/owd-modules).
 
 ### Install a new module
-You can install modules by copying the content of the `client` module folder into
+You can install a new module by copying the content of the `owd-module/client` folder into
 `src/modules/<module-name>`.
 
 #### Install module dependencies
-Some modules may have additional [npm](https://www.npmjs.com) dependencies that you have to install manually.
-To do so, check the "dependencies" property in the `src/modules/<module-name>/module.json` configuration.  
+Some modules may require additional [npm](https://www.npmjs.com) dependencies, or other OWD modules to be installed:  
 
-Then run `npm install <dependency-name>` for each dependency to install them like every npm module.
+- Check the `src/modules/<module-name>/module.json` config
+- If you find some `dependencies` defined, install each one by running `npm install <dependency-name>` in the root folder of your owd-client instance
+
+If the module require other OWD modules, it will be specified in the README.md of that module.
 
 #### Define the installed module
-To be able to load the installed modules into your OWD client, you have to define them under `config/modules.json`.
-Edit that file and be sure to add every module in `modulesEnabled` like in the example:
+To allow OWD to load the installed module, you have to define it under `my-owd-client/config/modules.json`.
+Be sure to add every module in the `modulesEnabled` property like the example above:
 
 ```json
 {
   "type": "client",
   "modulesEnabled": {
     "sample": {
-      "name": "sample",
-      "version": "1.0.0",
-      "url": "https://www.github.com/hacklover/owd-sample"
+      "name": "about",
+      "version": "1.4.0",
+      "url": "https://www.github.com/owdproject/owd-client"
     },
     "your-module-name": {
-      "name": "your-module-name",
+      "name": "<your-module-name",
       "version": "1.0.0",
-      "url": ""
+      "url": "<your-repo-link>"
     }
   }
 }
@@ -99,4 +120,4 @@ See all sponsors & backers in the [BACKERS.md](BACKERS.md)
 </a>
 
 ## License
-This project is released under the [MIT License](LICENSE)
+OWD Client 1.0 is released under the [MIT License](LICENSE)

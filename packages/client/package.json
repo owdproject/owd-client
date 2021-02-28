@@ -6,7 +6,7 @@
   "license": "MIT",
   "author": {
     "name": "hacklover",
-    "url": "https://hacklover.net"
+    "url": "https://github.com/hacklover"
   },
   "scripts": {
     "build": "vue-cli-service build",
@@ -18,15 +18,12 @@
     "@owd-client/core": "^1.4.3"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.12.1",
-    "@mdi/font": "^5.6.55",
-    "@vue/cli-plugin-pwa": "^4.5.8",
-    "@vue/cli-plugin-unit-jest": "^4.5.8",
-    "@vue/cli-service": "^4.5.8",
-    "@vue/test-utils": "^1.1.1",
-    "css-loader": "^5.0.0",
-    "sass": "^1.27.0",
-    "sass-loader": "^10.0.3",
+    "@mdi/font": "^5.9.55",
+    "@vue/cli-plugin-pwa": "^4.5.11",
+    "@vue/cli-service": "^4.5.11",
+    "css-loader": "^5.1.0",
+    "sass": "^1.32.8",
+    "sass-loader": "^11.0.1",
     "vue-template-compiler": "^2.6.12"
   },
   "devDependenciesDisabled": {

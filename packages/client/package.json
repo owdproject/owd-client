@@ -3,7 +3,7 @@
   "version": "1.4.3",
   "private": true,
   "homepage": "https://github.com/owdproject/owd-client",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "author": {
     "name": "hacklover",
     "url": "https://github.com/hacklover"

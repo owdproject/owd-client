@@ -69,23 +69,19 @@ npm run build
 ```
 
 ## Modules
-OWD modules may usually include a `client` or a `server` folder.
-
-Since there is no OWD CLI available for module installation, you have to install each module manually too.
+OWD modules may include a `client` or a `server` folder. Since there is no OWD CLI available for module installation, you have to install modules manually too.
 Here you can find [some modules](https://github.com/topics/owd-modules).
 
 ### Install a new module
 To install a module, copy the content of the  `owd-module/client` folder into `src/modules/<module-name>`.
 
-Always take a look at the README.md of the OWD Module, you may have to move some other folders like `config` or `public`.'
+Always take a look at the README.md, you may have to move some other folders like `config` or `public`.
 
 #### Install module dependencies
-Some modules may require additional [npm](https://www.npmjs.com) dependencies, or other OWD modules to be installed:  
+Some modules may require additional dependencies, or other OWD modules to be installed.
 
 Check the `src/modules/<module-name>/module.json` config. If you find some `dependencies`,
-install each one by running `npm install <dependency-name>` in the root folder of your owd-client instance.  
-
-If the module require other OWD modules, it will be specified in the README.md.
+install each one by running `npm install <dependency-name>` in the root folder of your owd-client instance.
 
 #### Define the installed module
 To allow OWD to load the installed module, you have to define it under `my-owd-client/config/modules.json`.

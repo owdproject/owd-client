@@ -1,7 +1,7 @@
 # Open Web Desktop - Client
 
 <p>
-    <img src="https://i.imgur.com/sumpPZK.png" alt="Open Web Desktop" />
+    <img src="https://i.imgur.com/Ioywtnv.png" alt="Open Web Desktop" />
 </p>
 
 <p>

@@ -14,9 +14,9 @@
 </p>
 
 ## Overview
-Open Web Desktop is an experimental project that aims to provide a simple environment to create your own web desktop, and to extend it through modules and other integrations. OWD Client is based on Vue.js.
+Open Web Desktop is an experimental project that aims to provide a simple environment to create your own web desktop, and to extend it through modules and other integrations. OWD Client is based on Vue.js 2.
 
-[Check the demo](https://demo.owdproject.com) of this `owd-client` base repository decked out with some modules.
+[Check the demo](https://demo.owdproject.com) of this `owd-client` base repository, decked out with some modules.
 
 ## Features
 - Open-source web desktop client based on Vue.js 2
@@ -36,54 +36,56 @@ Required software:
 - [Git](https://git-scm.com)
 - [Node.js](https://nodejs.org)
 
-For now, there is no OWD CLI available to bootstrap a new OWD Client instance.  
-You can proceed manually; once you have everything installed, clone the repository.
+At the moment there is no OWD CLI available to bootstrap a new client instance with a single command,
+but you can proceed manually. Once you have everything installed, clone the repository.
 
 ```
-# using HTTPS
+# Using HTTPS
 git clone https://github.com/owdproject/owd-client.git
 
-# or using SSH
+# Using SSH
 git clone git@github.com:owdproject/owd-client.git
 ```
 
 Copy the `owd-client/packages/client` folder somewhere, install dependencies and then you'll ready to go.
 ```
-# create your own owd-client instance
+# Create your own owd-client instance
 cp owd-client/packages/client my-owd-client
 
-# navigate to your owd-client instance
+# Navigate to your owd-client instance
 cd my-owd-client
 
-# install dependencies
+# Install dependencies
 npm install
 
-# run owd-client in development mode
+# Run owd-client in development mode
 npm run serve
 ```
 
-If you want to publish your desktop, build the source and deploy the `my-owd-client/dist` folder.
+If you want to publish your desktop, build the source and deploy `my-owd-client/dist`.
 ```
-# build owd-client for production
+# Build owd-client for production
 npm run build
 ```
 
 ## Modules
-Each OWD Module may include a `client` or a `server` folder.
-For now, there is no OWD CLI available for module installation, so you have to install each module manually too.
+OWD modules may usually include a `client` or a `server` folder.
+
+Since there is no OWD CLI available for module installation, you have to install each module manually too.
 Here you can find [some modules](https://github.com/topics/owd-modules).
 
 ### Install a new module
-You can install a new module by copying the content of the `owd-module/client` folder into
-`src/modules/<module-name>`.
+To install a module, copy the content of the  `owd-module/client` folder into `src/modules/<module-name>`.
+
+Always take a look at the README.md of the OWD Module, you may have to move some other folders like `config` or `public`.'
 
 #### Install module dependencies
 Some modules may require additional [npm](https://www.npmjs.com) dependencies, or other OWD modules to be installed:  
 
-- Check the `src/modules/<module-name>/module.json` config
-- If you find some `dependencies` defined, install each one by running `npm install <dependency-name>` in the root folder of your owd-client instance
+Check the `src/modules/<module-name>/module.json` config. If you find some `dependencies`,
+install each one by running `npm install <dependency-name>` in the root folder of your owd-client instance.  
 
-If the module require other OWD modules, it will be specified in the README.md of that module.
+If the module require other OWD modules, it will be specified in the README.md.
 
 #### Define the installed module
 To allow OWD to load the installed module, you have to define it under `my-owd-client/config/modules.json`.
@@ -106,6 +108,40 @@ Be sure to add every module in the `modulesEnabled` property like the example ab
   }
 }
 ```
+
+## Contributing
+
+### Local development
+The OWD Client repository is a [lerna](https://github.com/lerna/lerna) monorepo that includes the client boilerplate, the client core, and in the future also something else (like the docs), just to keep everything in a single place.
+
+### Setting up your environment
+
+Required software:
+
+- [Git](https://git-scm.com)
+- [Node.js](https://nodejs.org)
+- [Yarn](https://classic.yarnpkg.com)
+
+Once you have everything installed, clone the repository:
+
+```
+# Using HTTPS
+git clone https://github.com/owdproject/owd-client.git
+
+# Using SSH
+git clone git@github.com:owdproject/owd-client.git
+```
+
+Then install dependencies and run Open Web Desktop in development mode.
+```
+# Navigate to the owd-client folder
+cd owd-client
+
+# Run OWD in development mode
+npm run serve
+```
+This will bootstrap the lerna monorepo, allowing you to run and edit both client and core packages.   
+If you intend to contribute to the project, please join our [community chat](https://discord.gg/3KFVP8b).
 
 ## Supporters
 

@@ -5,10 +5,10 @@
 </p>
 
 <p>
-    <a href="https://github.com/owdproject/owd-client/blob/next/LICENSE"><img src="https://img.shields.io/badge/license-GPL-green.svg" /></a>
+    <a href="https://github.com/owdproject/owd-client/blob/next/LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" /></a>
+    <a href="https://github.com/owdproject/owd-client/tree/next"><img src="https://img.shields.io/badge/owd-client-3A9CB6" /></a>
     <a href="https://github.com/owdproject/owd-client/tree/next"><img src="https://img.shields.io/github/release/owdproject/owd-client.svg" /></a>
     <a href="https://npmjs.com/package/@owd-client/core"><img src="https://img.shields.io/npm/v/@owd-client/core.svg?color=blue" /></a>
-    <a href="https://github.com/owdproject/owd-client/tree/next"><img src="https://img.shields.io/badge/owd-client-3A9CB6" /></a>
     <a href="https://github.com/topics/owd-modules"><img src="https://img.shields.io/badge/owd-modules-888" /></a>
     <a href="https://discord.gg/3KFVP8b"><img src="https://img.shields.io/badge/chat-on%20discord-7289da.svg" /></a>
 </p>

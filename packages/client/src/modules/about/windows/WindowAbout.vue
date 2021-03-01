@@ -2,7 +2,7 @@
   <Window :window="window">
     <div class="container">
       <h2>
-        Open Web Desktop <span>2.0.0-alpha</span>
+        Open Web Desktop <span v-text="$store.state['core/client'].version" />
       </h2>
       <a href="https://github.com/owdproject/owd-client/tree/next">github.com/owdproject/owd-client</a>
     </div>

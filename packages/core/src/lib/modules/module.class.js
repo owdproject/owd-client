@@ -8,6 +8,7 @@ export default class Module {
     this.moduleStoreInstance = null
     this.moduleStoreConfig = null
 
+    this.loadModuleAssets()
     this.loadModuleStoreConfig(context)
     this.loadModuleStore(context)
     this.loadModuleStoreInstance(context)

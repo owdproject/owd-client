@@ -47,5 +47,9 @@ module.exports = {
     plugins: [
       vuetifyLoader()
     ]
+  },
+
+  chainWebpack: (config) => {
+    config.resolve.symlinks(false)
   }
 };

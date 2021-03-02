@@ -5,5 +5,8 @@
 # Lerna
 lerna-debug.log
 
+# Tests
+coverage
+
 # App
 node_modules

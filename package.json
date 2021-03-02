@@ -1,12 +1,26 @@
 {
   "name": "owd-client",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "description": "OWD Client 1.0 (based on Vue.js 2)",
+  "homepage": "https://github.com/owdproject/owd-client#readme",
+  "bugs": {
+    "url": "https://github.com/owdproject/owd-client/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/owdproject/owd-client.git"
+  },
+  "license": "GPL-3.0",
+  "author": {
+    "name": "hacklover",
+    "url": "https://github.com/hacklover"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "serve": "lerna bootstrap && cd packages/client && yarn serve",
+    "build": "lerna bootstrap && cd packages/client && yarn build"
   },
   "devDependencies": {
     "lerna": "^3.22.1"

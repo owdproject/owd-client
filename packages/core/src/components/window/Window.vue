@@ -358,16 +358,16 @@ export default {
   }
 
   .window {
-    background: rgb(17, 17, 17);
-    box-shadow: 0 0 0 1px rgba(21, 21, 21, 0.5);
-    border-radius: 2px;
-    color: #b4b4b4;
+    background: $windowBackground;
+    box-shadow: $windowShadow;
+    border-radius: $windowBorderRadius;
+    color: $windowTextColor;
     overflow: hidden;
     user-select: none;
     pointer-events: initial;
 
     .window-container {
-      box-shadow: inset 0 0 0 1px #292929;
+      box-shadow: inset 0 0 0 1px $windowBorder;
     }
 
     &.dragging, &.resizing {

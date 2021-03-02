@@ -1,6 +1,6 @@
 {
   "name": "@owd-client/core",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "OWD Client Core",
   "homepage": "https://github.com/owdproject/owd-client#readme",
   "bugs": {
@@ -10,10 +10,10 @@
     "type": "git",
     "url": "git+https://github.com/owdproject/owd-client.git"
   },
-  "license": "MIT",
+  "license": "GPL-3.0",
   "author": {
     "name": "hacklover",
-    "url": "https://hacklover.net"
+    "url": "https://github.com/hacklover"
   },
   "main": "index.js",
   "scripts": {
@@ -39,32 +39,32 @@
     "root": true
   },
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "kebab-case": "^1.0.0",
     "lodash.merge": "^4.6.2",
     "md5": "^2.3.0",
-    "register-service-worker": "^1.7.1",
+    "register-service-worker": "^1.7.2",
     "typeface-jetbrains-mono": "^2.0.0",
     "typeface-oswald": "1.1.13",
     "vue": "^2.6.12",
     "vue-device-detector": "^1.1.6",
     "vue-resizable": "^1.2.5",
-    "vue-router": "^3.4.7",
+    "vue-router": "^3.5.1",
     "vue-typer": "^1.2.0",
-    "vuetify": "^2.3.12",
-    "vuetify-loader": "^1.6.0",
-    "vuex": "^3.5.1"
+    "vuetify": "^2.4.5",
+    "vuetify-loader": "^1.7.2",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-eslint": "^4.5.8",
-    "@vue/cli-plugin-pwa": "^4.5.8",
-    "@vue/cli-service": "^4.5.8",
+    "@vue/cli-plugin-eslint": "^4.5.11",
+    "@vue/cli-plugin-pwa": "^4.5.11",
+    "@vue/cli-service": "^4.5.11",
     "babel-eslint": "^10.1.0",
-    "css-loader": "^5.0.0",
-    "eslint": "^7.11.0",
-    "eslint-plugin-vue": "^7.1.0",
-    "sass": "^1.27.0",
-    "sass-loader": "^10.0.3",
+    "css-loader": "^5.1.0",
+    "eslint": "^7.21.0",
+    "eslint-plugin-vue": "^7.6.0",
+    "sass": "^1.32.8",
+    "sass-loader": "^10.1.1",
     "vue-template-compiler": "^2.6.12"
   },
   "postcss": {

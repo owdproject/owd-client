@@ -2,7 +2,7 @@
   <div id="logo">
     <h2>
       <vue-typer
-        :text="$store.state.core.client.title"
+        :text="title"
         shuffle
         :repeat="0"
         :type-delay="50"
@@ -19,6 +19,12 @@ export default {
   name: 'Logo',
   components: {
     VueTyper
+  },
+  props: {
+    title: {
+      type: String,
+      default: 'owd-client'
+    }
   }
 }
 </script>

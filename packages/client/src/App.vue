@@ -17,6 +17,10 @@ export default {
       let device = 'is-desktop'
       if (this.$device.mobile) device = 'is-mobile'
 
+      if (device) {
+        appClasses.push(device)
+      }
+
       let osName = null
       if (navigator.appVersion.indexOf('Win') !== -1) osName = 'is-windows'
       if (navigator.appVersion.indexOf('Mac') !== -1) osName = 'is-mac'
@@ -25,10 +29,6 @@ export default {
 
       if (osName) {
         appClasses.push(osName)
-      }
-
-      if (device) {
-        appClasses.push(device)
       }
 
       return appClasses

@@ -10,13 +10,13 @@
     <a href="https://github.com/owdproject/owd-client"><img src="https://img.shields.io/github/release/owdproject/owd-client.svg" /></a>
     <a href="https://www.npmjs.com/package/@owd-client/core"><img src="https://img.shields.io/npm/v/@owd-client/core.svg?color=blue" /></a>
     <a href="https://github.com/topics/owd-modules"><img src="https://img.shields.io/badge/owd-modules-888" /></a>
-    <a href="http://discord.gg/3KFVP8b"><img src="https://img.shields.io/badge/chat-on%20discord-7289da.svg" /></a>
+    <a href="https://discord.gg/3KFVP8b"><img src="https://img.shields.io/badge/chat-on%20discord-7289da.svg" /></a>
 </p>
 
 ## Overview
 Open Web Desktop is an experimental project that aims to provide a simple environment to create your own web desktop, and to extend it through modules and other integrations. OWD Client is based on Vue.js 2.
 
-[Check the demo](https://demo.owdproject.com) of this `owd-client` base repository, decked out with some modules.
+[Check the demo](https://demo.owdproject.org) of this `owd-client` base repository, decked out with some modules.
 
 ## Features
 - Open-source web desktop client based on Vue.js 2
@@ -27,8 +27,8 @@ Open Web Desktop is an experimental project that aims to provide a simple enviro
 
 ## About this project
 Open Web Desktop is divided in two main repositories:
-- `owd-client`: Open Web Desktop client, made with Vue.js 2
-- `owd-server`: Open Web Desktop server, made with Nest.js (TBA)
+- [owd-client](https://github.com/owdproject/owd-client): Open Web Desktop client, made with Vue.js 2
+- [owd-server](https://github.com/owdproject/owd-server): Open Web Desktop server, made with Nest.js (TBA)
 
 ## Getting started
 Required software:
@@ -49,8 +49,11 @@ git clone git@github.com:owdproject/owd-client.git
 
 Copy the `owd-client/packages/client` folder somewhere, install dependencies and then you'll ready to go.
 ```
-# Create your own owd-client instance
-cp owd-client/packages/client my-owd-client
+# Make a folder for your owd-client instance
+mkdir my-owd-client
+
+# Copy the client package files into your instance
+cp -a owd-client/packages/client/. my-owd-client
 
 # Navigate to your owd-client instance
 cd my-owd-client
@@ -97,7 +100,7 @@ Be sure to add every module in the `modulesEnabled` property like the example ab
       "url": "https://www.github.com/owdproject/owd-client"
     },
     "your-module-name": {
-      "name": "<your-module-name",
+      "name": "<your-module-name>",
       "version": "1.0.0",
       "url": "<your-repo-link>"
     }
@@ -133,15 +136,18 @@ Then install dependencies and run Open Web Desktop in development mode.
 # Navigate to the owd-client folder
 cd owd-client
 
+# Install dependencies using yarn
+yarn install
+
 # Run OWD in development mode
-npm run serve
+yarn serve
 ```
 This will bootstrap the lerna monorepo, allowing you to run and edit both client and core packages.   
 If you intend to contribute to the project, please join our [community chat](https://discord.gg/3KFVP8b).
 
 ## Supporters
 
-See all sponsors & backers in the [BACKERS.md](BACKERS.md)
+See all sponsors & backers in the [BACKERS.md](BACKERS.md).
 
 <a href="https://www.patreon.com/hacklover">
     <img src="https://i.imgur.com/KODHUwR.png" width="160" alt="Become a Patron" />

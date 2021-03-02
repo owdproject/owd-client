@@ -1,8 +1,5 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import Vuex from 'vuex'
-
-const localVue = createLocalVue()
-localVue.use(Vuex)
 
 import App from './App.vue'
 import PageIndex from './pages/main/Index.vue'
@@ -34,7 +31,6 @@ describe('App.vue', () => {
   it('logo contains owd-client', () => {
     const wrapper = shallowMount(App, {
       store,
-      localVue,
       stubs: {
         'router-view': PageIndex,
         'logo': Logo

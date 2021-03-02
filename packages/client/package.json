@@ -1,6 +1,6 @@
 {
   "name": "owd-client",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0-alpha.1",
   "description": "OWD Client / Instance",
   "private": true,
   "homepage": "https://github.com/owdproject/owd-client#readme",
@@ -27,8 +27,8 @@
     "@types"
   ],
   "dependencies": {
-    "@owd-client/core": "^2.0.0-alpha.0",
-    "@owd-client/types": "^2.0.0-alpha.0",
+    "@owd-client/core": "^2.0.0-alpha.1",
+    "@owd-client/types": "^2.0.0-alpha.1",
     "jquery": "^3.5.1",
     "jquery.terminal": "^2.20.1",
     "owd-iframe": "https://github.com/hacklover/owd-iframe",

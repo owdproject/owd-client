@@ -7,9 +7,6 @@ import routesMain from '@/pages/main/routes'
 // import modules configuration
 import modulesConfig from '@/../config/modules.json'
 
-// active theme
-const themesConfig = require('./src/assets/themes/index.js')
-
 // types
 import {OwdClientConfiguration} from '@owd-client/types'
 
@@ -17,7 +14,7 @@ export default {
   debug: false,
 
   // owd theme
-  theme: themesConfig.active,
+  theme: process.env.VUE_APP_THEME,
 
   // owd routes
   routes: [

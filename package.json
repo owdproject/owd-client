@@ -1,7 +1,7 @@
 {
   "name": "owd-client",
   "private": true,
-  "description": "OWD Client 2.0 (based on Vue.js 3)",
+  "description": "OWD Client 2 (based on Vue.js 3)",
   "homepage": "https://github.com/owdproject/owd-client#readme",
   "bugs": {
     "url": "https://github.com/owdproject/owd-client/issues"

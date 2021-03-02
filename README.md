@@ -16,7 +16,7 @@
 ## Overview
 Open Web Desktop is a project that aims to provide a simple environment to create your own web desktop, and to extend it through modules and other integrations. OWD Client 2 is based on Vue.js 3 and TypeScript.
 
-[Check the demo](https://demo.owdproject.com) of this `owd-client` base repository, decked out with some modules.
+[Check the demo](https://next-demo.owdproject.org) of this `owd-client` base repository, decked out with some modules.
 
 ## Features
 - Open-source web desktop client based on Vue.js 3
@@ -108,9 +108,9 @@ Be sure to add every module in the `modulesEnabled` property like the example ab
       "url": "https://www.github.com/hacklover/owd-sample"
     },
     "your-module-name": {
-      "name": "your-module-name",
+      "name": "<your-module-name>",
       "version": "2.0.0",
-      "url": ""
+      "url": "<your-repo-link>"
     }
   }
 }
@@ -139,7 +139,7 @@ git clone https://github.com/owdproject/owd-client.git
 git clone git@github.com:owdproject/owd-client.git
 ```
 
-Then install dependencies and run Open Web Desktop in development mode.  
+Then install dependencies and run Open Web Desktop in development mode.
 ```
 # Navigate to the owd-client folder
 cd owd-client
@@ -147,8 +147,11 @@ cd owd-client
 # Switch to branch "next" (OWD Client v2-LTS)
 git checkout next
 
+# Install dependencies using yarn
+yarn install
+
 # Run OWD in development mode
-npm run serve
+yarn serve
 ```
 This will bootstrap the lerna monorepo, allowing you to run and edit both client and core packages.   
 If you intend to contribute to the project, please join our [community chat](https://discord.gg/3KFVP8b).

@@ -11,7 +11,7 @@ import modulesConfig from '@/../config/modules.json'
 const themesConfig = require('./src/assets/themes/index.js')
 
 // types
-import {OwdClientConfiguration} from "../types";
+import {OwdClientConfiguration} from '@owd-client/types'
 
 export default {
   debug: false,

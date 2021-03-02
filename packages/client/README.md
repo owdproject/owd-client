@@ -51,14 +51,20 @@ git clone git@github.com:owdproject/owd-client.git
 
 Copy the `owd-client/packages/client` folder somewhere, install dependencies and then you'll ready to go.
 ```
-# Switch to branch "next" (OWD Client v2.0.0)
+# Navigate to the cloned repository
+cd owd-client
+
+# Switch to branch "next" (OWD Client v2-LTS)
 git checkout next
 
-# Create your own owd-client instance
-cp owd-client/packages/client my-owd-client
+# Make a folder for your owd-client instance
+mkdir ../my-next-owd-client
+
+# Copy the client package files into your instance
+cp -a packages/client/. ../my-next-owd-client
 
 # Navigate to your owd-client instance
-cd my-owd-client
+cd ../my-next-owd-client
 
 # Install dependencies
 npm install
@@ -135,11 +141,11 @@ git clone git@github.com:owdproject/owd-client.git
 
 Then install dependencies and run Open Web Desktop in development mode.
 ```
-# Switch to branch "next" (OWD Client v2.0.0)
-git checkout next
-
 # Navigate to the owd-client folder
 cd owd-client
+
+# Switch to branch "next" (OWD Client v2-LTS)
+git checkout next
 
 # Run OWD in development mode
 npm run serve

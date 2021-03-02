@@ -27,7 +27,7 @@
     "@types"
   ],
   "dependencies": {
-    "@owd-client/core": "^2.0.0-alpha.1",
+    "@owd-client/core": "^2.0.0-alpha.2",
     "@owd-client/types": "^2.0.0-alpha.1"
   },
   "devDependencies": {

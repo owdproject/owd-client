@@ -3,7 +3,7 @@ import ModuleApp from "../moduleApp.class";
 
 const modulesApps: {[key: string]: OwdModuleApp} = {};
 
-export default class ModulesApp {
+export default class ModuleAppExtend {
   config: any
   app: any
   terminal = null
@@ -53,7 +53,7 @@ export default class ModulesApp {
 
     for (const module of modulesEnabled) {
       try {
-        ModulesApp.registerModule(module, {
+        ModuleAppExtend.registerModule(module, {
           app: this.app,
           store: this.store,
           terminal: this.terminal
@@ -74,13 +74,13 @@ export default class ModulesApp {
    */
   static registerModule(module: any, context: any) {
     // load module info
-    const moduleInfo = ModulesApp.loadModuleInfo(module)
+    const moduleInfo = ModuleAppExtend.loadModuleInfo(module)
 
-    if (!ModulesApp.isModuleInfoValid(module.name, moduleInfo)) {
+    if (!ModuleAppExtend.isModuleInfoValid(module.name, moduleInfo)) {
       return false;
     }
 
-    const moduleAppClass = ModulesApp.getModuleFile(module, 'index')
+    const moduleAppClass = ModuleAppExtend.getModuleFile(module, 'index')
 
     if (moduleAppClass.default && typeof moduleAppClass.default === 'function') {
       const moduleAppLoaded = new moduleAppClass.default({ ...context, moduleInfo })
@@ -127,7 +127,7 @@ export default class ModulesApp {
    * @returns {any}
    */
   static loadModuleInfo(module: any) {
-    return ModulesApp.getModuleFile(module, 'module.json')
+    return ModuleAppExtend.getModuleFile(module, 'module.json')
   }
 
   /**

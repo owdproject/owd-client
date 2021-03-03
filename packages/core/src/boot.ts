@@ -2,8 +2,8 @@ import { owdCreateStore } from './store'
 import { owdCreateRouter } from './router'
 import { owdCreateI18n } from './i18n'
 import owdTerminalExtend from './libraries/terminal/extend/terminalExtend.class'
-import owdModulesAppExtend from './libraries/modules-app/extend/modulesAppExtend.class'
-import owdModulesDesktopExtend from "./libraries/modules-desktop/extend/modulesDesktopExtend.class";
+import owdModuleAppExtend from './libraries/moduleApp/extend/moduleAppExtend.class'
+import owdModuleDesktopExtend from "./libraries/moduleDesktop/extend/moduleDesktopExtend.class";
 
 import {App, OwdCoreBootContext, OwdCoreModulesContext} from "@owd-client/types";
 
@@ -12,7 +12,7 @@ import moment from "./plugins/moment";
 import deviceDetector from "./plugins/deviceDetector";
 
 // register service worker
-import './libraries/service-worker/registerServiceWorker'
+import './libraries/serviceWorker/registerServiceWorker'
 
 // global components
 import VIcon from "./components/shared/icon/VIcon.vue";
@@ -195,7 +195,7 @@ export default class OwdBoot implements Boot {
    * Initialize modules
    */
   initializeModules(context: OwdCoreModulesContext) {
-    new owdModulesAppExtend(context)
-    new owdModulesDesktopExtend(context)
+    new owdModuleAppExtend(context)
+    new owdModuleDesktopExtend(context)
   }
 }

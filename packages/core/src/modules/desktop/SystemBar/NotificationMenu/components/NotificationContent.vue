@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import DesktopSystemBarMenuContent from '../../../../../components/desktop/SystemBar/components/SystemBarMenuContent'
+import DesktopSystemBarMenuContent from '@owd-client/core/src/components/desktop/SystemBar/components/SystemBarMenuContent'
 import NotificationList from "./NotificationColumnList/NotificationList";
 import NotificationCalendar from "./NotificationColumnCalendar/NotificationCalendar";
 import NotificationFloating from "./NotificationFloating/NotificationFloating";

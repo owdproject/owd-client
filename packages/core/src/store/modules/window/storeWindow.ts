@@ -10,7 +10,7 @@ import {
   OwdModuleAppWindowCreateInstanceData,
   OwdModuleAppWindowInstance, OwdModuleAppWindowsStorage
 } from "@owd-client/types";
-import * as helperWindow from '../../../helpers/helperWindow'
+import * as helperWindow from '@owd-client/core/src/helpers/helperWindow'
 import * as helperStorage from "@owd-client/core/src/helpers/helperStorage";
 import WindowFocusModule from "./storeWindowFocus";
 

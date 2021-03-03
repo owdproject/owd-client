@@ -59,14 +59,14 @@
 
 <script>
 import {reactive} from 'vue';
-import ModulesDesktop from '@owd-client/core/src/libraries/modules-desktop/extend/modulesDesktopExtend.class'
+import ModuleDesktopExtend from '@owd-client/core/src/libraries/moduleDesktop/extend/moduleDesktopExtend.class'
 
 export default {
   props: {
     systemBar: Boolean
   },
   setup() {
-    const desktopModules = reactive(ModulesDesktop.getDesktopModules('SystemBar'))
+    const desktopModules = reactive(ModuleDesktopExtend.getDesktopModules('SystemBar'))
 
     const openSystemBarDesktopModule = (event, desktopModule) => {
       // set desktop module opened

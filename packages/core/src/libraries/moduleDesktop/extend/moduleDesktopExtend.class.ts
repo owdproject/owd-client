@@ -6,7 +6,7 @@ const desktopModules: OwdModulesDesktop = {
   'system-bar': {}
 }
 
-export default class ModulesDesktop {
+export default class ModuleDesktopExtend {
   constructor(context: OwdCoreModulesContext) {
     this.loadSystemDesktopModules(context)
   }

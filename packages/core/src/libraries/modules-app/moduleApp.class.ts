@@ -175,16 +175,19 @@ export default abstract class ModuleApp implements OwdModuleApp {
 
     // import single store module with basic config (if available)
     this.store.registerModule(this.moduleInfo.name, {
-
       // import vuex store
       ...this.moduleStore,
 
-      // import basic config into state
-      state: this.moduleStoreConfig || {},
+      state: {
+        // import default state
+        ...this.moduleStore.state,
+
+        // import basic config into state
+        ...this.moduleStoreConfig || {},
+      },
 
       // set namespaced as true
       namespaced: true
-
     })
   }
 

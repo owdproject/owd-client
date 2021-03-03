@@ -736,6 +736,9 @@ export default class WindowModule extends VuexModule {
     return this
       .getWindow(data)
       .then(async (windowInstance: OwdModuleAppWindowInstance) => {
+        windowInstance.storage.focused = false
+        windowInstance.storage.opened = false
+
         // destroy module window instance
         this.UNREGISTER_WINDOW(windowInstance);
         this.windowFocusModule.UNSET_WINDOW_FOCUS(windowInstance.uniqueID);

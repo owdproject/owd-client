@@ -85,6 +85,7 @@ export default {
 <style scoped lang="scss">
 .owd-menu__item__icon-image {
   background-position: center;
+  background-repeat: no-repeat;
   width: 100%;
   height: 100%;
 }

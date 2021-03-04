@@ -35,7 +35,7 @@ export default class ClientVuexModule extends VuexModule {
 
   @Mutation
   TITLE_RESET() {
-    this.title = '' // clientDefaultTitle
+    this.title = clientDefaultTitle
   }
 
   @Action

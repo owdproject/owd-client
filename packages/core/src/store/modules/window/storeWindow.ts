@@ -10,8 +10,8 @@ import {
   OwdModuleAppWindowCreateInstanceData,
   OwdModuleAppWindowInstance, OwdModuleAppWindowsStorage
 } from "@owd-client/types";
-import * as helperWindow from '../../../helpers/windows/helperWindow'
-import * as helperStorage from "@owd-client/core/src/helpers/windows/helperStorage";
+import * as helperWindow from '@owd-client/core/src/helpers/helperWindow'
+import * as helperStorage from "@owd-client/core/src/helpers/helperStorage";
 import WindowFocusModule from "./storeWindowFocus";
 
 @Module
@@ -155,7 +155,7 @@ export default class WindowModule extends VuexModule {
         // for each window config in moduleInfo.windows (for example WindowSample)
         for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
 
-          console.log('[OWD] Initialize module window: ' + owdModuleAppWindowConfig.name)
+          console.log('[OWD] Module window initialize: ' + owdModuleAppWindowConfig.name)
 
           this.REGISTER_WINDOW_NAMESPACE({
             moduleName: owdModuleApp.moduleInfo.name,
@@ -427,8 +427,6 @@ export default class WindowModule extends VuexModule {
       if (typeof data.storage.maximized !== 'undefined') {
         windowInstance.storage.maximized = !!data.storage.maximized
       }
-
-      windowInstance.storage.focused = (windowInstance.uniqueID === this.windowFocusModule.windowFocusActiveUniqueID)
     }
 
     // initialize storeInstance if module isn't a singleton
@@ -443,6 +441,12 @@ export default class WindowModule extends VuexModule {
 
     // calculate pos x and y
     this.windowCalcPosition(windowInstance)
+
+    if (windowInstance.uniqueID === this.windowFocusModule.windowFocusActiveUniqueID) {
+      // allow "focused" change detection
+      // todo refactor, it's a bit hacky
+      setTimeout(() => windowInstance.storage.focused = true, 1)
+    }
 
     return windowInstance
   }
@@ -736,6 +740,9 @@ export default class WindowModule extends VuexModule {
     return this
       .getWindow(data)
       .then(async (windowInstance: OwdModuleAppWindowInstance) => {
+        windowInstance.storage.focused = false
+        windowInstance.storage.opened = false
+
         // destroy module window instance
         this.UNREGISTER_WINDOW(windowInstance);
         this.windowFocusModule.UNSET_WINDOW_FOCUS(windowInstance.uniqueID);

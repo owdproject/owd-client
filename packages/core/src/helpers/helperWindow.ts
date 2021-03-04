@@ -1,5 +1,5 @@
 import md5 from 'md5'
-import store from '../../store'
+import store from '../store'
 import {
   OwdModuleAppWindowDetail,
   OwdModuleAppWindowInstance

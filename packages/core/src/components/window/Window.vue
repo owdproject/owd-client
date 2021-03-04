@@ -166,7 +166,7 @@ export default {
   watch: {
     'window.storage.opened': {
       handler: function (opened) {
-        if (opened) { this.$emit('open') }
+        this.$emit(opened ? 'open' : 'close')
       }
     },
     'window.storage.minimized': {
@@ -217,9 +217,6 @@ export default {
           }
       )
     }
-  },
-  beforeUnmount() {
-    this.$emit('close')
   },
   methods: {
     /**

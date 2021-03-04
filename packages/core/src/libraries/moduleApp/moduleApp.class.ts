@@ -82,6 +82,7 @@ export default abstract class ModuleApp implements OwdModuleApp {
           // titleShort always available
           this.moduleInfo.windows[i].titleShort = this.moduleInfo.windows[i].title
         }
+        i++
       }
     }
   }

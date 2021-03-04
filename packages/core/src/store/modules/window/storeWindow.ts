@@ -427,8 +427,6 @@ export default class WindowModule extends VuexModule {
       if (typeof data.storage.maximized !== 'undefined') {
         windowInstance.storage.maximized = !!data.storage.maximized
       }
-
-      windowInstance.storage.focused = (windowInstance.uniqueID === this.windowFocusModule.windowFocusActiveUniqueID)
     }
 
     // initialize storeInstance if module isn't a singleton
@@ -443,6 +441,12 @@ export default class WindowModule extends VuexModule {
 
     // calculate pos x and y
     this.windowCalcPosition(windowInstance)
+
+    if (windowInstance.uniqueID === this.windowFocusModule.windowFocusActiveUniqueID) {
+      // allow "focused" change detection
+      // todo refactor, it's a bit hacky
+      setTimeout(() => windowInstance.storage.focused = true, 1)
+    }
 
     return windowInstance
   }

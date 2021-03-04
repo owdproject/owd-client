@@ -1,15 +1,19 @@
 <template>
-  <Window class="owd-window-iframe" :title="window.config.title" :window="window">
-    <div class="owd-window-iframe__content" >
+  <Window
+    :window="window"
+    class="owd-window-iframe"
+  >
+    <div class="owd-window-iframe__content">
       <!--
       v-click-outside="focusOut"
       -->
       <iframe
+        :id="iframeId"
         :src="url"
         @load="iframeLoaded"
       />
 
-      <div v-if="!focus" class="detect-focus-in" @click="focusIn"/>
+      <div v-if="!window.storage.focused" class="detect-focus-in" @click="focusIn" />
     </div>
 
     <v-progress-linear
@@ -27,6 +31,11 @@ export default {
   components: {
     Window
   },
+  emits: [
+    'iframeFocusIn',
+    'iframeFocusOut',
+    'iframeLoaded'
+  ],
   props: {
     window: Object,
     progressBar: Boolean
@@ -34,19 +43,23 @@ export default {
   data() {
     return {
       url: '',
-      loaded: false,
-      focus: true
+      loaded: false
     }
   },
   computed: {
-    visible() {
-      return this.window.storage.opened
+    iframeId() {
+      return this.window.module.moduleInfo.name+'-iframe'
     }
   },
   watch: {
-    visible(val) {
+    'window.storage.focused': async function (val) {
+      if (val) {
+        document.getElementById(this.iframeId).focus()
+      }
+    },
+    'window.storage.opened': function (val) {
       if (val === true) {
-        if (this.visible === true) {
+        if (this.window.storage.opened === true) {
           this.url = this.window.config.iframeUrl
         }
       } else {
@@ -57,18 +70,16 @@ export default {
   },
   methods: {
     focusIn() {
-      this.focus = true
       this.$emit('iframeFocusIn')
     },
     focusOut() {
-      this.focus = false
       this.$emit('iframeFocusOut')
     },
     iframeLoaded() {
       if (this.url !== '') {
         this.loaded = true
       } else {
-        if (this.visible === true) {
+        if (this.window.storage.opened === true) {
           this.url = this.window.iframeUrl
         }
       }

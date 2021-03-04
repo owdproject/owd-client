@@ -155,7 +155,7 @@ export default class WindowModule extends VuexModule {
         // for each window config in moduleInfo.windows (for example WindowSample)
         for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
 
-          console.log('[OWD] Initialize module window: ' + owdModuleAppWindowConfig.name)
+          console.log('[OWD] Module window initialize: ' + owdModuleAppWindowConfig.name)
 
           this.REGISTER_WINDOW_NAMESPACE({
             moduleName: owdModuleApp.moduleInfo.name,

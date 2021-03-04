@@ -17,7 +17,6 @@ import WindowsContainer from '@owd-client/core/src/components/window/container/W
 import NoticeFullscreenExit from '@owd-client/core/src/components/notice/NoticeFullscreenExit'
 
 export default {
-  name: 'Index',
   components: {
     Desktop,
     Logo,

@@ -22,7 +22,7 @@ Open Web Desktop is a project that aims to provide a simple environment to creat
 - Open-source web desktop client based on Vue.js 3
 - Fully extendable through app and desktop modules
 - Fully extendable through pages and Vue components
-- Global notifications and terminal commands support
+- Notifications, terminal commands, multiple themes
 - Vuex, Vue Router and Vue i18n implemented by default
 - Vuetify.js and Moment.js implemented by default
 - TypeScript support
@@ -145,10 +145,13 @@ Then install dependencies and run Open Web Desktop in development mode.
 cd owd-client
 
 # Switch to branch "next" (OWD Client v2-LTS)
-git checkout next
+git checkout next-develop
+
+# Install dependencies using yarn
+yarn install
 
 # Run OWD in development mode
-npm run serve
+yarn serve
 ```
 This will bootstrap the lerna monorepo, allowing you to run and edit both client and core packages.   
 If you intend to contribute to the project, please join our [community chat](https://discord.gg/3KFVP8b).

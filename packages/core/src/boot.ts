@@ -1,6 +1,7 @@
 import { owdCreateStore } from './store'
 import { owdCreateRouter } from './router'
 import { owdCreateI18n } from './i18n'
+import { owdCreateVuetify } from './plugins/vuetify'
 import owdTerminalExtend from './libraries/terminal/extend/terminalExtend.class'
 import owdModuleAppExtend from './libraries/moduleApp/extend/moduleAppExtend.class'
 import owdModuleDesktopExtend from "./libraries/moduleDesktop/extend/moduleDesktopExtend.class";
@@ -13,9 +14,6 @@ import deviceDetector from "./plugins/deviceDetector";
 
 // register service worker
 import './libraries/serviceWorker/registerServiceWorker'
-
-// global components
-import VIcon from "./components/shared/icon/VIcon.vue";
 
 interface Boot {
   store: any;
@@ -48,9 +46,6 @@ export default class OwdBoot implements Boot {
   initialize(context: OwdCoreBootContext) {
     // config
     this.initializeConfig(context)
-
-    // global components
-    this.initializeGlobalCompanents(context)
 
     // assets
     this.initializeAssets(context.app)
@@ -102,11 +97,6 @@ export default class OwdBoot implements Boot {
     }
   }
 
-  initializeGlobalCompanents(context: OwdCoreBootContext) {
-    // @ts-ignore / temporary VIcon (until Vuetify 3 is ready)
-    context.app.component('v-icon', VIcon)
-  }
-
   /**
    * Initialize assets
    */
@@ -133,6 +123,7 @@ export default class OwdBoot implements Boot {
 
     // assign vuetify config to $vuetify
     // Vue.prototype.$vuetify = this.config.vuetify
+    app.use(owdCreateVuetify(app))
   }
 
   /**

@@ -2,6 +2,7 @@
   <DesktopSystemBarMenuContent
       v-if="opened"
       class="owd-desktop__application-menu__container"
+      v-click-outside="menuClose"
   >
 
     <div class="owd-desktop__application-menu__categories">
@@ -36,6 +37,7 @@
 import {computed, ref, getCurrentInstance} from 'vue'
 import {useStore} from "vuex";
 import DesktopSystemBarMenuContent from '@owd-client/core/src/components/desktop/SystemBar/components/SystemBarMenuContent'
+import {OwdModuleAppWindowInstance} from '@owd-client/types'
 
 export default {
   components: {
@@ -44,7 +46,10 @@ export default {
   props: {
     opened: Boolean
   },
-  setup() {
+  emits: [
+      'close'
+  ],
+  setup(props, context) {
     const app = getCurrentInstance();
     const store = useStore()
     const options = app.appContext.config.owd.desktop.SystemBar.options.modules.ApplicationMenu
@@ -61,6 +66,10 @@ export default {
 
       return categories.value[categorySelected.value]
     })
+
+    const menuClose = () => {
+      context.emit('close')
+    }
 
     return {
       categories,
@@ -80,9 +89,12 @@ export default {
         }
       },
 
-      windowCreate: async (owdModuleAppWindow) => {
+      windowCreate: async (owdModuleAppWindow: OwdModuleAppWindowInstance) => {
+        menuClose()
         await store.dispatch('core/window/windowCreate', owdModuleAppWindow.name)
-      }
+      },
+
+      menuClose
     }
   }
 }

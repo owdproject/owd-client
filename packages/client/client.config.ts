@@ -1,11 +1,13 @@
-// import mdi icons
-import '@mdi/font/css/materialdesignicons.css'
-
 // import all pages routes
 import routesMain from '@/pages/main/routes'
 
 // import modules configuration
 import modulesConfig from '@/../config/modules.json'
+
+// import mdi icons fpr vuetify
+import '@mdi/font/css/materialdesignicons.css'
+// @ts-ignore
+import { aliases, mdi } from 'vuetify/lib/iconsets/mdi.mjs'
 
 // types
 import {OwdClientConfiguration} from '@owd-client/types'
@@ -90,6 +92,13 @@ export default {
 
   // vuetify config
   vuetify: {
+    icons: {
+      defaultSet: 'mdi',
+      aliases,
+      sets: {
+        mdi
+      }
+    },
     rtl: false
   }
 } as OwdClientConfiguration

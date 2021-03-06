@@ -1,6 +1,10 @@
 <template>
   <div>
-    <DesktopSystemBarMenuContent v-if="opened" class="owd-desktop__notification__container">
+    <DesktopSystemBarMenuContent
+        v-if="opened"
+        class="owd-desktop__notification__container"
+        v-click-outside="menuClose"
+    >
 
       <NotificationList class="col col-notification-list" />
       <NotificationCalendar class="col col-calendar" />
@@ -26,6 +30,14 @@ export default {
   },
   props: {
     opened: Boolean
+  },
+  emits: [
+    'close'
+  ],
+  methods: {
+    menuClose() {
+      this.$emit('close')
+    }
   }
 }
 </script>

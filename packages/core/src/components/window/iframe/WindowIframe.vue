@@ -3,10 +3,10 @@
     :window="window"
     class="owd-window-iframe"
   >
-    <div class="owd-window-iframe__content">
-      <!--
+    <div
+      class="owd-window-iframe__content"
       v-click-outside="focusOut"
-      -->
+    >
       <iframe
         :id="iframeId"
         :src="url"

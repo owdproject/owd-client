@@ -29,6 +29,7 @@ export default {
     height: $desktopSystemBarHeight;
     line-height: $desktopSystemBarHeight;
     user-select: none;
+    z-index: 1;
 
     &__title {
       display: inline-block;

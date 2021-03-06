@@ -15,9 +15,6 @@ import deviceDetector from "./plugins/deviceDetector";
 // register service worker
 import './libraries/serviceWorker/registerServiceWorker'
 
-// global components
-import VIcon from "./components/shared/icon/VIcon.vue";
-
 interface Boot {
   store: any;
   terminal: any;
@@ -49,9 +46,6 @@ export default class OwdBoot implements Boot {
   initialize(context: OwdCoreBootContext) {
     // config
     this.initializeConfig(context)
-
-    // global components
-    this.initializeGlobalCompanents(context)
 
     // assets
     this.initializeAssets(context.app)
@@ -101,11 +95,6 @@ export default class OwdBoot implements Boot {
         sse: context.app.config.owd.sse
       }
     }
-  }
-
-  initializeGlobalCompanents(context: OwdCoreBootContext) {
-    // @ts-ignore / temporary VIcon (until Vuetify 3 is ready)
-    context.app.component('v-icon', VIcon)
   }
 
   /**

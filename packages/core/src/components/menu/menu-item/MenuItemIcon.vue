@@ -1,6 +1,6 @@
 <template>
   <div class="owd-menu__item__icon-image" v-if="icon.image" :style="imageStyle" />
-  <v-icon v-else :style="iconStyle" v-text="iconName" />
+  <v-icon v-else :style="iconStyle">{{iconName}}</v-icon>
 </template>
 
 <script>

@@ -122,6 +122,7 @@ export default {
   &__square {
     width: 48px;
     height: 48px;
+    line-height: 45px;
     font-size: 24px;
     text-align: center;
     border-radius: 2px;

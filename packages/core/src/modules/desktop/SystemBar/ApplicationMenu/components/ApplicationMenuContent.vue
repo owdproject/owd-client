@@ -21,9 +21,7 @@
       <ul v-if="categoryApps && categoryApps.length > 0">
         <li v-for="(moduleAppWindow, i) of categoryApps" :key="i">
           <a @click="windowCreate(moduleAppWindow)">
-            <span
-              :class="['mdi', moduleAppWindow.icon.name || moduleAppWindow.icon]"
-            />
+            <MenuItemIcon :icon="moduleAppWindow.icon" force-svg />
             {{ moduleAppWindow.titleApp || moduleAppWindow.titleShort }}
           </a>
         </li>
@@ -36,12 +34,14 @@
 <script lang="ts">
 import {computed, ref, getCurrentInstance} from 'vue'
 import {useStore} from "vuex";
-import DesktopSystemBarMenuContent from '@owd-client/core/src/components/desktop/SystemBar/components/SystemBarMenuContent'
 import {OwdModuleAppWindowInstance} from '@owd-client/types'
+import DesktopSystemBarMenuContent from '@owd-client/core/src/components/desktop/SystemBar/components/SystemBarMenuContent'
+import MenuItemIcon from '@owd-client/core/src/components/menu/menu-item/MenuItemIcon'
 
 export default {
   components: {
-    DesktopSystemBarMenuContent
+    DesktopSystemBarMenuContent,
+    MenuItemIcon
   },
   props: {
     opened: Boolean
@@ -159,8 +159,12 @@ export default {
             background: $windowContentItemBackgroundHover;
           }
 
-          span {
-            font-size: 24px;
+          .owd-menu__item__icon {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
             vertical-align: middle;
             margin-right: 12px;
             color: $windowColorActive;

@@ -5,10 +5,9 @@
 </p>
 
 <p>
-    <a href="https://github.com/owdproject/owd-client/blob/next/LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" /></a>
-    <a href="https://github.com/owdproject/owd-client/tree/next"><img src="https://img.shields.io/badge/owd-client-3A9CB6" /></a>
     <a href="https://github.com/owdproject/owd-client/tree/next"><img src="https://img.shields.io/github/release/owdproject/owd-client.svg" /></a>
     <a href="https://npmjs.com/package/@owd-client/core"><img src="https://img.shields.io/npm/v/@owd-client/core.svg?color=blue" /></a>
+    <a href="https://github.com/owdproject/owd-client/tree/next"><img src="https://img.shields.io/badge/owd-client-1895b1" /></a>
     <a href="https://github.com/topics/owd-modules"><img src="https://img.shields.io/badge/owd-modules-888" /></a>
     <a href="https://discord.gg/3KFVP8b"><img src="https://img.shields.io/badge/chat-on%20discord-7289da.svg" /></a>
 </p>
@@ -38,8 +37,8 @@ Required software:
 - [Git](https://git-scm.com)
 - [Node.js](https://nodejs.org)
 
-At the moment there is no OWD CLI available to bootstrap a new client instance with a single command,
-but you can proceed manually. Once you have everything installed, clone the repository.
+At the moment, there is no OWD CLI available to bootstrap a new client instance with a single command,
+but you can proceed manually. Once you have everything installed, clone this repository.
 
 ```
 # Using HTTPS
@@ -49,7 +48,7 @@ git clone https://github.com/owdproject/owd-client.git
 git clone git@github.com:owdproject/owd-client.git
 ```
 
-Copy the `owd-client/packages/client` folder somewhere, install dependencies and then you'll ready to go.
+Then copy the `owd-client/packages/client` folder somewhere, install dependencies and then you'll ready to go.
 ```
 # Navigate to the cloned repository
 cd owd-client
@@ -73,7 +72,7 @@ npm install
 npm run serve
 ```
 
-If you want to publish your desktop, build the source and deploy `my-owd-client/dist`.
+If you want to publish your web desktop, build the source and deploy `my-owd-client/dist`.
 ```
 # Build owd-client for production
 npm run build
@@ -91,7 +90,7 @@ Always take a look at the README.md, you may have to move some other folders lik
 #### Install module dependencies
 Some modules may require additional dependencies, or other OWD modules to be installed.
 
-Check the `src/modules/<module-name>/module.json` config. If you find some `dependencies`,
+Check the `src/modules/<module-name>/module.json` config. If you find any `dependencies`,
 install each one by running `npm install <dependency-name>` in the root folder of your owd-client instance.
 
 #### Define the installed module

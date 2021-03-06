@@ -29,6 +29,7 @@ export default {
     height: $desktopSystemBarHeight;
     line-height: $desktopSystemBarHeight;
     user-select: none;
+    z-index: 1;
 
     &__title {
       display: inline-block;
@@ -60,7 +61,8 @@ export default {
 
         .v-icon {
           color: $windowNavTitleColor;
-          font-size: 19px;
+          font-size: 14px;
+          vertical-align: -1px;
         }
       }
     }

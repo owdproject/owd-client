@@ -60,7 +60,8 @@ export default {
 
         .v-icon {
           color: $windowNavTitleColor;
-          font-size: 19px;
+          font-size: 14px;
+          vertical-align: -1px;
         }
       }
     }

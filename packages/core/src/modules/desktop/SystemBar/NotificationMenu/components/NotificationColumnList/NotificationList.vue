@@ -45,6 +45,7 @@
 
 <style scoped lang="scss">
 .notification-list {
+  position: relative;
   display: grid;
   grid-template-rows: calc(100% - 32px) 32px;
 
@@ -69,7 +70,16 @@
     }
 
     .notification-list-empty {
-      min-height: 100%;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      width: 100%;
+      transform: translateY(-50%);
+
+      i {
+        font-size: 45px;
+      }
     }
   }
 

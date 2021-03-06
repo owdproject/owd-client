@@ -1,13 +1,16 @@
 // global scss variables
-
 $fontTitle: "Oswald", Tahoma, sans-serif;
 $fontMono: "JetBrains Mono", monospace, FreeMono;
+
+// todo use vuetify colors
+$colorPrimary: #4987c1;
+$colorSecondary: #4987c1;
 
 $bodyBackground: #161616;
 $bodyColor: white;
 
 // menu
-$menuItemSquareBackground: #4987c1;
+$menuItemSquareBackground: $colorPrimary;
 $menuItemSquareColor: #FFFFFF;
 $menuItemTitleBackground: #212121;
 $menuItemTitleColor: #EEEEEE;

@@ -142,6 +142,10 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
   }
 
   maximize(): boolean {
+    if (!this.instance.config.maximizable) {
+      return false
+    }
+
     this.instance.storage.maximized = true
 
     return true

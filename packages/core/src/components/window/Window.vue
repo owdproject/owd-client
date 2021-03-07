@@ -232,6 +232,10 @@ export default {
      * Window maximize event
      */
     onToggleMaximize: function () {
+      if (!this.window.config.maximizable) {
+        return false
+      }
+
       this.$store.dispatch(
           this.window.storage.maximized ? 'core/window/windowUnmaximize' : 'core/window/windowMaximize',
           this.window

@@ -210,7 +210,7 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     return this.instance.storage.position
   }
 
-  setNavTitle(title: string, exclusive: boolean) {
+  setNavTitle(title: string, exclusive?: boolean) {
     if (!title) {
       this.instance.storage.title = undefined
       return true

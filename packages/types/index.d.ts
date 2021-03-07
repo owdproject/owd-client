@@ -224,7 +224,7 @@ export interface OwdModuleAppWindowInstance extends OwdModuleAppWindowCreateInst
   resetPosition(): void
   adjustPosition(): void
 
-  setNavTitle(title: string, exclusive: boolean): void
+  setNavTitle(title: string, exclusive?: boolean): void
 }
 
 export interface OwdModuleAppWindowsInstances {

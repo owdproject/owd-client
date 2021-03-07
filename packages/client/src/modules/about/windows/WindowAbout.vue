@@ -1,6 +1,6 @@
 <template>
   <Window :title="data.title" :window="data">
-    <div class="container">
+    <div class="about-container">
       <h2>
         Open Web Desktop <span v-text="$store.state.core.client.version" />
       </h2>
@@ -31,9 +31,9 @@
 </script>
 
 <style scoped lang="scss">
-  div.container {
+  div.about-container {
     text-align: center;
-    margin-top: 32px;
+    margin-top: 40px;
 
     h2 {
       margin-bottom: 6px;

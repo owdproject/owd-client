@@ -1,7 +1,7 @@
 {
   "name": "owd-client",
-  "version": "2.0.0-alpha.2",
-  "description": "OWD Client / Instance",
+  "version": "2.0.0-alpha.3",
+  "description": "OWD Client",
   "private": true,
   "homepage": "https://github.com/owdproject/owd-client#readme",
   "bugs": {
@@ -27,8 +27,8 @@
     "@types"
   ],
   "dependencies": {
-    "@owd-client/core": "^2.0.0-alpha.2",
-    "@owd-client/types": "^2.0.0-alpha.1"
+    "@owd-client/core": "^2.0.0-alpha.3",
+    "@owd-client/types": "^2.0.0-alpha.3"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.13.9",

@@ -1,7 +1,7 @@
 {
   "name": "@owd-client/core",
-  "version": "2.0.0-alpha.2",
-  "description": "OWD Client / Core",
+  "version": "2.0.0-alpha.3",
+  "description": "OWD Client Core",
   "homepage": "https://github.com/owdproject/owd-client#readme",
   "bugs": {
     "url": "https://github.com/owdproject/owd-client/issues"

@@ -1,14 +1,20 @@
-// import mdi icons
-import '@mdi/font/css/materialdesignicons.css'
-
 // import all pages routes
 import routesMain from '@/pages/main/routes'
 
 // import modules configuration
 import modulesConfig from '@/../config/modules.json'
 
+// import mdi icons fpr vuetify
+import '@mdi/font/css/materialdesignicons.css'
+// @ts-ignore
+import { aliases, mdi } from 'vuetify/lib/iconsets/mdi.mjs'
+
 // types
 import {OwdClientConfiguration} from '@owd-client/types'
+
+// todo fix this import in boot.ts during `npm run build`
+// (with `npm run serve` it works correctly)
+require(`@/assets/themes/${process.env.VUE_APP_THEME}/app.scss`)
 
 export default {
   debug: false,
@@ -90,6 +96,13 @@ export default {
 
   // vuetify config
   vuetify: {
+    icons: {
+      defaultSet: 'mdi',
+      aliases,
+      sets: {
+        mdi
+      }
+    },
     rtl: false
   }
 } as OwdClientConfiguration

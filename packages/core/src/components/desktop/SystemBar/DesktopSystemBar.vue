@@ -14,6 +14,7 @@
             :is="desktopModule.components.content"
             :arrow-position="desktopModule.config.arrowPosition"
             :opened="desktopModule.config.opened"
+            @close="closeSystemBarDesktopModule(desktopModule)"
         />
       </template>
 
@@ -31,6 +32,7 @@
             :is="desktopModule.components.content"
             :arrow-position="desktopModule.config.arrowPosition"
             :opened="desktopModule.config.opened"
+            @close="closeSystemBarDesktopModule(desktopModule)"
         />
       </template>
     </div>
@@ -59,14 +61,14 @@
 
 <script>
 import {reactive} from 'vue';
-import ModulesDesktop from '@owd-client/core/src/libraries/modules-desktop/extend/modulesDesktopExtend.class'
+import ModuleDesktopExtend from '@owd-client/core/src/libraries/moduleDesktop/extend/moduleDesktopExtend.class'
 
 export default {
   props: {
     systemBar: Boolean
   },
   setup() {
-    const desktopModules = reactive(ModulesDesktop.getDesktopModules('SystemBar'))
+    const desktopModules = reactive(ModuleDesktopExtend.getDesktopModules('SystemBar'))
 
     const openSystemBarDesktopModule = (event, desktopModule) => {
       // set desktop module opened
@@ -76,9 +78,16 @@ export default {
       desktopModule.config.arrowPosition = (event.target.offsetWidth / 2) - 24
     }
 
+    const closeSystemBarDesktopModule = (desktopModule) => {
+      if (desktopModule) {
+        desktopModule.config.opened = false
+      }
+    }
+
     return {
       desktopModules,
-      openSystemBarDesktopModule
+      openSystemBarDesktopModule,
+      closeSystemBarDesktopModule
     }
   }
 }

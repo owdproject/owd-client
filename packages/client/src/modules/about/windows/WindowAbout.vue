@@ -5,6 +5,16 @@
         Open Web Desktop <span v-text="$store.state['core/client'].version" />
       </h2>
       <a href="https://github.com/owdproject/owd-client/tree/next">github.com/owdproject/owd-client</a>
+
+      <div class="powered-by">
+        <ul>
+          <li>
+            Powered by
+          </li>
+          <li><v-icon size="24" style="color: darkgrey;">mdi-vuejs</v-icon></li>
+          <li><v-icon size="24" style="color: darkgrey;">mdi-language-typescript</v-icon></li>
+        </ul>
+      </div>
     </div>
   </Window>
 </template>
@@ -23,7 +33,7 @@
 <style scoped lang="scss">
 .container {
   text-align: center;
-  margin-top: 50px;
+  margin-top: 36px;
 
   h2 {
     margin-bottom: 6px;
@@ -34,7 +44,27 @@
   }
 
   a {
-    color: #5198ca;
+    color: $colorPrimary;
+    font-size: 14px;
+  }
+
+  .powered-by {
+    ul {
+      display: grid;
+      grid-template-columns: 64% 18% 18%;
+      margin: 20px auto 0 auto;
+      padding: 0 0 0 3px;
+      max-width: 210px;
+      line-height: 23px;
+      opacity: 0.4;
+      text-align: right;
+      text-transform: uppercase;
+      list-style-type: none;
+
+      li:first-child {
+        text-align: left;
+      }
+    }
   }
 }
 </style>

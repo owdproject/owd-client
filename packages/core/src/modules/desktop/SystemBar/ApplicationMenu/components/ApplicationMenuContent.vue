@@ -2,6 +2,7 @@
   <DesktopSystemBarMenuContent
       v-if="opened"
       class="owd-desktop__application-menu__container"
+      v-click-outside="menuClose"
   >
 
     <div class="owd-desktop__application-menu__categories">
@@ -20,9 +21,7 @@
       <ul v-if="categoryApps && categoryApps.length > 0">
         <li v-for="(moduleAppWindow, i) of categoryApps" :key="i">
           <a @click="windowCreate(moduleAppWindow)">
-            <span
-              :class="['mdi', moduleAppWindow.icon.name || moduleAppWindow.icon]"
-            />
+            <MenuItemIcon :icon="moduleAppWindow.icon" force-svg />
             {{ moduleAppWindow.titleApp || moduleAppWindow.titleShort }}
           </a>
         </li>
@@ -35,16 +34,22 @@
 <script lang="ts">
 import {computed, ref, getCurrentInstance} from 'vue'
 import {useStore} from "vuex";
+import {OwdModuleAppWindowInstance} from '@owd-client/types'
 import DesktopSystemBarMenuContent from '@owd-client/core/src/components/desktop/SystemBar/components/SystemBarMenuContent'
+import MenuItemIcon from '@owd-client/core/src/components/menu/menu-item/MenuItemIcon'
 
 export default {
   components: {
-    DesktopSystemBarMenuContent
+    DesktopSystemBarMenuContent,
+    MenuItemIcon
   },
   props: {
     opened: Boolean
   },
-  setup() {
+  emits: [
+      'close'
+  ],
+  setup(props, context) {
     const app = getCurrentInstance();
     const store = useStore()
     const options = app.appContext.config.owd.desktop.SystemBar.options.modules.ApplicationMenu
@@ -61,6 +66,10 @@ export default {
 
       return categories.value[categorySelected.value]
     })
+
+    const menuClose = () => {
+      context.emit('close')
+    }
 
     return {
       categories,
@@ -80,9 +89,12 @@ export default {
         }
       },
 
-      windowCreate: async (owdModuleAppWindow) => {
+      windowCreate: async (owdModuleAppWindow: OwdModuleAppWindowInstance) => {
+        menuClose()
         await store.dispatch('core/window/windowCreate', owdModuleAppWindow.name)
-      }
+      },
+
+      menuClose
     }
   }
 }
@@ -147,8 +159,12 @@ export default {
             background: $windowContentItemBackgroundHover;
           }
 
-          span {
-            font-size: 24px;
+          .owd-menu__item__icon {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
             vertical-align: middle;
             margin-right: 12px;
             color: $windowColorActive;

@@ -1,15 +1,18 @@
 <template>
-  <Window class="owd-window-iframe" :title="window.config.title" :window="window">
-    <div class="owd-window-iframe__content" >
-      <!--
-      v-click-outside="focusOut"
-      -->
+  <Window
+    :window="window"
+    class="owd-window-iframe"
+    v-click-outside="focusOut"
+    @click="focusIn"
+  >
+    <div class="owd-window-iframe__content">
       <iframe
+        :id="iframeId"
         :src="url"
-        @load="iframeLoaded"
+        @load="onIframeLoaded"
       />
 
-      <div v-if="!focus" class="detect-focus-in" @click="focusIn"/>
+      <div v-if="!focused" class="detect-focus-in" />
     </div>
 
     <v-progress-linear
@@ -27,6 +30,11 @@ export default {
   components: {
     Window
   },
+  emits: [
+    'iframeFocusIn',
+    'iframeFocusOut',
+    'iframeLoaded'
+  ],
   props: {
     window: Object,
     progressBar: Boolean
@@ -35,19 +43,26 @@ export default {
     return {
       url: '',
       loaded: false,
-      focus: true
+      focused: false
     }
   },
   computed: {
-    visible() {
-      return this.window.storage.opened
+    iframeId() {
+      return this.window.module.moduleInfo.name+'-iframe'
     }
   },
   watch: {
-    visible(val) {
+    'window.storage.focused': async function (val) {
+      this.focused = val
+
+      if (val) {
+        this.iframeFocus()
+      }
+    },
+    'window.storage.opened': function (val) {
       if (val === true) {
-        if (this.visible === true) {
-          this.url = this.window.config.iframeUrl
+        if (this.window.storage.opened === true) {
+          this.url = this.window.config.metaData.iframeUrl
         }
       } else {
         this.url = ''
@@ -57,19 +72,23 @@ export default {
   },
   methods: {
     focusIn() {
-      this.focus = true
+      this.focused = true
       this.$emit('iframeFocusIn')
+      this.iframeFocus()
     },
     focusOut() {
-      this.focus = false
+      this.focused = false
       this.$emit('iframeFocusOut')
     },
-    iframeLoaded() {
+    iframeFocus() {
+      document.getElementById(this.iframeId).focus()
+    },
+    onIframeLoaded() {
       if (this.url !== '') {
         this.loaded = true
       } else {
-        if (this.visible === true) {
-          this.url = this.window.iframeUrl
+        if (this.window.storage.opened === true) {
+          this.url = this.window.metaData.iframeUrl
         }
       }
 

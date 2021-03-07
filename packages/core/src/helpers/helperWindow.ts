@@ -1,5 +1,4 @@
-import md5 from 'md5'
-import store from '../../store'
+import store from '../store'
 import {
   OwdModuleAppWindowDetail,
   OwdModuleAppWindowInstance
@@ -7,13 +6,6 @@ import {
 
 interface CallbackWindowInstance<T1, T2 = void> {
   (windowInstance: T1): T2;
-}
-
-/**
- * Generate window instance uniqueID
- */
-export function generateWindowInstanceUniqueId(): string {
-  return md5(Date.now().toString() + Math.random())
 }
 
 export function subtractDesktopWindowsContainer(position: { x: number, y: number }) {
@@ -44,6 +36,18 @@ export function subtractDesktopWindowsContainerArea(position: { x: number, y: nu
   }
 
   return position
+}
+
+/**
+ * Calculate window position
+ * @param owdModuleAppWindow
+ */
+export function calcPosition(owdModuleAppWindow: OwdModuleAppWindowInstance) {
+  return {
+    x: calcPositionX(owdModuleAppWindow),
+    y: calcPositionY(owdModuleAppWindow),
+    z: owdModuleAppWindow.storage.position.z
+  }
 }
 
 /**

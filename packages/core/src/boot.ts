@@ -1,9 +1,10 @@
 import { owdCreateStore } from './store'
 import { owdCreateRouter } from './router'
 import { owdCreateI18n } from './i18n'
+import { owdCreateVuetify } from './plugins/vuetify'
 import owdTerminalExtend from './libraries/terminal/extend/terminalExtend.class'
-import owdModulesAppExtend from './libraries/modules-app/extend/modulesAppExtend.class'
-import owdModulesDesktopExtend from "./libraries/modules-desktop/extend/modulesDesktopExtend.class";
+import owdModuleAppExtend from './libraries/moduleApp/extend/moduleAppExtend.class'
+import owdModuleDesktopExtend from "./libraries/moduleDesktop/extend/moduleDesktopExtend.class";
 
 import {App, OwdCoreBootContext, OwdCoreModulesContext} from "@owd-client/types";
 
@@ -12,10 +13,7 @@ import moment from "./plugins/moment";
 import deviceDetector from "./plugins/deviceDetector";
 
 // register service worker
-import './libraries/service-worker/registerServiceWorker'
-
-// global components
-import VIcon from "./components/shared/icon/VIcon.vue";
+import './libraries/serviceWorker/registerServiceWorker'
 
 interface Boot {
   store: any;
@@ -48,9 +46,6 @@ export default class OwdBoot implements Boot {
   initialize(context: OwdCoreBootContext) {
     // config
     this.initializeConfig(context)
-
-    // global components
-    this.initializeGlobalCompanents(context)
 
     // assets
     this.initializeAssets(context.app)
@@ -102,29 +97,26 @@ export default class OwdBoot implements Boot {
     }
   }
 
-  initializeGlobalCompanents(context: OwdCoreBootContext) {
-    // @ts-ignore / temporary VIcon (until Vuetify 3 is ready)
-    context.app.component('v-icon', VIcon)
-  }
-
   /**
    * Initialize assets
    */
   initializeAssets(app: App) {
-    const themeName = app.config.owd.theme
-
     // import app core styles
     require('./assets/css/app.scss')
 
     // import app custom styles from owd-client
     require('@/assets/css/app.scss')
 
-    // try to load custom theme styles
+    // load custom theme styles
+    // todo during build, ${app.config.owd.theme} isn't correct and it imports the default theme
+    // dunno why, so I moved this require into client.config.ts as temp workaround
+    /*
     try {
-      require(`@/assets/themes/${themeName}/app.scss`)
+      require(`@/assets/themes/${app.config.owd.theme}/app.scss`)
     } catch(e) {
-      console.error(`[OWD] Error while loading "${themeName}" theme app.scss`)
+      console.error(`[OWD] Error while loading "${app.config.owd.theme}" theme app.scss`)
     }
+    */
 
     // import Oswald font with typeface
     require('@fontsource/cantarell')
@@ -133,6 +125,7 @@ export default class OwdBoot implements Boot {
 
     // assign vuetify config to $vuetify
     // Vue.prototype.$vuetify = this.config.vuetify
+    app.use(owdCreateVuetify(app))
   }
 
   /**
@@ -195,7 +188,7 @@ export default class OwdBoot implements Boot {
    * Initialize modules
    */
   initializeModules(context: OwdCoreModulesContext) {
-    new owdModulesAppExtend(context)
-    new owdModulesDesktopExtend(context)
+    new owdModuleAppExtend(context)
+    new owdModuleDesktopExtend(context)
   }
 }

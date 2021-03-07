@@ -1,4 +1,4 @@
-import ModuleDesktopSystemBar from "../../../../libraries/modules-desktop/extend/modulesDesktopExtend.class";
+import ModuleDesktopSystemBar from "@owd-client/core/src/libraries/moduleDesktop/extend/moduleDesktopExtend.class";
 import NotificationTime from './components/NotificationTime.vue'
 import NotificationContent from './components/NotificationContent.vue'
 

@@ -6,7 +6,7 @@
     ]"
   >
     <div class="notification-icon">
-      <v-icon :style="`color: ${notification.color};`" v-text="notification.icon" />
+      <v-icon :style="`color: ${notification.color};`">{{notification.icon}}</v-icon>
     </div>
 
     <div class="notification-text">

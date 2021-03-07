@@ -1,5 +1,5 @@
 import Boot from './src/boot'
-import ModuleAppClass from './src/libraries/modules-app/moduleApp.class'
+import ModuleAppClass from './src/libraries/moduleApp/moduleApp.class'
 
 export const boot: any = Boot
 

@@ -82,10 +82,13 @@ export default class WindowCategoryModule extends VuexModule {
     // reorder window list for each category
     for (const categoryName in windowCategoriesTemp) {
       windowCategoriesTemp[categoryName] = windowCategoriesTemp[categoryName].sort((a, b) => {
-        if (a.titleShort < b.titleShort) {
+        a.titleApp = a.titleApp || a.titleShort
+        b.titleApp = b.titleApp || b.titleShort
+
+        if (a.titleApp < b.titleApp) {
           return -1;
         }
-        if (a.titleShort > b.titleShort) {
+        if (a.titleApp > b.titleApp) {
           return 1;
         }
 

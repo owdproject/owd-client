@@ -2,11 +2,15 @@
 $fontTitle: "Oswald", Tahoma, sans-serif;
 $fontMono: "JetBrains Mono", monospace, FreeMono;
 
+// todo use vuetify colors
+$colorPrimary: #4987c1;
+$colorSecondary: #4987c1;
+
 $bodyBackground: #161616;
 $bodyColor: white;
 
 // menu
-$menuItemSquareBackground: #4987c1;
+$menuItemSquareBackground: $colorPrimary;
 $menuItemSquareColor: #FFFFFF;
 $menuItemTitleBackground: #212121;
 $menuItemTitleColor: #EEEEEE;
@@ -41,3 +45,7 @@ $windowContentItemBackground: rgba(255, 255, 255, 0.04);
 $windowContentItemBackgroundHover: rgba(255, 255, 255, 0.06);
 $windowContentItemBorder: rgba(255, 255, 255, 0.2);
 $windowContentItemShadow: 0 2px 1px 0 rgba(21, 21, 21, 0.1);
+$windowContentButtonBackground: #282828;
+$windowContentButtonColor: #ccc;
+$windowContentButtonActiveBackground: #222;
+$windowContentButtonActiveColor: #fff;

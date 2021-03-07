@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { getCurrentInstance } from 'vue'
-import DesktopSystemBarMenu from "../../../../../components/desktop/SystemBar/components/SystemBarMenu.vue";
+import DesktopSystemBarMenu from "@owd-client/core/src/components/desktop/SystemBar/components/SystemBarMenu.vue";
 import {ref} from "vue";
 
 export default {

@@ -192,18 +192,39 @@ export interface OwdModuleAppWindowConfigPosition {
 }
 
 export interface OwdModuleAppWindowCreateInstanceData {
-  name?: string
   uniqueID?: string
   module: OwdModuleApp
   config: OwdModuleAppWindowConfig
-  storage?: any
+  storage?: OwdModuleAppWindowStorage
   dummy?: boolean
 }
 
 export interface OwdModuleAppWindowInstance extends OwdModuleAppWindowCreateInstanceData {
-  name: string
+  moduleName: string
   uniqueID: string
   uniqueName: string
+  storage: OwdModuleAppWindowStorage
+  open(): void
+  close(): void
+  destroy(): void
+  minimize(): void
+  maximize(): void
+  unmaximize(): void
+
+  setFocusActive(focused: boolean): void
+  getFocusIndex(): void
+  setFocusIndex(index: number): void
+
+  getSize(): OwdModuleAppWindowConfigSize
+  setSize(size: OwdModuleAppWindowConfigSize): void
+  resetSize(): void
+
+  getPosition(): OwdModuleAppWindowConfigPosition
+  setPosition(position: OwdModuleAppWindowConfigPosition): void
+  resetPosition(): void
+  adjustPosition(): void
+
+  setNavTitle(title: string, exclusive?: boolean): void
 }
 
 export interface OwdModuleAppWindowsInstances {
@@ -214,17 +235,21 @@ export interface OwdModuleAppWindowsInstances {
   }
 }
 
+export interface OwdModuleAppWindowStorage {
+  title?: string
+  position: OwdModuleAppWindowConfigPosition
+  size: OwdModuleAppWindowConfigSize
+  opened: boolean
+  minimized: boolean
+  maximized: boolean
+  focused: boolean
+}
+
 export interface OwdModuleAppWindowsStorage {
   // WindowSample
   [key: string]: {
     // uniqueID
-    [key: string]: {
-      position: OwdModuleAppWindowConfigPosition
-      size: OwdModuleAppWindowConfigSize
-      opened: boolean
-      minimized: boolean
-      maximized: boolean
-    }
+    [key: string]: OwdModuleAppWindowStorage
   }
 }
 

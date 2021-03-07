@@ -1,7 +1,7 @@
 {
   "name": "@owd-client/core",
-  "version": "2.0.0-alpha.2",
-  "description": "OWD Client / Core",
+  "version": "2.0.0-alpha.3",
+  "description": "OWD Client Core",
   "homepage": "https://github.com/owdproject/owd-client#readme",
   "bugs": {
     "url": "https://github.com/owdproject/owd-client/issues"
@@ -39,12 +39,12 @@
     "root": true
   },
   "dependencies": {
-    "@fontsource/cantarell": "^4.2.1",
-    "@fontsource/jetbrains-mono": "^4.2.1",
-    "@fontsource/oswald": "^4.2.1",
+    "@fontsource/cantarell": "^4.2.2",
+    "@fontsource/jetbrains-mono": "^4.2.2",
+    "@fontsource/oswald": "^4.2.2",
     "@types/md5": "^2.3.0",
     "axios": "^0.21.1",
-    "kebab-case": "^1.0.0",
+    "kebab-case": "^1.0.1",
     "md5": "^2.3.0",
     "moment": "^2.29.1",
     "register-service-worker": "^1.7.2",
@@ -52,7 +52,7 @@
     "vue-i18n": "^9.0.0-rc.7",
     "vue-resizable": "https://github.com/hacklover/vue-resizable",
     "vue-router": "^4.0.4",
-    "vuetify": "^2.4.4",
+    "vuetify": "^3.0.0-alpha.1",
     "vuetify-loader": "^1.7.2",
     "vuex": "^4.0.0",
     "vuex-class-modules": "^1.2.0"
@@ -62,8 +62,8 @@
     "@vue/cli-plugin-pwa": "^4.5.11",
     "@vue/cli-service": "^4.5.11",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.20.0",
-    "eslint-plugin-vue": "^7.6.0"
+    "eslint": "^7.21.0",
+    "eslint-plugin-vue": "^7.7.0"
   },
   "postcss": {
     "plugins": {

@@ -43,14 +43,14 @@
             class="btn btn-minimize"
             @click="onMinimize"
         >
-          <v-icon v-text="$owd.config.icons.window.minimize"/>
+          <v-icon>{{$owd.config.icons.window.minimize}}</v-icon>
         </a>
         <a
             v-if="window.config.maximizable"
             class="btn btn-maximize"
             @click="onToggleMaximize"
         >
-          <v-icon v-text="$owd.config.icons.window.maximize"/>
+          <v-icon>{{$owd.config.icons.window.maximize}}</v-icon>
         </a>
         <a
             v-if="window.externalUrl"
@@ -58,13 +58,13 @@
             :href="window.externalUrl"
             target="_blank"
         >
-          <v-icon v-text="$owd.config.icons.window.external"/>
+          <v-icon>{{$owd.config.icons.window.external}}</v-icon>
         </a>
         <a
             class="btn btn-close"
             @click.stop="onClose"
         >
-          <v-icon v-text="$owd.config.icons.window.close"/>
+          <v-icon>{{$owd.config.icons.window.close}}</v-icon>
         </a>
       </WindowNav>
 
@@ -166,7 +166,7 @@ export default {
   watch: {
     'window.storage.opened': {
       handler: function (opened) {
-        if (opened) { this.$emit('open') }
+        this.$emit(opened ? 'open' : 'close')
       }
     },
     'window.storage.minimized': {
@@ -191,6 +191,8 @@ export default {
     }
   },
   mounted() {
+    const self = this
+
     // when press ESC and a window is in full-screen mode
     window.addEventListener('keydown', function (e) {
       if (e.keyCode === 27) {
@@ -218,9 +220,6 @@ export default {
       )
     }
   },
-  beforeUnmount() {
-    this.$emit('close')
-  },
   methods: {
     /**
      * Window minimize event
@@ -233,7 +232,14 @@ export default {
      * Window maximize event
      */
     onToggleMaximize: function () {
-      this.$store.dispatch('core/window/windowToggleMaximize', this.window)
+      if (!this.window.config.maximizable) {
+        return false
+      }
+
+      this.$store.dispatch(
+          this.window.storage.maximized ? 'core/window/windowUnmaximize' : 'core/window/windowMaximize',
+          this.window
+      )
     },
 
     /**
@@ -281,7 +287,7 @@ export default {
       // emit to parent component
       this.$emit('resize:end', data)
 
-      this.$store.dispatch('core/window/windowUpdatePosition', {
+      this.$store.dispatch('core/window/windowSetPosition', {
         window: this.window,
         position: {x: data.left, y: data.top, z: this.window.storage.position.z}
       })
@@ -330,7 +336,7 @@ export default {
       }
 
       if (forceNoMargin) {
-        this.$store.dispatch('core/window/windowUpdatePosition', {
+        this.$store.dispatch('core/window/windowSetPosition', {
           window: this.window,
           position: {x: data.left, y: data.top, z: this.window.storage.position.z}
         })
@@ -361,7 +367,7 @@ export default {
         if (data.top <= 15) data.top = 0
         if (data.left <= 15) data.left = 0
 
-        this.$store.dispatch('core/window/windowUpdatePosition', {
+        this.$store.dispatch('core/window/windowSetPosition', {
           window: this.window,
           position: {x: data.left, y: data.top, z: this.window.storage.position.z}
         })

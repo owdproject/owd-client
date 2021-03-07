@@ -1,12 +1,15 @@
 <template>
-  <div class="owd-menu__item__icon-image" v-if="icon.image" :style="imageStyle" />
-  <v-icon v-else :style="iconStyle" v-text="iconName" />
+  <div class="owd-menu__item__icon">
+    <div class="owd-menu__item__icon__image" v-if="icon.image && !forceSvg" :style="imageStyle" />
+    <v-icon v-else :style="iconStyle">{{iconName}}</v-icon>
+  </div>
 </template>
 
 <script>
 export default {
   props: {
-    icon: [String,Object]
+    icon: [String,Object],
+    forceSvg: Boolean
   },
   computed: {
     iconName() {
@@ -83,9 +86,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.owd-menu__item__icon-image {
-  background-position: center;
-  width: 100%;
+.owd-menu__item__icon {
   height: 100%;
+
+  &__image {
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+i {
+  position: relative;
+  font-size: 24px;
+  vertical-align: 1px;
 }
 </style>

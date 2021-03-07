@@ -86,9 +86,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.owd-menu__item__icon__image {
-  background-position: center;
-  background-repeat: no-repeat;
+.owd-menu__item__icon {
+  height: 100%;
+
+  &__image {
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 }
 i {
   position: relative;

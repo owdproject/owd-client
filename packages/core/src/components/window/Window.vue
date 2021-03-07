@@ -230,7 +230,7 @@ export default {
      * Window maximize event
      */
     onToggleMaximize: function () {
-      this.$store.dispatch('core/window/windowToggleMaximize', this.window)
+      this.$store.dispatch('core/window/windowUnmaximize', this.window)
     },
 
     /**
@@ -278,7 +278,7 @@ export default {
       // emit to parent component
       this.$emit('resize:end', data)
 
-      this.$store.dispatch('core/window/windowUpdatePosition', {
+      this.$store.dispatch('core/window/windowSetPosition', {
         window: this.window,
         position: {x: data.left, y: data.top, z: this.window.storage.position.z}
       })
@@ -327,7 +327,7 @@ export default {
       }
 
       if (forceNoMargin) {
-        this.$store.dispatch('core/window/windowUpdatePosition', {
+        this.$store.dispatch('core/window/windowSetPosition', {
           window: this.window,
           position: {x: data.left, y: data.top, z: this.window.storage.position.z}
         })
@@ -358,7 +358,7 @@ export default {
         if (data.top <= 15) data.top = 0
         if (data.left <= 15) data.left = 0
 
-        this.$store.dispatch('core/window/windowUpdatePosition', {
+        this.$store.dispatch('core/window/windowSetPosition', {
           window: this.window,
           position: {x: data.left, y: data.top, z: this.window.storage.position.z}
         })

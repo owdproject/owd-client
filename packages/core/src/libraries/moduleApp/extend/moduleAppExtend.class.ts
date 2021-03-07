@@ -139,7 +139,7 @@ export default class ModuleAppExtend {
    */
   static isModuleInfoValid(moduleName: string, moduleInfo: OwdModuleAppInfo) {
     if (!moduleInfo) {
-      console.error(`[OWD] Config "${moduleName}/modules.json" is not valid`)
+      console.error(`[OWD] Config "${moduleName}/module.json" is not valid`)
       return false;
     }
 

@@ -42,7 +42,6 @@ export default {
   left: 24px;
   padding: 0;
   margin: 24px 0;
-  z-index: 9;
   user-select: none;
   transition: transform 0.25s ease-in-out;
 

@@ -12,6 +12,10 @@ import { aliases, mdi } from 'vuetify/lib/iconsets/mdi.mjs'
 // types
 import {OwdClientConfiguration} from '@owd-client/types'
 
+// todo fix this import in boot.ts during `npm run build`
+// (with `npm run serve` it works correctly)
+require(`@/assets/themes/${process.env.VUE_APP_THEME}/app.scss`)
+
 export default {
   debug: false,
 

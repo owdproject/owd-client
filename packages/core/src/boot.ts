@@ -101,20 +101,22 @@ export default class OwdBoot implements Boot {
    * Initialize assets
    */
   initializeAssets(app: App) {
-    const themeName = app.config.owd.theme
-
     // import app core styles
     require('./assets/css/app.scss')
 
     // import app custom styles from owd-client
     require('@/assets/css/app.scss')
 
-    // try to load custom theme styles
+    // load custom theme styles
+    // todo during build, ${app.config.owd.theme} isn't correct and it imports the default theme
+    // dunno why, so I moved this require into client.config.ts as temp workaround
+    /*
     try {
-      require(`@/assets/themes/${themeName}/app.scss`)
+      require(`@/assets/themes/${app.config.owd.theme}/app.scss`)
     } catch(e) {
-      console.error(`[OWD] Error while loading "${themeName}" theme app.scss`)
+      console.error(`[OWD] Error while loading "${app.config.owd.theme}" theme app.scss`)
     }
+    */
 
     // import Oswald font with typeface
     require('@fontsource/cantarell')

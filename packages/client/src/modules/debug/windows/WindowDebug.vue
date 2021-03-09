@@ -81,6 +81,8 @@ export default {
   grid-template-columns: 60% 40%;
 
   .options {
+    line-height: 20px;
+
     .position {
       position: absolute;
       top: 0;
@@ -95,6 +97,11 @@ export default {
       right: 0;
       width: 120px;
       padding: 12px;
+    }
+
+    input {
+      vertical-align: -2px;
+      margin-right: 4px;
     }
   }
 

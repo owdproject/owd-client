@@ -10,7 +10,7 @@
 
       <div class="notification-list-empty" v-else>
 
-        <v-icon>mdi-bell</v-icon>
+        <v-icon class="mb-5">mdi-bell</v-icon>
         <div>
           No notifications
         </div>
@@ -75,6 +75,7 @@
       left: 0;
       right: 0;
       width: 100%;
+      font-size: 14px;
       transform: translateY(-50%);
 
       i {

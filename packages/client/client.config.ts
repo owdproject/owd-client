@@ -96,6 +96,28 @@ export default {
 
   // vuetify config
   vuetify: {
+    theme: {
+      defaultTheme: 'dark',
+      options: { customProperties: true },
+      themes: {
+        light: {
+          variables: {
+            primary: '#4987c1',
+            secondary: '#b0bec5',
+            accent: '#8c9eff',
+            error: '#b71c1c',
+          }
+        },
+        dark: {
+          variables: {
+            primary: '#4987c1',
+            secondary: '#b0bec5',
+            accent: '#8c9eff',
+            error: '#b71c1c',
+          }
+        },
+      },
+    },
     icons: {
       defaultSet: 'mdi',
       aliases,

@@ -24,6 +24,9 @@ export default class WindowDockModule extends VuexModule {
       // does module contain any windows?
       if (owdModuleApp.moduleInfo.windows && owdModuleApp.moduleInfo.windows.length > 0) {
 
+        // skip if module doesn't have any window
+        if (!owdModuleApp.moduleInfo.windows) continue
+
         for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
 
           let windowInstances: any[] = []

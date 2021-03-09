@@ -52,6 +52,9 @@ export default class WindowModule extends VuexModule {
     // for each loaded module
     for (const owdModuleApp of this.modulesModule.modulesAppInstalled) {
 
+      // skip if module doesn't have any window
+      if (!owdModuleApp.moduleInfo.windows) continue
+
       // for each window config
       for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
         const windowName: string = owdModuleAppWindowConfig.name
@@ -84,6 +87,9 @@ export default class WindowModule extends VuexModule {
 
     // for each loaded module
     for (const owdModuleApp of this.modulesModule.modulesAppInstalled) {
+
+      // skip if module doesn't have any window
+      if (!owdModuleApp.moduleInfo.windows) continue
 
       // for each window config
       for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
@@ -155,6 +161,9 @@ export default class WindowModule extends VuexModule {
 
       // does module contain any windows?
       if (owdModuleApp.moduleInfo.windows && owdModuleApp.moduleInfo.windows.length > 0) {
+
+        // skip if module doesn't have any window
+        if (!owdModuleApp.moduleInfo.windows) continue
 
         // for each window config in moduleInfo.windows (for example WindowSample)
         for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {

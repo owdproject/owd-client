@@ -27,6 +27,9 @@ export default class WindowCategoryModule extends VuexModule {
     // for each loaded module
     for (const owdModuleApp of this.modulesModule.modulesAppInstalled) {
 
+      // skip if module doesn't have any window
+      if (!owdModuleApp.moduleInfo.windows) continue
+
       // for each window config
       for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
 

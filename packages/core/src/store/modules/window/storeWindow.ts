@@ -725,6 +725,14 @@ export default class WindowModule extends VuexModule {
       .catch(() => false)
   }
 
+  @Action
+  windowCalcPosition(data: any): OwdModuleAppWindowConfigPosition {
+    return this
+      .getWindow(data)
+      .then(async (windowInstance: OwdModuleAppWindowInstance) => windowInstance.adjustPosition())
+      .catch(() => false)
+  }
+
   /**
    * Reset windows position on page resize
    */

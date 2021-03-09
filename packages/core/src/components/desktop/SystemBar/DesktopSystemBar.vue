@@ -1,5 +1,5 @@
 <template>
-  <v-system-bar class="owd-desktop__system-bar">
+  <div class="owd-desktop__system-bar">
 
     <div class="owd-desktop__system-bar__left">
       <slot name="system-bar-left-prepend" />
@@ -11,9 +11,9 @@
             @click="(e) => openSystemBarDesktopModule(e, desktopModule)"
         />
         <component
+            v-if="desktopModule.config.opened"
             :is="desktopModule.components.content"
             :arrow-position="desktopModule.config.arrowPosition"
-            :opened="desktopModule.config.opened"
             @close="closeSystemBarDesktopModule(desktopModule)"
         />
       </template>
@@ -29,9 +29,9 @@
             @click="(e) => openSystemBarDesktopModule(e, desktopModule)"
         />
         <component
+            v-if="desktopModule.config.opened"
             :is="desktopModule.components.content"
             :arrow-position="desktopModule.config.arrowPosition"
-            :opened="desktopModule.config.opened"
             @close="closeSystemBarDesktopModule(desktopModule)"
         />
       </template>
@@ -47,16 +47,16 @@
             @click="(e) => openSystemBarDesktopModule(e, desktopModule)"
         />
         <component
+            v-if="desktopModule.config.opened"
             :is="desktopModule.components.content"
             :arrow-position="desktopModule.config.arrowPosition"
-            :opened="desktopModule.config.opened"
         />
       </template>
 
       <slot name="system-bar-right-append" />
     </div>
 
-  </v-system-bar>
+  </div>
 </template>
 
 <script>

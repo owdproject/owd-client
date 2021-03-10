@@ -29,8 +29,8 @@
             @click="(e) => openSystemBarDesktopModule(e, desktopModule)"
         />
         <component
-            v-if="desktopModule.config.opened"
             :is="desktopModule.components.content"
+            :opened="desktopModule.config.opened"
             :arrow-position="desktopModule.config.arrowPosition"
             @close="closeSystemBarDesktopModule(desktopModule)"
         />

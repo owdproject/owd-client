@@ -44,7 +44,7 @@ export default {
   emits: [
     'menu-close',
     'select',
-    'set-keys-navigation',
+    'set-keys-navigation-section',
   ],
   setup(props, context) {
     const store = useStore()

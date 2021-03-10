@@ -54,12 +54,7 @@ export default abstract class ModuleApp implements OwdModuleApp {
   private checkDependencies() {}
 
   static isGitModule(moduleName: string): boolean {
-    try {
-      require.resolve(moduleName)
-      return true
-    } catch(e) {
-      return false
-    }
+    return require('detect-installed').sync(moduleName, { local: true })
   }
 
   public get isSingleton() {

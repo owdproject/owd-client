@@ -1,6 +1,6 @@
 {
   "name": "owd-client",
-  "version": "2.0.0-alpha.4",
+  "version": "2.0.0-alpha.5",
   "description": "OWD Client",
   "private": true,
   "homepage": "https://github.com/owdproject/owd-client#readme",
@@ -27,7 +27,7 @@
     "@types"
   ],
   "dependencies": {
-    "@owd-client/core": "^2.0.0-alpha.4",
+    "@owd-client/core": "^2.0.0-alpha.5",
     "@owd-client/types": "^2.0.0-alpha.4"
   },
   "devDependencies": {

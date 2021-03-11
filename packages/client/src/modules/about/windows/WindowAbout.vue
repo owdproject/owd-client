@@ -33,7 +33,7 @@
 <style scoped lang="scss">
 .container {
   text-align: center;
-  margin-top: 36px;
+  margin-top: 35px;
 
   h2 {
     margin-bottom: 6px;

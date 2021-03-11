@@ -44,7 +44,7 @@
   }
 
   a {
-    color: $colorPrimary;
+    color: var(--v-primary);
     font-size: 14px;
   }
 

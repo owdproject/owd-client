@@ -1,24 +1,24 @@
 <template>
   <Window
-    :window="window"
-    class="owd-window-iframe"
-    v-click-outside="focusOut"
-    @click="focusIn"
+      :window="window"
+      class="owd-window-iframe"
+      v-click-outside="focusOut"
+      @click="focusIn"
   >
     <div class="owd-window-iframe__content">
       <iframe
-        :id="iframeId"
-        :src="url"
-        @load="onIframeLoaded"
+          :id="iframeId"
+          :src="url"
+          @load="onIframeLoaded"
       />
 
       <div v-if="!focused" class="detect-focus-in" />
     </div>
 
     <v-progress-linear
-      v-if="progressBar && !loaded"
-      color="#323232"
-      indeterminate
+        v-if="progressBar && !loaded"
+        color="#323232"
+        indeterminate
     />
   </Window>
 </template>
@@ -36,12 +36,13 @@ export default {
     'iframeLoaded'
   ],
   props: {
+    url: String,
     window: Object,
     progressBar: Boolean
   },
   data() {
     return {
-      url: '',
+      iframeSrc: '',
       loaded: false,
       focused: false
     }
@@ -62,10 +63,10 @@ export default {
     'window.storage.opened': function (val) {
       if (val === true) {
         if (this.window.storage.opened === true) {
-          this.url = this.window.config.metaData.iframeUrl
+          this.iframeSrc = this.url || this.window.config.metaData.iframeUrl
         }
       } else {
-        this.url = ''
+        this.iframeSrc = ''
         this.loaded = false
       }
     }
@@ -84,11 +85,11 @@ export default {
       document.getElementById(this.iframeId).focus()
     },
     onIframeLoaded() {
-      if (this.url !== '') {
+      if (this.iframeSrc !== '') {
         this.loaded = true
       } else {
         if (this.window.storage.opened === true) {
-          this.url = this.window.metaData.iframeUrl
+          this.iframeSrc = this.url || this.window.metaData.iframeUrl
         }
       }
 

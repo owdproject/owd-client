@@ -49,11 +49,12 @@ export default {
 
   .day-of-week {
     font-weight: bold;
+    font-size: 13px;
     line-height: 12px;
   }
   .date {
     font-weight: 800;
-    font-size: 18px;
+    font-size: 20px;
     line-height: 40px;
   }
 }

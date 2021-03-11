@@ -483,7 +483,7 @@ export default {
           height: 100% !important;
           margin: 0 !important;
           z-index: 999;
-          background: #111111;
+          background: $windowBackground;
 
           @media (max-width: 768px) {
             left: auto !important;

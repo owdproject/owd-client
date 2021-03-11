@@ -1,3 +1,5 @@
+@import '~vuetify/dist/vuetify.min.css';
+
 html, body {
   margin: 0;
   padding: 0;
@@ -23,4 +25,8 @@ a, a:link, a:visited {
   font-size: 13.5px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.v-icon.v-icon {
+  transition: none;
 }

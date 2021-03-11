@@ -4,7 +4,7 @@ export default {
       menu: 'Applications',
       categories: {
         'favorites': 'Favorites',
-        'system-tools': 'System tools',
+        'system-tools': 'System Tools',
         'accessories': 'Accessories',
         'games': 'Games',
         'media': 'Sound & Video',

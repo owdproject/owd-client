@@ -157,7 +157,7 @@ If you intend to contribute to the project, please join our [community chat](htt
 
 ## Supporters
 
-See all sponsors & backers in the [BACKERS.md](BACKERS.md).
+See all sponsors & backers in the [BACKERS.md](BACKERS.md)
 
 <a href="https://www.patreon.com/hacklover">
     <img src="https://i.imgur.com/KODHUwR.png" width="160" alt="Become a Patron" />
@@ -168,4 +168,4 @@ See all sponsors & backers in the [BACKERS.md](BACKERS.md).
 </a>
 
 ## License
-This project is released under the [GNU GPL3 License](LICENSE).
+This project is released under the [GNU GPL3 License](LICENSE)

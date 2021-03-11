@@ -8,7 +8,7 @@
     <div class="owd-window-iframe__content">
       <iframe
           :id="iframeId"
-          :src="url"
+          :src="iframeSrc"
           @load="onIframeLoaded"
       />
 

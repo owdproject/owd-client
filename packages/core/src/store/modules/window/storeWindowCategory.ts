@@ -33,13 +33,12 @@ export default class WindowCategoryModule extends VuexModule {
       // for each window config
       for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
 
-        if (!owdModuleAppWindowConfig.category) {
+        if (!owdModuleAppWindowConfig.category || owdModuleAppWindowConfig.category === 'other') {
+
+          owdModuleAppWindowConfig.category = 'other'
 
           // add to special category list "other"
-          windowCategoriesOther.push({
-            ...owdModuleAppWindowConfig,
-            category: 'other'
-          })
+          windowCategoriesOther.push(owdModuleAppWindowConfig)
 
           continue
         }

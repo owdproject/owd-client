@@ -1,6 +1,6 @@
 <template>
   <div class="owd-menu__item__icon">
-    <div class="owd-menu__item__icon__image" v-if="icon.image && !forceSvg" :style="imageStyle" />
+    <div class="owd-menu__item__icon__image" v-if="(icon.image && !forceSvg) || (forceSvg && !iconName)" :style="imageStyle" />
     <v-icon v-else :style="iconStyle">{{iconName}}</v-icon>
   </div>
 </template>

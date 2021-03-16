@@ -142,6 +142,7 @@ export default {
           line-height: 32px;
           text-align: center;
           vertical-align: middle;
+          margin-top: -3px;
           margin-right: 12px;
           color: $windowColorActive;
         }

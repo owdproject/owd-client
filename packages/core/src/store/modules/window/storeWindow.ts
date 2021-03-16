@@ -304,7 +304,7 @@ export default class WindowModule extends VuexModule {
     }
   ): OwdModuleAppWindowInstance|any|null {
     return new Promise((resolve, reject) => {
-      if ((<OwdModuleAppWindowInstance>data) !== undefined) {
+      if (data instanceof ModuleAppWindow) {
         return resolve(data)
       }
 

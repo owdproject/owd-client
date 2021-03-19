@@ -53,7 +53,7 @@
     "vue-i18n": "^9.0.0-rc.7",
     "vue-resizable": "https://github.com/hacklover/vue-resizable",
     "vue-router": "^4.0.4",
-    "vuetify": "^3.0.0-alpha.1",
+    "vuetify": "^3.0.0-alpha.2",
     "vuetify-loader": "^1.7.2",
     "vuex": "^4.0.0",
     "vuex-class-modules": "^1.2.0"

@@ -44,7 +44,6 @@
     "@fontsource/oswald": "^4.2.2",
     "@types/md5": "^2.3.0",
     "axios": "^0.21.1",
-    "detect-installed": "^2.0.4",
     "kebab-case": "^1.0.1",
     "md5": "^2.3.0",
     "moment": "^2.29.1",

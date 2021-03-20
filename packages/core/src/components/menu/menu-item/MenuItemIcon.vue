@@ -94,10 +94,10 @@ export default {
     background-position: center;
     background-repeat: no-repeat;
   }
-}
-i {
-  position: relative;
-  font-size: 24px;
-  vertical-align: 1px;
+
+  i {
+    position: relative;
+    font-size: 24px;
+  }
 }
 </style>

@@ -49,7 +49,12 @@ export default abstract class ModuleApp implements OwdModuleApp {
   abstract loadStoreInstance(context: OwdModuleAppLoadStoreContext): void
 
   static isModuleSource(moduleName: string): boolean {
-    return true
+    try {
+      require(`@/../src/modules/${moduleName}/module.json`)
+      return true
+    } catch(e) {
+      return false
+    }
   }
 
   static getModuleFile(module: any, moduleFile: string) {

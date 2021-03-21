@@ -15,7 +15,7 @@ export default class {
    */
   addCommand(name: string, fn: any) {
     if (this.hasCommand(name)) {
-      return console.error(`[OWD] Cannot add "${name}" command, already defined`)
+      console.error(`[OWD] Command "${name}" was already defined, it has been overwritten`)
     }
 
     this.commands[name] = fn

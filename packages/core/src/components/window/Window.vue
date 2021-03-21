@@ -115,6 +115,8 @@ export default {
     'drag:end',
     'close',
     'open',
+    'blur',
+    'focus',
     'minimize',
     'restore',
     'maximize',
@@ -176,6 +178,11 @@ export default {
     }
   },
   watch: {
+    'window.storage.focused': {
+      handler: function (focused) {
+        this.$emit(focused ? 'focus' : 'blur')
+      }
+    },
     'window.storage.opened': {
       handler: function (opened) {
         this.$emit(opened ? 'open' : 'close')

@@ -1,14 +1,18 @@
 <template>
   <div class="owd-window__nav">
 
+    <div class="owd-window__nav__btn-group owd-window__nav__btn-group--prepend">
+      <slot name="nav-prepend" />
+    </div>
+
     <div
       class="owd-window__nav__title"
       v-text="title"
       @dblclick="$emit('toggleMaximize')"
     />
 
-    <div class="owd-window__nav__btn-group">
-      <slot />
+    <div class="owd-window__nav__btn-group owd-window__nav__btn-group--append">
+      <slot name="nav-append" />
     </div>
 
   </div>
@@ -22,7 +26,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
   .owd-window__nav {
     position: relative;
     display: flex;
@@ -44,26 +48,44 @@ export default {
       a {
         color: inherit;
         text-decoration: none;
-        margin-right: 8px;
       }
     }
 
     &__btn-group {
       display: flex;
       position: absolute;
-      right: 0;
+      height: 100%;
+      align-items: center;
 
-      .btn {
-        display: inline-block;
-        width: $desktopSystemBarHeight;
-        text-align: center;
-        cursor: pointer;
+      &--prepend {
+        left: 7px;
 
-        .v-icon {
-          color: $windowNavTitleColor;
-          font-size: 14px;
-          vertical-align: -1px;
+        a, button {
+          margin-right: 6px;
         }
+      }
+
+      &--append {
+        right: 7px;
+
+        a, button {
+          margin-left: 6px;
+        }
+      }
+    }
+
+    .v-btn {
+      position: relative;
+      height: 31px;
+      min-width: 33px;
+      padding: 0;
+      text-transform: initial;
+      box-shadow: none;
+      overflow: hidden;
+
+      &__overlay,
+      .v-ripple__container {
+        display: none;
       }
     }
   }

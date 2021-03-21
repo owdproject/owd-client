@@ -21,8 +21,8 @@
     @resize:start="onResizeStart"
     @resize:end="onResizeEnd"
     :class="[
-    windowNameClass,
-    'owd-window',
+      windowNameClass,
+      'owd-window',
       {
         'owd-window--focused': window.storage.focused,
         'owd-window--maximized': window.config.maximizable && window.storage.maximized,
@@ -38,34 +38,44 @@
     <div class="owd-window__container" @mousedown="onMouseDown">
 
       <WindowNav :title="title || window.storage.title || window.config.title" @toggleMaximize="onToggleMaximize">
-        <a
-            v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable"
-            class="btn btn-minimize"
-            @click="onMinimize"
-        >
-          <v-icon>{{$owd.config.icons.window.minimize}}</v-icon>
-        </a>
-        <a
-            v-if="window.config.maximizable"
-            class="btn btn-maximize"
-            @click="onToggleMaximize"
-        >
-          <v-icon>{{$owd.config.icons.window.maximize}}</v-icon>
-        </a>
-        <a
-            v-if="window.externalUrl"
-            class="btn btn-external-url"
-            :href="window.externalUrl"
-            target="_blank"
-        >
-          <v-icon>{{$owd.config.icons.window.external}}</v-icon>
-        </a>
-        <a
-            class="btn btn-close"
-            @click.stop="onClose"
-        >
-          <v-icon>{{$owd.config.icons.window.close}}</v-icon>
-        </a>
+        <template v-slot:nav-prepend>
+          <slot name="nav-prepend" />
+        </template>
+
+        <template v-slot:nav-append>
+          <slot name="nav-append" />
+
+          <div class="ml-1">
+            <WindowNavButtonCommon
+                v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable"
+                class="btn-minimize"
+                :icon="$owd.config.icons.window.minimize"
+                @click="onMinimize"
+            />
+
+            <WindowNavButtonCommon
+                v-if="window.config.maximizable"
+                class="btn-maximize"
+                :icon="$owd.config.icons.window.maximize"
+                @click="onToggleMaximize"
+            />
+
+            <WindowNavButtonCommon
+                v-if="window.externalUrl"
+                class="btn-external-url"
+                :href="window.externalUrl"
+                :icon="$owd.config.icons.window.external"
+                target="_blank"
+            />
+
+            <WindowNavButtonCommon
+                class="btn-close"
+                :icon="$owd.config.icons.window.close"
+                @click.stop="onClose"
+            />
+          </div>
+
+        </template>
       </WindowNav>
 
       <div class="owd-window__content">
@@ -81,12 +91,14 @@
 <script>
 import {computed, ref} from 'vue'
 import VueResizable from 'vue-resizable/src'
-import WindowNav from './WindowNav'
+import WindowNav from './nav/WindowNav'
+import WindowNavButtonCommon from "./nav/WindowNavButtonCommon";
 
 export default {
   components: {
     VueResizable,
-    WindowNav
+    WindowNav,
+    WindowNavButtonCommon,
   },
   props: {
     title: {

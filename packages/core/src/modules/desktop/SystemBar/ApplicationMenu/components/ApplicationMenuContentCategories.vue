@@ -118,6 +118,7 @@ export default {
 <style scoped lang="scss">
 .owd-desktop__application-menu__categories {
   padding: 16px 0;
+  overflow-y: auto;
 
   ul {
     margin: 0;

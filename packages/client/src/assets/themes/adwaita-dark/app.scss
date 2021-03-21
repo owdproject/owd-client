@@ -91,6 +91,17 @@
         .owd-window__container {
           grid-template-rows: $windowNavHeight calc(100% - #{$windowNavHeight});
         }
+
+        &.owd-window--dense {
+          .owd-window__container {
+            grid-template-rows: $windowNavHeightDense calc(100% - #{$windowNavHeightDense});
+          }
+
+          .owd-window__nav {
+            height: $windowNavHeightDense;
+            line-height: $windowNavHeightDense;
+          }
+        }
       }
     }
   }

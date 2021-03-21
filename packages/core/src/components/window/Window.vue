@@ -24,6 +24,7 @@
       windowNameClass,
       'owd-window',
       {
+        'owd-window--dense': dense,
         'owd-window--focused': window.storage.focused,
         'owd-window--maximized': window.config.maximizable && window.storage.maximized,
         'owd-window--dragging': dragging,
@@ -103,6 +104,10 @@ export default {
   props: {
     title: {
       type: String
+    },
+    dense: {
+      type: Boolean,
+      default: true
     },
     window: Object
   },

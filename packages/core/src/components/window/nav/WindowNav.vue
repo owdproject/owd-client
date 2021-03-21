@@ -30,8 +30,8 @@ export default {
   .owd-window__nav {
     position: relative;
     display: flex;
-    height: $desktopSystemBarHeight;
-    line-height: $desktopSystemBarHeight;
+    height: $windowNavHeight;
+    line-height: $windowNavHeight;
     user-select: none;
     z-index: 1;
 

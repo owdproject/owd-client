@@ -98,8 +98,8 @@ export default {
   display: grid;
   grid-template-columns: 30% 40% 30%;
   cursor: default;
-  height: 30px;
-  line-height: 30px;
+  height: $desktopSystemBarHeight;
+  line-height: $desktopSystemBarHeight;
   user-select: none;
 
   &__center {

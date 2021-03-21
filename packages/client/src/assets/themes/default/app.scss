@@ -78,7 +78,7 @@
 
     &:not(&--borderless) {
       .owd-window__container {
-        grid-template-rows: 40px calc(100% - #{$desktopSystemBarHeight});
+        grid-template-rows: 40px calc(100% - #{$windowNavHeight});
       }
     }
   }

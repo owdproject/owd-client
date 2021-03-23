@@ -50,7 +50,7 @@
     "register-service-worker": "^1.7.2",
     "vue": "^3.0.5",
     "vue-i18n": "^9.0.0-rc.7",
-    "vue-resizable": "https://github.com/hacklover/vue-resizable",
+    "vue-resizable": "2.0.1",
     "vue-router": "^4.0.4",
     "vuetify": "^3.0.0-alpha.2",
     "vuetify-loader": "^1.7.2",

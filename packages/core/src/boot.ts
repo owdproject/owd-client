@@ -2,6 +2,7 @@ import { owdCreateStore } from './store'
 import { owdCreateRouter } from './router'
 import { owdCreateI18n } from './i18n'
 import { owdCreateVuetify } from './plugins/vuetify'
+
 import owdTerminalExtend from './libraries/terminal/extend/terminalExtend.class'
 import owdModuleAppExtend from './libraries/moduleApp/extend/moduleAppExtend.class'
 import owdModuleDesktopExtend from "./libraries/moduleDesktop/extend/moduleDesktopExtend.class";

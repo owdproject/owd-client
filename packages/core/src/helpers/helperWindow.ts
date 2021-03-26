@@ -141,13 +141,8 @@ export function calcPositionY(owdModuleAppWindow: any) {
  *
  * @param windowName
  */
-export function getWindowDetailsFromWindowName(windowName: string): OwdModuleAppWindowDetail | undefined {
-  if (typeof store.getters['core/window/modulesAppWindowInstancesGroup'][windowName].config !== 'undefined') {
-    return {
-      window: store.getters['core/window/modulesAppWindowInstancesGroup'][windowName].config,
-      module: store.getters['core/window/modulesAppWindowInstancesGroup'][windowName].module
-    }
-  }
+export function getWindowDetailsFromWindowName(windowName: string): OwdModuleAppWindowDetail {
+  return store.getters['core/window/modulesAppWindowInstancesGroup'][windowName]
 }
 
 // WINDOW INSTANCES

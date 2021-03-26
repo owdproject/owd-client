@@ -19,7 +19,7 @@ export default class WindowCategoryModule extends VuexModule {
    * keymap by window category
    */
   get modulesAppWindowCategories() {
-    let windowCategoriesTemp: { [key: string]: OwdModuleAppWindowConfig[] } = {}
+    let windowCategories: { [key: string]: OwdModuleAppWindowConfig[] } = {}
 
     const windowCategoriesFavorite: OwdModuleAppWindowConfig[] = []
     const windowCategoriesOther: OwdModuleAppWindowConfig[] = []
@@ -33,58 +33,57 @@ export default class WindowCategoryModule extends VuexModule {
       // for each window config
       for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
 
-        if (!owdModuleAppWindowConfig.category) {
+        if (!owdModuleAppWindowConfig.category || owdModuleAppWindowConfig.category === 'other') {
 
-          // assign to "other" category if windowConfig.category is missing
           owdModuleAppWindowConfig.category = 'other'
 
-          // add to "other" special category list
+          // add to special category list "other"
           windowCategoriesOther.push(owdModuleAppWindowConfig)
 
           continue
         }
 
-        // add to "favorite" special category list
+        // add to special category list "favorite"
         if (owdModuleAppWindowConfig.favorite) {
           windowCategoriesFavorite.push(owdModuleAppWindowConfig)
         }
 
         // map window categories
-        if (!Object.prototype.hasOwnProperty.call(windowCategoriesTemp, owdModuleAppWindowConfig.category)) {
-          windowCategoriesTemp[owdModuleAppWindowConfig.category] = []
+        if (!Object.prototype.hasOwnProperty.call(windowCategories, owdModuleAppWindowConfig.category)) {
+          windowCategories[owdModuleAppWindowConfig.category] = []
         }
 
-        windowCategoriesTemp[owdModuleAppWindowConfig.category].push(owdModuleAppWindowConfig)
+        windowCategories[owdModuleAppWindowConfig.category].push(owdModuleAppWindowConfig)
       }
 
     }
 
     // reorder categories
-    windowCategoriesTemp = Object.keys(windowCategoriesTemp)
+    windowCategories = Object.keys(windowCategories)
       .sort()
       .reduce((obj: any, key: string) => {
-        obj[key] = windowCategoriesTemp[key]
+        obj[key] = windowCategories[key]
 
         return obj;
       }, {})
 
-    // add favorites at start, if category exists
+    // add "favorite" categpry at start, if category exists
     if (windowCategoriesFavorite.length > 0) {
-      windowCategoriesTemp = Object.assign({
+      windowCategories = Object.assign({
         favorites: windowCategoriesFavorite
-      }, windowCategoriesTemp)
+      }, windowCategories)
     }
 
-    // add other at the end, if category exists
+    // add "other" category at the end, if category exists
     if (windowCategoriesOther.length > 0) {
-      windowCategoriesTemp = Object.assign(windowCategoriesTemp, {
+      windowCategories = Object.assign(windowCategories, {
         other: windowCategoriesOther
       })
     }
 
     // reorder window list for each category
-    for (const categoryName in windowCategoriesTemp) {
-      windowCategoriesTemp[categoryName] = windowCategoriesTemp[categoryName].sort((a, b) => {
+    for (const categoryName in windowCategories) {
+      windowCategories[categoryName] = windowCategories[categoryName].sort((a, b) => {
         a.titleApp = a.titleApp || a.titleShort
         b.titleApp = b.titleApp || b.titleShort
 
@@ -100,6 +99,6 @@ export default class WindowCategoryModule extends VuexModule {
     }
 
     // return ordered categories + favorite and other categories
-    return windowCategoriesTemp
+    return windowCategories
   }
 }

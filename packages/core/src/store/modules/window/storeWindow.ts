@@ -304,7 +304,7 @@ export default class WindowModule extends VuexModule {
     }
   ): OwdModuleAppWindowInstance|any|null {
     return new Promise((resolve, reject) => {
-      if ((<OwdModuleAppWindowInstance>data) !== undefined) {
+      if (data instanceof ModuleAppWindow) {
         return resolve(data)
       }
 
@@ -358,14 +358,15 @@ export default class WindowModule extends VuexModule {
   windowCreate(data: string | OwdModuleAppWindowInstance): OwdModuleAppWindowInstance | void {
     if (typeof data === 'string') {
       const windowName = data
-      const owdModuleAppWindowDetail = helperWindow.getWindowDetailsFromWindowName(windowName)
 
-      if (!owdModuleAppWindowDetail) {
+      if (!helperWindow.isWindowNameExisting(windowName)) {
         return console.error(`[OWD] Unable to create new window because "${windowName}" window doesn\'t exist`)
       }
 
+      const owdModuleAppWindow = helperWindow.getWindowDetailsFromWindowName(windowName)
+
       // check if module is a singleton so it doesn't have to create a new window
-      if (owdModuleAppWindowDetail && owdModuleAppWindowDetail.module.moduleInfo.singleton) {
+      if (owdModuleAppWindow && owdModuleAppWindow.module.moduleInfo.singleton) {
         const countInstances = helperWindow.getWindowGroupInstancesCount(windowName)
 
         if (countInstances > 0) {
@@ -384,10 +385,7 @@ export default class WindowModule extends VuexModule {
       }
 
       // data was a string, create a new window instance
-      this.windowCreateInstance({
-        config: owdModuleAppWindowDetail.window,
-        module: owdModuleAppWindowDetail.module
-      }).then(windowInstance => {
+      this.windowCreateInstance(owdModuleAppWindow).then(windowInstance => {
         // open window
         this.windowOpen(windowInstance)
 

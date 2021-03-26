@@ -16,9 +16,10 @@
     "baseUrl": ".",
     "rootDir": ".",
     "types": [
-      "webpack-env",
+      "@types/jest",
       "@types/md5",
-      "@vuetify/types"
+      "@vuetify/types",
+      "webpack-env"
     ],
     "paths": {
       "@/*": [

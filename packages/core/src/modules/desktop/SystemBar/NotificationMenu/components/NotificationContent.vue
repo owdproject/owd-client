@@ -46,6 +46,7 @@ export default {
 .owd-desktop__notification__container {
   display: grid;
   width: 700px;
+  max-width: calc(100% - 32px);
   height: 500px;
   max-height: 60vh;
   grid-template-columns: 58% 42%;
@@ -54,6 +55,10 @@ export default {
   left: 50%;
   color: $windowContentInputColor;
   transform: translateX(-50%);
+
+  @media(max-width: 600px) {
+    grid-template-columns: 100%;
+  }
 
   .arrow {
     border: solid $windowBorder;
@@ -72,6 +77,10 @@ export default {
     border-left: 1px solid $windowContentSeparator;
     padding: 16px;
     text-align: left;
+
+    @media(max-width: 600px) {
+      display: none;
+    }
   }
 }
 </style>

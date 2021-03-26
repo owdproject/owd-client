@@ -91,6 +91,7 @@ export default {
   &__container {
     display: grid;
     width: 410px;
+    max-width: calc(100% - 32px);
     height: 500px;
     max-height: 60vh;
     grid-template-columns: 40% 60%;

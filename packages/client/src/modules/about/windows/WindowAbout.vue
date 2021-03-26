@@ -30,10 +30,19 @@
   }
 </script>
 
+<style lang="scss">
+.owd-window-about {
+  .owd-window__content {
+    display: flex;
+    align-items: center;
+  }
+}
+</style>
+
 <style scoped lang="scss">
 .container {
+  margin: 0 auto;
   text-align: center;
-  margin-top: 35px;
 
   h2 {
     margin-bottom: 6px;

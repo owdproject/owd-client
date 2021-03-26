@@ -25,8 +25,20 @@
       }
 
       &__btn-group {
+        &--prepend {
+          position: relative;
+
+          button {
+            margin-right: 0;
+          }
+        }
+
+        // essential buttons
         .btn {
           .v-icon {
+            font-size: 17px;
+            vertical-align: -2px;
+
             &.mdi-open-in-new {
               font-size: 15px;
             }
@@ -35,6 +47,24 @@
               font-size: 18px;
               vertical-align: -3px;
             }
+          }
+
+          &:hover {
+            color: $windowNavTitleColor;
+          }
+        }
+
+        // custom buttons
+        .v-btn {
+          vertical-align: -3px;
+
+          .v-icon {
+            font-size: 15px;
+            vertical-align: -2px;
+          }
+
+          &:hover {
+            color: $windowNavTitleColor;
           }
         }
       }
@@ -48,7 +78,7 @@
 
     &:not(&--borderless) {
       .owd-window__container {
-        grid-template-rows: 40px calc(100% - #{$desktopSystemBarHeight});
+        grid-template-rows: 40px calc(100% - #{$windowNavHeight});
       }
     }
   }

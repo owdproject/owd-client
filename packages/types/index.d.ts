@@ -265,7 +265,7 @@ export interface OwdModuleAppWindowConfigIcon {
 
 export interface OwdModuleAppWindowDetail {
   module: OwdModuleApp
-  window: OwdModuleAppWindowConfig
+  config: OwdModuleAppWindowConfig
 }
 
 // OWD MODULES DESKTOP

@@ -74,13 +74,13 @@ export default class ModuleAppExtend {
    */
   static registerModule(module: any, context: any) {
     // load module info
-    const moduleInfo = ModuleAppExtend.loadModuleInfo(module)
+    const moduleInfo = ModuleApp.loadModuleInfo(module)
 
-    if (!ModuleAppExtend.isModuleInfoValid(module.name, moduleInfo)) {
+    if (!ModuleApp.isModuleInfoValid(module.name, moduleInfo)) {
       return false;
     }
 
-    const moduleAppClass = ModuleAppExtend.getModuleFile(module, 'index')
+    const moduleAppClass = ModuleApp.getModuleFile(module, 'index')
 
     if (moduleAppClass.default && typeof moduleAppClass.default === 'function') {
       const moduleAppLoaded = new moduleAppClass.default({ ...context, moduleInfo })
@@ -96,12 +96,9 @@ export default class ModuleAppExtend {
 
   /**
    * Check if dependencies are satisfied todo
-   *
-   * @param dependencies
-   * @returns {boolean}
    */
   /*
-  areDependenciesSatisfied(dependencies) {
+  private checkDependencies(dependencies: any[]) {
     let dependenciesStatisfied = true
 
     if (dependencies && dependencies.length > 0) {
@@ -119,46 +116,4 @@ export default class ModuleAppExtend {
     return dependenciesStatisfied
   }
    */
-
-  /**
-   * Load module app info
-   *
-   * @param module
-   * @returns {any}
-   */
-  static loadModuleInfo(module: any) {
-    return ModuleAppExtend.getModuleFile(module, 'module.json')
-  }
-
-  /**
-   * Check if this module info is valid
-   *
-   * @param moduleName
-   * @param moduleInfo
-   * @returns {any}
-   */
-  static isModuleInfoValid(moduleName: string, moduleInfo: OwdModuleAppInfo) {
-    if (!moduleInfo) {
-      console.error(`[OWD] Config "${moduleName}/module.json" is not valid`)
-      return false;
-    }
-
-    return true;
-  }
-
-  static getModuleFile(module: any, moduleFile: string) {
-    try {
-      if (ModuleApp.isGitModule(module.name)) {
-        try {
-          return require(`@/../node_modules/${module.name}/client/${moduleFile}`)
-        } catch(e) {
-          return require(`@/../node_modules/${module.name}/client/dist/${moduleFile}`)
-        }
-      } else {
-        return require(`@/../src/modules/${module.name}/${moduleFile}`)
-      }
-    } catch(e) {
-      return null
-    }
-  }
 }

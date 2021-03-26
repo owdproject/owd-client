@@ -131,7 +131,7 @@ export default {
         width: 100%;
         text-align: left;
         cursor: pointer;
-        line-height: $desktopSystemBarHeight;
+        line-height: $windowNavHeight;
         padding: 0 24px;
         border-radius: 4px;
 
@@ -142,6 +142,7 @@ export default {
           line-height: 32px;
           text-align: center;
           vertical-align: middle;
+          margin-top: -1px;
           margin-right: 12px;
           color: $windowColorActive;
         }

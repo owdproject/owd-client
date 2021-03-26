@@ -25,6 +25,11 @@ a, a:link, a:visited {
   font-size: 13.5px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  // compatibility with owd-webamp z-index
+  .v-layout {
+    z-index: inherit;
+  }
 }
 
 .v-icon.v-icon {

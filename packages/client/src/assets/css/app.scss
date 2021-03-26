@@ -20,3 +20,23 @@ h1, h2, h3, h4, h5, h6 {
   margin: 4px;
   background: rgb(255 255 255 / 14%);
 }
+
+#app {
+  // force v-btn opacity on hover
+  .v-btn {
+    &__overlay {
+      opacity: 0;
+    }
+
+    &:hover {
+      .v-btn__overlay {
+        opacity: 0.1;
+      }
+    }
+  }
+
+  // force v-ripple opacity
+  .v-ripple__container {
+    opacity: 0.2;
+  }
+}

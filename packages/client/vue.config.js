@@ -44,5 +44,8 @@ module.exports = {
 
   chainWebpack: (config) => {
     config.resolve.symlinks(false)
+
+    // ignore warnings caused by files in "<module-name>/public", like for the owd-wolf3d module
+    // config.plugins.delete('friendly-errors')
   }
 };

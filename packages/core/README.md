@@ -1,6 +1,10 @@
 # Open Web Desktop - Client Core
 
 <p>
+    <img src="https://i.imgur.com/9peh1BX.png" alt="Open Web Desktop" />
+</p>
+
+<p>
     <a href="https://github.com/owdproject/owd-client/tree/next"><img src="https://img.shields.io/github/release/owdproject/owd-client.svg" /></a>
     <a href="https://npmjs.com/package/@owd-client/core"><img src="https://img.shields.io/npm/v/@owd-client/core.svg?color=blue" /></a>
     <a href="https://github.com/owdproject/owd-client/tree/next"><img src="https://img.shields.io/badge/owd-client-1895b1" /></a>
@@ -25,10 +29,8 @@ Check the README.md of the [owd-client](https://github.com/owdproject/owd-client
 
 ## Supporters
 
-See all sponsors & backers in the [BACKERS.md](BACKERS.md)
-
 <a href="https://www.patreon.com/hacklover">
-    <img alt="Open Web Desktop Patreon" src="https://img.shields.io/badge/dynamic/json?color=%23e85b46&label=patreon&query=data.attributes.patron_count&suffix=%20patrons&url=https://www.patreon.com/api/campaigns/1208485" />
+    <img alt="Open Web Desktop Patreon" src="https://img.shields.io/badge/dynamic/json?color=%23f96854&label=patreon&query=data.attributes.patron_count&suffix=%20patrons&url=https://www.patreon.com/api/campaigns/1208485" />
 </a>
 &nbsp;
 <a href="https://www.liberapay.com/hacklover">

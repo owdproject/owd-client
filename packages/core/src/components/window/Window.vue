@@ -410,9 +410,11 @@ export default {
     overflow: hidden;
     user-select: none;
     pointer-events: initial;
+    max-width: 100% !important;
+    max-height: 100%;
 
     @media (max-width: 768px) and (min-width: 561px) {
-      max-width: calc(100% - 76px) !important;
+      //max-width: calc(100% - 76px) !important;
     }
 
     &.resizable-component {

@@ -9,7 +9,7 @@
     <a href="https://npmjs.com/package/@owd-client/core"><img src="https://img.shields.io/npm/v/@owd-client/core.svg?color=blue" /></a>
     <a href="https://github.com/owdproject/owd-client/tree/next"><img src="https://img.shields.io/badge/owd-client-1895b1" /></a>
     <a href="https://github.com/topics/owd-modules"><img src="https://img.shields.io/badge/owd-modules-888" /></a>
-    <a href="https://discord.gg/3KFVP8b"><img src="https://img.shields.io/badge/chat-on%20discord-7289da.svg" /></a>
+    <a href="https://discord.gg/3KFVP8b"><img src="https://img.shields.io/discord/759699532896010261?color=7289da" /></a>
 </p>
 
 ## Overview
@@ -160,11 +160,11 @@ If you intend to contribute to the project, please join our [community chat](htt
 See all sponsors & backers in the [BACKERS.md](BACKERS.md)
 
 <a href="https://www.patreon.com/hacklover">
-    <img src="https://i.imgur.com/KODHUwR.png" width="160" alt="Become a Patron" />
+    <img alt="Open Web Desktop Patreon" src="https://img.shields.io/badge/dynamic/json?color=%23e85b46&label=patreon&query=data.attributes.patron_count&suffix=%20patrons&url=https://www.patreon.com/api/campaigns/1208485" />
 </a>
 &nbsp;
 <a href="https://www.liberapay.com/hacklover">
-    <img src="https://i.imgur.com/tGMNTUz.png" width="160" alt="Become a Patron" />
+    <img alt="Open Web Desktop Liberapay" src="https://img.shields.io/liberapay/receives/hacklover?label=liberapay" />
 </a>
 
 ## License

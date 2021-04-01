@@ -14,7 +14,7 @@
       'z-index': window.storage.position.z
     }"
     fit-parent
-    drag-selector=".owd-window__nav .owd-window__nav__title"
+    drag-selector=".owd-window__nav .owd-window__nav__draggable"
     @drag:start="onDragStart"
     @drag:move="onDragMove"
     @drag:end="onDragEnd"

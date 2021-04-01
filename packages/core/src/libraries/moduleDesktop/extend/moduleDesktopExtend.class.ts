@@ -57,6 +57,10 @@ export default class ModuleDesktopExtend {
       desktopModules[config.area] = {}
     }
 
+    if (!config.position) {
+      config.position = 'default'
+    }
+
     if (!desktopModules[config.area][config.position]) {
       desktopModules[config.area][config.position] = []
     }

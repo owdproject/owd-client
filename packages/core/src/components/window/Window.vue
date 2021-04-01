@@ -24,7 +24,8 @@
       windowNameClass,
       'owd-window',
       {
-        'owd-window--dense': dense,
+        'owd-window--dense': isDense,
+        // todo create computed isFocused, isMaximizable, etc
         'owd-window--focused': window.storage.focused,
         'owd-window--maximized': window.config.maximizable && window.storage.maximized,
         'owd-window--dragging': dragging,
@@ -131,6 +132,14 @@ export default {
     const resizing = ref(false)
     const dragging = ref(false)
 
+    const isDense = computed(() => {
+      if (props.window.config.dense === false) {
+        return props.window.config.dense
+      }
+
+      return props.dense
+    })
+
     // window name class
     const windowNameClass = computed(() => {
       const kebabCase = require('kebab-case')
@@ -174,6 +183,8 @@ export default {
     return {
       resizing,
       dragging,
+
+      isDense,
 
       windowNameClass,
       windowMaxWidth,

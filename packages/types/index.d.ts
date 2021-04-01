@@ -167,11 +167,13 @@ export interface OwdModuleAppWindowConfig {
   position: OwdModuleAppWindowConfigPosition
   favorite?: boolean
   menu?: boolean
+  menuApp?: boolean
   resizable?: boolean
   minimized?: boolean
   maximized?: boolean
   maximizable?: boolean
   borderless?: boolean
+  dense?: boolean
   noContentSpacing?: boolean
   autoOpen?: boolean
   autoCloseBeforePageUnload?: boolean

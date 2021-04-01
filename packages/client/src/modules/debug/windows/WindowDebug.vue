@@ -33,6 +33,13 @@
 
         <div>
           <label>
+            <input type="checkbox" v-model="window.config.dense" value="1" />
+            Dense
+          </label>
+        </div>
+
+        <div>
+          <label>
             <input type="checkbox" onclick="return false" :checked="window.storage.focused" />
             Focused
           </label>

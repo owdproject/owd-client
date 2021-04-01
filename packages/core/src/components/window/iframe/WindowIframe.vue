@@ -102,7 +102,6 @@ export default {
 <style lang="scss">
 .owd-window-iframe {
   &__content {
-    position: relative;
     height: 100%;
 
     iframe {

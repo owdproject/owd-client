@@ -725,10 +725,10 @@ export default class WindowModule extends VuexModule {
    * @param data
    */
   @Action
-  windowSetNavTitle(data: {window: any, title: string}): boolean {
+  windowSetNavTitle(data: {window: any, title: string, exclusive: boolean}): boolean {
     return this
       .getWindow(data.window)
-      .then((windowInstance: OwdModuleAppWindowInstance) => windowInstance.setNavTitle(data.title))
+      .then((windowInstance: OwdModuleAppWindowInstance) => windowInstance.setNavTitle(data.title, data.exclusive))
       .catch(() => false)
   }
 

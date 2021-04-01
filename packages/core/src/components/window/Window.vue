@@ -228,13 +228,6 @@ export default {
   mounted() {
     const self = this
 
-    // when press ESC and a window is in full-screen mode
-    window.addEventListener('keydown', function (e) {
-      if (e.keyCode === 27) {
-        self.$store.dispatch('core/window/windowUnmaximizeAll')
-      }
-    })
-
     if (this.window.config.autoCloseBeforePageUnload) {
       window.addEventListener(
           'beforeunload',

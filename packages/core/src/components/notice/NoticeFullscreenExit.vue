@@ -25,6 +25,13 @@ export default {
     }
   },
   mounted() {
+    // when press ESC and a window is in full-screen mode
+    window.addEventListener('keydown', function (e) {
+      if (e.keyCode === 27) {
+        self.$store.dispatch('core/window/windowUnmaximizeAll')
+      }
+    })
+
     this.$store.subscribe((mutation) => {
       if (mutation.type === 'core/fullscreen/SET_FULLSCREEN_MODE') {
         if (typeof mutation.payload === 'boolean') {

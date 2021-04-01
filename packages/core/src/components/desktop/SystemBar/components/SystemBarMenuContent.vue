@@ -9,6 +9,7 @@
 <script>
 export default {
   props: {
+    config: Object,
     arrowPosition: {
       type: [String, Number],
       default: 'center'
@@ -33,6 +34,10 @@ export default {
     },
     contentStyle() {
       if (typeof this.arrowPosition === 'number') {
+        if (this.config && this.config.position === 'right') {
+          return `left: auto; right: ${this.arrowPosition}px;`
+        }
+
         return `left: ${this.arrowPosition}px;`
       }
       return ''

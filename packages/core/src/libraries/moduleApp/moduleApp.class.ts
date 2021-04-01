@@ -115,9 +115,16 @@ export default abstract class ModuleApp implements OwdModuleApp {
     if (this.moduleInfo.windows) {
       let i = 0;
       for (const moduleWindow of this.moduleInfo.windows) {
-        if (!moduleWindow.titleShort) {
-          // titleShort always available
-          this.moduleInfo.windows[i].titleShort = this.moduleInfo.windows[i].title
+        if (typeof moduleWindow.menu === 'undefined') {
+          this.moduleInfo.windows[i].menu = true
+        }
+
+        if (typeof moduleWindow.menuApp === 'undefined') {
+          this.moduleInfo.windows[i].menuApp = true
+        }
+
+        if (typeof moduleWindow.dense === 'undefined') {
+          this.moduleInfo.windows[i].dense = true
         }
         i++
       }

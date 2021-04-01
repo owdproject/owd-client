@@ -93,6 +93,7 @@ export default {
     height: 100%;
     background-position: center;
     background-repeat: no-repeat;
+    background-size: contain;
   }
 
   i {

@@ -27,7 +27,9 @@ export default {
 
     store.subscribe((mutation) => {
       if (mutation.type === `core/notification/ADD`) {
-        notifications.value.push(mutation.payload)
+        const notification = mutation.payload
+
+        notifications.value.push(notification)
 
         // remove other notifications if max allowed is X
         if (notifications.value.length > options.floatingNotification.max) {
@@ -35,7 +37,7 @@ export default {
         }
 
         // remove after X seconds
-        setTimeout(() => notifications.value.shift(), options.floatingNotification.duration)
+        setTimeout(() => notifications.value.shift(), notification.duration || options.floatingNotification.duration)
       }
     })
 

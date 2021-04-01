@@ -49,7 +49,9 @@
         <component
             v-if="desktopModule.config.opened"
             :is="desktopModule.components.content"
+            :config="desktopModule.config"
             :arrow-position="desktopModule.config.arrowPosition"
+            @close="closeSystemBarDesktopModule(desktopModule)"
         />
       </template>
 

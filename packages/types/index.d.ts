@@ -160,18 +160,21 @@ export interface OwdModuleAppWindowConfig {
   category: string
   title: string
   titleApp?: string
-  titleShort: string
+  titleWindow?: string
+  titleMenu?: string
   icon: string|OwdModuleAppWindowConfigIcon
 
   size: OwdModuleAppWindowConfigSize
   position: OwdModuleAppWindowConfigPosition
   favorite?: boolean
   menu?: boolean
+  menuApp?: boolean
   resizable?: boolean
   minimized?: boolean
   maximized?: boolean
   maximizable?: boolean
   borderless?: boolean
+  dense?: boolean
   noContentSpacing?: boolean
   autoOpen?: boolean
   autoCloseBeforePageUnload?: boolean

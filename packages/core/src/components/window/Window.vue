@@ -14,7 +14,7 @@
       'z-index': window.storage.position.z
     }"
     fit-parent
-    drag-selector=".owd-window__nav .owd-window__nav__title"
+    drag-selector=".owd-window__nav .owd-window__nav__draggable"
     @drag:start="onDragStart"
     @drag:move="onDragMove"
     @drag:end="onDragEnd"
@@ -24,7 +24,8 @@
       windowNameClass,
       'owd-window',
       {
-        'owd-window--dense': dense,
+        'owd-window--dense': isDense,
+        // todo create computed isFocused, isMaximizable, etc
         'owd-window--focused': window.storage.focused,
         'owd-window--maximized': window.config.maximizable && window.storage.maximized,
         'owd-window--dragging': dragging,
@@ -38,7 +39,7 @@
   >
     <div class="owd-window__container" @mousedown="onMouseDown">
 
-      <WindowNav :title="title || window.storage.title || window.config.title" @toggleMaximize="onToggleMaximize">
+      <WindowNav :title="title || window.storage.title || window.config.titleWindow || window.config.title" @toggleMaximize="onToggleMaximize">
         <template v-slot:nav-prepend>
           <slot name="nav-prepend" />
         </template>
@@ -131,6 +132,14 @@ export default {
     const resizing = ref(false)
     const dragging = ref(false)
 
+    const isDense = computed(() => {
+      if (props.window.config.dense === false) {
+        return props.window.config.dense
+      }
+
+      return props.dense
+    })
+
     // window name class
     const windowNameClass = computed(() => {
       const kebabCase = require('kebab-case')
@@ -175,6 +184,8 @@ export default {
       resizing,
       dragging,
 
+      isDense,
+
       windowNameClass,
       windowMaxWidth,
       windowMaxHeight,
@@ -216,13 +227,6 @@ export default {
   },
   mounted() {
     const self = this
-
-    // when press ESC and a window is in full-screen mode
-    window.addEventListener('keydown', function (e) {
-      if (e.keyCode === 27) {
-        self.$store.dispatch('core/window/windowUnmaximizeAll')
-      }
-    })
 
     if (this.window.config.autoCloseBeforePageUnload) {
       window.addEventListener(
@@ -429,6 +433,7 @@ export default {
     }
 
     &__content {
+      position: relative;
       height: 100%;
       padding: 0 12px 12px 12px;
       box-sizing: border-box;

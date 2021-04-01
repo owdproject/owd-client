@@ -1,15 +1,18 @@
 <template>
   <div class="owd-window__nav">
 
+    <div class="owd-window__nav__draggable" />
+
     <div class="owd-window__nav__btn-group owd-window__nav__btn-group--prepend">
       <slot name="nav-prepend" />
     </div>
 
     <div
-      class="owd-window__nav__title"
-      v-text="title"
-      @dblclick="$emit('toggleMaximize')"
-    />
+        class="owd-window__nav__title"
+        @dblclick="$emit('toggleMaximize')"
+    >
+      <div class="owd-window__nav__title-inner" v-text="title" />
+    </div>
 
     <div class="owd-window__nav__btn-group owd-window__nav__btn-group--append">
       <slot name="nav-append" />
@@ -35,6 +38,14 @@ export default {
     user-select: none;
     z-index: 1;
 
+    &__draggable {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+    }
+
     &__title {
       display: inline-block;
       width: 100%;
@@ -44,6 +55,16 @@ export default {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      pointer-events: none;
+
+      &-inner {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 65%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
 
       a {
         color: inherit;

@@ -45,7 +45,8 @@ export default {
     SystemBar: {
       modules: [
         'ApplicationMenu',
-        'NotificationMenu'
+        'NotificationMenu',
+        'StatusMenu'
       ],
       options: {
         enabled: true,

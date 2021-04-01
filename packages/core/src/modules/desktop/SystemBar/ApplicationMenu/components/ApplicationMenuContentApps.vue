@@ -20,7 +20,7 @@
             @click="windowOpen(moduleAppWindow)"
         >
           <MenuItemIcon :icon="moduleAppWindow.icon" force-svg/>
-          {{ moduleAppWindow.titleApp || moduleAppWindow.titleShort }}
+          {{ moduleAppWindow.titleApp || moduleAppWindow.title }}
         </button>
       </li>
     </ul>

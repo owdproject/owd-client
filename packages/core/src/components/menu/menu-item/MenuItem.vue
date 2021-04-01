@@ -10,7 +10,7 @@
         <MenuItemIcon :icon="window.config.icon"/>
       </div>
       <div class="owd-menu__item__name">
-        <div class="owd-menu__item__name-inner" v-html="window.config.titleShort || window.config.title"/>
+        <div class="owd-menu__item__name-inner" v-html="window.config.titleMenu || window.config.title"/>
       </div>
     </div>
 

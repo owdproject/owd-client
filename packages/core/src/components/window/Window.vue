@@ -39,7 +39,7 @@
   >
     <div class="owd-window__container" @mousedown="onMouseDown">
 
-      <WindowNav :title="title || window.storage.title || window.config.title" @toggleMaximize="onToggleMaximize">
+      <WindowNav :title="title || window.storage.title || window.config.titleWindow || window.config.title" @toggleMaximize="onToggleMaximize">
         <template v-slot:nav-prepend>
           <slot name="nav-prepend" />
         </template>

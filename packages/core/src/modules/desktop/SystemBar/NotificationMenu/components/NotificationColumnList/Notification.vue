@@ -12,11 +12,11 @@
     <div class="notification-text">
 
       <div class="headline">
-        <span class="title" v-text="notification.title" />
-        <span class="date" v-text="dateFromNow" />
+        <span class="notification-text__title" v-text="notification.title" />
+        <span class="notification-text__date" v-text="dateFromNow" />
       </div>
 
-      <div class="details" v-text="notification.details" />
+      <div class="notification-text__details" v-text="notification.details" />
 
     </div>
 
@@ -88,29 +88,30 @@ export default {
     color: #777;
 
     .headline {
-      line-height: 18px;
+      margin-top: -3px;
+      margin-bottom: 1px;
+      line-height: 16px;
       line-clamp: 1;
       -webkit-line-clamp: 1;
       white-space: nowrap;
       text-overflow: ellipsis;
       max-width: 100%;
       overflow: hidden;
-
-      .title {
-        font-weight: 600;
-        font-size: 13px;
-        color: white;
-      }
-
-      .date {
-        margin-left: 9px;
-        vertical-align: 1px;
-        font-size: 11px;
-        color: grey;
-      }
     }
 
-    .details {
+    &__title {
+      font-size: 15px;
+      color: white;
+    }
+
+    &__date {
+      margin-left: 9px;
+      vertical-align: 1px;
+      font-size: 11px;
+      color: grey;
+    }
+
+    &__details {
       color: #717171;
       line-height: 20px;
       text-transform: uppercase;

@@ -10,8 +10,8 @@
     </div>
 
     <div class="notification-text">
-      <div class="title" v-text="notification.title" />
-      <div class="details" v-text="notification.details" />
+      <div class="notification-text__title" v-text="notification.title" />
+      <div class="notification-text__details" v-text="notification.details" />
     </div>
   </div>
 </template>
@@ -57,7 +57,7 @@ export default {
     height: 32px;
     color: #777;
 
-    .title {
+    &__title {
       color: white;
       line-height: 18px;
       line-clamp: 1;
@@ -68,7 +68,7 @@ export default {
       overflow: hidden;
     }
 
-    .details {
+    &__details {
       color: #717171;
       line-height: 20px;
       text-transform: uppercase;

@@ -433,6 +433,7 @@ export default {
     }
 
     &__content {
+      position: relative;
       height: 100%;
       padding: 0 12px 12px 12px;
       box-sizing: border-box;

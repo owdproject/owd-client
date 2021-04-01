@@ -55,11 +55,15 @@ export default {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      pointer-events: none;
 
       &-inner {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
+        max-width: 65%;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       a {

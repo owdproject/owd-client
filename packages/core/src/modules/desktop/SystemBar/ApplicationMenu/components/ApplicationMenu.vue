@@ -1,5 +1,9 @@
 <template>
-  <DesktopSystemBarMenu v-text="$t(`desktop.SystemBar.${config.name}.menu`)" />
+  <DesktopSystemBarMenu>
+    <span>
+      {{$t(`desktop.SystemBar.${config.name}.menu`)}}<v-icon>mdi-menu-down</v-icon>
+    </span>
+  </DesktopSystemBarMenu>
 </template>
 
 <script>
@@ -12,3 +16,9 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+span {
+  pointer-events: none;
+}
+</style>

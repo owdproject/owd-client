@@ -8,7 +8,7 @@
             :is="desktopModule.components.menu"
             :config="desktopModule.config"
         />
-        <v-icon class="ml-n1 mr-n2">mdi-menu-down</v-icon>
+        <v-icon class="mr-n2">mdi-menu-down</v-icon>
       </template>
 
     </div>

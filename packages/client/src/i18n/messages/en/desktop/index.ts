@@ -9,6 +9,7 @@ export default {
         'games': 'Games',
         'media': 'Sound & Video',
         'web-radio': 'Web Radio',
+        'utilities': 'Utilities',
         'other': 'Other'
       }
     }

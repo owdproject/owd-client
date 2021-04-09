@@ -98,7 +98,7 @@ export default {
     .v-btn {
       position: relative;
       height: 31px;
-      min-width: 33px;
+      min-width: 36px;
       padding: 0;
       text-transform: initial;
       box-shadow: none;

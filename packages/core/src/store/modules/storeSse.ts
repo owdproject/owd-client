@@ -1,11 +1,12 @@
 import {VuexModule, Module, Mutation, Action} from "vuex-class-modules";
 
+let reconnectTimeout: any = null
+
 @Module
 export default class SseVuexModule extends VuexModule {
   private eventSource: any = null
-  private intervalReconnect: any = null
 
-  private connected: boolean = true
+  private connected: boolean = false
 
   @Mutation
   SET_CONNECTED(value: boolean) {
@@ -29,17 +30,15 @@ export default class SseVuexModule extends VuexModule {
         this.SET_CONNECTED(false)
       }
 
-      console.error('[OWD] Unable to connect to SSE')
-
       sse.close()
 
       // reconnect after X seconds
-      clearInterval(this.intervalReconnect)
-      this.intervalReconnect = setInterval(() => this.connect(), 5000)
+      clearTimeout(reconnectTimeout)
+      reconnectTimeout = setTimeout(() => this.connect(), 5000)
     }
 
     sse.onmessage = (message) => {
-      clearInterval(this.intervalReconnect)
+      clearTimeout(reconnectTimeout)
 
       // set as connected
       if (!this.connected) {

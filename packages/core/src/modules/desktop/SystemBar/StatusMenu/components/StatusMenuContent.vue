@@ -8,6 +8,7 @@
       <component
           v-for="(desktopModule, i) of desktopModules.default" :key="i"
           :is="desktopModule.components.content"
+          @close="menuClose"
       />
     </template>
 

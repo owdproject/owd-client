@@ -8,7 +8,7 @@
             :is="desktopModule.components.menu"
             :config="desktopModule.config"
         />
-        <v-icon class="mr-n2">mdi-menu-down</v-icon>
+        <v-icon class="ml-n1 mr-n2">mdi-menu-down</v-icon>
       </template>
 
     </div>
@@ -36,7 +36,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .icons {
-    pointer-events: none;
+.icons {
+  pointer-events: none;
+
+  i {
+    &:not(:last-child) {
+      margin: 0 4px;
+    }
   }
+}
 </style>

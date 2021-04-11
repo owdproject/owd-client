@@ -14,6 +14,11 @@ export default class SseVuexModule extends VuexModule {
   }
 
   @Mutation
+  SET_EVENT_SOURCE(eventSource: any) {
+    this.eventSource = eventSource
+  }
+
+  @Mutation
   LOG_EVENT(value: any) {}
 
   @Action
@@ -53,6 +58,15 @@ export default class SseVuexModule extends VuexModule {
       } else {
         this.LOG_EVENT(data)
       }
+    }
+
+    this.SET_EVENT_SOURCE(sse)
+  }
+
+  @Action
+  disconnect() {
+    if (this.connected && this.eventSource) {
+      this.eventSource.close()
     }
   }
 }

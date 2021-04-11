@@ -389,14 +389,10 @@ export default class WindowModule extends VuexModule {
         // open window
         this.windowOpen(windowInstance)
 
-        // focus on window
-        this.windowFocus(windowInstance)
-
         return windowInstance
       })
 
     } else {
-      // is this legit? todo check
       this.windowOpen(data)
     }
   }
@@ -415,7 +411,7 @@ export default class WindowModule extends VuexModule {
     this.REGISTER_WINDOW_INSTANCE(windowInstance)
 
     // get window instance once set
-    // todo dunno why have to do this
+    // todo improve, dunno why have to do this
     windowInstance = helperWindow.getWindowInstance(
       windowInstance.moduleName,
       windowInstance.config.name,
@@ -443,6 +439,9 @@ export default class WindowModule extends VuexModule {
 
         // recalculate window position
         windowInstance.adjustPosition()
+
+        // focus window
+        this.windowFocus(windowInstance)
 
         return windowInstance
       })

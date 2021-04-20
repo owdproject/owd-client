@@ -168,7 +168,7 @@ export default class WindowModule extends VuexModule {
         // for each window config in moduleInfo.windows (for example WindowSample)
         for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
 
-          console.log('[OWD] Module window initialize: ' + owdModuleAppWindowConfig.name)
+          console.log('[OWD] Window initialized: ' + owdModuleAppWindowConfig.name)
 
           this.REGISTER_WINDOW_NAMESPACE({
             moduleName: owdModuleApp.moduleInfo.name,
@@ -213,7 +213,13 @@ export default class WindowModule extends VuexModule {
 
                 // run windowOpen method just for "opened" event triggering
                 if (windowInstance && toOpen) {
-                  await this.windowOpen(windowInstance)
+
+                  // open window
+                  windowInstance.open()
+
+                  // recalculate window position
+                  windowInstance.adjustPosition()
+
                 }
               }
             }

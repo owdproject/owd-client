@@ -1,6 +1,6 @@
 <template>
-  <div class="owd-menu__item__icon">
-    <div class="owd-menu__item__icon__image" v-if="(icon.image && !forceSvg) || (forceSvg && !iconName)" :style="imageStyle" />
+  <div class="owd-window-icon">
+    <div class="owd-window-icon__image" v-if="(icon.image && !forceSvg) || (forceSvg && !iconName)" :style="imageStyle" />
     <v-icon v-else :style="iconStyle">{{iconName}}</v-icon>
   </div>
 </template>
@@ -27,15 +27,6 @@ export default {
       const styles = []
 
       if (typeof this.icon === 'object') {
-        if (this.icon.offset) {
-          if (this.icon.offset.x) {
-            styles.push(`left: ${this.icon.offset.x}px;`)
-          }
-          if (this.icon.offset.y) {
-            styles.push(`top: ${this.icon.offset.y}px;`)
-          }
-        }
-
         if (this.icon.size) {
           styles.push(`font-size: ${this.icon.size};`)
         }
@@ -61,14 +52,6 @@ export default {
       const styles = []
 
       if (typeof this.icon === 'object') {
-        if (this.icon.offset) {
-          if (this.icon.offset.x) {
-            styles.push(`left: ${this.icon.offset.x}px;`)
-          }
-          if (this.icon.offset.y) {
-            styles.push(`top: ${this.icon.offset.y}px;`)
-          }
-        }
         if (this.icon.image) {
           styles.push(`background-image: url(${this.icon.image});`)
         }
@@ -86,7 +69,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.owd-menu__item__icon {
+.owd-window-icon {
+  position: relative;
   height: 100%;
 
   &__image {
@@ -97,7 +81,10 @@ export default {
   }
 
   i {
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-size: 24px;
   }
 }

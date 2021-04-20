@@ -6,8 +6,8 @@
         }]"
         @click="(e) => windowToggle(e, window)"
     >
-      <div class="owd-menu__item__square" :style="menuItemStyles">
-        <MenuItemIcon :icon="window.config.icon"/>
+      <div class="owd-menu__item__icon" :style="menuItemStyles">
+        <WindowMenuIcon :icon="window.config.icon" />
       </div>
       <div class="owd-menu__item__name">
         <div class="owd-menu__item__name-inner" v-html="window.config.titleMenu || window.config.title"/>
@@ -18,12 +18,12 @@
 </template>
 
 <script>
-import MenuItemIcon from './MenuItemIcon'
+import WindowMenuIcon from '../../window/icon/WindowMenuIcon'
 import {getCurrentInstance, computed} from "vue";
 import {useStore} from "vuex";
 
 export default {
-  components: {MenuItemIcon},
+  components: {WindowMenuIcon},
   props: {
     window: Object
   },
@@ -44,13 +44,11 @@ export default {
         // from mobile
         if ($device.mobile) {
 
-          if (window.storage.opened) {
-            store.dispatch('core/window/windowClose', window)
-          } else {
-            store.dispatch('core/window/windowCloseAll')
-            store.dispatch('core/window/windowOpen', window)
-          }
+          store.dispatch('core/window/windowMinimizeAll')
+          store.dispatch('core/window/windowOpen', window)
+          store.dispatch('core/window/windowFocus', window)
 
+          return
         }
 
         // from desktop
@@ -68,7 +66,7 @@ export default {
 
           } else {
 
-            if (window.storage && (!window.storage.opened || window.storage.minimized)) {
+            if (!window.storage.opened || window.storage.minimized) {
               store.dispatch('core/window/windowOpen', window)
               store.dispatch('core/window/windowFocus', window)
             } else {
@@ -119,7 +117,7 @@ export default {
     }
   }
 
-  &__square {
+  &__icon {
     width: 48px;
     height: 48px;
     line-height: 45px;
@@ -137,12 +135,12 @@ export default {
     }
   }
 
-  &--active &__square {
+  &--active &__icon {
     background: $menuItemSquareBackground;
   }
 
   @media (max-width: 560px) {
-    &__square {
+    &__icon {
       position: relative !important;
       width: 48px;
       z-index: 3;

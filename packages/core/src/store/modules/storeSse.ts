@@ -2,6 +2,7 @@ import {VuexModule, Module, Mutation, Action} from "vuex-class-modules";
 
 let reconnectTimeout: any = null
 
+// @ts-ignore
 import config from '@/../client.config'
 
 @Module

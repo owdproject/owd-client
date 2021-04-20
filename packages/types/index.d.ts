@@ -59,6 +59,9 @@ export interface OwdClientConfigurationIcons {
 
 export interface OwdClientConfigurationSse {
   enabled: boolean
+  server: string
+  reconnectOnError: boolean
+  reconnectTimeout: number
 }
 
 export interface OwdClientConfigurationDesktop {

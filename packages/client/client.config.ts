@@ -32,7 +32,10 @@ export default {
 
   // owd sse integration
   sse: {
-    enabled: false
+    enabled: false,
+    server: '',
+    reconnectOnError: true,
+    reconnectTimeout: 5000
   },
 
   // owd desktop

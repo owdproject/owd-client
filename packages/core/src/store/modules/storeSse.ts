@@ -2,16 +2,12 @@ import {VuexModule, Module, Mutation, Action} from "vuex-class-modules";
 
 let reconnectTimeout: any = null
 
+import config from '@/../client.config'
+
 @Module
 export default class SseVuexModule extends VuexModule {
   private eventSource: any = null
-
   private connected: boolean = false
-
-  @Mutation
-  SET_CONNECTED(value: boolean) {
-    this.connected = value
-  }
 
   @Mutation
   SET_EVENT_SOURCE(eventSource: any) {
@@ -19,7 +15,19 @@ export default class SseVuexModule extends VuexModule {
   }
 
   @Mutation
+  SET_CONNECTED(value: boolean) {
+    this.connected = value
+  }
+
+  @Mutation
   LOG_EVENT(value: any) {}
+
+  @Action
+  initialize() {
+    if (config.sse.enabled) {
+      this.connect()
+    }
+  }
 
   @Action
   connect() {
@@ -27,7 +35,7 @@ export default class SseVuexModule extends VuexModule {
       return console.error('[OWD] Already connected to SSE')
     }
 
-    const sse = new EventSource(process.env.VUE_APP_API_BASE_URL + 'sse')
+    const sse = new EventSource(config.sse.server)
 
     sse.onerror = () => {
       // reset connected status
@@ -38,8 +46,10 @@ export default class SseVuexModule extends VuexModule {
       sse.close()
 
       // reconnect after X seconds
-      clearTimeout(reconnectTimeout)
-      reconnectTimeout = setTimeout(() => this.connect(), 5000)
+      if (config.sse.reconnectOnError) {
+        clearTimeout(reconnectTimeout)
+        reconnectTimeout = setTimeout(() => this.connect(), config.sse.reconnectTimeout)
+      }
     }
 
     sse.onmessage = (message) => {
@@ -65,7 +75,7 @@ export default class SseVuexModule extends VuexModule {
 
   @Action
   disconnect() {
-    if (this.connected && this.eventSource) {
+    if (this.eventSource && this.connected) {
       this.eventSource.close()
     }
   }

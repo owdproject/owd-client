@@ -54,14 +54,4 @@ export default class {
 
     this.events[event].push(fn)
   }
-
-  /**
-   * API base url helper
-   *
-   * @param path
-   * @returns {*}
-   */
-  apiBaseUrl(path: string) {
-    return process.env.VUE_APP_API_BASE_URL + path
-  }
 }

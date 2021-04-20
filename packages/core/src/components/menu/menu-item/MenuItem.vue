@@ -40,13 +40,17 @@ export default {
 
         return ''
       }),
-      windowToggle: (event, window) => {
+      windowToggle: async (event, window) => {
         // from mobile
         if ($device.mobile) {
 
-          store.dispatch('core/window/windowMinimizeAll')
-          store.dispatch('core/window/windowOpen', window)
-          store.dispatch('core/window/windowFocus', window)
+          if (window.isMinimized) {
+            await store.dispatch('core/window/windowMinimizeAll')
+            await store.dispatch('core/window/windowOpen', window)
+            await store.dispatch('core/window/windowFocus', window)
+          } else {
+            await store.dispatch('core/window/windowMinimize', window)
+          }
 
           return
         }
@@ -55,22 +59,22 @@ export default {
         if (event.shiftKey) {
 
           // force close with shiftkey
-          store.dispatch('core/window/windowMinimize', window)
+          await store.dispatch('core/window/windowMinimize', window)
 
         } else {
 
           if (window.dummy) {
 
             // create new window
-            store.dispatch('core/window/windowCreate', window.config.name)
+            await store.dispatch('core/window/windowCreate', window.config.name)
 
           } else {
 
             if (!window.storage.opened || window.storage.minimized) {
-              store.dispatch('core/window/windowOpen', window)
-              store.dispatch('core/window/windowFocus', window)
+              await store.dispatch('core/window/windowOpen', window)
+              await store.dispatch('core/window/windowFocus', window)
             } else {
-              store.dispatch('core/window/windowMinimize', window)
+              await store.dispatch('core/window/windowMinimize', window)
             }
 
           }

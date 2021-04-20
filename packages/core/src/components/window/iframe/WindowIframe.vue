@@ -49,10 +49,15 @@ export default {
   },
   computed: {
     iframeId() {
-      return this.window.module.moduleInfo.name+'-iframe'
+      return this.window.uniqueID
     }
   },
   watch: {
+    url: function(val) {
+      if (this.window.storage.opened === true) {
+        this.iframeSrc = val
+      }
+    },
     'window.storage.focused': async function (val) {
       this.focused = val
 

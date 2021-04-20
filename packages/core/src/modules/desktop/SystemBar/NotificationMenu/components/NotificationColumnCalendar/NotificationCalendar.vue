@@ -53,7 +53,7 @@ export default {
     line-height: 12px;
   }
   .date {
-    font-weight: 800;
+    font-weight: bold;
     font-size: 20px;
     line-height: 40px;
   }

@@ -60,6 +60,10 @@ export default {
     grid-template-columns: 100%;
   }
 
+  @media(max-height: 400px) {
+    max-height: calc(100vh - 60px);
+  }
+
   .arrow {
     border: solid $windowBorder;
     background: $windowBackground;
@@ -71,6 +75,10 @@ export default {
 
   .col-notification-list {
     padding: 8px 24px;
+
+    @media(max-width: 600px), (max-height: 400px) {
+      padding: 4px 16px;
+    }
   }
 
   .col-calendar {

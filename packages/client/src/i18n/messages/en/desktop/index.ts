@@ -12,6 +12,10 @@ export default {
         'utilities': 'Utilities',
         'other': 'Other'
       }
+    },
+    NotificationMenu: {
+      notificationsEmpty: 'No notifications',
+      clear: 'Clear'
     }
   }
 }

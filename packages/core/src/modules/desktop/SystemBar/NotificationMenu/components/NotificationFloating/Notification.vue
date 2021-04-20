@@ -59,7 +59,7 @@ export default {
 
     &__title {
       color: white;
-      line-height: 18px;
+      line-height: 16px;
       line-clamp: 1;
       -webkit-line-clamp: 1;
       white-space: nowrap;
@@ -74,7 +74,6 @@ export default {
       text-transform: uppercase;
       font-size: 10px;
       letter-spacing: 1px;
-      margin-top: -2px;
     }
   }
 }

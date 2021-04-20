@@ -141,6 +141,10 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     return true
   }
 
+  get isMinimized(): boolean {
+    return this.instance.storage.minimized
+  }
+
   maximize(): boolean {
     if (!this.instance.config.maximizable) {
       return false
@@ -149,6 +153,10 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     this.instance.storage.maximized = true
 
     return true
+  }
+
+  get isMaximized(): boolean {
+    return this.instance.storage.maximized
   }
 
   unmaximize(): boolean {
@@ -169,6 +177,10 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     this.instance.storage.position.z = index
 
     return true
+  }
+
+  get hasFocus(): boolean {
+    return this.instance.storage.focused
   }
 
   getSize(): OwdModuleAppWindowConfigSize {

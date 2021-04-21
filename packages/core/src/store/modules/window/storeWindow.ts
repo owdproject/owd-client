@@ -479,14 +479,7 @@ export default class WindowModule extends VuexModule {
   windowMaximize(data: any): boolean {
     return this
       .getWindow(data)
-      .then((windowInstance: OwdModuleAppWindowInstance) => {
-        // maximize window
-        windowInstance.maximize()
-
-        this.fullscreenModule.SET_FULLSCREEN_MODE(true)
-
-        return true
-      })
+      .then((windowInstance: OwdModuleAppWindowInstance) => windowInstance.maximize(true))
       .catch(() => false)
   }
 
@@ -499,16 +492,7 @@ export default class WindowModule extends VuexModule {
   windowUnmaximize(data: any): boolean {
     return this
       .getWindow(data)
-      .then((windowInstance: OwdModuleAppWindowInstance) => {
-        if (windowInstance.config.maximizable) {
-          // unmaximize window
-          windowInstance.unmaximize()
-
-          this.fullscreenModule.SET_FULLSCREEN_MODE(false)
-
-          return true
-        }
-      })
+      .then((windowInstance: OwdModuleAppWindowInstance) => windowInstance.maximize(false))
       .catch(() => false)
   }
 
@@ -600,7 +584,7 @@ export default class WindowModule extends VuexModule {
    */
   @Action
   async windowUnmaximizeAll(): Promise<void> {
-    await helperWindow.forEachWindowInstance(async windowInstance => windowInstance.unmaximize())
+    await helperWindow.forEachWindowInstance(async windowInstance => windowInstance.maximize(false))
 
     this.fullscreenModule.SET_FULLSCREEN_MODE(false)
   }

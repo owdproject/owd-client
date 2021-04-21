@@ -215,8 +215,7 @@ export interface OwdModuleAppWindowInstance extends OwdModuleAppWindowCreateInst
   close(): void
   destroy(): void
   minimize(): void
-  maximize(): void
-  unmaximize(): void
+  maximize(toggle: boolean): void
 
   setFocusActive(focused: boolean): void
   getFocusIndex(): void

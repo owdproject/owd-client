@@ -25,6 +25,8 @@ export default {
     }
   },
   mounted() {
+    const self = this
+
     // when press ESC and a window is in full-screen mode
     window.addEventListener('keydown', function (e) {
       if (e.keyCode === 27) {

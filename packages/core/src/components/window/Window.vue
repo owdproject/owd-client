@@ -504,22 +504,18 @@ export default {
     }
 
     &--maximized {
-      .owd-window__container {
-        > .owd-window__content {
-          position: fixed !important;
-          top: 0 !important;
-          left: 0 !important;
-          right: 0 !important;
-          width: 100% !important;
-          height: 100% !important;
-          margin: 0 !important;
-          z-index: 999;
-          background: $windowBackground;
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      margin: 0 !important;
+      z-index: 999;
+      background: $windowBackground;
 
-          @media (max-width: 768px) {
-            left: auto !important;
-          }
-        }
+      @media (max-width: 768px) {
+        left: auto !important;
       }
     }
   }

@@ -133,13 +133,19 @@ export default {
     line-height: 32px;
     text-align: center;
     vertical-align: middle;
-    margin-top: -1px;
+    margin-top: 6px;
     margin-right: 12px;
     color: $windowColorActive;
   }
 
   &__name {
     display: inline-block;
+
+    &-inner {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 
   ul {
@@ -151,7 +157,8 @@ export default {
       width: 100%;
 
       button {
-        display: block;
+        display: grid;
+        grid-template-columns: 44px calc(100% - 44px);
         width: 100%;
         text-align: left;
         cursor: pointer;

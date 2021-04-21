@@ -27,6 +27,14 @@ export default {
       const styles = []
 
       if (typeof this.icon === 'object') {
+        if (this.icon.offset) {
+          if (this.icon.offset.x) {
+            styles.push(`margin-left: ${this.icon.offset.x}px;`)
+          }
+          if (this.icon.offset.y) {
+            styles.push(`margin-top: ${this.icon.offset.y}px;`)
+          }
+        }
         if (this.icon.size) {
           styles.push(`font-size: ${this.icon.size};`)
         }

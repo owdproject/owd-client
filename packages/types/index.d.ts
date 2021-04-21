@@ -262,6 +262,10 @@ export interface OwdModuleAppWindowsStorage {
 
 export interface OwdModuleAppWindowConfigIcon {
   name?: string
+  offset?: {
+    x?: number
+    y?: number
+  },
   forceMenuAppSvg?: boolean
 }
 

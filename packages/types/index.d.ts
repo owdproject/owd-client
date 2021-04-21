@@ -178,6 +178,7 @@ export interface OwdModuleAppWindowConfig {
   maximizable?: boolean
   borderless?: boolean
   dense?: boolean
+  hostname?: string
   noContentSpacing?: boolean
   autoOpen?: boolean
   autoCloseBeforePageUnload?: boolean

@@ -181,12 +181,12 @@ export default class WindowModule extends VuexModule {
             storage: undefined
           }
 
-          // create owdModuleApp window instances restoring previous local storage
-
           if (
             this.storage &&
             Object.prototype.hasOwnProperty.call(this.storage, owdModuleAppWindowConfig.name)
           ) {
+
+            // create owdModuleApp window instances restoring previous local storage
 
             const owdModuleAppWindowInstancesLocalStorage = this.storage[owdModuleAppWindowConfig.name]
 

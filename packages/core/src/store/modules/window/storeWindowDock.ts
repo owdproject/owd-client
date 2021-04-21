@@ -41,6 +41,14 @@ export default class WindowDockModule extends VuexModule {
               continue
             }
 
+            // filter window for certain hostnames
+            if (
+              typeof owdModuleAppWindowConfig.hostname !== 'undefined' &&
+              owdModuleAppWindowConfig.hostname !== window.location.hostname
+            ) {
+              continue
+            }
+
             // add dummy item to dock
             items.push({
               config: owdModuleAppWindowConfig,

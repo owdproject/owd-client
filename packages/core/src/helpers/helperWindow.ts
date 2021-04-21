@@ -73,6 +73,10 @@ export function calcPositionX(owdModuleAppWindow: any) {
       return 0
     }
 
+    if (owdModuleAppWindow.storage.position.x === 0) {
+      return desktopWindowsContainerAreaOffset.left - desktopWindowsContainerOffset.left
+    }
+
     if (owdModuleAppWindow.storage.position.x < 0 || maxPositionLeft > pageWindow.innerWidth) {
       return desktopWindowsContainerAreaOffset.width + desktopWindowsContainerAreaOffset.left - desktopWindowsContainerOffset.left - owdModuleAppWindow.storage.size.width
     }

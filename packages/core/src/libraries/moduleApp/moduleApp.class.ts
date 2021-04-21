@@ -58,6 +58,17 @@ export default abstract class ModuleApp implements OwdModuleApp {
   }
 
   static getModuleFile(module: any, moduleFile: string) {
+    return require(`@/../src/modules/${module.name}/${moduleFile}`)
+
+    /*
+    todo try to fix this
+
+    I was trying to load owd modules from /node_modules in case you install a module from GitHub or npm
+    (installing each source module could be boring) but it doesn't seem a simple operation.
+
+    Maybe you could load owd modules from npm packages only if you hard-code the module import,
+    but for now you can't import them dynamically by defining them in modules.json
+
     try {
       if (ModuleApp.isModuleSource(module.name)) {
         return require(`@/../src/modules/${module.name}/${moduleFile}`)
@@ -71,6 +82,7 @@ export default abstract class ModuleApp implements OwdModuleApp {
     } catch(e) {
       return null
     }
+     */
   }
 
   /**

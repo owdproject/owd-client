@@ -176,6 +176,7 @@ export interface OwdModuleAppWindowConfig {
   minimized?: boolean
   maximized?: boolean
   maximizable?: boolean
+  fullscreenable?: boolean
   borderless?: boolean
   dense?: boolean
   hostname?: string
@@ -216,6 +217,7 @@ export interface OwdModuleAppWindowInstance extends OwdModuleAppWindowCreateInst
   destroy(): void
   minimize(): void
   maximize(toggle: boolean): void
+  fullscreen(toggle: boolean): void
 
   setFocusActive(focused: boolean): void
   getFocusIndex(): void
@@ -248,6 +250,7 @@ export interface OwdModuleAppWindowStorage {
   opened: boolean
   minimized: boolean
   maximized: boolean
+  fullscreen?: boolean
   focused: boolean
 }
 

@@ -497,6 +497,46 @@ export default class WindowModule extends VuexModule {
   }
 
   /**
+   * Fullscreen window
+   *
+   * @param data
+   */
+  @Action
+  windowFullscreen(data: any): boolean {
+    return this
+      .getWindow(data)
+      .then((windowInstance: OwdModuleAppWindowInstance) => {
+        // maximize window
+        windowInstance.fullscreen(true)
+
+        this.fullscreenModule.SET_FULLSCREEN_MODE(true)
+
+        return true
+      })
+      .catch(() => false)
+  }
+
+  /**
+   * Fullscreen toggle window
+   *
+   * @param data
+   */
+  @Action
+  windowUnfullscreen(data: any): boolean {
+    return this
+      .getWindow(data)
+      .then((windowInstance: OwdModuleAppWindowInstance) => {
+        // maximize window
+        windowInstance.fullscreen(false)
+
+        this.fullscreenModule.SET_FULLSCREEN_MODE(true)
+
+        return true
+      })
+      .catch(() => false)
+  }
+
+  /**
    * Get window position
    *
    * @param data
@@ -585,6 +625,16 @@ export default class WindowModule extends VuexModule {
   @Action
   async windowUnmaximizeAll(): Promise<void> {
     await helperWindow.forEachWindowInstance(async windowInstance => windowInstance.maximize(false))
+
+    this.fullscreenModule.SET_FULLSCREEN_MODE(false)
+  }
+
+  /**
+   * Set all windows not maximized
+   */
+  @Action
+  async windowUnfullscreenAll(): Promise<void> {
+    await helperWindow.forEachWindowInstance(async windowInstance => windowInstance.fullscreen(false))
 
     this.fullscreenModule.SET_FULLSCREEN_MODE(false)
   }

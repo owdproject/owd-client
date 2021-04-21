@@ -84,6 +84,7 @@ export default {
     window: {
       minimize: 'mdi-window-minimize',
       maximize: 'mdi-window-maximize',
+      fullscreen: 'mdi-fullscreen',
       close: 'mdi-window-close',
       external: 'mdi-open-in-new'
     },

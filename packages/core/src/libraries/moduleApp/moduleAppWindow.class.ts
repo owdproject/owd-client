@@ -159,8 +159,12 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     return this.instance.storage.maximized
   }
 
-  unmaximize(): boolean {
-    this.instance.storage.maximized = false
+  fullscreen(toggle: boolean): boolean {
+    if (!this.instance.config.fullscreenable) {
+      return false
+    }
+
+    this.instance.storage.fullscreen = toggle
 
     return true
   }

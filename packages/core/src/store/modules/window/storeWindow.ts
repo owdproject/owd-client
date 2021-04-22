@@ -6,6 +6,7 @@ import DebugModule from "../storeDebug";
 import ModulesModule from "../storeModules";
 import FullScreenModule from "../storeFullscreen";
 import WindowFocusModule from "./storeWindowFocus";
+import WindowDockModule from "./storeWindowDock";
 
 import * as helperWindow from '@owd-client/core/src/helpers/helperWindow'
 import * as helperStorage from "@owd-client/core/src/helpers/helperStorage";
@@ -26,12 +27,14 @@ export default class WindowModule extends VuexModule {
   private readonly modulesModule: ModulesModule
   private readonly fullscreenModule: FullScreenModule
   private readonly windowFocusModule: WindowFocusModule
+  private readonly windowDockModule: WindowDockModule
 
   constructor(
     debugModule: DebugModule,
     modulesModule: ModulesModule,
     fullscreenModule: FullScreenModule,
     windowFocusModule: WindowFocusModule,
+    windowDockModule: WindowDockModule,
     options: RegisterOptions
   ) {
     super(options);
@@ -39,6 +42,7 @@ export default class WindowModule extends VuexModule {
     this.modulesModule = modulesModule
     this.fullscreenModule = fullscreenModule
     this.windowFocusModule = windowFocusModule
+    this.windowDockModule = windowDockModule
 
     this.storage = helperStorage.loadStorage('window') || []
   }
@@ -424,6 +428,9 @@ export default class WindowModule extends VuexModule {
       windowInstance.uniqueID
     )
 
+    // add to dock
+    this.windowDockModule.ADD_TO_DOCK(windowInstance)
+
     // validate window position and reset it if needed
     // windowInstance.adjustPosition()
 
@@ -697,6 +704,9 @@ export default class WindowModule extends VuexModule {
         // destroy module window instance
         this.UNREGISTER_WINDOW_INSTANCE(windowInstance);
         this.windowFocusModule.UNSET_WINDOW_FOCUS(windowInstance.uniqueID);
+
+        // remove from dock
+        this.windowDockModule.REMOVE_FROM_DOCK(windowInstance)
 
         // unregister owdModuleApp window vuex store instance
         windowInstance.destroy()

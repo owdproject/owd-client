@@ -30,7 +30,7 @@ export const storeModules = new storeModulesModule({ store, name: 'core/modules'
 export const storeWindowFocus = new storeWindowFocusModule( { store, name: 'core/windowFocus' })
 export const storeWindowCategory = new storeWindowCategoryModule(storeModules, { store, name: 'core/windowCategory' })
 export const storeWindowDock = new storeWindowDockModule(storeModules, { store, name: 'core/windowDock' })
-export const storeWindow = new storeWindowModule(storeDebug, storeModules, storeFullScreen, storeWindowFocus, { store, name: 'core/window' })
+export const storeWindow = new storeWindowModule(storeDebug, storeModules, storeFullScreen, storeWindowFocus, storeWindowDock, { store, name: 'core/window' })
 
 export default store
 

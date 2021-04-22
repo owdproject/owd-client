@@ -41,51 +41,22 @@ export default {
         return ''
       }),
       windowToggle: async (event, window) => {
-        // todo rewrite menu
-
         // from mobile
         if ($device.mobile) {
-
-          if (window.dummy) {
-
-            // create new window
-            await store.dispatch('core/window/windowCreate', window.config.name)
-
-          } else {
-
-            if (window.storage.minimized || !window.storage.opened) {
-              await store.dispatch('core/window/windowMinimizeAll')
-              await store.dispatch('core/window/windowCreate', window)
-            } else {
-              await store.dispatch('core/window/windowMinimize', window)
-            }
-
-          }
-
-          return true
+          await store.dispatch('core/window/windowMinimizeAll')
         }
 
-        // from desktop
-        if (event.shiftKey) {
+        if (window.dummy) {
 
-          // force close with shiftkey
-          await store.dispatch('core/window/windowMinimize', window)
+          // create new window
+          await store.dispatch('core/window/windowCreate', window.config.name)
 
         } else {
 
-          if (window.dummy) {
-
-            // create new window
-            await store.dispatch('core/window/windowCreate', window.config.name)
-
+          if (window.storage.minimized || !window.storage.opened) {
+            await store.dispatch('core/window/windowCreate', window)
           } else {
-
-            if (!window.storage.opened || window.storage.minimized) {
-              await store.dispatch('core/window/windowCreate', window)
-            } else {
-              await store.dispatch('core/window/windowMinimize', window)
-            }
-
+            await store.dispatch('core/window/windowMinimize', window)
           }
 
         }
@@ -109,6 +80,10 @@ export default {
   &:hover {
     .owd-menu__item__name {
         width: 148px;
+
+        @media (max-width: 560px) {
+          width: auto;
+        }
     }
   }
 

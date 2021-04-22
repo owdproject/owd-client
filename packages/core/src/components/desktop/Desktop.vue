@@ -49,6 +49,7 @@
         coreClientInitialize: () => {
           store.dispatch('core/client/initialize')
           store.dispatch('core/sse/initialize')
+          store.dispatch('core/windowDock/initialize')
           store.dispatch('core/window/initialize')
         },
         handleDesktopResize: () => {

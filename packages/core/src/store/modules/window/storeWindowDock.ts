@@ -41,7 +41,9 @@ export default class WindowDockModule extends VuexModule {
 
   @Mutation
   ADD_TO_DOCK(windowInstance: OwdModuleAppWindowInstance) {
-    this.items[windowInstance.uniqueID] = windowInstance
+    if (windowInstance.config.menu === true) {
+      this.items[windowInstance.uniqueID] = windowInstance
+    }
   }
 
   @Mutation

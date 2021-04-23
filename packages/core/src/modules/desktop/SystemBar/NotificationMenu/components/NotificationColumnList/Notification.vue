@@ -85,7 +85,7 @@ export default {
   .notification-text {
     display: inline-block;
     vertical-align: top;
-    width: calc(100% - 48px);
+    width: calc(100% - 64px);
     height: 32px;
     color: #777;
 
@@ -119,12 +119,15 @@ export default {
       text-transform: uppercase;
       font-size: 10px;
       letter-spacing: 1px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
   }
 
   .notification-close {
     position: absolute;
-    top: 10px;
+    top: 12px;
     right: 10px;
     width: 24px;
     height: 24px;

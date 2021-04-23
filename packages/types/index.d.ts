@@ -269,6 +269,8 @@ export interface OwdModuleAppWindowConfigIcon {
     x?: number
     y?: number
   },
+  background?: string
+  color?: string
   forceMenuAppSvg?: boolean
 }
 

@@ -141,5 +141,11 @@ export default {
       }
     }
   }
+
+  &::-webkit-scrollbar,
+  &::-webkit-scrollbar-thumb {
+    width: 0;
+    background: transparent;
+  }
 }
 </style>

@@ -24,6 +24,7 @@
                 v-if="moduleAppWindow.icon"
                 :icon="moduleAppWindow.icon"
                 :force-svg="moduleAppWindow.icon.forceMenuAppSvg"
+                is-application-menu
             />
           </div>
           <div class="owd-desktop__application-menu__list__name">

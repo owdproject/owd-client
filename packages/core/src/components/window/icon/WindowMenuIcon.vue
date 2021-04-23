@@ -9,6 +9,7 @@
 export default {
   props: {
     icon: [String,Object],
+    isApplicationMenu: Boolean,
     forceSvg: Boolean
   },
   computed: {
@@ -44,10 +45,7 @@ export default {
         if (this.icon.height) {
           styles.push(`height: ${this.icon.width};`)
         }
-        if (this.icon.background) {
-          styles.push(`background-color: ${this.icon.background};`)
-        }
-        if (this.icon.color) {
+        if (this.icon.color && !this.isApplicationMenu) {
           styles.push(`color: ${this.icon.color};`)
         }
 

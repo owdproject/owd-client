@@ -5,6 +5,14 @@
       v-click-outside="focusOut"
       @click="focusIn"
   >
+    <template v-slot:nav-prepend>
+      <slot name="nav-prepend" />
+    </template>
+
+    <template v-slot:nav-append>
+      <slot name="nav-append" />
+    </template>
+
     <div class="owd-window-iframe__content">
       <iframe
           :id="iframeId"

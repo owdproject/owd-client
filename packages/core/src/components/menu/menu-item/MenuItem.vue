@@ -34,8 +34,8 @@ export default {
 
     return {
       menuItemStyles: computed(() => {
-        if (!props.window.config.icon || (props.window.config.color && !props.window.config.icon.image)) {
-          return `background: ${props.window.config.color}`
+        if (!props.window.config.icon || (props.window.config.theme && !props.window.config.icon.image)) {
+          return `background: ${props.window.config.theme}`
         }
 
         return ''

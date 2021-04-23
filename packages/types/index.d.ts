@@ -169,6 +169,7 @@ export interface OwdModuleAppWindowConfig {
 
   size: OwdModuleAppWindowConfigSize
   position: OwdModuleAppWindowConfigPosition
+  theme?: string
   favorite?: boolean
   menu?: boolean
   menuApp?: boolean

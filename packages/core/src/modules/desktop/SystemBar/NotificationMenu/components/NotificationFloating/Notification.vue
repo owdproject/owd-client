@@ -53,13 +53,13 @@ export default {
   .notification-text {
     display: inline-block;
     vertical-align: top;
-    width: calc(100% - 48px);
+    width: calc(100% - 64px);
     height: 32px;
     color: #777;
 
     &__title {
       color: white;
-      line-height: 18px;
+      line-height: 16px;
       line-clamp: 1;
       -webkit-line-clamp: 1;
       white-space: nowrap;
@@ -74,7 +74,9 @@ export default {
       text-transform: uppercase;
       font-size: 10px;
       letter-spacing: 1px;
-      margin-top: -2px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
   }
 }

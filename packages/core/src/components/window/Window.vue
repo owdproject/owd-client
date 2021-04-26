@@ -30,7 +30,7 @@
         'owd-window--maximized': window.config.maximizable && window.storage.maximized,
         'owd-window--dragging': dragging,
         'owd-window--resizing': resizing,
-        'owd-window--fullscreen': window.config.fullscreen && window.storage.fullscreen,
+        'owd-window--fullscreen': window.config.fullscreenable && window.storage.fullscreen,
         'owd-window--borderless': window.config.borderless,
         'owd-window--no-resizable': !window.config.resizable,
         'owd-window--no-content-spacing': window.config.noContentSpacing
@@ -60,6 +60,13 @@
                 class="btn-maximize"
                 :icon="$owd.config.icons.window.maximize"
                 @click="onToggleMaximize"
+            />
+
+            <WindowNavButtonCommon
+                v-if="window.config.fullscreenable"
+                class="btn-fullscreen"
+                :icon="$owd.config.icons.window.fullscreen"
+                @click="onToggleFullscreen"
             />
 
             <WindowNavButtonCommon
@@ -266,6 +273,20 @@ export default {
 
       this.$store.dispatch(
           this.window.storage.maximized ? 'core/window/windowUnmaximize' : 'core/window/windowMaximize',
+          this.window
+      )
+    },
+
+    /**
+     * Window fullscreen event
+     */
+    onToggleFullscreen: function () {
+      if (!this.window.config.fullscreenable) {
+        return false
+      }
+
+      this.$store.dispatch(
+          this.window.storage.fullscreen ? 'core/window/windowUnfullscreen' : 'core/window/windowFullscreen',
           this.window
       )
     },
@@ -504,6 +525,22 @@ export default {
     }
 
     &--maximized {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      margin: 0 !important;
+      z-index: 999;
+      background: $windowBackground;
+
+      @media (max-width: 768px) {
+        left: auto !important;
+      }
+    }
+
+    &--fullscreen {
       .owd-window__container {
         > .owd-window__content {
           position: fixed !important;

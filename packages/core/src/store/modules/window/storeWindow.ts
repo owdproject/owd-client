@@ -6,6 +6,7 @@ import DebugModule from "../storeDebug";
 import ModulesModule from "../storeModules";
 import FullScreenModule from "../storeFullscreen";
 import WindowFocusModule from "./storeWindowFocus";
+import WindowDockModule from "./storeWindowDock";
 
 import * as helperWindow from '@owd-client/core/src/helpers/helperWindow'
 import * as helperStorage from "@owd-client/core/src/helpers/helperStorage";
@@ -26,12 +27,14 @@ export default class WindowModule extends VuexModule {
   private readonly modulesModule: ModulesModule
   private readonly fullscreenModule: FullScreenModule
   private readonly windowFocusModule: WindowFocusModule
+  private readonly windowDockModule: WindowDockModule
 
   constructor(
     debugModule: DebugModule,
     modulesModule: ModulesModule,
     fullscreenModule: FullScreenModule,
     windowFocusModule: WindowFocusModule,
+    windowDockModule: WindowDockModule,
     options: RegisterOptions
   ) {
     super(options);
@@ -39,6 +42,7 @@ export default class WindowModule extends VuexModule {
     this.modulesModule = modulesModule
     this.fullscreenModule = fullscreenModule
     this.windowFocusModule = windowFocusModule
+    this.windowDockModule = windowDockModule
 
     this.storage = helperStorage.loadStorage('window') || []
   }
@@ -168,7 +172,7 @@ export default class WindowModule extends VuexModule {
         // for each window config in moduleInfo.windows (for example WindowSample)
         for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
 
-          console.log('[OWD] Module window initialize: ' + owdModuleAppWindowConfig.name)
+          console.log('[OWD] Window initialized: ' + owdModuleAppWindowConfig.name)
 
           this.REGISTER_WINDOW_NAMESPACE({
             moduleName: owdModuleApp.moduleInfo.name,
@@ -181,12 +185,12 @@ export default class WindowModule extends VuexModule {
             storage: undefined
           }
 
-          // create owdModuleApp window instances restoring previous local storage
-
           if (
             this.storage &&
             Object.prototype.hasOwnProperty.call(this.storage, owdModuleAppWindowConfig.name)
           ) {
+
+            // create owdModuleApp window instances restoring previous local storage
 
             const owdModuleAppWindowInstancesLocalStorage = this.storage[owdModuleAppWindowConfig.name]
 
@@ -213,7 +217,13 @@ export default class WindowModule extends VuexModule {
 
                 // run windowOpen method just for "opened" event triggering
                 if (windowInstance && toOpen) {
-                  await this.windowOpen(windowInstance)
+
+                  // open window
+                  windowInstance.open()
+
+                  // recalculate window position
+                  windowInstance.adjustPosition()
+
                 }
               }
             }
@@ -389,14 +399,10 @@ export default class WindowModule extends VuexModule {
         // open window
         this.windowOpen(windowInstance)
 
-        // focus on window
-        this.windowFocus(windowInstance)
-
         return windowInstance
       })
 
     } else {
-      // is this legit? todo check
       this.windowOpen(data)
     }
   }
@@ -415,12 +421,15 @@ export default class WindowModule extends VuexModule {
     this.REGISTER_WINDOW_INSTANCE(windowInstance)
 
     // get window instance once set
-    // todo dunno why have to do this
+    // todo improve, dunno why have to do this
     windowInstance = helperWindow.getWindowInstance(
       windowInstance.moduleName,
       windowInstance.config.name,
       windowInstance.uniqueID
     )
+
+    // add to dock
+    this.windowDockModule.ADD_TO_DOCK(windowInstance)
 
     // validate window position and reset it if needed
     // windowInstance.adjustPosition()
@@ -443,6 +452,9 @@ export default class WindowModule extends VuexModule {
 
         // recalculate window position
         windowInstance.adjustPosition()
+
+        // focus window
+        this.windowFocus(windowInstance)
 
         return windowInstance
       })
@@ -474,14 +486,7 @@ export default class WindowModule extends VuexModule {
   windowMaximize(data: any): boolean {
     return this
       .getWindow(data)
-      .then((windowInstance: OwdModuleAppWindowInstance) => {
-        // maximize window
-        windowInstance.maximize()
-
-        this.fullscreenModule.SET_FULLSCREEN_MODE(true)
-
-        return true
-      })
+      .then((windowInstance: OwdModuleAppWindowInstance) => windowInstance.maximize(true))
       .catch(() => false)
   }
 
@@ -494,15 +499,46 @@ export default class WindowModule extends VuexModule {
   windowUnmaximize(data: any): boolean {
     return this
       .getWindow(data)
+      .then((windowInstance: OwdModuleAppWindowInstance) => windowInstance.maximize(false))
+      .catch(() => false)
+  }
+
+  /**
+   * Fullscreen window
+   *
+   * @param data
+   */
+  @Action
+  windowFullscreen(data: any): boolean {
+    return this
+      .getWindow(data)
       .then((windowInstance: OwdModuleAppWindowInstance) => {
-        if (windowInstance.config.maximizable) {
-          // unmaximize window
-          windowInstance.unmaximize()
+        // maximize window
+        windowInstance.fullscreen(true)
 
-          this.fullscreenModule.SET_FULLSCREEN_MODE(false)
+        this.fullscreenModule.SET_FULLSCREEN_MODE(true)
 
-          return true
-        }
+        return true
+      })
+      .catch(() => false)
+  }
+
+  /**
+   * Fullscreen toggle window
+   *
+   * @param data
+   */
+  @Action
+  windowUnfullscreen(data: any): boolean {
+    return this
+      .getWindow(data)
+      .then((windowInstance: OwdModuleAppWindowInstance) => {
+        // maximize window
+        windowInstance.fullscreen(false)
+
+        this.fullscreenModule.SET_FULLSCREEN_MODE(true)
+
+        return true
       })
       .catch(() => false)
   }
@@ -595,7 +631,17 @@ export default class WindowModule extends VuexModule {
    */
   @Action
   async windowUnmaximizeAll(): Promise<void> {
-    await helperWindow.forEachWindowInstance(async windowInstance => windowInstance.unmaximize())
+    await helperWindow.forEachWindowInstance(async windowInstance => windowInstance.maximize(false))
+
+    this.fullscreenModule.SET_FULLSCREEN_MODE(false)
+  }
+
+  /**
+   * Set all windows not maximized
+   */
+  @Action
+  async windowUnfullscreenAll(): Promise<void> {
+    await helperWindow.forEachWindowInstance(async windowInstance => windowInstance.fullscreen(false))
 
     this.fullscreenModule.SET_FULLSCREEN_MODE(false)
   }
@@ -658,6 +704,9 @@ export default class WindowModule extends VuexModule {
         // destroy module window instance
         this.UNREGISTER_WINDOW_INSTANCE(windowInstance);
         this.windowFocusModule.UNSET_WINDOW_FOCUS(windowInstance.uniqueID);
+
+        // remove from dock
+        this.windowDockModule.REMOVE_FROM_DOCK(windowInstance)
 
         // unregister owdModuleApp window vuex store instance
         windowInstance.destroy()

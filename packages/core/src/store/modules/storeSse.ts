@@ -1,11 +1,19 @@
 import {VuexModule, Module, Mutation, Action} from "vuex-class-modules";
 
+let reconnectTimeout: any = null
+
+// @ts-ignore
+import config from '@/../client.config'
+
 @Module
 export default class SseVuexModule extends VuexModule {
   private eventSource: any = null
-  private intervalReconnect: any = null
+  private connected: boolean = false
 
-  private connected: boolean = true
+  @Mutation
+  SET_EVENT_SOURCE(eventSource: any) {
+    this.eventSource = eventSource
+  }
 
   @Mutation
   SET_CONNECTED(value: boolean) {
@@ -16,12 +24,19 @@ export default class SseVuexModule extends VuexModule {
   LOG_EVENT(value: any) {}
 
   @Action
+  initialize() {
+    if (config.sse.enabled) {
+      this.connect()
+    }
+  }
+
+  @Action
   connect() {
     if (this.connected) {
       return console.error('[OWD] Already connected to SSE')
     }
 
-    const sse = new EventSource(process.env.VUE_APP_API_BASE_URL + 'sse')
+    const sse = new EventSource(config.sse.server)
 
     sse.onerror = () => {
       // reset connected status
@@ -29,17 +44,17 @@ export default class SseVuexModule extends VuexModule {
         this.SET_CONNECTED(false)
       }
 
-      console.error('[OWD] Unable to connect to SSE')
-
       sse.close()
 
       // reconnect after X seconds
-      clearInterval(this.intervalReconnect)
-      this.intervalReconnect = setInterval(() => this.connect(), 5000)
+      if (config.sse.reconnectOnError) {
+        clearTimeout(reconnectTimeout)
+        reconnectTimeout = setTimeout(() => this.connect(), config.sse.reconnectTimeout)
+      }
     }
 
     sse.onmessage = (message) => {
-      clearInterval(this.intervalReconnect)
+      clearTimeout(reconnectTimeout)
 
       // set as connected
       if (!this.connected) {
@@ -54,6 +69,15 @@ export default class SseVuexModule extends VuexModule {
       } else {
         this.LOG_EVENT(data)
       }
+    }
+
+    this.SET_EVENT_SOURCE(sse)
+  }
+
+  @Action
+  disconnect() {
+    if (this.eventSource && this.connected) {
+      this.eventSource.close()
     }
   }
 }

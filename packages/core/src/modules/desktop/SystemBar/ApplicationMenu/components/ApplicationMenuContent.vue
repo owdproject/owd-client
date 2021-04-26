@@ -97,6 +97,10 @@ export default {
     grid-template-columns: 40% 60%;
     line-height: 32px;
     left: 16px;
+
+    @media(max-height: 400px) {
+      max-height: calc(100vh - 60px);
+    }
   }
 }
 </style>

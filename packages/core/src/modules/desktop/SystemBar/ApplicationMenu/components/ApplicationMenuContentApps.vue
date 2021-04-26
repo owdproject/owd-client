@@ -19,8 +19,17 @@
             @mouseover="(e) => appMouseOver(e, moduleAppWindow)"
             @click="windowOpen(moduleAppWindow)"
         >
-          <MenuItemIcon :icon="moduleAppWindow.icon" force-svg/>
-          {{ moduleAppWindow.titleApp || moduleAppWindow.title }}
+          <div class="owd-desktop__application-menu__list__icon">
+            <WindowMenuIcon
+                v-if="moduleAppWindow.icon"
+                :icon="moduleAppWindow.icon"
+                :force-svg="moduleAppWindow.icon.forceMenuAppSvg"
+                is-application-menu
+            />
+          </div>
+          <div class="owd-desktop__application-menu__list__name">
+            <div class="owd-desktop__application-menu__list__name-inner" v-html="moduleAppWindow.titleApp || moduleAppWindow.title"/>
+          </div>
         </button>
       </li>
     </ul>
@@ -30,11 +39,11 @@
 <script lang="ts">
 import {ref, watch, nextTick} from "vue";
 import {useStore} from "vuex";
-import MenuItemIcon from "@owd-client/core/src/components/menu/menu-item/MenuItemIcon.vue";
+import WindowMenuIcon from "@owd-client/core/src/components/window/icon/WindowMenuIcon.vue";
 
 export default {
   components: {
-    MenuItemIcon
+    WindowMenuIcon
   },
   props: {
     apps: Array,
@@ -118,6 +127,28 @@ export default {
   overflow-y: auto;
   padding: 16px 14px 16px 0;
 
+  &__icon {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    vertical-align: middle;
+    margin-top: 6px;
+    margin-right: 12px;
+    color: $windowColorActive;
+  }
+
+  &__name {
+    display: inline-block;
+
+    &-inner {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
   ul {
     margin: 0;
     padding: 0;
@@ -127,25 +158,14 @@ export default {
       width: 100%;
 
       button {
-        display: block;
+        display: grid;
+        grid-template-columns: 44px calc(100% - 44px);
         width: 100%;
         text-align: left;
         cursor: pointer;
         line-height: $windowNavHeight;
         padding: 0 24px;
         border-radius: 4px;
-
-        .owd-menu__item__icon {
-          display: inline-block;
-          width: 32px;
-          height: 32px;
-          line-height: 32px;
-          text-align: center;
-          vertical-align: middle;
-          margin-top: -1px;
-          margin-right: 12px;
-          color: $windowColorActive;
-        }
       }
 
       &.selected button {

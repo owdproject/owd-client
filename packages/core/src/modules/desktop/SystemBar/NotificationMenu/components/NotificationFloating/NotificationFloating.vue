@@ -55,7 +55,7 @@ export default {
   left: 50%;
   width: 338px;
   transform: translateX(-50%);
-  z-index: 9999;
+  z-index: 99;
 
   ul {
     list-style-type: none;

@@ -6,8 +6,8 @@
         }]"
         @click="(e) => windowToggle(e, window)"
     >
-      <div class="owd-menu__item__square" :style="menuItemStyles">
-        <MenuItemIcon :icon="window.config.icon"/>
+      <div class="owd-menu__item__icon" :style="menuItemStyles">
+        <WindowMenuIcon :icon="window.config.icon" />
       </div>
       <div class="owd-menu__item__name">
         <div class="owd-menu__item__name-inner" v-html="window.config.titleMenu || window.config.title"/>
@@ -18,12 +18,12 @@
 </template>
 
 <script>
-import MenuItemIcon from './MenuItemIcon'
+import WindowMenuIcon from '../../window/icon/WindowMenuIcon'
 import {getCurrentInstance, computed} from "vue";
 import {useStore} from "vuex";
 
 export default {
-  components: {MenuItemIcon},
+  components: {WindowMenuIcon},
   props: {
     window: Object
   },
@@ -34,47 +34,39 @@ export default {
 
     return {
       menuItemStyles: computed(() => {
-        if (!props.window.config.icon || (props.window.config.color && !props.window.config.icon.image)) {
-          return `background: ${props.window.config.color}`
+        let background = null
+
+        if (props.window.config.theme) {
+          background = props.window.config.theme
+        }
+
+        if (props.window.config.icon && props.window.config.icon.background) {
+          background = props.window.config.icon.background
+        }
+
+        if (!props.window.config.icon || (background && !props.window.config.icon.image)) {
+          return `background: ${background}`
         }
 
         return ''
       }),
-      windowToggle: (event, window) => {
+      windowToggle: async (event, window) => {
         // from mobile
         if ($device.mobile) {
-
-          if (window.storage.opened) {
-            store.dispatch('core/window/windowClose', window)
-          } else {
-            store.dispatch('core/window/windowCloseAll')
-            store.dispatch('core/window/windowOpen', window)
-          }
-
+          await store.dispatch('core/window/windowMinimizeAll')
         }
 
-        // from desktop
-        if (event.shiftKey) {
+        if (window.dummy) {
 
-          // force close with shiftkey
-          store.dispatch('core/window/windowMinimize', window)
+          // create new window
+          await store.dispatch('core/window/windowCreate', window.config.name)
 
         } else {
 
-          if (window.dummy) {
-
-            // create new window
-            store.dispatch('core/window/windowCreate', window.config.name)
-
+          if (window.storage.minimized || !window.storage.opened) {
+            await store.dispatch('core/window/windowCreate', window)
           } else {
-
-            if (window.storage && (!window.storage.opened || window.storage.minimized)) {
-              store.dispatch('core/window/windowOpen', window)
-              store.dispatch('core/window/windowFocus', window)
-            } else {
-              store.dispatch('core/window/windowMinimize', window)
-            }
-
+            await store.dispatch('core/window/windowMinimize', window)
           }
 
         }
@@ -98,6 +90,10 @@ export default {
   &:hover {
     .owd-menu__item__name {
         width: 148px;
+
+        @media (max-width: 560px) {
+          width: auto;
+        }
     }
   }
 
@@ -119,7 +115,7 @@ export default {
     }
   }
 
-  &__square {
+  &__icon {
     width: 48px;
     height: 48px;
     line-height: 45px;
@@ -137,12 +133,12 @@ export default {
     }
   }
 
-  &--active &__square {
+  &--active &__icon {
     background: $menuItemSquareBackground;
   }
 
   @media (max-width: 560px) {
-    &__square {
+    &__icon {
       position: relative !important;
       width: 48px;
       z-index: 3;

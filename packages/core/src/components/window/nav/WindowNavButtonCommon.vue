@@ -20,7 +20,7 @@
 
   .v-icon {
     font-size: 14px;
-    vertical-align: -1px;
+    vertical-align: 0px;
   }
 }
 </style>

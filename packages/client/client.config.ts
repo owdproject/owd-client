@@ -32,7 +32,10 @@ export default {
 
   // owd sse integration
   sse: {
-    enabled: false
+    enabled: false,
+    server: '',
+    reconnectOnError: true,
+    reconnectTimeout: 5000
   },
 
   // owd desktop
@@ -81,6 +84,7 @@ export default {
     window: {
       minimize: 'mdi-window-minimize',
       maximize: 'mdi-window-maximize',
+      fullscreen: 'mdi-fullscreen',
       close: 'mdi-window-close',
       external: 'mdi-open-in-new'
     },

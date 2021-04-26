@@ -59,6 +59,9 @@ export interface OwdClientConfigurationIcons {
 
 export interface OwdClientConfigurationSse {
   enabled: boolean
+  server: string
+  reconnectOnError: boolean
+  reconnectTimeout: number
 }
 
 export interface OwdClientConfigurationDesktop {
@@ -166,6 +169,7 @@ export interface OwdModuleAppWindowConfig {
 
   size: OwdModuleAppWindowConfigSize
   position: OwdModuleAppWindowConfigPosition
+  theme?: string
   favorite?: boolean
   menu?: boolean
   menuApp?: boolean
@@ -173,8 +177,10 @@ export interface OwdModuleAppWindowConfig {
   minimized?: boolean
   maximized?: boolean
   maximizable?: boolean
+  fullscreenable?: boolean
   borderless?: boolean
   dense?: boolean
+  hostname?: string
   noContentSpacing?: boolean
   autoOpen?: boolean
   autoCloseBeforePageUnload?: boolean
@@ -211,8 +217,8 @@ export interface OwdModuleAppWindowInstance extends OwdModuleAppWindowCreateInst
   close(): void
   destroy(): void
   minimize(): void
-  maximize(): void
-  unmaximize(): void
+  maximize(toggle: boolean): void
+  fullscreen(toggle: boolean): void
 
   setFocusActive(focused: boolean): void
   getFocusIndex(): void
@@ -245,6 +251,7 @@ export interface OwdModuleAppWindowStorage {
   opened: boolean
   minimized: boolean
   maximized: boolean
+  fullscreen?: boolean
   focused: boolean
 }
 
@@ -261,7 +268,10 @@ export interface OwdModuleAppWindowConfigIcon {
   offset?: {
     x?: number
     y?: number
-  }
+  },
+  background?: string
+  color?: string
+  forceMenuAppSvg?: boolean
 }
 
 // window details

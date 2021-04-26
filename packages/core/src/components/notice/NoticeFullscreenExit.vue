@@ -25,9 +25,12 @@ export default {
     }
   },
   mounted() {
+    const self = this
+
     // when press ESC and a window is in full-screen mode
     window.addEventListener('keydown', function (e) {
       if (e.keyCode === 27) {
+        self.$store.dispatch('core/window/windowUnfullscreenAll')
         self.$store.dispatch('core/window/windowUnmaximizeAll')
       }
     })
@@ -57,6 +60,7 @@ export default {
   width: 330px;
   min-height: 44px;
   margin-left: -165px;
+  background: $windowContentButtonDarkerBackground;
   color: #AAA !important;
   text-align: center;
   text-transform: inherit;

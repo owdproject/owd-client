@@ -5,6 +5,14 @@
       v-click-outside="focusOut"
       @click="focusIn"
   >
+    <template v-slot:nav-prepend>
+      <slot name="nav-prepend" />
+    </template>
+
+    <template v-slot:nav-append>
+      <slot name="nav-append" />
+    </template>
+
     <div class="owd-window-iframe__content">
       <iframe
           :id="iframeId"
@@ -49,10 +57,15 @@ export default {
   },
   computed: {
     iframeId() {
-      return this.window.module.moduleInfo.name+'-iframe'
+      return this.window.uniqueID
     }
   },
   watch: {
+    url: function(val) {
+      if (this.window.storage.opened === true) {
+        this.iframeSrc = val
+      }
+    },
     'window.storage.focused': async function (val) {
       this.focused = val
 

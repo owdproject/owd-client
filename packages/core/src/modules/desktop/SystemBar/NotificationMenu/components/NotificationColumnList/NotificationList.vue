@@ -1,25 +1,28 @@
 <template>
   <div class="notification-list">
-    <div class="notification-list-container">
+    <div class="notification-list__container">
 
-      <ul v-if="notifications.length > 0">
-        <li v-for="(notification, key) in notifications" :key="key">
-          <Notification :notification="notification" />
-        </li>
-      </ul>
+      <div class="notification-list__container__inner">
+        <ul v-if="notifications.length > 0">
+          <li v-for="(notification, key) in notifications" :key="key">
+            <Notification :notification="notification" />
+          </li>
+        </ul>
 
-      <div class="notification-list-empty" v-else>
+        <div class="notification-list__empty" v-else>
 
-        <v-icon class="mb-5">mdi-bell</v-icon>
-        <div>
-          No notifications
+          <v-icon class="mb-5">mdi-bell</v-icon>
+          <div v-text="$t('desktop.SystemBar.NotificationMenu.notificationsEmpty')" />
+
         </div>
-
       </div>
 
     </div>
-    <div class="notification-list-action" v-if="notifications.length > 0">
-      <button @click="$store.commit('core/notification/RESET')">Clear</button>
+    <div class="notification-list__action" v-if="notifications.length > 0">
+      <v-btn
+          @click="$store.commit('core/notification/RESET')"
+          v-text="$t('desktop.SystemBar.NotificationMenu.clear')"
+      />
     </div>
   </div>
 </template>
@@ -47,44 +50,56 @@
 .notification-list {
   position: relative;
   display: grid;
-  grid-template-rows: calc(100% - 32px) 32px;
+  grid-template-rows: calc(100% - 36px) 36px;
 
-  .notification-list-container {
-    max-height: 385px;
-    overflow-y: auto;
+  .v-btn {
+    background: $windowContentButtonBackground;
+  }
 
-    &::-webkit-scrollbar,
-    &::-webkit-scrollbar-thumb {
-      width: 0;
-      background: transparent;
-    }
+  &__container {
+    position: relative;
+    margin-bottom: 16px;
 
-    ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-
-      li:not(:last-child) {
-        margin-bottom: 12px;
-      }
-    }
-
-    .notification-list-empty {
+    &__inner {
       position: absolute;
-      top: 50%;
       left: 0;
       right: 0;
-      width: 100%;
-      font-size: 14px;
-      transform: translateY(-50%);
+      height: 100%;
+      overflow-y: auto;
 
-      i {
-        font-size: 45px;
+      &::-webkit-scrollbar,
+      &::-webkit-scrollbar-thumb {
+        width: 0;
+        background: transparent;
+      }
+
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+
+        li:not(:last-child) {
+          margin-bottom: 12px;
+        }
+      }
+
+      .notification-list__empty {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        width: 100%;
+        font-size: 14px;
+        transform: translateY(-50%);
+
+        i {
+          font-size: 45px;
+        }
       }
     }
   }
 
-  .notification-list-action {
+  &__action {
     text-align: right;
   }
 }

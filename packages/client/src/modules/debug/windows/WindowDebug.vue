@@ -19,6 +19,13 @@
 
         <div>
           <label>
+            <input type="checkbox" v-model="window.config.fullscreenable" />
+            Fullscreenable
+          </label>
+        </div>
+
+        <div>
+          <label>
             <input type="checkbox" v-model="window.config.resizable" />
             Resizable
           </label>

@@ -82,7 +82,7 @@ export default class ModuleAppExtend {
 
     const moduleAppClass = ModuleApp.getModuleFile(module, 'index')
 
-    if (moduleAppClass.default && typeof moduleAppClass.default === 'function') {
+    if (moduleAppClass && moduleAppClass.default && typeof moduleAppClass.default === 'function') {
       const moduleAppLoaded = new moduleAppClass.default({ ...context, moduleInfo })
 
       if (moduleAppLoaded) {

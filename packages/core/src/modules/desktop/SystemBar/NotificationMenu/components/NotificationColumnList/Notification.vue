@@ -20,7 +20,9 @@
 
     </div>
 
-    <div class="notification-close" @click="removeNotification(notification)">X</div>
+    <div class="notification-close" @click="removeNotification(notification)">
+      <v-icon>mdi-close</v-icon>
+    </div>
   </div>
 </template>
 
@@ -83,7 +85,7 @@ export default {
   .notification-text {
     display: inline-block;
     vertical-align: top;
-    width: calc(100% - 48px);
+    width: calc(100% - 64px);
     height: 32px;
     color: #777;
 
@@ -117,19 +119,26 @@ export default {
       text-transform: uppercase;
       font-size: 10px;
       letter-spacing: 1px;
-      margin-top: -2px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
   }
 
   .notification-close {
     position: absolute;
-    top: 16px;
-    right: 16px;
-    width: 12px;
-    height: 12px;
+    top: 12px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
     line-height: 12px;
     text-align: center;
+    cursor: pointer;
     display: none;
+
+    i {
+      font-size: 18px;
+    }
   }
 
   &:hover {

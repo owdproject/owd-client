@@ -486,7 +486,12 @@ export default class WindowModule extends VuexModule {
   windowMaximize(data: any): boolean {
     return this
       .getWindow(data)
-      .then((windowInstance: OwdModuleAppWindowInstance) => windowInstance.maximize(true))
+      .then((windowInstance: OwdModuleAppWindowInstance) => {
+        windowInstance.maximize(true)
+
+        // focus maximized window
+        this.windowFocus(windowInstance)
+      })
       .catch(() => false)
   }
 

@@ -336,14 +336,14 @@ export default {
       // emit to parent component
       this.$emit('resize:end', data)
 
-      this.$store.dispatch('core/window/windowSetPosition', {
-        window: this.window,
-        position: {x: data.left, y: data.top, z: this.window.storage.position.z}
-      })
-
       this.$store.dispatch('core/window/windowUpdateSize', {
         window: this.window,
         size: {width: data.width, height: data.height}
+      })
+
+      this.$store.dispatch('core/window/windowSetPosition', {
+        window: this.window,
+        position: {x: data.left, y: data.top, z: this.window.storage.position.z}
       })
 
       this.resizing = false

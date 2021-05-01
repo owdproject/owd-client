@@ -31,7 +31,7 @@ export default class SseVuexModule extends VuexModule {
   @Action
   connect() {
     if (!config.sse.enabled) {
-      return console.error(`[OWD] SSE isn't enabled by configuration`)
+      return console.log(`[OWD] SSE integration is disabled`)
     }
 
     if (this.connected) {

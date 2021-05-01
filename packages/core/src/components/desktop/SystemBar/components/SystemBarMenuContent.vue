@@ -1,49 +1,52 @@
 <template>
   <div class="owd-desktop__system-bar__content">
-    <div :class="['owd-desktop__system-bar__content__arrow', contentAdditionalClass]" :style="contentStyle" />
+    <div
+        :class="['owd-desktop__system-bar__content__arrow', contentAdditionalClass]"
+        :style="contentStyle"
+    />
 
     <slot />
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    config: Object,
-    arrowPosition: {
-      type: [String, Number],
-      default: 'center'
+<script setup>
+import {computed} from 'vue'
+
+const props = defineProps({
+  config: Object,
+  arrowPosition: {
+    type: [String, Number],
+    default: 'center'
+  }
+})
+
+const contentAdditionalClass = computed(() => {
+  if (typeof this.arrowPosition === 'string') {
+    return `owd-desktop__system-bar__content__arrow--${this.arrowPosition}`
+  }
+
+  if (typeof this.arrowPosition === 'number') {
+    if (this.arrowPosition > 0) {
+      return `owd-desktop__system-bar__content__arrow--left`
     }
-  },
-  computed: {
-    contentAdditionalClass() {
-      if (typeof this.arrowPosition === 'string') {
-        return `owd-desktop__system-bar__content__arrow--${this.arrowPosition}`
-      }
-
-      if (typeof this.arrowPosition === 'number') {
-        if (this.arrowPosition > 0) {
-          return `owd-desktop__system-bar__content__arrow--left`
-        }
-        if (this.arrowPosition < 0) {
-          return `owd-desktop__system-bar__content__arrow--right`
-        }
-      }
-
-      return ''
-    },
-    contentStyle() {
-      if (typeof this.arrowPosition === 'number') {
-        if (this.config && this.config.position === 'right') {
-          return `left: auto; right: ${this.arrowPosition}px;`
-        }
-
-        return `left: ${this.arrowPosition}px;`
-      }
-      return ''
+    if (this.arrowPosition < 0) {
+      return `owd-desktop__system-bar__content__arrow--right`
     }
   }
-}
+
+  return ''
+})
+
+const contentStyle = computed(() => {
+  if (typeof this.arrowPosition === 'number') {
+    if (this.config && this.config.position === 'right') {
+      return `left: auto; right: ${this.arrowPosition}px;`
+    }
+
+    return `left: ${this.arrowPosition}px;`
+  }
+  return ''
+})
 </script>
 
 <style scoped lang="scss">

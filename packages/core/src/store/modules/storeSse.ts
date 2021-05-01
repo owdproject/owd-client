@@ -25,13 +25,15 @@ export default class SseVuexModule extends VuexModule {
 
   @Action
   initialize() {
-    if (config.sse.enabled) {
-      this.connect()
-    }
+    this.connect()
   }
 
   @Action
   connect() {
+    if (!config.sse.enabled) {
+      return console.error(`[OWD] SSE isn't enabled by configuration`)
+    }
+
     if (this.connected) {
       return console.error('[OWD] Already connected to SSE')
     }
@@ -49,7 +51,7 @@ export default class SseVuexModule extends VuexModule {
       // reconnect after X seconds
       if (config.sse.reconnectOnError) {
         clearTimeout(reconnectTimeout)
-        reconnectTimeout = setTimeout(() => this.connect(), config.sse.reconnectTimeout)
+        reconnectTimeout = setTimeout(() => this.connect(), config.sse.reconnectTimeout | 2000)
       }
     }
 
@@ -78,6 +80,7 @@ export default class SseVuexModule extends VuexModule {
   disconnect() {
     if (this.eventSource && this.connected) {
       this.eventSource.close()
+      this.SET_CONNECTED(false)
     }
   }
 }

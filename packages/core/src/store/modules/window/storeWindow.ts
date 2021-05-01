@@ -2,7 +2,6 @@ import {VuexModule, Module, Mutation, Action, RegisterOptions} from "vuex-class-
 
 import ModuleAppWindow from "@owd-client/core/src/libraries/moduleApp/moduleAppWindow.class";
 
-import DebugModule from "../storeDebug";
 import ModulesModule from "../storeModules";
 import FullScreenModule from "../storeFullscreen";
 import WindowFocusModule from "./storeWindowFocus";
@@ -23,14 +22,12 @@ import {
 export default class WindowModule extends VuexModule {
   private readonly storage: any
 
-  private readonly debugModule: DebugModule
   private readonly modulesModule: ModulesModule
   private readonly fullscreenModule: FullScreenModule
   private readonly windowFocusModule: WindowFocusModule
   private readonly windowDockModule: WindowDockModule
 
   constructor(
-    debugModule: DebugModule,
     modulesModule: ModulesModule,
     fullscreenModule: FullScreenModule,
     windowFocusModule: WindowFocusModule,
@@ -38,7 +35,6 @@ export default class WindowModule extends VuexModule {
     options: RegisterOptions
   ) {
     super(options);
-    this.debugModule = debugModule
     this.modulesModule = modulesModule
     this.fullscreenModule = fullscreenModule
     this.windowFocusModule = windowFocusModule

@@ -1,5 +1,8 @@
 import {VuexModule, Module, Mutation, Action, RegisterOptions} from "vuex-class-modules";
-import DebugModule from "./storeDebug";
+
+import SseModule from "./storeSse";
+import WindowDockModule from "./window/storeWindowDock";
+import WindowModule from "./window/storeWindow";
 
 const clientLocalStorageName = 'client-storage'
 
@@ -9,7 +12,9 @@ const clientWebsite = process.env.VUE_APP_WEBSITE || 'owdproject.com'
 
 @Module
 export default class ClientVuexModule extends VuexModule {
-  private readonly debugModule: DebugModule
+  private readonly sseModule: SseModule
+  private readonly storeWindowDock: WindowDockModule
+  private readonly storeWindow: WindowModule
 
   // client title
   public title: string = clientDefaultTitle
@@ -21,11 +26,15 @@ export default class ClientVuexModule extends VuexModule {
   public website: string = clientWebsite
 
   constructor(
-    debugModule: DebugModule,
+    sseModule: SseModule,
+    storeWindowDock: WindowDockModule,
+    storeWindow: WindowModule,
     options: RegisterOptions
   ) {
     super(options);
-    this.debugModule = debugModule
+    this.sseModule = sseModule
+    this.storeWindowDock = storeWindowDock
+    this.storeWindow = storeWindow
   }
 
   @Mutation
@@ -40,7 +49,11 @@ export default class ClientVuexModule extends VuexModule {
 
   @Action
   async initialize() {
-    this.debugModule.LOG('App initialized')
+    console.log('App initialized')
+
+    this.sseModule.initialize()
+    this.storeWindowDock.initialize()
+    this.storeWindow.initialize()
   }
 
   /**

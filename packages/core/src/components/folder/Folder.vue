@@ -6,14 +6,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    projects: Object
-  }
-}
-</script>
-
 <style scoped lang="scss">
   .owd-folder {
     ul {

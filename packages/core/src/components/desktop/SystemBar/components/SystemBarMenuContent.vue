@@ -21,15 +21,15 @@ const props = defineProps({
 })
 
 const contentAdditionalClass = computed(() => {
-  if (typeof this.arrowPosition === 'string') {
-    return `owd-desktop__system-bar__content__arrow--${this.arrowPosition}`
+  if (typeof props.arrowPosition === 'string') {
+    return `owd-desktop__system-bar__content__arrow--${props.arrowPosition}`
   }
 
-  if (typeof this.arrowPosition === 'number') {
-    if (this.arrowPosition > 0) {
+  if (typeof props.arrowPosition === 'number') {
+    if (props.arrowPosition > 0) {
       return `owd-desktop__system-bar__content__arrow--left`
     }
-    if (this.arrowPosition < 0) {
+    if (props.arrowPosition < 0) {
       return `owd-desktop__system-bar__content__arrow--right`
     }
   }
@@ -38,12 +38,12 @@ const contentAdditionalClass = computed(() => {
 })
 
 const contentStyle = computed(() => {
-  if (typeof this.arrowPosition === 'number') {
-    if (this.config && this.config.position === 'right') {
-      return `left: auto; right: ${this.arrowPosition}px;`
+  if (typeof props.arrowPosition === 'number') {
+    if (props.config && props.config.position === 'right') {
+      return `left: auto; right: ${props.arrowPosition}px;`
     }
 
-    return `left: ${this.arrowPosition}px;`
+    return `left: ${props.arrowPosition}px;`
   }
   return ''
 })
@@ -58,7 +58,7 @@ const contentStyle = computed(() => {
   border-radius: 5px;
   z-index: 999;
 
-  &__arrow {
+  &__arrow, &__arrow:before {
     position: absolute;
     top: -12.5px;
     left: 50%;
@@ -69,6 +69,8 @@ const contentStyle = computed(() => {
     border-left: 12.5px solid transparent;
     border-right: 12.5px solid transparent;
     border-bottom: 12.5px solid $windowBackground;
+
+    content: '';
 
     &--left {
       left: 20px;
@@ -81,6 +83,12 @@ const contentStyle = computed(() => {
       margin-left: 0;
     }
   }
+
+  &__arrow:before {
+    top: -1px;
+    border-bottom: 12px solid #1b1b1b;
+    z-index: -1;
+  }
 }
 </style>
 
@@ -91,14 +99,22 @@ const contentStyle = computed(() => {
       top: 44px;
     }
   }
+
   &--system-bar-position-bottom {
     .owd-desktop__system-bar__content {
       bottom: 44px;
 
-      &__arrow {
+      &__arrow, &__arrow:before {
         top: auto;
         bottom: -11px;
-        transform: rotateX(180deg);
+        border-top: 12.5px solid $windowBackground;
+        border-bottom: 0;
+      }
+
+      &__arrow:before {
+        bottom: -1px;
+        border-top: 12px solid #1b1b1b;
+        z-index: -1;
       }
     }
   }

@@ -12,21 +12,13 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import {computed} from "vue";
 import {useStore} from 'vuex'
 
-export default {
-  setup() {
-    const store = useStore()
+const store = useStore()
 
-    return {
-      windowInstances: computed(() => {
-        return store.getters['core/window/modulesAppWindowInstancesList']
-      })
-    }
-  }
-}
+const windowInstances = computed(() => store.getters['core/window/modulesAppWindowInstancesList'])
 </script>
 
 <style lang="scss">

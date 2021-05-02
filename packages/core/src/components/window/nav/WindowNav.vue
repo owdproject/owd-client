@@ -21,12 +21,12 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    title: String
-  }
-}
+<script setup>
+import {defineProps} from "vue";
+
+const props = defineProps({
+  title: String
+})
 </script>
 
 <style lang="scss">

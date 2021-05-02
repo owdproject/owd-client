@@ -65,22 +65,13 @@
     flex-flow: column;
     height: 100vh;
 
-    &--system-bar-position-top {
-      .owd-desktop__content {
-        border-radius: 8px 8px 0 0;
-      }
-    }
-
     &--system-bar-position-bottom {
       flex-direction: column-reverse;
-
-      .owd-desktop__content {
-        border-radius: 0 0 8px 8px;
-      }
     }
 
     &__content {
       position: relative;
+      overflow: hidden;
       flex: 1;
     }
   }

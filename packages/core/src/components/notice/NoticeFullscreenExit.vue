@@ -12,44 +12,42 @@
   </transition>
 </template>
 
-<script>
-import {ref} from 'vue'
-export default {
-  setup() {
-    const visible = ref(false)
-    const timeout = ref(0)
+<script setup>
+import {ref, onBeforeMount, onMounted, onUnmounted} from 'vue'
+import {useStore} from "vuex";
 
-    return {
-      visible,
-      timeout
-    }
-  },
-  mounted() {
-    const self = this
+const store = useStore()
 
-    // when press ESC and a window is in full-screen mode
-    window.addEventListener('keydown', function (e) {
-      if (e.keyCode === 27) {
-        self.$store.dispatch('core/window/windowUnfullscreenAll')
-        self.$store.dispatch('core/window/windowUnmaximizeAll')
-      }
-    })
+const visible = ref(false)
+const timeout = ref(0)
 
-    this.$store.subscribe((mutation) => {
-      if (mutation.type === 'core/fullscreen/SET_FULLSCREEN_MODE') {
-        if (typeof mutation.payload === 'boolean') {
-          if (mutation.payload) {
-            clearTimeout(this.timeout)
-            this.visible = true
-            this.timeout = setTimeout(() => this.visible = false, 3000)
-          } else {
-            this.visible = false
-          }
-        }
-      }
-    })
+function handleWindowInstanceFullscreen(e) {
+  if (e.keyCode === 27) {
+    store.dispatch('core/window/windowUnfullscreenAll')
+    store.dispatch('core/window/windowUnmaximizeAll')
   }
 }
+
+// detect window instance fullscreen/maximize event
+onBeforeMount(() => {
+  store.subscribe((mutation) => {
+    if (mutation.type === 'core/fullscreen/SET_FULLSCREEN_MODE') {
+      if (typeof mutation.payload === 'boolean') {
+        if (mutation.payload) {
+          clearTimeout(timeout.value)
+          visible.value = true
+          timeout.value = setTimeout(() => visible.value = false, 3000)
+        } else {
+          visible.value = false
+        }
+      }
+    }
+  })
+})
+
+// when press ESC and a window is in full-screen mode
+onMounted(() => window.addEventListener('keydown', handleWindowInstanceFullscreen))
+onUnmounted(() => window.removeEventListener('keydown', handleWindowInstanceFullscreen))
 </script>
 
 <style scoped lang="scss">

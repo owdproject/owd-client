@@ -1,27 +1,27 @@
 <template>
-  <li :class="['file', { inactive }]">
-    <a :href="url" :target="target" :title="title" @click="fn">
-      <img :src="icon" :alt="title" />
-      <div class="name" v-html="name" />
+  <li :class="['file', { 'inactive': props.inactive }]">
+    <a :href="props.url" :target="props.target" :title="props.title" @click="props.fn">
+      <img :src="props.icon" :alt="props.title" />
+      <div class="name" v-html="props.name" />
     </a>
   </li>
 </template>
 
-<script>
-export default {
-  props: {
-    name: String,
-    title: String,
-    icon: String,
-    url: String,
-    target: String,
-    inactive: Boolean,
-    fn: {
-      type: Function,
-      default: function () {}
-    }
+<script setup>
+import {defineProps} from "vue";
+
+const props = defineProps({
+  name: String,
+  title: String,
+  icon: String,
+  url: String,
+  target: String,
+  inactive: Boolean,
+  fn: {
+    type: Function,
+    default: function () {}
   }
-}
+})
 </script>
 
 <style lang="scss">

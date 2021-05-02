@@ -15,6 +15,18 @@
       }
     }
 
+    &--system-bar-position-top {
+      .owd-desktop__content {
+        border-radius: 8px 8px 0 0;
+      }
+    }
+
+    &--system-bar-position-bottom {
+      .owd-desktop__content {
+        border-radius: 0 0 8px 8px;
+      }
+    }
+
     .owd-window {
       border-radius: 8px 8px 1px 1px;
 

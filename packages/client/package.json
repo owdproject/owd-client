@@ -27,13 +27,13 @@
     "@types"
   ],
   "dependencies": {
-    "@owd-client/core": "^2.0.0-alpha.11",
-    "@owd-client/types": "^2.0.0-alpha.11"
+    "@owd-client/core": "^2.0.0-alpha.11"
   },
   "devDependencies": {
     "@babel/node": "^7.13.13",
     "@babel/preset-env": "^7.13.15",
     "@mdi/font": "^5.9.55",
+    "@owd-client/types": "^2.0.0-alpha.11",
     "@types/jest": "^26.0.22",
     "@vue/cli-plugin-pwa": "^4.5.12",
     "@vue/cli-plugin-typescript": "^4.5.12",

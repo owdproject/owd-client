@@ -15,12 +15,7 @@
       "title": "About",
       "titleApp": "About",
       "titleShort": "Open Web Desktop",
-      "icon": {
-        "name": "mdi-hexagon-multiple-outline",
-        "offset": {
-          "y": -1
-        }
-      },
+      "icon": "mdi-hexagon-multiple-outline",
       "menu": true,
       "favorite": true,
       "resizable": false,

@@ -13,14 +13,14 @@
 import {getCurrentInstance, ref} from "vue";
 
 const app = getCurrentInstance();
-const $moment = app.appContext.config.globalProperties.$moment
+const moment = app.appContext.config.globalProperties.$moment
 const options = app.appContext.config.owd.desktop.SystemBar.options.modules.NotificationMenu
 
 const getDayOfWeek = () => {
-  return $moment().format(options.calendar.header.dayOfWeekFormat)
+  return moment().format(options.calendar.header.dayOfWeekFormat)
 }
 const getDate = () => {
-  return $moment().format(options.calendar.header.dateFormat)
+  return moment().format(options.calendar.header.dateFormat)
 }
 
 let dayOfWeek = ref(getDayOfWeek())

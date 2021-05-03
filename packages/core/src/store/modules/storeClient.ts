@@ -12,7 +12,7 @@ const clientWebsite = process.env.VUE_APP_WEBSITE || 'owdproject.com'
 
 @Module
 export default class ClientVuexModule extends VuexModule {
-  private readonly sseModule: SseModule
+  private readonly storeSseModule: SseModule
   private readonly storeWindowDock: WindowDockModule
   private readonly storeWindow: WindowModule
 
@@ -26,13 +26,13 @@ export default class ClientVuexModule extends VuexModule {
   public website: string = clientWebsite
 
   constructor(
-    sseModule: SseModule,
+    storeSseModule: SseModule,
     storeWindowDock: WindowDockModule,
     storeWindow: WindowModule,
     options: RegisterOptions
   ) {
     super(options);
-    this.sseModule = sseModule
+    this.storeSseModule = storeSseModule
     this.storeWindowDock = storeWindowDock
     this.storeWindow = storeWindow
   }
@@ -49,9 +49,9 @@ export default class ClientVuexModule extends VuexModule {
 
   @Action
   async initialize() {
-    console.log('App initialized')
+    console.log('[OWD] App initialized')
 
-    this.sseModule.initialize()
+    this.storeSseModule.initialize()
     this.storeWindowDock.initialize()
     this.storeWindow.initialize()
   }

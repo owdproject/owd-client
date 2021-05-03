@@ -1,7 +1,7 @@
 <template>
   <DesktopSystemBarMenu>
     <span>
-      {{$t(`desktop.SystemBar.${config.name}.menu`)}}<v-icon>mdi-menu-down</v-icon>
+      {{$t(`desktop.SystemBar.${config.name}.menu`)}}
     </span>
   </DesktopSystemBarMenu>
 </template>
@@ -14,9 +14,3 @@ defineProps({
   config: Object
 })
 </script>
-
-<style scoped lang="scss">
-span {
-  pointer-events: none;
-}
-</style>

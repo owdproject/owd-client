@@ -1,15 +1,12 @@
 <template>
-  <DesktopSystemBarMenu>
+  <DesktopSystemBarMenu v-if="desktopModules && desktopModules.default">
     <div class="icons">
 
-      <template v-if="desktopModules && desktopModules.default">
-        <component
-            v-for="(desktopModule, i) of desktopModules.default" :key="i"
-            :is="desktopModule.components.menu"
-            :config="desktopModule.config"
-        />
-        <v-icon class="ml-n1 mr-n2">mdi-menu-down</v-icon>
-      </template>
+      <component
+          v-for="(desktopModule, i) of desktopModules.default" :key="i"
+          :is="desktopModule.components.menu"
+          :config="desktopModule.config"
+      />
 
     </div>
   </DesktopSystemBarMenu>

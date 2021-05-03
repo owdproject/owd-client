@@ -96,13 +96,13 @@ const contentStyle = computed(() => {
 .owd-desktop {
   &--system-bar-position-top {
     .owd-desktop__system-bar__content {
-      top: 44px;
+      top: 48px;
     }
   }
 
   &--system-bar-position-bottom {
     .owd-desktop__system-bar__content {
-      bottom: 44px;
+      bottom: 48px;
 
       &__arrow, &__arrow:before {
         top: auto;

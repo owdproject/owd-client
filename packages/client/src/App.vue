@@ -4,14 +4,16 @@
   </v-app>
 </template>
 
-<script>
-export default {
-  name: 'App',
-  beforeMount() {
-    // redirect to homepage on 404
-    if (!this.$route.name) {
-      this.$router.push({ name: 'index' })
-    }
+<script setup>
+import { onBeforeMount } from 'vue'
+import { useRoute, useRouter } from 'vue-router';
+
+const route = useRoute()
+const router = useRouter()
+
+onBeforeMount(() => {
+  if (!route.name) {
+    router.push({ name: 'index' })
   }
-}
+})
 </script>

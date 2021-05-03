@@ -2,7 +2,7 @@
   <Window :window="window">
     <div class="container">
       <h2>
-        Open Web Desktop <span v-text="$store.state['core/client'].version" />
+        Open Web Desktop <span v-text="clientVersion" />
       </h2>
       <a href="https://github.com/owdproject/owd-client/tree/next" target="_blank">github.com/owdproject/owd-client</a>
 
@@ -19,15 +19,19 @@
   </Window>
 </template>
 
-<script>
+<script setup>
   import Window from "@owd-client/core/src/components/window/Window";
 
-  export default {
-    components: {Window},
-    props: {
-      window: Object
-    }
-  }
+  import {defineProps} from 'vue'
+  import {useStore} from "vuex";
+
+  const store = useStore()
+
+  const props = defineProps({
+    window: Object
+  })
+
+  const clientVersion = store.state['core/client'].version
 </script>
 
 <style lang="scss">

@@ -118,14 +118,10 @@ const windowToggle = async (event, window) => {
     text-align: center;
     border-radius: 2px;
     background: darken($menuItemSquareBackground, 8%);
+    color: $menuItemSquareColor;
     transition: background 0.5s ease-in-out;
     will-change: background;
     float: left;
-
-    .v-icon {
-      color: $menuItemSquareColor;
-      vertical-align: 1px;
-    }
   }
 
   &--active &__icon {

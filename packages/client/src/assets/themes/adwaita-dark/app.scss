@@ -2,10 +2,10 @@
   .owd-desktop {
     &--system-bar-enabled {
       background: $desktopSystemBarBackground;
+      color: $desktopSystemBarColor;
 
       .owd-desktop__content {
         background: $bodyBackground;
-        color: $desktopSystemBarColor;
       }
 
       .owd-desktop__floating-notifications {

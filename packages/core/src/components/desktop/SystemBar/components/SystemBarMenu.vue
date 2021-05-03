@@ -15,8 +15,6 @@
   font-weight: $desktopTitleFontWeight;
 
   &:hover {
-    color: white;
-
     .owd-desktop__system-bar__menu__inner {
       background-color: $desktopSystemBarItemHover;
     }

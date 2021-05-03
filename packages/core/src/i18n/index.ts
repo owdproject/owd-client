@@ -1,4 +1,4 @@
-import { createI18n } from 'vue-i18n'
+import { createI18n } from 'vue-i18n/index'
 import messages from '@/i18n/index'
 
 export const owdCreateI18n = function() {

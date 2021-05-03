@@ -15,28 +15,19 @@
   </DesktopSystemBarMenuContent>
 </template>
 
-<script>
+<script setup>
 import DesktopSystemBarMenuContent from '@owd-client/core/src/components/desktop/SystemBar/components/SystemBarMenuContent'
 import ModuleDesktopExtend from "@owd-client/core/src/libraries/moduleDesktop/extend/moduleDesktopExtend.class";
-import {reactive} from "vue";
+import {reactive, defineEmit} from "vue";
 
-export default {
-  components: {DesktopSystemBarMenuContent},
-  emits: [
-    'close'
-  ],
-  setup() {
-    const desktopModules = reactive(ModuleDesktopExtend.getDesktopModules('StatusSystemBar'))
+const emit = defineEmit([
+  'close'
+])
 
-    return {
-      desktopModules
-    }
-  },
-  methods: {
-    menuClose() {
-      this.$emit('close')
-    }
-  }
+const desktopModules = reactive(ModuleDesktopExtend.getDesktopModules('StatusSystemBar'))
+
+function menuClose() {
+  emit('close')
 }
 </script>
 

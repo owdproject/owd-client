@@ -36,89 +36,78 @@
   </div>
 </template>
 
-<script lang="ts">
-import {ref, watch, nextTick} from "vue";
+<script setup lang="ts">
+import {ref, watch, defineProps, defineEmit, nextTick} from "vue";
 import {useStore} from "vuex";
 import WindowMenuIcon from "@owd-client/core/src/components/window/icon/WindowMenuIcon.vue";
 
-export default {
-  components: {
-    WindowMenuIcon
-  },
-  props: {
-    apps: Array,
-    appSelected: Object,
-    allowKeysNavigation: Boolean
-  },
-  emits: [
-    'menu-close',
-    'select',
-    'set-keys-navigation-section',
-  ],
-  setup(props, context) {
-    const store = useStore()
+const props = defineProps({
+  apps: Array,
+  appSelected: Object,
+  allowKeysNavigation: Boolean
+})
 
-    // element ref
-    const applicationMenuList = ref(null)
+const emit = defineEmit([
+  'menu-close',
+  'select',
+  'set-keys-navigation-section'
+])
 
-    // initial focus on buttons to enable key navigation
-    watch(() => props.allowKeysNavigation, (active) => {
-      selectNextApp()
+const store = useStore()
 
-      if (active) {
-        if (!props.appSelected.name) {
-          applicationMenuList.value.querySelector('ul > li:first-child button').focus()
-        } else {
-          nextTick(() => applicationMenuList.value.querySelector('ul > li.selected button').focus())
-        }
-      }
-    })
+// element ref
+const applicationMenuList = ref(null)
 
-    const selectPrevApp = () => {
-      if (!props.allowKeysNavigation) return false
+// initial focus on buttons to enable key navigation
+watch(() => props.allowKeysNavigation, (active) => {
+  selectNextApp()
 
-      const currentIndex = props.apps.indexOf(props.appSelected)
-
-      if (currentIndex - 1 > -1) {
-        context.emit('select', props.apps[currentIndex - 1])
-      }
-    }
-
-    const selectNextApp = () => {
-      if (!props.allowKeysNavigation) return false
-
-      const currentIndex = props.apps.indexOf(props.appSelected)
-
-      if (currentIndex + 1 < props.apps.length) {
-        context.emit('select', props.apps[currentIndex + 1])
-      }
-    }
-
-    return {
-      applicationMenuList,
-
-      windowOpen: async () => {
-        context.emit('menu-close')
-        await store.dispatch('core/window/windowCreate', props.appSelected.name)
-      },
-
-      appMouseOver: (e: Event, moduleAppWindow: Object) => {
-        // enable key direction
-        e.target.focus()
-
-        // set key navigations on apps
-        context.emit('set-keys-navigation-section', 'apps')
-        context.emit('select', moduleAppWindow)
-      },
-
-      // key navigation
-      selectPrevApp,
-      selectNextApp,
-      setNavigationKeys: (value: string) => {
-        context.emit('set-keys-navigation-section', value)
-      }
+  if (active) {
+    if (!props.appSelected.name) {
+      applicationMenuList.value.querySelector('ul > li:first-child button').focus()
+    } else {
+      nextTick(() => applicationMenuList.value.querySelector('ul > li.selected button').focus())
     }
   }
+})
+
+const selectPrevApp = () => {
+  if (!props.allowKeysNavigation) return false
+
+  const currentIndex = props.apps.indexOf(props.appSelected)
+
+  if (currentIndex - 1 > -1) {
+    emit('select', props.apps[currentIndex - 1])
+  }
+}
+
+const selectNextApp = () => {
+  if (!props.allowKeysNavigation) return false
+
+  const currentIndex = props.apps.indexOf(props.appSelected)
+
+  if (currentIndex + 1 < props.apps.length) {
+    emit('select', props.apps[currentIndex + 1])
+  }
+}
+
+async function windowOpen() {
+  emit('menu-close')
+  await store.dispatch('core/window/windowCreate', props.appSelected.name)
+}
+
+function appMouseOver(e: Event, moduleAppWindow: Object) {
+  // enable key direction
+  e.target.focus()
+
+  // set key navigations on apps
+  emit('set-keys-navigation-section', 'apps')
+  emit('select', moduleAppWindow)
+}
+
+// key navigation
+function setNavigationKeys(value: string) {
+  emit('set-keys-navigation-section', value)
 }
 </script>
 

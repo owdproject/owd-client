@@ -25,64 +25,46 @@
   </DesktopSystemBarMenuContent>
 </template>
 
-<script lang="ts">
-import {computed, onMounted, ref} from 'vue'
+<script setup lang="ts">
+import {computed, onMounted, ref, defineEmit} from 'vue'
 import {useStore} from "vuex";
 import DesktopSystemBarMenuContent from '@owd-client/core/src/components/desktop/SystemBar/components/SystemBarMenuContent'
 import ApplicationMenuContentCategories from './ApplicationMenuContentCategories'
 import ApplicationMenuContentApps from './ApplicationMenuContentApps'
 
-export default {
-  components: {
-    DesktopSystemBarMenuContent,
-    ApplicationMenuContentCategories,
-    ApplicationMenuContentApps
-  },
-  emits: [
-    'close'
-  ],
-  setup(props, context) {
-    const store = useStore()
+const emit = defineEmit([
+  'close'
+])
 
-    const appSelected = ref({})
-    const categorySelected = ref('')
+const store = useStore()
 
-    // key navigation section
-    const keysNavigationSection = ref('');
+const appSelected = ref({})
+const categorySelected = ref('')
 
-    // categories
-    const categories = computed(() => store.getters['core/windowCategory/modulesAppWindowCategories'])
+// categories
+const categories = computed(() => store.getters['core/windowCategory/modulesAppWindowCategories'])
 
-    // category > apps
-    const categoryApps = computed(() => {
-      if (!categorySelected.value) return []
+// category > apps
+const categoryApps = computed(() => {
+  if (!categorySelected.value) return []
 
-      return categories.value[categorySelected.value]
-    })
+  return categories.value[categorySelected.value]
+})
 
-    // set default key navigation section on mounted
-    // (just to trigger the watcher in ApplicationMenuContentCategories.vue)
-    onMounted(() => keysNavigationSection.value = 'categories')
+// key navigation section
+const keysNavigationSection = ref('');
 
-    return {
-      categories,
+// set default key navigation section on mounted
+// (just to trigger the watcher in ApplicationMenuContentCategories.vue)
+onMounted(() => keysNavigationSection.value = 'categories')
 
-      appSelected,
-      categorySelected,
-      categoryApps,
+function selectkeysNavigationSection(value: string) {
+  keysNavigationSection.value = value
+}
 
-      keysNavigationSection,
-
-      selectkeysNavigationSection: (value: string) => {
-        keysNavigationSection.value = value
-      },
-
-      menuClose: () => {
-        categorySelected.value = ''
-        context.emit('close')
-      }
-    }
-  }
+function menuClose() {
+  categorySelected.value = ''
+  emit('close')
 }
 </script>
 

@@ -15,24 +15,16 @@
   </DesktopSystemBarMenu>
 </template>
 
-<script>
+<script setup>
 import DesktopSystemBarMenu from "@owd-client/core/src/components/desktop/SystemBar/components/SystemBarMenu";
 import ModuleDesktopExtend from "@owd-client/core/src/libraries/moduleDesktop/extend/moduleDesktopExtend.class";
-import {reactive} from "vue";
+import {reactive, defineProps} from "vue";
 
-export default {
-  components: {DesktopSystemBarMenu},
-  props: {
-    config: Object
-  },
-  setup() {
-    const desktopModules = reactive(ModuleDesktopExtend.getDesktopModules('StatusSystemBar'))
+const props = defineProps({
+  config: Object
+})
 
-    return {
-      desktopModules
-    }
-  }
-}
+const desktopModules = reactive(ModuleDesktopExtend.getDesktopModules('StatusSystemBar') || {})
 </script>
 
 <style scoped lang="scss">

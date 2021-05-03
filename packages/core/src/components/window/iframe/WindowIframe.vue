@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import {defineProps, watch, computed, defineEmit} from "vue";
+import {ref, watch, computed, defineProps, defineEmit} from "vue";
 import Window from '../Window'
 
 const props = defineProps({
@@ -65,7 +65,7 @@ function focusOut() {
 }
 
 function iframeFocus() {
-  document.getElementById(iframeId).focus()
+  document.getElementById(iframeId.value).focus()
 }
 
 function onIframeLoaded() {
@@ -86,16 +86,16 @@ watch(() => props.url, url => {
   }
 })
 
-watch(() => props.window.storage.focused, focused => {
-  focused.value = focused
+watch(() => props.window.storage.focused, val => {
+  focused.value = val
 
   if (focused.value) {
     iframeFocus()
   }
 })
 
-watch(() => props.window.storage.opened, opened => {
-  if (opened === true) {
+watch(() => props.window.storage.opened, val => {
+  if (val === true) {
     if (props.window.storage.opened === true) {
       iframeSrc.value = props.url || props.window.config.metaData.iframeUrl
     }

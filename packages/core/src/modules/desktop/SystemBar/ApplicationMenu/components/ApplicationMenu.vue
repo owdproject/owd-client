@@ -6,15 +6,13 @@
   </DesktopSystemBarMenu>
 </template>
 
-<script>
+<script setup>
+import {defineProps} from 'vue'
 import DesktopSystemBarMenu from "@owd-client/core/src/components/desktop/SystemBar/components/SystemBarMenu";
 
-export default {
-  components: {DesktopSystemBarMenu},
-  props: {
-    config: Object
-  }
-}
+defineProps({
+  config: Object
+})
 </script>
 
 <style scoped lang="scss">

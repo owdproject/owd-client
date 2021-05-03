@@ -8,44 +8,38 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import Notification from "./Notification";
 
 import {getCurrentInstance, ref} from "vue";
 import {useStore} from "vuex";
 
-export default {
-  components: {
-    Notification
-  },
-  setup() {
-    const app = getCurrentInstance();
-    const store = useStore()
-    const options = app.appContext.config.owd.desktop.SystemBar.options.modules.NotificationMenu
+const app = getCurrentInstance();
+const store = useStore()
 
-    let notifications = ref([])
+const owdConfig = app.appContext.config.owd
+const notificationMenuOptions = owdConfig.desktop.SystemBar.options.modules.NotificationMenu
 
-    store.subscribe((mutation) => {
-      if (mutation.type === `core/notification/ADD`) {
-        const notification = mutation.payload
+let notifications = ref([])
 
-        notifications.value.push(notification)
+store.subscribe((mutation) => {
+  if (mutation.type === `core/notification/ADD`) {
+    const notification = mutation.payload
 
-        // remove other notifications if max allowed is X
-        if (notifications.value.length > options.floatingNotification.max) {
-          notifications.value.shift()
-        }
+    notifications.value.push(notification)
 
-        // remove after X seconds
-        setTimeout(() => notifications.value.shift(), notification.duration || options.floatingNotification.duration)
-      }
-    })
-
-    return {
-      notifications
+    // remove other notifications if max allowed is X
+    if (notifications.value.length > notificationMenuOptions.floatingNotification.max) {
+      notifications.value.shift()
     }
+
+    // remove after X seconds
+    setTimeout(
+        () => notifications.value.shift(),
+        notification.duration || notificationMenuOptions.floatingNotification.duration
+    )
   }
-}
+})
 </script>
 
 <style scoped lang="scss">

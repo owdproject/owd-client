@@ -5,42 +5,35 @@
   </DesktopSystemBarMenu>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { getCurrentInstance } from 'vue'
 import DesktopSystemBarMenu from "@owd-client/core/src/components/desktop/SystemBar/components/SystemBarMenu.vue";
-import {ref} from "vue";
+import {ref, defineProps} from "vue";
 
-export default {
-  components: {DesktopSystemBarMenu},
-  props: {
-    config: Object
-  },
-  setup() {
-    const app = getCurrentInstance();
-    const $moment = app.appContext.config.globalProperties.$moment
-    const options = app.appContext.config.owd.desktop.SystemBar.options.modules.NotificationMenu
+const props = defineProps({
+  config: Object
+})
 
-    const getDate = () => {
-      return $moment().format(options.menu.dateFormat)
-    }
-    const getTime = () => {
-      return $moment().format(options.menu.timeFormat)
-    }
+const app = getCurrentInstance();
+const owdConfig = app.appContext.config.owd
+const moment = app.appContext.config.globalProperties.$moment
 
-    let date = ref(getDate())
-    let time = ref(getTime())
+const notificationMenuOptions = owdConfig.desktop.SystemBar.options.modules.NotificationMenu
 
-    setInterval(() => {
-      date.value = getDate()
-      time.value = getTime()
-    }, 1000)
-
-    return {
-      date,
-      time
-    }
-  }
+const getDate = () => {
+  return moment().format(notificationMenuOptions.menu.dateFormat)
 }
+const getTime = () => {
+  return moment().format(notificationMenuOptions.menu.timeFormat)
+}
+
+let date = ref(getDate())
+let time = ref(getTime())
+
+setInterval(() => {
+  date.value = getDate()
+  time.value = getTime()
+}, 1000)
 </script>
 
 <style scoped lang="scss">

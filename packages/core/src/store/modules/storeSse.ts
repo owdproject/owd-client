@@ -25,7 +25,9 @@ export default class SseVuexModule extends VuexModule {
 
   @Action
   initialize() {
-    this.connect()
+    if (config.sse.enabled) {
+      this.connect()
+    }
   }
 
   @Action

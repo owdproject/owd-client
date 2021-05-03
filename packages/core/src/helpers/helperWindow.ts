@@ -8,36 +8,6 @@ interface CallbackWindowInstance<T1, T2 = void> {
   (windowInstance: T1): T2;
 }
 
-export function subtractDesktopWindowsContainer(position: { x: number, y: number }) {
-  const desktopWindowsContainerArea = document.querySelector('.owd-windows-container')
-
-  if (desktopWindowsContainerArea) {
-    const desktopWindowsContainerAreaOffset = desktopWindowsContainerArea.getBoundingClientRect()
-
-    return {
-      x: position.x - desktopWindowsContainerAreaOffset.left,
-      y: position.y - desktopWindowsContainerAreaOffset.top
-    }
-  }
-
-  return position
-}
-
-export function subtractDesktopWindowsContainerArea(position: { x: number, y: number }) {
-  const desktopWindowsContainerArea = document.querySelector('.owd-windows-container__initialize-area')
-
-  if (desktopWindowsContainerArea) {
-    const desktopWindowsContainerAreaOffset = desktopWindowsContainerArea.getBoundingClientRect()
-
-    return {
-      x: position.x - desktopWindowsContainerAreaOffset.left,
-      y: position.y - desktopWindowsContainerAreaOffset.top
-    }
-  }
-
-  return position
-}
-
 /**
  * Calculate window position
  * @param owdModuleAppWindow

@@ -60,6 +60,20 @@ const iconStyle = computed(() => {
 
   return null
 })
+
+const imageStyle = computed(() => {
+  const styles = []
+  if (typeof props.icon === 'object') {
+    if (props.icon.image) {
+      styles.push(`background-image: url(${props.icon.image});`)
+    }
+    if (props.icon.size) {
+      styles.push(`background-size: ${props.icon.size};`)
+    }
+    return styles.join(' ')
+  }
+  return null
+})
 </script>
 
 <style scoped lang="scss">

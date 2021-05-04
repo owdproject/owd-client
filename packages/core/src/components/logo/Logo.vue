@@ -1,28 +1,23 @@
 <template>
   <div class="owd-logo" v-if="enabled">
-    <h2 v-text="title" />
+    <h2 v-text="props.title" />
   </div>
 </template>
 
-<script>
-import {getCurrentInstance} from "vue";
+<script setup>
+import {defineProps, getCurrentInstance} from "vue";
 
-export default {
-  props: {
-    title: {
-      type: String,
-      default: 'owd-client'
-    }
-  },
-  setup() {
-    const app = getCurrentInstance()
-    const logoOptions = app.appContext.config.owd.desktop.Logo.options
-
-    return {
-      enabled: logoOptions.enabled
-    }
+const props = defineProps({
+  title: {
+    type: String,
+    default: 'owd-client'
   }
-}
+})
+
+const app = getCurrentInstance()
+const owdConfig = app.appContext.config.owd
+
+const enabled = owdConfig.desktop.Logo.options.enabled
 </script>
 
 <style lang="scss">

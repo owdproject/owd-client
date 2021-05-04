@@ -31,85 +31,79 @@
   </Window>
 </template>
 
-<script>
+<script setup>
+import {ref, watch, computed, defineProps, defineEmit} from "vue";
 import Window from '../Window'
 
-export default {
-  components: {
-    Window
-  },
-  emits: [
-    'iframeFocusIn',
-    'iframeFocusOut',
-    'iframeLoaded'
-  ],
-  props: {
-    url: String,
-    window: Object,
-    progressBar: Boolean
-  },
-  data() {
-    return {
-      iframeSrc: '',
-      loaded: false,
-      focused: false
-    }
-  },
-  computed: {
-    iframeId() {
-      return this.window.uniqueID
-    }
-  },
-  watch: {
-    url: function(val) {
-      if (this.window.storage.opened === true) {
-        this.iframeSrc = val
-      }
-    },
-    'window.storage.focused': async function (val) {
-      this.focused = val
+const props = defineProps({
+  url: String,
+  window: Object,
+  progressBar: Boolean
+})
 
-      if (val) {
-        this.iframeFocus()
-      }
-    },
-    'window.storage.opened': function (val) {
-      if (val === true) {
-        if (this.window.storage.opened === true) {
-          this.iframeSrc = this.url || this.window.config.metaData.iframeUrl
-        }
-      } else {
-        this.iframeSrc = ''
-        this.loaded = false
-      }
-    }
-  },
-  methods: {
-    focusIn() {
-      this.focused = true
-      this.$emit('iframeFocusIn')
-      this.iframeFocus()
-    },
-    focusOut() {
-      this.focused = false
-      this.$emit('iframeFocusOut')
-    },
-    iframeFocus() {
-      document.getElementById(this.iframeId).focus()
-    },
-    onIframeLoaded() {
-      if (this.iframeSrc !== '') {
-        this.loaded = true
-      } else {
-        if (this.window.storage.opened === true) {
-          this.iframeSrc = this.url || this.window.metaData.iframeUrl
-        }
-      }
+const emit = defineEmit([
+  'iframeFocusIn',
+  'iframeFocusOut',
+  'iframeLoaded'
+])
 
-      this.$emit('iframeLoaded')
+const iframeSrc = ref('')
+const loaded = ref(false)
+const focused = ref(false)
+
+const iframeId = computed(() => props.window.uniqueID)
+
+function focusIn() {
+  focused.value = true
+  emit('iframeFocusIn')
+  iframeFocus()
+}
+
+function focusOut() {
+  focused.value = false
+  emit('iframeFocusOut')
+}
+
+function iframeFocus() {
+  document.getElementById(iframeId.value).focus()
+}
+
+function onIframeLoaded() {
+  if (iframeSrc.value !== '') {
+    loaded.value = true
+  } else {
+    if (props.window.storage.opened === true) {
+      iframeSrc.value = this.url || props.window.metaData.iframeUrl
     }
   }
+
+  emit('iframeLoaded')
 }
+
+watch(() => props.url, url => {
+  if (props.window.storage.opened === true) {
+    iframeSrc.value = url
+  }
+})
+
+watch(() => props.window.storage.focused, val => {
+  focused.value = val
+
+  if (focused.value) {
+    iframeFocus()
+  }
+})
+
+watch(() => props.window.storage.opened, val => {
+  if (val === true) {
+    if (props.window.storage.opened === true) {
+      iframeSrc.value = props.url || props.window.config.metaData.iframeUrl
+    }
+  } else {
+    iframeSrc.value = ''
+    loaded.value = false
+  }
+})
 </script>
 
 <style lang="scss">

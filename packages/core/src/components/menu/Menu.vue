@@ -14,25 +14,14 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import {computed} from "vue"
 import {useStore} from 'vuex'
 import MenuItem from './menu-item/MenuItem.vue'
 
-export default {
-  components: {
-    MenuItem
-  },
-  setup() {
-    const store = useStore()
+const store = useStore()
 
-    return {
-      docks: computed(() => {
-        return Object.values(store.getters['core/windowDock/modulesAppWindowDocks'])
-      })
-    }
-  }
-}
+const docks = computed(() => Object.values(store.getters['core/windowDock/modulesAppWindowDocks']))
 </script>
 
 <style lang="scss">

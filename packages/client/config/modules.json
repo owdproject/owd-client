@@ -1,15 +1,15 @@
 {
   "type": "client",
-  "modulesEnabled": {
-    "about": {
+  "modulesEnabled": [
+    {
       "name": "about",
       "version": "2.0.0",
       "url": "https://www.github.com/owdproject/owd-client"
     },
-    "debug": {
+    {
       "name": "debug",
       "version": "2.0.0",
       "url": "https://www.github.com/owdproject/owd-client"
     }
-  }
+  ]
 }

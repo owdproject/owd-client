@@ -16,12 +16,12 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    notification: Object
-  },
-}
+<script setup>
+import {defineProps} from 'vue'
+
+const props = defineProps({
+  notification: Object
+})
 </script>
 
 <style scoped lang="scss">

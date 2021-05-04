@@ -27,23 +27,14 @@
   </div>
 </template>
 
-<script>
+<script setup>
   import Notification from "./Notification";
   import {computed} from "vue";
   import {useStore} from "vuex";
 
-  export default {
-    components: {Notification},
-    setup() {
-      const store = useStore()
+  const store = useStore()
 
-      const notifications = computed(() => store.getters['core/notification/list'])
-
-      return {
-        notifications
-      }
-    }
-  }
+  const notifications = computed(() => store.getters['core/notification/list'])
 </script>
 
 <style scoped lang="scss">

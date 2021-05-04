@@ -1,4 +1,6 @@
-import { createI18n } from 'vue-i18n'
+// @ts-ignore
+import { createI18n } from 'vue-i18n/index'
+// @ts-ignore
 import messages from '@/i18n/index'
 
 export const owdCreateI18n = function() {

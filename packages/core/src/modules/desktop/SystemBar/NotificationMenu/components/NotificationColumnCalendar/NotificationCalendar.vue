@@ -9,37 +9,31 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import {getCurrentInstance, ref} from "vue";
 
-export default {
-  setup() {
-    const app = getCurrentInstance();
-    const $moment = app.appContext.config.globalProperties.$moment
-    const options = app.appContext.config.owd.desktop.SystemBar.options.modules.NotificationMenu
+const app = getCurrentInstance();
+const moment = app.appContext.config.globalProperties.$moment
+const options = app.appContext.config.owd.desktop.SystemBar.options.modules.NotificationMenu
 
-    const getDayOfWeek = () => {
-      return $moment().format(options.calendar.header.dayOfWeekFormat)
-    }
-    const getDate = () => {
-      return $moment().format(options.calendar.header.dateFormat)
-    }
+const getDayOfWeek = () => {
+  return moment().format(options.calendar.header.dayOfWeekFormat)
+}
+const getDate = () => {
+  return moment().format(options.calendar.header.dateFormat)
+}
 
-    let dayOfWeek = ref(getDayOfWeek())
-    let date = ref(getDate())
+let dayOfWeek = ref(getDayOfWeek())
+let date = ref(getDate())
 
-    setInterval(() => {
-      dayOfWeek.value = getDayOfWeek()
-      date.value = getDate()
-    }, 1000)
+setInterval(() => {
+  dayOfWeek.value = getDayOfWeek()
+  date.value = getDate()
+}, 1000)
 
-    return {
-      calendar: {
-        dayOfWeek: dayOfWeek.value,
-        date: date.value
-      }
-    }
-  }
+const calendar = {
+  dayOfWeek: dayOfWeek.value,
+  date: date.value
 }
 </script>
 

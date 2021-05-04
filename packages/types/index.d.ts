@@ -50,7 +50,7 @@ export interface OwdClientConfiguration {
 
 export interface OwdClientConfigurationModules {
   type: string
-  modulesEnabled: OwdClientConfigurationModulesEnabled
+  modulesEnabled: { [key: string]: OwdClientConfigurationModule } | OwdClientConfigurationModule[]
 }
 
 export interface OwdClientConfigurationIcons {
@@ -75,12 +75,10 @@ export interface OwdClientConfigurationDesktop {
   }
 }
 
-export interface OwdClientConfigurationModulesEnabled {
-  [key: string]: {
-    name: string
-    version: string
-    url: string
-  };
+export interface OwdClientConfigurationModule {
+  name: string
+  version: string
+  url: string
 }
 
 // OWD CORE

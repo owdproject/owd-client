@@ -1,4 +1,4 @@
-import {OwdCoreModulesContext, OwdModuleApp, OwdModuleAppInfo} from "@owd-client/types";
+import {OwdCoreModulesContext, OwdModuleApp, OwdModuleAppInfo, OwdClientConfigurationModules, OwdClientConfigurationModule} from "@owd-client/types";
 import ModuleApp from "../moduleApp.class";
 
 const modulesApps: {[key: string]: OwdModuleApp} = {};
@@ -22,34 +22,24 @@ export default class ModuleAppExtend {
    * Check client/config/modules.json
    */
   isModuleConfigValid() {
-    let failed = true
-
-    if (this.config && typeof this.config.modules !== 'undefined') {
-      if (this.config.modules.type !== 'client') {
-        return console.error('[OWD] Config modules.json is not valid.')
-      }
-
-      if (!this.config.modules.modulesEnabled || Object.keys(this.config.modules.modulesEnabled).length === 0) {
-        return console.error("[OWD] There are no modules to load.")
-      }
-
-      failed = false
+    if (!this.config || typeof this.config.modules !== 'undefined' || this.config.modules.type !== 'client') {
+      console.error('[OWD] Config modules.json is not valid')
+      return false
     }
 
-    return failed
+    if (!this.config.modules.modulesEnabled) {
+      console.error("[OWD] There are no modulesEnabled defined")
+      return false
+    }
+
+    return true
   }
 
   /**
    * Load OWD app modules from owd config
    */
   loadModulesApp() {
-    // get names of the modules
-    const modulesEnabled: {
-      name: string,
-      version: string,
-      url: string,
-      git?: boolean
-    }[] = Object.values(this.app.config.owd.modules.modulesEnabled)
+    const modulesEnabled: OwdClientConfigurationModule[] = Object.values(this.app.config.owd.modules.modulesEnabled)
 
     for (const module of modulesEnabled) {
       try {

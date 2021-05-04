@@ -1,77 +1,65 @@
 <template>
   <div class="owd-window-icon">
-    <div class="owd-window-icon__image" v-if="(icon.image && !forceSvg) || (forceSvg && !iconName)" :style="imageStyle" />
+    <div
+        v-if="(props.icon.image && !props.forceSvg) || (props.forceSvg && !iconName)"
+        class="owd-window-icon__image"
+        :style="imageStyle"
+    />
     <v-icon v-else :style="iconStyle">{{iconName}}</v-icon>
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    icon: [String,Object],
-    isApplicationMenu: Boolean,
-    forceSvg: Boolean
-  },
-  computed: {
-    iconName() {
-      if (typeof this.icon === 'string') {
-        return this.icon
-      }
+<script setup>
+import {defineProps, computed} from "vue";
 
-      if (typeof this.icon === 'object') {
-        if (this.icon.name) return this.icon.name
-      }
+const props = defineProps({
+  icon: [String,Object],
+  isApplicationMenu: Boolean,
+  forceSvg: Boolean
+})
 
-      return ''
-    },
-    iconStyle() {
-      const styles = []
-
-      if (typeof this.icon === 'object') {
-        if (this.icon.offset) {
-          if (this.icon.offset.x) {
-            styles.push(`margin-left: ${this.icon.offset.x}px;`)
-          }
-          if (this.icon.offset.y) {
-            styles.push(`margin-top: ${this.icon.offset.y}px;`)
-          }
-        }
-        if (this.icon.size) {
-          styles.push(`font-size: ${this.icon.size};`)
-        }
-        if (this.icon.width) {
-          styles.push(`width: ${this.icon.width};`)
-        }
-        if (this.icon.height) {
-          styles.push(`height: ${this.icon.width};`)
-        }
-        if (this.icon.color && !this.isApplicationMenu) {
-          styles.push(`color: ${this.icon.color};`)
-        }
-
-        return styles.join(' ')
-      }
-
-      return null
-    },
-    imageStyle() {
-      const styles = []
-
-      if (typeof this.icon === 'object') {
-        if (this.icon.image) {
-          styles.push(`background-image: url(${this.icon.image});`)
-        }
-        if (this.icon.size) {
-          styles.push(`background-size: ${this.icon.size};`)
-        }
-
-        return styles.join(' ')
-      }
-
-      return null
-    }
+const iconName = computed(() => {
+  if (typeof props.icon === 'string') {
+    return props.icon
   }
-}
+
+  if (typeof props.icon === 'object') {
+    if (props.icon.name) return props.icon.name
+  }
+
+  return ''
+})
+
+const iconStyle = computed(() => {
+  const styles = []
+
+  if (typeof props.icon === 'object') {
+    if (props.icon.offset) {
+      if (props.icon.offset.x) {
+        styles.push(`margin-left: ${props.icon.offset.x}px;`)
+      }
+      if (props.icon.offset.y) {
+        styles.push(`margin-top: ${props.icon.offset.y}px;`)
+      }
+    }
+    if (props.icon.size) {
+      styles.push(`font-size: ${props.icon.size};`)
+    }
+    if (props.icon.width) {
+      styles.push(`width: ${props.icon.width};`)
+    }
+    if (props.icon.height) {
+      styles.push(`height: ${props.icon.width};`)
+    }
+    if (props.icon.color && !props.isApplicationMenu) {
+      styles.push(`color: ${props.icon.color};`)
+    }
+
+    return styles.join(' ')
+  }
+
+  return null
+})
 </script>
 
 <style scoped lang="scss">

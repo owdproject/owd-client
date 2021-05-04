@@ -8,36 +8,6 @@ interface CallbackWindowInstance<T1, T2 = void> {
   (windowInstance: T1): T2;
 }
 
-export function subtractDesktopWindowsContainer(position: { x: number, y: number }) {
-  const desktopWindowsContainerArea = document.querySelector('.owd-windows-container')
-
-  if (desktopWindowsContainerArea) {
-    const desktopWindowsContainerAreaOffset = desktopWindowsContainerArea.getBoundingClientRect()
-
-    return {
-      x: position.x - desktopWindowsContainerAreaOffset.left,
-      y: position.y - desktopWindowsContainerAreaOffset.top
-    }
-  }
-
-  return position
-}
-
-export function subtractDesktopWindowsContainerArea(position: { x: number, y: number }) {
-  const desktopWindowsContainerArea = document.querySelector('.owd-windows-container__initialize-area')
-
-  if (desktopWindowsContainerArea) {
-    const desktopWindowsContainerAreaOffset = desktopWindowsContainerArea.getBoundingClientRect()
-
-    return {
-      x: position.x - desktopWindowsContainerAreaOffset.left,
-      y: position.y - desktopWindowsContainerAreaOffset.top
-    }
-  }
-
-  return position
-}
-
 /**
  * Calculate window position
  * @param owdModuleAppWindow
@@ -110,8 +80,7 @@ export function calcPositionY(owdModuleAppWindow: any) {
   if (desktopWindowsContainerArea && desktopWindowsContainer) {
     const desktopWindowsContainerOffset = desktopWindowsContainer.getBoundingClientRect()
     const desktopWindowsContainerAreaOffset = desktopWindowsContainerArea.getBoundingClientRect()
-
-    // is window in memory?
+    
     if (!owdModuleAppWindow || !owdModuleAppWindow.storage) return console.log('[OWD] Window not found')
 
     if (desktopWindowsContainerAreaOffset.height < owdModuleAppWindow.storage.size.height) {
@@ -122,7 +91,10 @@ export function calcPositionY(owdModuleAppWindow: any) {
       return desktopWindowsContainerAreaOffset.height + desktopWindowsContainerAreaOffset.top - desktopWindowsContainerOffset.top - owdModuleAppWindow.storage.size.height
     }
 
-    if (pageWindow.innerHeight < owdModuleAppWindow.storage.position.y + owdModuleAppWindow.storage.size.height + desktopWindowsContainerOffset.top) {
+    if (
+      (pageWindow.innerHeight < owdModuleAppWindow.storage.position.y + owdModuleAppWindow.storage.size.height + desktopWindowsContainerOffset.top)
+      || (owdModuleAppWindow.storage.position.y + owdModuleAppWindow.storage.size.height > desktopWindowsContainerOffset.bottom)
+    ) {
       return desktopWindowsContainerAreaOffset.height + desktopWindowsContainerAreaOffset.top - desktopWindowsContainerOffset.top - owdModuleAppWindow.storage.size.height
     }
 

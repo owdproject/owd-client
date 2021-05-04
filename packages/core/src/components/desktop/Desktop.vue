@@ -28,56 +28,34 @@
   </div>
 </template>
 
-<script>
-  import { getCurrentInstance } from 'vue'
-  import DesktopSystemBar from "./SystemBar/DesktopSystemBar";
+<script setup>
+  import { getCurrentInstance, onBeforeMount, onMounted, onUnmounted } from 'vue'
   import {useStore} from "vuex";
+  import DesktopSystemBar from "./SystemBar/DesktopSystemBar";
 
-  export default {
-    components: {DesktopSystemBar},
-    setup() {
-      const app = getCurrentInstance()
-      const systemBarOptions = app.appContext.config.owd.desktop.SystemBar.options
-      const store = useStore()
+  const app = getCurrentInstance()
+  const store = useStore()
 
-      let timeoutHandleDesktopResize = null
+  const owdConfig = app.appContext.config.owd
 
-      return {
-        systemBarEnabled: systemBarOptions.enabled,
-        systemBarPosition: systemBarOptions.position,
+  const systemBarEnabled = owdConfig.desktop.SystemBar.options.enabled
+  const systemBarPosition = owdConfig.desktop.SystemBar.options.position
 
-        coreClientInitialize: () => {
-          store.dispatch('core/client/initialize')
-          store.dispatch('core/sse/initialize')
-          store.dispatch('core/windowDock/initialize')
-          store.dispatch('core/window/initialize')
-        },
-        handleDesktopResize: () => {
-          clearTimeout(timeoutHandleDesktopResize)
+  // initialize client
+  onBeforeMount(() => store.dispatch('core/client/initialize'))
 
-          timeoutHandleDesktopResize = setTimeout(() => {
-            store.dispatch('core/window/windowsHandlePageResize')
-          }, 100)
-        }
-      }
-    },
-    beforeMount() {
-      // initialize client
-      this.coreClientInitialize()
-    },
-    mounted() {
-      // on page ready, connect to SSE
-      if (this.$owd.config.sse.enabled) {
-        window.addEventListener('load', this.coreSseConnect)
-      }
+  // handle desktop resize event
+  onMounted(() => window.addEventListener('resize', handleDesktopResize))
+  onUnmounted(() => window.removeEventListener('resize', handleDesktopResize))
 
-      // add desktop resize event
-      window.addEventListener('resize', this.handleDesktopResize)
-    },
-    unmounted() {
-      // remove desktop resize event
-      window.removeEventListener('resize', this.handleDesktopResize)
-    }
+  let timeoutHandleDesktopResize = null
+
+  function handleDesktopResize() {
+    clearTimeout(timeoutHandleDesktopResize)
+
+    timeoutHandleDesktopResize = setTimeout(() => {
+      store.dispatch('core/window/windowsHandlePageResize')
+    }, 100)
   }
 </script>
 
@@ -87,22 +65,13 @@
     flex-flow: column;
     height: 100vh;
 
-    &--system-bar-position-top {
-      .owd-desktop__content {
-        border-radius: 8px 8px 0 0;
-      }
-    }
-
     &--system-bar-position-bottom {
       flex-direction: column-reverse;
-
-      .owd-desktop__content {
-        border-radius: 0 0 8px 8px;
-      }
     }
 
     &__content {
       position: relative;
+      overflow: hidden;
       flex: 1;
     }
   }

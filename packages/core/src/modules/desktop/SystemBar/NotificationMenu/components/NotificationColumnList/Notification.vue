@@ -26,32 +26,26 @@
   </div>
 </template>
 
-<script lang="ts">
-import {ref, getCurrentInstance} from "vue";
+<script setup lang="ts">
+import {ref, getCurrentInstance, defineProps} from "vue";
 import {useStore} from "vuex";
 
-export default {
-  props: {
-    notification: Object
-  },
-  setup(props) {
-    const app = getCurrentInstance();
-    const store = useStore()
+const props = defineProps({
+  notification: Object
+})
 
-    function getDateFromNow(date): string {
-      return app.appContext.config.globalProperties.$moment(date).fromNow()
-    }
+const app = getCurrentInstance();
+const store = useStore()
 
-    const dateFromNow = ref(getDateFromNow(props.date))
-    setInterval(() => dateFromNow.value = getDateFromNow(props.date), 1000)
+function getDateFromNow(date): string {
+  return app.appContext.config.globalProperties.$moment(date).fromNow()
+}
 
-    return {
-      dateFromNow,
-      removeNotification: (notification) => {
-        store.commit('core/notification/REMOVE', notification)
-      }
-    }
-  }
+const dateFromNow = ref(getDateFromNow(props.date))
+setInterval(() => dateFromNow.value = getDateFromNow(props.date), 1000)
+
+function removeNotification(notification) {
+  store.commit('core/notification/REMOVE', notification)
 }
 </script>
 

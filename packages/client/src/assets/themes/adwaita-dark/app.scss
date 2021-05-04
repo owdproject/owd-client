@@ -2,16 +2,28 @@
   .owd-desktop {
     &--system-bar-enabled {
       background: $desktopSystemBarBackground;
+      color: $desktopSystemBarColor;
 
       .owd-desktop__content {
         background: $bodyBackground;
-        color: $desktopSystemBarColor;
       }
 
       .owd-desktop__floating-notifications {
         .notification {
           background: $windowContentInputBackground;
         }
+      }
+    }
+
+    &--system-bar-position-top {
+      .owd-desktop__content {
+        border-radius: 8px 8px 0 0;
+      }
+    }
+
+    &--system-bar-position-bottom {
+      .owd-desktop__content {
+        border-radius: 0 0 8px 8px;
       }
     }
 

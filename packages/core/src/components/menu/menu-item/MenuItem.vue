@@ -17,61 +17,56 @@
   </li>
 </template>
 
-<script>
-import WindowMenuIcon from '../../window/icon/WindowMenuIcon'
-import {getCurrentInstance, computed} from "vue";
+<script setup>
+import {getCurrentInstance, defineProps, computed} from "vue";
 import {useStore} from "vuex";
+import WindowMenuIcon from '../../window/icon/WindowMenuIcon'
 
-export default {
-  components: {WindowMenuIcon},
-  props: {
-    window: Object
-  },
-  setup(props) {
-    const app = getCurrentInstance();
-    const store = useStore()
-    const $device = app.appContext.config.globalProperties.$device
+const props = defineProps({
+  window: Object
+})
 
-    return {
-      menuItemStyles: computed(() => {
-        let background = null
+const app = getCurrentInstance();
+const store = useStore()
+const device = app.appContext.config.globalProperties.$device
 
-        if (props.window.config.theme) {
-          background = props.window.config.theme
-        }
+const menuItemStyles = computed(() => {
+  let background = null
 
-        if (props.window.config.icon && props.window.config.icon.background) {
-          background = props.window.config.icon.background
-        }
+  if (props.window.config.theme) {
+    background = props.window.config.theme
+  }
 
-        if (!props.window.config.icon || (background && !props.window.config.icon.image)) {
-          return `background: ${background}`
-        }
+  if (props.window.config.icon && props.window.config.icon.background) {
+    background = props.window.config.icon.background
+  }
 
-        return ''
-      }),
-      windowToggle: async (event, window) => {
-        // from mobile
-        if ($device.mobile) {
-          await store.dispatch('core/window/windowMinimizeAll')
-        }
+  if (!props.window.config.icon || (background && !props.window.config.icon.image)) {
+    return `background: ${background}`
+  }
 
-        if (window.dummy) {
+  return ''
+})
 
-          // create new window
-          await store.dispatch('core/window/windowCreate', window.config.name)
+const windowToggle = async (event, window) => {
+  // from mobile
+  if (device.mobile) {
+    await store.dispatch('core/window/windowMinimizeAll')
+  }
 
-        } else {
+  if (window.dummy) {
 
-          if (window.storage.minimized || !window.storage.opened) {
-            await store.dispatch('core/window/windowCreate', window)
-          } else {
-            await store.dispatch('core/window/windowMinimize', window)
-          }
+    // create new window
+    await store.dispatch('core/window/windowCreate', window.config.name)
 
-        }
-      }
+  } else {
+
+    if (window.storage.minimized || !window.storage.opened) {
+      await store.dispatch('core/window/windowCreate', window)
+    } else {
+      await store.dispatch('core/window/windowMinimize', window)
     }
+
   }
 }
 </script>
@@ -123,14 +118,10 @@ export default {
     text-align: center;
     border-radius: 2px;
     background: darken($menuItemSquareBackground, 8%);
+    color: $menuItemSquareColor;
     transition: background 0.5s ease-in-out;
     will-change: background;
     float: left;
-
-    .v-icon {
-      color: $menuItemSquareColor;
-      vertical-align: 1px;
-    }
   }
 
   &--active &__icon {

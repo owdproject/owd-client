@@ -1,42 +1,38 @@
 <template>
-  <div v-if="$device.mobile">
+  <div v-if="device.mobile">
     <v-icon>{{$owd.config.icons.systemBar.battery}}</v-icon>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      batteryStatus: 'idle',
-      batteryLevel: 55
-    }
-  },
-  methods: {
-    async updateBatteryLevel() {
-      const self = this
+<script setup>
+import {ref, onMounted} from 'vue'
 
-      return window.navigator.getBattery()
-        .then((battery) => {
-          this.batteryStatus = battery.charging
-          this.batteryLevel = battery.level
+const batteryStatus = ref('idle')
+const batteryLevel = ref(55)
 
-          // .. and for any subsequent updates.
-          battery.onchargingchange = function () {
-            self.batteryStatus = battery.charging
-          };
+const device = app.appContext.config.globalProperties.$device
 
-          battery.onlevelchange = function () {
-            self.batteryLevel = battery.level
-          };
-        })
-        .catch(e => {
-          console.log(e)
-        })
-    }
-  },
-  mounted() {
-    if (this.$device.mobile) this.updateBatteryLevel()
-  }
+onMounted(() => {
+  if (device.mobile) updateBatteryLevel()
+})
+
+async function updateBatteryLevel() {
+  return window.navigator.getBattery()
+    .then((battery) => {
+      batteryStatus.value = battery.charging
+      batteryLevel.value = battery.level
+
+      // .. and for any subsequent updates.
+      battery.onchargingchange = function () {
+        batteryStatus.value = battery.charging
+      };
+
+      battery.onlevelchange = function () {
+        batteryLevel.value = battery.level
+      };
+    })
+    .catch(e => {
+      console.log(e)
+    })
 }
 </script>

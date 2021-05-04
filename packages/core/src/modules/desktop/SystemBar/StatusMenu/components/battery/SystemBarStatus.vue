@@ -8,10 +8,6 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import SystemBarStatusBattery from "./SystemBarStatusBattery";
-
-export default {
-  components: {SystemBarStatusBattery}
-}
 </script>

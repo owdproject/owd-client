@@ -4,12 +4,12 @@
   </a>
 </template>
 
-<script>
-  export default {
-    props: {
-      icon: String
-    }
-  }
+<script setup>
+import {defineProps} from "vue";
+
+const props = defineProps({
+  icon: String
+})
 </script>
 
 <style scoped lang="scss">

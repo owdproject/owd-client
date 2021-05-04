@@ -15,30 +15,23 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { defineProps, defineEmit } from 'vue'
 import DesktopSystemBarMenuContent from '@owd-client/core/src/components/desktop/SystemBar/components/SystemBarMenuContent'
 import NotificationList from "./NotificationColumnList/NotificationList";
 import NotificationCalendar from "./NotificationColumnCalendar/NotificationCalendar";
 import NotificationFloating from "./NotificationFloating/NotificationFloating";
 
-export default {
-  components: {
-    DesktopSystemBarMenuContent,
-    NotificationList,
-    NotificationCalendar,
-    NotificationFloating
-  },
-  props: {
-    opened: Boolean
-  },
-  emits: [
-    'close'
-  ],
-  methods: {
-    menuClose() {
-      this.$emit('close')
-    }
-  }
+const props = defineProps({
+  opened: Boolean
+})
+
+const emit = defineEmit([
+  'close'
+])
+
+function menuClose() {
+  emit('close')
 }
 </script>
 

@@ -78,15 +78,17 @@
   </Window>
 </template>
 
-<script>
-import Window from "@owd-client/core/src/components/window/Window";
+<script setup>
+import Window from "@owd-client/core/src/components/window/Window"
+import {useStore} from "vuex"
 
-export default {
-  components: {Window},
-  props: {
-    window: Object
-  }
-}
+const store = useStore()
+
+const props = defineProps({
+  window: Object
+})
+
+const window = props.window
 </script>
 
 <style scoped lang="scss">

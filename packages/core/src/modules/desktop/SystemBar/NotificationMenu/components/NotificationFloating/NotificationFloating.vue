@@ -20,26 +20,50 @@ const store = useStore()
 const owdConfig = app.appContext.config.owd
 const notificationMenuOptions = owdConfig.desktop.SystemBar.options.modules.NotificationMenu
 
+let notificationsQueue = ref([])
 let notifications = ref([])
+
+let showNextNotificationTimeout = null
 
 store.subscribe((mutation) => {
   if (mutation.type === `core/notification/ADD`) {
     const notification = mutation.payload
 
-    notifications.value.push(notification)
+    notificationsQueue.value.push(notification)
 
-    // remove other notifications if max allowed is X
-    if (notifications.value.length > notificationMenuOptions.floatingNotification.max) {
-      notifications.value.shift()
-    }
-
-    // remove after X seconds
-    setTimeout(
-        () => notifications.value.shift(),
-        notification.duration || notificationMenuOptions.floatingNotification.duration
-    )
+    showNextNotification()
   }
 })
+
+function showNextNotification() {
+  // clear previous timeout
+  clearTimeout(showNextNotificationTimeout)
+
+  // set timeout to show the first notification in queue
+  showNextNotificationTimeout = setTimeout(() => {
+
+    if (notificationsQueue.value.length > 0) {
+      const nextNotification = notificationsQueue.value[0]
+
+      // show first notification
+      notifications.value.push(nextNotification)
+
+      // remove notification from queue
+      notificationsQueue.value.shift()
+
+      setTimeout(
+        () => {
+          // remove active notification after X seconds
+          notifications.value.shift()
+          // show next notification
+          showNextNotification()
+        },
+        nextNotification.duration || notificationMenuOptions.floatingNotification.duration
+      )
+    }
+
+  }, 1000)
+}
 </script>
 
 <style scoped lang="scss">

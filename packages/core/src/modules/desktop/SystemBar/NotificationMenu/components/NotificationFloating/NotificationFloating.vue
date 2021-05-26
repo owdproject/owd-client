@@ -51,6 +51,9 @@ function showNextNotification() {
       // remove notification from queue
       notificationsQueue.value.shift()
 
+      // call notification/PROCESS_QUEUED mutation for other integrations
+      store.commit('core/notification/PROCESS_QUEUED', nextNotification)
+
       setTimeout(
         () => {
           // remove active notification after X seconds

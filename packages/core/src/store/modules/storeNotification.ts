@@ -22,9 +22,13 @@ export default class NotificationVuexModule extends VuexModule {
 
   @Mutation
   ADD(notification: StoreNotificationItem) {
+    // add date if missing
+    if (!notification.date) {
+      notification.date = new Date()
+    }
+
     this.items.unshift({
-      ...notification,
-      date: new Date()
+      ...notification
     })
 
     /*

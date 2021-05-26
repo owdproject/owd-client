@@ -78,6 +78,7 @@ function menuClose() {
     max-height: 60vh;
     grid-template-columns: 40% 60%;
     line-height: 32px;
+    font-size: 13px;
     left: 16px;
 
     @media(max-height: 400px) {

@@ -72,7 +72,9 @@ export default {
             floatingNotification: {
               max: 2,
               duration: 8000
-            }
+            },
+            // decide if notification callback should be called instantly or when the floating notification appears
+            runCallback: 'queued'
           }
         }
       }

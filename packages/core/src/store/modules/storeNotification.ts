@@ -45,9 +45,4 @@ export default class NotificationVuexModule extends VuexModule {
   RESET() {
     this.items = []
   }
-
-  // dummy mutation already handled by NotificationFloating.vue
-  // just for other integrations (like sounds or tts)
-  @Mutation
-  PROCESS_QUEUED(notification: StoreNotificationItem) {}
 }

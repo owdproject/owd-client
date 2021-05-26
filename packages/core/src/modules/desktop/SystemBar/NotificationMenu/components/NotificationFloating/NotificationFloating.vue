@@ -31,7 +31,9 @@ store.subscribe((mutation) => {
 
     notificationsQueue.value.push(notification)
 
-    showNextNotification()
+    if (notificationsQueue.value.length === 1) {
+      showNextNotification()
+    }
   }
 })
 
@@ -48,22 +50,21 @@ function showNextNotification() {
       // show first notification
       notifications.value.push(nextNotification)
 
-      // remove notification from queue
-      notificationsQueue.value.shift()
-
       // run delayed callback
       if (notificationMenuOptions.runCallback === 'queued' && typeof nextNotification.callback === 'function') {
         nextNotification.callback()
       }
 
       setTimeout(
-        () => {
-          // remove active notification after X seconds
-          notifications.value.shift()
-          // show next notification
-          showNextNotification()
-        },
-        nextNotification.duration || notificationMenuOptions.floatingNotification.duration
+          () => {
+            // remove active notification after X seconds
+            notifications.value.shift()
+            // remove notification from queue
+            notificationsQueue.value.shift()
+            // show next notification
+            showNextNotification()
+          },
+          nextNotification.duration || notificationMenuOptions.floatingNotification.duration
       )
     }
 

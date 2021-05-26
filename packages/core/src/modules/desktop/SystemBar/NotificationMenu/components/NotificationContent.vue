@@ -11,7 +11,7 @@
 
     </DesktopSystemBarMenuContent>
 
-    <NotificationFloating v-if="!opened" />
+    <NotificationFloating v-show="!opened" />
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 {
   "name": "@owd-client/core",
-  "version": "2.0.0-alpha.14.1",
+  "version": "2.0.0-alpha.14.2",
   "description": "OWD Client Core",
   "keywords": ["web", "desktop", "vue", "web desktop"],
   "homepage": "https://github.com/owdproject/owd-client#readme",

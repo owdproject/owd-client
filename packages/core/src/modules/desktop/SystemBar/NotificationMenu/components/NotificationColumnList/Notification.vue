@@ -84,7 +84,7 @@ function removeNotification(notification) {
     color: #777;
 
     .headline {
-      margin-top: -3px;
+      margin-top: -1px;
       margin-bottom: 1px;
       line-height: 16px;
       line-clamp: 1;

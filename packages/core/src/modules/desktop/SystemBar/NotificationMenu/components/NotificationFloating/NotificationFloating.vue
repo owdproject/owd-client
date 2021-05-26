@@ -51,8 +51,10 @@ function showNextNotification() {
       // remove notification from queue
       notificationsQueue.value.shift()
 
-      // call notification/PROCESS_QUEUED mutation for other integrations
-      store.commit('core/notification/PROCESS_QUEUED', nextNotification)
+      // run delayed callback
+      if (notificationMenuOptions.runCallback === 'queued' && typeof nextNotification.callback === 'function') {
+        nextNotification.callback()
+      }
 
       setTimeout(
         () => {

@@ -1,8 +1,8 @@
 import {VuexModule, Module, Mutation, Action, RegisterOptions} from "vuex-class-modules";
 
-import ModuleAppWindow from "@owd-client/core/src/libraries/moduleApp/moduleAppWindow.class";
+import ModuleAppWindow from "@owd-client/core/src/libraries/module-app/moduleAppWindow.class";
 
-import ModulesModule from "../storeModules";
+import ModulesAppModule from "../storeModulesApp";
 import FullScreenModule from "../storeFullscreen";
 import WindowFocusModule from "./storeWindowFocus";
 import WindowDockModule from "./storeWindowDock";
@@ -22,20 +22,20 @@ import {
 export default class WindowModule extends VuexModule {
   private readonly storage: any
 
-  private readonly modulesModule: ModulesModule
+  private readonly modulesAppModule: ModulesAppModule
   private readonly fullscreenModule: FullScreenModule
   private readonly windowFocusModule: WindowFocusModule
   private readonly windowDockModule: WindowDockModule
 
   constructor(
-    modulesModule: ModulesModule,
+    modulesAppModule: ModulesAppModule,
     fullscreenModule: FullScreenModule,
     windowFocusModule: WindowFocusModule,
     windowDockModule: WindowDockModule,
     options: RegisterOptions
   ) {
     super(options);
-    this.modulesModule = modulesModule
+    this.modulesAppModule = modulesAppModule
     this.fullscreenModule = fullscreenModule
     this.windowFocusModule = windowFocusModule
     this.windowDockModule = windowDockModule
@@ -50,7 +50,7 @@ export default class WindowModule extends VuexModule {
     const owdModuleAppWindowInstances: OwdModuleAppWindowInstance[] = []
 
     // for each loaded module
-    for (const owdModuleApp of this.modulesModule.modulesAppInstalled) {
+    for (const owdModuleApp of this.modulesAppModule.modulesAppInstalled) {
 
       // skip if module doesn't have any window
       if (!owdModuleApp.moduleInfo.windows) continue
@@ -86,7 +86,7 @@ export default class WindowModule extends VuexModule {
     } = {}
 
     // for each loaded module
-    for (const owdModuleApp of this.modulesModule.modulesAppInstalled) {
+    for (const owdModuleApp of this.modulesAppModule.modulesAppInstalled) {
 
       // skip if module doesn't have any window
       if (!owdModuleApp.moduleInfo.windows) continue
@@ -118,7 +118,7 @@ export default class WindowModule extends VuexModule {
 
   @Mutation
   REGISTER_WINDOW_NAMESPACE({ moduleName, windowName }: { moduleName: string, windowName: string }) {
-    const owdModuleAppWindowInstances = this.modulesModule.modulesAppKeyMap[moduleName].windowInstances
+    const owdModuleAppWindowInstances = this.modulesAppModule.modulesAppKeyMap[moduleName].windowInstances
 
     // add windowName (WindowSample) to module window instances
     if (typeof owdModuleAppWindowInstances[windowName] === 'undefined') {
@@ -132,7 +132,7 @@ export default class WindowModule extends VuexModule {
     const windowName = windowInstance.config.name
     const uniqueID = windowInstance.uniqueID
 
-    const owdModuleAppWindowInstances = this.modulesModule.modulesAppKeyMap[moduleName].windowInstances
+    const owdModuleAppWindowInstances = this.modulesAppModule.modulesAppKeyMap[moduleName].windowInstances
 
     // register window instance
     owdModuleAppWindowInstances[windowName][uniqueID] = windowInstance
@@ -144,7 +144,7 @@ export default class WindowModule extends VuexModule {
     const windowName = windowInstance.config.name
     const uniqueID = windowInstance.uniqueID
 
-    const owdModuleAppWindowInstances = this.modulesModule.modulesAppKeyMap[moduleName].windowInstances
+    const owdModuleAppWindowInstances = this.modulesAppModule.modulesAppKeyMap[moduleName].windowInstances
 
     // unregister window instance
     if (typeof owdModuleAppWindowInstances[windowName] !== 'undefined') {
@@ -157,7 +157,7 @@ export default class WindowModule extends VuexModule {
    */
   @Action
   async initialize() {
-    for (const owdModuleApp of this.modulesModule.modulesAppInstalled) {
+    for (const owdModuleApp of this.modulesAppModule.modulesAppInstalled) {
 
       // does module contain any windows?
       if (owdModuleApp.moduleInfo.windows && owdModuleApp.moduleInfo.windows.length > 0) {
@@ -470,6 +470,19 @@ export default class WindowModule extends VuexModule {
     return this
       .getWindow(data)
       .then((windowInstance: OwdModuleAppWindowInstance) => windowInstance.minimize())
+      .catch(() => false)
+  }
+
+  /**
+   * Minimize window
+   *
+   * @param data
+   */
+  @Action
+  windowMinimizeToggle(data: any): boolean {
+    return this
+      .getWindow(data)
+      .then((windowInstance: OwdModuleAppWindowInstance) => windowInstance.minimizeToggle())
       .catch(() => false)
   }
 

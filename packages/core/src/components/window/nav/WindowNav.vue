@@ -30,11 +30,20 @@ const props = defineProps({
 </script>
 
 <style lang="scss">
-  .owd-window__nav {
+.owd-window {
+  &__nav {
     position: relative;
     display: flex;
-    height: $windowNavHeight;
-    line-height: $windowNavHeight;
+    height: $owd-window-nav-height;
+    line-height: $owd-window-nav-height;
+    border: $owd-window-nav-border;
+    border-color: $owd-window-nav-border-color-inactive;
+    background: $owd-window-nav-background-inactive;
+    box-shadow: $owd-window-nav-box-shadow-inactive;
+    box-sizing: content-box;
+    font-family: $owd-window-nav-title-font-family;
+    font-weight: $owd-window-nav-title-font-weight;
+    font-size: $owd-window-nav-title-font-size;
     user-select: none;
     z-index: 1;
 
@@ -49,22 +58,14 @@ const props = defineProps({
     &__title {
       display: inline-block;
       width: 100%;
-      padding-left: 12px;
-      color: $windowNavTitleColor;
+      text-align: $owd-window-nav-title-align;
+      padding: $owd-window-nav-title-padding;
+      color: $owd-window-nav-color-inactive;
       cursor: default;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       pointer-events: none;
-
-      &-inner {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        max-width: 65%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
 
       a {
         color: inherit;
@@ -78,37 +79,40 @@ const props = defineProps({
       height: 100%;
       align-items: center;
 
-      &--prepend {
-        left: 7px;
-
-        a, button {
-          margin-right: 6px;
-        }
-      }
-
       &--append {
-        right: 7px;
-
-        a, button {
-          margin-left: 6px;
-        }
+        right: 0;
       }
     }
 
     .v-btn {
       position: relative;
-      height: 33px !important;
-      min-width: 33px;
-      vertical-align: -2px;
-      padding: 0;
-      text-transform: initial;
-      box-shadow: none;
+      min-width: $owd-window-button-width;
+      height: $owd-window-button-height;
+      padding: $owd-window-button-padding;
+      line-height: $owd-window-button-height;
+      font-size: $owd-window-nav-button-font-size;
       overflow: hidden;
 
-      &__overlay,
-      .v-ripple__container {
-        display: none;
+      a {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
       }
     }
   }
+
+  &--focused {
+    .owd-window__nav {
+      background: $owd-window-nav-background;
+      box-shadow: $owd-window-nav-box-shadow;
+      border-color: $owd-window-nav-border-color;
+
+      &__title {
+        color: $owd-window-nav-color;
+      }
+    }
+  }
+}
 </style>

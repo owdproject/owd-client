@@ -1,0 +1,26 @@
+.owd-window {
+  & &__nav {
+    &__title {
+      text-align: left;
+      padding: 0 3px;
+    }
+
+    &__btn-group {
+      &--prepend {
+        left: 3px;
+
+        a, button {
+          margin-right: 3px;
+        }
+      }
+
+      &--append {
+        right: 3px;
+
+        a, button {
+          margin-left: 3px;
+        }
+      }
+    }
+  }
+}

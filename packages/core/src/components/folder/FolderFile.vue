@@ -24,18 +24,6 @@ const props = defineProps({
 })
 </script>
 
-<style lang="scss">
-  li.file a div.name span.sup {
-    display: inline-block;
-    font-size: 9px;
-    height: 14px;
-    line-height: 12px;
-    transform: translateY(-3px);
-    color: rgba(255, 255, 255, 0.15);
-    margin-left: 1px;
-  }
-</style>
-
 <style scoped lang="scss">
   li.file {
     width: 100px;
@@ -51,8 +39,8 @@ const props = defineProps({
 
     @media(min-width: 480px) {
       &:not(.inactive):hover {
-        border: 1px solid $windowContentItemBorder;
-        background: $windowContentItemBackgroundHover;
+        border: 1px solid $owd-window-item-border-color;
+        background: $owd-window-item-background-hover;
       }
     }
 

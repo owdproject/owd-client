@@ -1,0 +1,7 @@
+# Editors
+.idea
+.vscode
+
+# App
+/src/dist
+/node_modules/

@@ -2,9 +2,6 @@
 .idea
 .vscode
 
-# Lerna
-lerna-debug.log
-
 # Tests
 coverage
 

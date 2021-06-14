@@ -58,7 +58,6 @@ onUnmounted(() => window.removeEventListener('keydown', handleWindowInstanceFull
   width: 330px;
   min-height: 44px;
   margin-left: -165px;
-  background: $windowContentButtonDarkerBackground;
   color: #AAA !important;
   text-align: center;
   text-transform: inherit;

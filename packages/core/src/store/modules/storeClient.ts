@@ -4,11 +4,11 @@ import SseModule from "./storeSse";
 import WindowDockModule from "./window/storeWindowDock";
 import WindowModule from "./window/storeWindow";
 
-const clientLocalStorageName = 'client-storage'
+const clientDefaultTitle = import.meta.env.VITE_NAME || ''
+const clientVersion = import.meta.env.VITE_VERSION || '2.0.0'
+const clientWebsite = import.meta.env.VITE_WEBSITE || 'owdproject.com'
 
-const clientDefaultTitle = process.env.VUE_APP_NAME || ''
-const clientVersion = process.env.VUE_APP_VERSION || '2.0.0'
-const clientWebsite = process.env.VUE_APP_WEBSITE || 'owdproject.com'
+import config from '/@/../client.config'
 
 @Module
 export default class ClientVuexModule extends VuexModule {
@@ -47,6 +47,11 @@ export default class ClientVuexModule extends VuexModule {
     this.title = clientDefaultTitle
   }
 
+  @Mutation
+  VERSION_SET(version: string) {
+    this.version = version
+  }
+
   @Action
   async initialize() {
     console.log('[OWD] App initialized')
@@ -54,14 +59,6 @@ export default class ClientVuexModule extends VuexModule {
     this.storeSseModule.initialize()
     this.storeWindowDock.initialize()
     this.storeWindow.initialize()
-  }
-
-  /**
-   * Save client datay in local storage
-   */
-  @Action
-  storageSave(data: any) {
-    localStorage.setItem(clientLocalStorageName, JSON.stringify(data))
   }
 
   /**

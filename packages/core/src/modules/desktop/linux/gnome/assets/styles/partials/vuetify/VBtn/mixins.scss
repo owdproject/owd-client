@@ -1,0 +1,69 @@
+@mixin btn-inactive {
+  background: $owd-window-button-background-inactive;
+  box-shadow: $owd-window-button-box-shadow-inactive;
+  border: $owd-window-button-border;
+  border-radius: $owd-window-button-border-radius;
+  border-color: $owd-window-button-border-color-inactive;
+  color: $owd-window-button-icon-color-inactive;
+  font-size: $owd-window-button-font-size;
+  text-transform: initial;
+  transition: all 0.15s ease-in-out;
+  letter-spacing: 0;
+
+  &.bg-primary {
+    background: $owd-window-button-primary-background-inactive;
+    border-color: $owd-window-button-primary-border-color-inactive;
+    box-shadow: $owd-window-button-primary-box-shadow-inactive;
+    color: $owd-window-button-primary-color-inactive;
+  }
+
+  &__overlay {
+    display: none;
+  }
+
+  i {
+    font-size: $owd-window-button-icon-size;
+  }
+}
+
+@mixin btn {
+  background: $owd-window-button-background;
+  box-shadow: $owd-window-button-box-shadow;
+  border-color: $owd-window-button-border-color;
+  color: $owd-window-button-icon-color;
+
+  &:hover {
+    background: $owd-window-button-background-hover;
+    box-shadow: $owd-window-button-box-shadow-hover;
+    border-color: $owd-window-button-border-color-hover;
+    color: $owd-window-button-icon-color-hover;
+  }
+
+  &:active {
+    background: $owd-window-button-background-active;
+    box-shadow: $owd-window-button-box-shadow-active;
+    border-color: $owd-window-button-border-color-active;
+    color: $owd-window-button-icon-color-active;
+  }
+
+  &.bg-primary {
+    background: $owd-window-button-primary-background;
+    border-color: $owd-window-button-primary-border-color;
+    box-shadow: $owd-window-button-primary-box-shadow;
+    color: $owd-window-button-primary-color;
+
+    &:hover {
+      background: $owd-window-button-primary-background-hover;
+      border-color: $owd-window-button-primary-border-color-hover;
+      box-shadow: $owd-window-button-primary-box-shadow-hover;
+      color: $owd-window-button-primary-color-hover;
+    }
+
+    &:active {
+      background: $owd-window-button-primary-background-active;
+      border-color: $owd-window-button-primary-border-color-active;
+      box-shadow: $owd-window-button-primary-box-shadow-active;
+      color: $owd-window-button-primary-color-active;
+    }
+  }
+}

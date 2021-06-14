@@ -2,55 +2,42 @@
 //import { ConsoleStateType } from '@/store/modules/console/state'
 
 // vue
-import { createApp } from 'vue'
+import { createApp, App } from 'vue'
 import {Store} from "vuex";
+import extensions from "owd-client/client.extensions";
 
 // vuex
 type ModuleType = any //{ app: AppStateType; console: ConsoleStateType }
 
-export type App = ReturnType<typeof createApp> & {
-  config: {
-    owd: OwdClientConfiguration
-  }
-}
 
 export type StateType = ModuleType
-
-// DEVICE DETECTOR
-
-export interface OwdDeviceDetector {
-  ios: boolean;
-  iphone: boolean;
-  iphoneX: boolean;
-  iphoneXR: boolean;
-  iphoneXSMax: boolean;
-  ipod: boolean;
-  ipad: boolean;
-  android: boolean;
-  androidPhone: boolean;
-  windows: boolean;
-  mac: boolean;
-  unix: boolean;
-  linux: boolean;
-  mobile: boolean;
-}
 
 // OWD CLIENT
 
 export interface OwdClientConfiguration {
   debug: boolean
-  theme: string
-  routes: any[]
+  ui: {
+    de: string
+    theme: string
+  }
   sse: OwdClientConfigurationSse
-  modules: OwdClientConfigurationModules
-  desktop: OwdClientConfigurationDesktop
-  icons: OwdClientConfigurationIcons
   vuetify: any
 }
 
-export interface OwdClientConfigurationModules {
-  type: string
-  modulesEnabled: { [key: string]: OwdClientConfigurationModule } | OwdClientConfigurationModule[]
+export interface OwdClientExtensions {
+  routes: any[]
+  app: {
+    modules?: any[]
+  },
+  desktop: {
+    component: any
+    modules?: any[]
+    options: {
+      [key: string]: any
+    }
+  },
+  plugins?: any[]
+  store?: any
 }
 
 export interface OwdClientConfigurationIcons {
@@ -59,26 +46,8 @@ export interface OwdClientConfigurationIcons {
 
 export interface OwdClientConfigurationSse {
   enabled: boolean
-  server: string
   reconnectOnError: boolean
   reconnectTimeout: number
-}
-
-export interface OwdClientConfigurationDesktop {
-  SystemBar: {
-    modules: string[],
-    options: {
-      enabled: boolean,
-      position: 'top' | 'bottom',
-      modules: {[key: string]: any}
-    }
-  }
-}
-
-export interface OwdClientConfigurationModule {
-  name: string
-  version: string
-  url: string
 }
 
 // OWD CORE
@@ -86,12 +55,14 @@ export interface OwdClientConfigurationModule {
 export interface OwdCoreBootContext {
   app: App
   config: OwdClientConfiguration
+  extensions: OwdClientExtensions
 }
 
 // modulesExtend.class
 export interface OwdCoreModulesContext {
   app: App
   config: OwdClientConfiguration
+  extensions: OwdClientExtensions
   store: any
   terminal: any
 }
@@ -134,29 +105,30 @@ export interface OwdModuleAppInfo {
 }
 
 export interface OwdModuleAppLoadCommandsContext {
-  store?: Store<any>,
-  terminal?: any
+  store: Store<any>,
+  terminal: any
+}
+
+export interface OwdModuleAppLoadSseEventsContext {
+  store: Store<any>,
+  terminal: any
+}
+
+export interface OwdModuleAppLoadStoreContext {
+  store: Store<any>,
+  terminal: any
 }
 
 export interface OwdModuleAppCommands {
   [key: string]: any
 }
 
-export interface OwdModuleAppLoadSseEventsContext {
-  store?: Store<any>,
-  terminal?: any
-}
-
 export interface OwdModuleAppSseEvents {
   [key: string]: any
 }
 
-export interface OwdModuleAppLoadStoreContext {
-  store?: Store<any>,
-  terminal?: any
-}
-
 export interface OwdModuleAppWindowConfig {
+  component: any
   name: string
   category: string
   title: string
@@ -167,7 +139,6 @@ export interface OwdModuleAppWindowConfig {
 
   size: OwdModuleAppWindowConfigSize
   position: OwdModuleAppWindowConfigPosition
-  theme?: string
   favorite?: boolean
   menu?: boolean
   menuApp?: boolean
@@ -177,12 +148,16 @@ export interface OwdModuleAppWindowConfig {
   maximizable?: boolean
   fullscreenable?: boolean
   borderless?: boolean
-  dense?: boolean
   hostname?: string
-  noContentSpacing?: boolean
   autoOpen?: boolean
   autoCloseBeforePageUnload?: boolean
   autoDestroyBeforePageUnload?: boolean
+  theme?: {
+    dense?: boolean
+    rounded?: boolean
+    noContentSpacing?: boolean
+    preserveMaterial?: boolean
+  }
 
   metaData?: any
 }
@@ -215,6 +190,7 @@ export interface OwdModuleAppWindowInstance extends OwdModuleAppWindowCreateInst
   close(): void
   destroy(): void
   minimize(): void
+  minimizeToggle(): void
   maximize(toggle: boolean): void
   fullscreen(toggle: boolean): void
 

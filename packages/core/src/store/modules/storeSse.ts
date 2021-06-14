@@ -2,8 +2,7 @@ import {VuexModule, Module, Mutation, Action} from "vuex-class-modules";
 
 let reconnectTimeout: any = null
 
-// @ts-ignore
-import config from '@/../client.config'
+import config from '/@/../client.config'
 
 @Module
 export default class SseVuexModule extends VuexModule {
@@ -40,7 +39,7 @@ export default class SseVuexModule extends VuexModule {
       return console.error('[OWD] Already connected to SSE')
     }
 
-    const sse = new EventSource(config.sse.server)
+    const sse = new EventSource(import.meta.env.VITE_SSE_BASE_URL)
 
     sse.onerror = () => {
       // reset connected status

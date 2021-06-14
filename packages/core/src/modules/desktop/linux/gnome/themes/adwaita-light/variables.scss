@@ -1,0 +1,146 @@
+// default fonts
+$owd-font-title: "Oswald", Tahoma, sans-serif;
+$owd-font-mono: "JetBrains Mono", monospace, FreeMono;
+
+// default colors
+$owd-primary: #3483e4;
+
+// basic
+$owd-background: #eee;
+$owd-color: #333;
+
+// menu
+$owd-dock-item-square-background: #3483e4;
+$owd-dock-item-square-icon: #FFFFFF;
+$owd-dock-item-square-border: 0;
+$owd-dock-item-square-border-color: none;
+$owd-dock-item-square-border-radius: 3px;
+$owd-dock-item-title-background: #ddd;
+$owd-dock-item-title-color: #111;
+
+// system bar
+$owd-desktop-system-bar-height: 32px;
+$owd-desktop-system-bar-background: black;
+$owd-desktop-system-bar-text: #d2d2d2;
+$owd-desktop-system-bar-menu-background-hover: #333;
+$owd-desktop-system-bar-menu-title-font-family: 'Cantarell';
+$owd-desktop-system-bar-menu-title-font-size: 14px;
+$owd-desktop-system-bar-menu-title-font-weight: 600;
+$owd-desktop-system-bar-menu-title-color: #353535;
+$owd-desktop-system-bar-menu-content-background: #353535;
+$owd-desktop-system-bar-menu-content-border-color: #1b1b1b;
+$owd-desktop-system-bar-menu-content-color: #b4b4b4;
+
+// window
+$owd-window-background: #f3f2f1;
+$owd-window-text: #303638;
+$owd-window-text-active: #fff;
+$owd-window-border: 1px solid;
+$owd-window-border-radius: 8px 8px 1px 1px;
+$owd-window-border-color: #959595 #919191 #919191 #919191;
+$owd-window-border-color-inactive: #b1b1b1 #adadad #adadad #adadad;
+$owd-window-box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.3);
+$owd-window-box-shadow-inactive: 0 0 8px 0 rgba(0, 0, 0, 0.1);
+$owd-window-container-box-shadow: none;
+
+// window nav
+$owd-window-nav-height: 46px;
+$owd-window-nav-height-dense: 36px;
+$owd-window-nav-border: 0;
+
+$owd-window-nav-background: linear-gradient(to bottom, #e1dedb, #dad6d2);
+$owd-window-nav-background-inactive: #f6f5f4;
+$owd-window-nav-box-shadow: inset 0 1px 0 0 #f9f8f8, 0 1px 0 0 #bcbcbc;
+$owd-window-nav-box-shadow-inactive: inset 0 1px 0 0 #f6f5f4, 0 1px 0 0 #d5d0cc;
+$owd-window-nav-border-color: none;
+$owd-window-nav-border-color-inactive: none;
+$owd-window-nav-color: #303638;
+$owd-window-nav-color-inactive: #929595;
+
+$owd-window-nav-title-padding: 0;
+$owd-window-nav-title-font-family: 'Cantarell';
+$owd-window-nav-title-font-size: 14px;
+$owd-window-nav-title-font-weight: 600;
+$owd-window-nav-title-align: center;
+
+// window nav button
+$owd-window-nav-button-font-size: 12px;
+
+// window buttons
+$owd-window-button-width: 32px;
+$owd-window-button-height: 32px;
+$owd-window-button-padding: 0;
+$owd-window-button-font-size: 14px;
+$owd-window-button-icon-size: 18px;
+$owd-window-button-background: #f6f5f4; // linear-gradient(to bottom, #f6f5f4, #edebe9);
+$owd-window-button-background-hover: #f8f8f7;
+$owd-window-button-background-active: #d6d1cd;
+$owd-window-button-background-inactive: none;
+$owd-window-button-box-shadow: inset 0 1px 0 0 #ffffff, 0 0.5px 2px 0 rgba(0, 0, 0, 0.1);
+$owd-window-button-box-shadow-hover: 0 0.5px 2px 0 rgba(0, 0, 0, 0.1);
+$owd-window-button-box-shadow-active: none;
+$owd-window-button-box-shadow-inactive: none;
+$owd-window-button-border: 1px solid;
+$owd-window-button-border-radius: 4px;
+$owd-window-button-border-color: #cdc7c2 #cdc7c2 #bfb8b1 #cdc7c2;
+$owd-window-button-border-color-hover: 0;
+$owd-window-button-border-color-active: #cdc7c2;
+$owd-window-button-border-color-inactive: #d5d0cc;
+$owd-window-button-icon-color: $owd-window-nav-color;
+$owd-window-button-icon-color-hover: inherit;
+$owd-window-button-icon-color-active: inherit;
+$owd-window-button-icon-color-inactive: $owd-window-nav-color-inactive;
+
+// window buttons primary
+$owd-window-button-primary-background: $owd-primary; // linear-gradient(to bottom, #3483e4, #2379e2);
+$owd-window-button-primary-background-hover: lighten($owd-primary, 2%);
+$owd-window-button-primary-background-active: darken($owd-primary, 13%);
+$owd-window-button-primary-background-inactive: lighten($owd-primary, 1%);
+$owd-window-button-primary-box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+$owd-window-button-primary-box-shadow-hover: inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+$owd-window-button-primary-box-shadow-active: none;
+$owd-window-button-primary-box-shadow-inactive: none;
+$owd-window-button-primary-border-color: darken($owd-primary, 12%);
+$owd-window-button-primary-border-color-hover: darken($owd-primary, 12%);
+$owd-window-button-primary-border-color-active: darken($owd-primary, 13%);
+$owd-window-button-primary-border-color-inactive: lighten($owd-primary, 1%);
+$owd-window-button-primary-color: #fff;
+$owd-window-button-primary-color-hover: $owd-window-button-primary-color;
+$owd-window-button-primary-color-active: $owd-window-button-primary-color;
+$owd-window-button-primary-color-inactive: $owd-window-button-primary-color;
+
+// window input
+$owd-window-input-height: inherit;
+$owd-window-input-padding: 0 2px;
+$owd-window-input-color: black;
+$owd-window-input-color-hover: $owd-window-input-color;
+$owd-window-input-color-active: $owd-window-input-color;
+$owd-window-input-color-inactive: $owd-window-input-color;
+$owd-window-input-background: white;
+$owd-window-input-background-hover: $owd-window-input-background;
+$owd-window-input-background-active: $owd-window-input-background;
+$owd-window-input-background-inactive: $owd-window-input-background;
+$owd-window-input-border: 1px solid;
+$owd-window-input-border-radius: 2px;
+$owd-window-input-border-color: #000000 #bfbfbf #bfbfbf #000000;
+$owd-window-input-border-color-hover: $owd-window-input-border-color;
+$owd-window-input-border-color-active: $owd-window-input-border-color;
+$owd-window-input-border-color-inactive: $owd-window-input-border-color;
+$owd-window-input-box-shadow: 1px 1px 0 0 #ffffff, 0px 1px 0 0 #ffffff, 1px 0 0 0 #ffffff, -1px -1px 0 0 #828282, 0 -1px 0 0 #828282, -1px 0 0 0 #828282;
+$owd-window-input-box-shadow-hover: $owd-window-input-box-shadow;
+$owd-window-input-box-shadow-active: $owd-window-input-box-shadow;
+$owd-window-input-box-shadow-inactive: $owd-window-input-box-shadow;
+
+// window content
+$owd-window-content-border-color: #222;
+$owd-window-content-separator: #2C2C2C;
+$owd-window-content-tag: #2e2e2e;
+
+$owd-window-table-row-hover: rgba(0, 0, 0, 0.08);
+
+$owd-window-item-background: rgba(255, 255, 255, 0.04);
+$owd-window-item-background-hover: rgba(255, 255, 255, 0.06);
+$owd-window-item-text-color: black;
+$owd-window-item-text-color-hover: white;
+$owd-window-item-border-color: rgba(255, 255, 255, 0.2);
+$owd-window-item-box-shadow: 0 2px 1px 0 rgba(21, 21, 21, 0.1);

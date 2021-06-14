@@ -1,17 +1,17 @@
 import {Module, RegisterOptions, VuexModule} from "vuex-class-modules";
-import ModulesModule from "../storeModules";
+import ModulesAppModule from "../storeModulesApp";
 import {OwdModuleAppWindowConfig} from "@owd-client/types";
 
 @Module
 export default class WindowCategoryModule extends VuexModule {
-  private readonly modulesModule: ModulesModule
+  private readonly modulesAppModule: ModulesAppModule
 
   constructor(
-    modulesModule: ModulesModule,
+    modulesAppModule: ModulesAppModule,
     options: RegisterOptions
   ) {
     super(options);
-    this.modulesModule = modulesModule
+    this.modulesAppModule = modulesAppModule
   }
 
   /**
@@ -25,7 +25,7 @@ export default class WindowCategoryModule extends VuexModule {
     const windowCategoriesOther: OwdModuleAppWindowConfig[] = []
 
     // for each loaded module
-    for (const owdModuleApp of this.modulesModule.modulesAppInstalled) {
+    for (const owdModuleApp of this.modulesAppModule.modulesAppInstalled) {
 
       // skip if module doesn't have any window
       if (!owdModuleApp.moduleInfo.windows) continue

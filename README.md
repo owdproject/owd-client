@@ -52,17 +52,17 @@ npm run build
 
 ## Modules
 OWD modules can extend your Open Web Desktop instance.  
-Here you can find [some modules](https://github.com/topics/owd-modules) available for all.
+You can find some modules available for all at [topics/owd-modules](https://github.com/topics/owd-modules).
 
 ### Install a new module
 You can simply install a new module with `npm install <git-link>`, unless you want to customize it.
 
 #### Install a new module by importing its source
-If you are planning to customize a module, copy the source of the `owd-module/client` folder into `src/modules/app/<module-name>`.
-Take a look at the `README.md`, you may also have to move some other files (or folders, like `config` or `public`).
+If you are planning to customize a module, you can import its source by copying the content of the `owd-module/client` folder into `src/modules/app/<module-name>`.
+Always check the `README.md`, you may have to move some folders.
 
-Always check the `package.json` and the `README.md`, there may be additional dependencies to install, or other OWD modules.
-For each dependency you find listed, you'll have to install it by running `npm install <dependency-name>` in the root folder of your owd-client instance.
+Also take a look at the `package.json`, there may be additional dependencies to install, or other OWD modules.
+For each dependency you find listed, install it by running `npm install <dependency>` in the root folder of your instance.
 
 #### Define the installed module
 To load an installed module, define it under `my-owd-client/client.extensions.ts`.  

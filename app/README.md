@@ -58,7 +58,7 @@ You can find some modules available for all at [topics/owd-modules](https://gith
 You can simply install a new module with `npm install <git-link>`, unless you want to customize it.
 
 #### Install a new module by importing its source
-If you are planning to customize a module, you can import its source by copying the content of the `owd-module/client` folder into `src/modules/app/<module-name>`.
+If you are planning to customize a module, just import its source by copying the content of the `owd-module/client` folder into `src/modules/app/<module-name>`.
 Always check the `README.md`, you may have to move some folders.
 
 Also take a look at the `package.json`, there may be additional dependencies to install, or other OWD modules.

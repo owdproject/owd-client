@@ -38,5 +38,9 @@ setInterval(() => {
 <style scoped lang="scss">
 .date {
   margin-right: 8px;
+
+  @media(max-width: 400px) {
+    display: none;
+  }
 }
 </style>

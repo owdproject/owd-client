@@ -38,7 +38,3 @@ setInterval(() => {
   margin-right: 8px;
 }
 </style>
-
-<style scoped>
-
-</style>

@@ -13,7 +13,7 @@
 </p>
 
 ## Overview
-Open Web Desktop is a project that aims to provide a simple environment to create your own web desktop, and to extend it through modules and other integrations. OWD Client 2 is based on Vue.js 3 and TypeScript.
+Open Web Desktop is a project that aims to provide a simple environment to create your own web desktop, extendable through a series of modules and integrations. OWD Client 2 is based on Vue.js 3 and TypeScript.
 
 [Check the demo](https://next-demo.owdproject.org) of this `owd-client` base repository, decked out with some modules.
 
@@ -37,8 +37,8 @@ Required software:
 - [Git](https://git-scm.com)
 - [Node.js](https://nodejs.org)
 
-At the moment, there is no OWD CLI available to bootstrap a new client instance with a single command,
-but you can proceed manually. Once you have everything installed, clone this repository.
+At the moment, there is no CLI available to bootstrap a new client instance with a single command.  
+Once you have everything installed, clone the repository and follow these instructions.
 
 ```
 # Using HTTPS
@@ -79,22 +79,21 @@ npm run build
 ```
 
 ## Modules
-OWD modules may include a `client` or a `server` folder. Since there is no OWD CLI available for module installation, you have to install modules manually too.
-Here you can find [some modules](https://github.com/topics/owd-modules).
+OWD modules may include a `client` or a `server` folder. Since there is no CLI for modules installation, you have to install each module manually.
+Here you can find [some modules](https://github.com/topics/owd-modules) available for all.
 
 ### Install a new module
-To install a module, copy the content of the  `owd-module/client` folder into `src/modules/<module-name>`.
-
+To install a module, copy the content of the  `owd-module/client` folder into `src/modules/<module-name>`.  
 Always take a look at the README.md, you may have to move some other folders like `config` or `public`.
 
 #### Install module dependencies
 Some modules may require additional dependencies, or other OWD modules to be installed.
 
-Check the `src/modules/<module-name>/module.json` config. If you find any `dependencies`,
-install each one by running `npm install <dependency-name>` in the root folder of your owd-client instance.
+Check the `src/modules/<module-name>/module.json` config. For each dependency you find listed,
+you will need to install it by running `npm install <dependency-name>` in the root folder of your owd-client instance.
 
 #### Define the installed module
-To allow OWD to load the installed module, you have to define it under `my-owd-client/config/modules.json`.
+To load an installed module, you have to define it under `my-owd-client/config/modules.json`.  
 Be sure to add every module in the `modulesEnabled` property like the example above:
 
 ```json
@@ -138,7 +137,7 @@ git clone https://github.com/owdproject/owd-client.git
 git clone git@github.com:owdproject/owd-client.git
 ```
 
-Then install dependencies and run Open Web Desktop in development mode.
+Then install all the dependencies and run Open Web Desktop in development mode.
 ```
 # Navigate to the owd-client folder
 cd owd-client

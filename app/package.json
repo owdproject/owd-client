@@ -1,0 +1,43 @@
+{
+  "name": "owd-client",
+  "version": "2.0.0-beta.0",
+  "description": "Open Web Desktop client",
+  "private": true,
+  "homepage": "https://github.com/owdproject/owd-client#readme",
+  "bugs": {
+    "url": "https://github.com/owdproject/owd-client/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/owdproject/owd-client.git"
+  },
+  "license": "GPL-3.0",
+  "author": {
+    "name": "hacklover",
+    "url": "https://github.com/hacklover"
+  },
+  "scripts": {
+    "build": "vite build --out-dir dist",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "preview": "vite preview --open --port 8080",
+    "serve": "vite --open",
+    "test": "jest"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "@types"
+  ],
+  "dependencies": {
+    "@owd-client/core": "^2.0.0-beta.0"
+  },
+  "devDependencies": {
+    "@owd-client/types": "^2.0.0-beta.0",
+    "@fontsource/oswald": "^4.4.2",
+    "@mdi/font": "^5.9.55",
+    "@vitejs/plugin-vue": "^1.2.3",
+    "@vue/compiler-sfc": "^3.0.11",
+    "sass": "^1.34.0",
+    "vite": "^2.3.6"
+  }
+}

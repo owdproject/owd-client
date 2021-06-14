@@ -1,32 +1,42 @@
+import { App } from 'vue'
+import {
+  OwdClientConfiguration,
+  OwdClientExtensions,
+  OwdCoreBootContext,
+  OwdCoreModulesContext
+} from "@owd-client/types";
+
 import { owdCreateStore } from './store'
-import { owdCreateRouter } from './router'
 import { owdCreateI18n } from './plugins/i18n'
+import { owdCreateRouter } from './plugins/router'
 import { owdCreateVuetify } from './plugins/vuetify'
 
 import owdTerminalExtend from './libraries/terminal/extend/terminalExtend.class'
-import owdModuleAppExtend from './libraries/moduleApp/extend/moduleAppExtend.class'
-import owdModuleDesktopExtend from "./libraries/moduleDesktop/extend/moduleDesktopExtend.class";
-
-import {App, OwdCoreBootContext, OwdCoreModulesContext} from "@owd-client/types";
+import owdModuleAppExtend from './libraries/module-app/extend/moduleAppExtend.class'
+import owdModuleDesktopExtend from "./libraries/module-desktop/extend/moduleDesktopExtend.class";
 
 // import plugins
 import moment from "./plugins/moment";
-import deviceDetector from "./plugins/deviceDetector";
+
+// import basic fonts
+import '@fontsource/jetbrains-mono'
+import '@fontsource/cantarell'
 
 // register service worker
-import './libraries/serviceWorker/registerServiceWorker'
+import './libraries/service-worker/registerServiceWorker'
 
-interface Boot {
-  store: any;
-  terminal: any;
-}
-
-export default class OwdBoot implements Boot {
+export default class OwdBoot {
   private readonly loaded: boolean = false
+
+  config: OwdClientConfiguration
+  extensions: OwdClientExtensions
   store: any
   terminal: any
 
   constructor(context: OwdCoreBootContext) {
+    this.config = context.config
+    this.extensions = context.extensions
+
     try {
       this.initialize(context)
       this.loaded = true
@@ -46,7 +56,7 @@ export default class OwdBoot implements Boot {
    */
   initialize(context: OwdCoreBootContext) {
     // config
-    this.initializeConfig(context)
+    this.initializeConfig(context.app)
 
     // assets
     this.initializeAssets(context.app)
@@ -54,10 +64,10 @@ export default class OwdBoot implements Boot {
     // plugins
     this.initializePlugins(context.app)
 
-    // internationalization
+    // router
     this.initializeRouter(context.app)
 
-    // router
+    // internationalization
     this.initializeInternationalization(context.app)
 
     // store
@@ -68,74 +78,59 @@ export default class OwdBoot implements Boot {
 
     // modules extend
     this.initializeModules({
-      config: context.config,
       app: context.app,
+      config: context.config,
+      extensions: context.extensions,
       store: this.store,
       terminal: this.terminal
     })
 
     // provide owd boot instance for easy access to store and terminal instances
+    /*
     context.app.provide('owd', {
       config: context.config,
       store: this.store,
       terminal: this.terminal
     })
+     */
   }
 
-  initializeConfig(context: OwdCoreBootContext) {
-    // assign owd config to Vue app.config
-    context.app.config.owd = context.config
-
-    // assign $owd to Vue global properties
-    context.app.config.globalProperties.$owd = {
-      config: {
-        debug: context.app.config.owd.debug,
-        theme: context.app.config.owd.theme,
-        icons: context.app.config.owd.icons,
-        desktop: context.app.config.owd.desktop,
-        sse: context.app.config.owd.sse
-      }
-    }
+  initializeConfig(app: App) {
+    // assign owd config to Vue app.config globalProperties
+    app.config.globalProperties.$owd = this.config
   }
 
   /**
    * Initialize assets
    */
   initializeAssets(app: App) {
-    // import app core styles
-    require('./assets/css/app.scss')
+    // import core styles
+    import('./assets/css/app.scss')
 
-    // import app custom styles from owd-client
-    require('@/assets/css/app.scss')
-
-    // load custom theme styles
-    // todo during build, ${app.config.owd.theme} isn't correct and it imports the default theme
-    // dunno why, so I moved this require into client.config.ts as temp workaround
-    /*
+    // import custom theme styles from owd-client/app
     try {
-      require(`@/assets/themes/${app.config.owd.theme}/app.scss`)
+      import(/* @vite-ignore */ `/@/../src/assets/themes/${this.config.ui.de}/${this.config.ui.theme}/index.scss`)
     } catch(e) {
-      console.error(`[OWD] Error while loading "${app.config.owd.theme}" theme app.scss`)
+      console.error('Error while loading theme styles')
     }
-    */
 
-    // import Oswald font with typeface
-    require('@fontsource/cantarell')
-    require('@fontsource/oswald')
-    require('@fontsource/jetbrains-mono')
-
-    // assign vuetify config to $vuetify
-    // Vue.prototype.$vuetify = this.config.vuetify
+    // initialize vuetify
     app.use(owdCreateVuetify(app))
+
+    // append desktop-environment and theme to #app classes
+    const appElement = document.getElementById('app')
+
+    appElement.setAttribute('os-name', this.config.ui.de.split('/')[0])
+    appElement.setAttribute('os-version', this.config.ui.de.split('/')[1])
+    appElement.setAttribute('theme', this.config.ui.theme)
   }
 
   /**
-   * Initialize plugins
+   * Initialize generic plugins
    *
    * @param app
    */
   initializePlugins(app: App) {
-    app.use(deviceDetector)
     app.use(moment)
   }
 
@@ -161,7 +156,7 @@ export default class OwdBoot implements Boot {
    */
   initializeRouter(app: App) {
     // create owd router
-    const owdRouter = owdCreateRouter(app.config.owd.routes)
+    const owdRouter = owdCreateRouter(this.extensions.routes)
 
     // initialize owd router
     app.use(owdRouter)

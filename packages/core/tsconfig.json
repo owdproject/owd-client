@@ -15,17 +15,17 @@
     "sourceMap": false,
     "baseUrl": ".",
     "rootDir": ".",
+    "paths": {
+      "/@/*": [
+        "../../../src/*"
+      ]
+    },
     "types": [
       "@types/jest",
       "@types/md5",
-      "@vuetify/types",
+      "vuetify/types",
       "webpack-env"
     ],
-    "paths": {
-      "@/*": [
-        "../client/src/*"
-      ]
-    },
     "lib": [
       "esnext",
       "dom",

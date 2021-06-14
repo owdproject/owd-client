@@ -1,9 +1,9 @@
 import { createStore } from 'vuex'
 
 import storeClientModule from './modules/storeClient'
+import storeModulesAppModule from './modules/storeModulesApp'
 import storeFullscreenModule from './modules/storeFullscreen'
 import storeNotificationModule from './modules/storeNotification'
-import storeModulesModule from './modules/storeModules'
 import storeWindowModule from './modules/window/storeWindow'
 import storeWindowCategoryModule from './modules/window/storeWindowCategory'
 import storeWindowDockModule from './modules/window/storeWindowDock'
@@ -23,11 +23,11 @@ const store = createStore({
 export const storeFullScreen = new storeFullscreenModule({ store, name: 'core/fullscreen' })
 export const storeNotification = new storeNotificationModule({ store, name: 'core/notification' })
 export const storeSse = new storeSseModule({ store, name: 'core/sse' })
-export const storeModules = new storeModulesModule({ store, name: 'core/modules' })
+export const storeModulesApp = new storeModulesAppModule({ store, name: 'core/modules' })
 export const storeWindowFocus = new storeWindowFocusModule( { store, name: 'core/windowFocus' })
-export const storeWindowCategory = new storeWindowCategoryModule(storeModules, { store, name: 'core/windowCategory' })
-export const storeWindowDock = new storeWindowDockModule(storeModules, { store, name: 'core/windowDock' })
-export const storeWindow = new storeWindowModule(storeModules, storeFullScreen, storeWindowFocus, storeWindowDock, { store, name: 'core/window' })
+export const storeWindowCategory = new storeWindowCategoryModule(storeModulesApp, { store, name: 'core/windowCategory' })
+export const storeWindowDock = new storeWindowDockModule(storeModulesApp, { store, name: 'core/windowDock' })
+export const storeWindow = new storeWindowModule(storeModulesApp, storeFullScreen, storeWindowFocus, storeWindowDock, { store, name: 'core/window' })
 export const storeClient = new storeClientModule(storeSse, storeWindowDock, storeWindow, { store, name: 'core/client' })
 
 export default store

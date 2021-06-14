@@ -1,7 +1,7 @@
 {
   "name": "owd-client",
   "private": true,
-  "description": "OWD Client 2 (based on Vue.js 3)",
+  "description": "Open Web Desktop client (based on Vue.js 3, Vite and TypeScript)",
   "homepage": "https://github.com/owdproject/owd-client#readme",
   "bugs": {
     "url": "https://github.com/owdproject/owd-client/issues"
@@ -15,14 +15,18 @@
     "name": "hacklover",
     "url": "https://github.com/hacklover"
   },
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
-    "serve": "lerna bootstrap && cd packages/client && yarn serve",
-    "build": "lerna bootstrap && cd packages/client && yarn build"
+    "serve": "cd app && yarn serve",
+    "build": "cd app && yarn build",
+    "test": "jest"
   },
   "devDependencies": {
-    "lerna": "^4.0.0"
-  }
+    "@types/jest": "^26.0.22",
+    "ts-jest": "^26.5.5",
+    "jest": "^26.6.3"
+  },
+  "workspaces": [
+    "app",
+    "packages/*"
+  ]
 }

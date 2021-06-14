@@ -1,20 +1,20 @@
 import {Action, Module, Mutation, RegisterOptions, VuexModule} from "vuex-class-modules";
-import ModulesModule from "../storeModules";
+import ModulesAppModule from "../storeModulesApp";
 import {OwdModuleAppWindowInstance} from "@owd-client/types";
 
 @Module
 export default class WindowDockModule extends VuexModule {
-  private readonly modulesModule: ModulesModule
+  private readonly modulesAppModule: ModulesAppModule
 
   private items: {[key: string]: any} = {}
   private itemsFavorite: {[key: string]: any} = {}
 
   constructor(
-    modulesModule: ModulesModule,
+    modulesAppModule: ModulesAppModule,
     options: RegisterOptions
   ) {
     super(options);
-    this.modulesModule = modulesModule
+    this.modulesAppModule = modulesAppModule
   }
 
   /**
@@ -53,7 +53,7 @@ export default class WindowDockModule extends VuexModule {
 
   @Action
   initialize() {
-    for (const owdModuleApp of this.modulesModule.modulesAppInstalled) {
+    for (const owdModuleApp of this.modulesAppModule.modulesAppInstalled) {
 
       // does module contain any windows?
       if (owdModuleApp.moduleInfo.windows && owdModuleApp.moduleInfo.windows.length > 0) {

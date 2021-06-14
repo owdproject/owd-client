@@ -1,7 +1,7 @@
 import Boot from './src/boot'
-import ModuleAppClass from './src/libraries/moduleApp/moduleApp.class'
+import ModuleAppClass from './src/libraries/module-app/moduleApp.class'
 
-export const boot: any = Boot
+export const createWebDesktop = Boot
 
 // new moduleApp class
-export const ModuleApp: any = ModuleAppClass
+export const ModuleApp = ModuleAppClass

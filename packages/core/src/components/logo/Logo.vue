@@ -1,11 +1,13 @@
 <template>
-  <div class="owd-logo" v-if="enabled">
+  <div class="owd-logo" v-if="desktopOptions.Logo.enabled">
     <h2 v-text="props.title" />
   </div>
 </template>
 
 <script setup>
-import {defineProps, getCurrentInstance} from "vue";
+import {defineProps, inject} from "vue";
+
+const desktopOptions = inject('desktopOptions')
 
 const props = defineProps({
   title: {
@@ -13,11 +15,6 @@ const props = defineProps({
     default: 'owd-client'
   }
 })
-
-const app = getCurrentInstance()
-const owdConfig = app.appContext.config.owd
-
-const enabled = owdConfig.desktop.Logo.options.enabled
 </script>
 
 <style lang="scss">

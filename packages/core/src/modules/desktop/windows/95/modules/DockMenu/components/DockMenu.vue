@@ -2,7 +2,7 @@
   <div class="owd-desktop__dock-menu">
 
     <template
-      v-for="windowInstance of docks"
+      v-for="windowInstance of dock.items"
       :key="windowInstance.uniqueID"
     >
       <v-btn
@@ -19,14 +19,30 @@
 </template>
 
 <script setup>
-import {computed} from "vue";
+import {reactive} from "vue";
 import {useStore} from "vuex";
 import DesktopSystemBarMenu from "../../../components/SystemBar/components/SystemBarMenu.vue";
 import StatusTime from "@owd-client/core/src/components/status/StatusTime.vue"
 
 const store = useStore()
 
-const docks = computed(() => Object.values(store.getters['core/windowDock/modulesAppWindowDocks']))
+const dock = reactive({
+  items: []
+})
+
+store.subscribe((mutation) => {
+  if (mutation.type === `core/windowDock/ADD`) {
+    const windowInstance = mutation.payload
+    dock.items.push(windowInstance)
+  }
+})
+
+store.subscribe((mutation) => {
+  if (mutation.type === `core/windowDock/REMOVE`) {
+    const windowInstance = mutation.payload
+    dock.items.splice(dock.items.indexOf(windowInstance), 1)
+  }
+})
 
 async function windowToggle(windowInstance) {
   await store.dispatch('core/window/windowMinimizeToggle', windowInstance)

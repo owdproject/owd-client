@@ -20,7 +20,7 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
   /**
    * Generate window instance uniqueID
    */
-  private static generateWindowInstanceUniqueId(): string {
+  private static generateUniqueID(): string {
     return md5(Date.now().toString() + Math.random())
   }
 
@@ -53,11 +53,19 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
    *
    * @param data
    */
-  createWindowInstance(data: OwdModuleAppWindowCreateInstanceData): OwdModuleAppWindowInstance {
+  private createWindowInstance(data: OwdModuleAppWindowCreateInstanceData): OwdModuleAppWindowInstance {
     let instance: any = {...data}
 
     if (!data.config.theme) {
       data.config.theme = {}
+    }
+
+    if (typeof data.config.menu === 'undefined') {
+      data.config.menu = true
+    }
+
+    if (typeof data.config.menuApp === 'undefined') {
+      data.config.menuApp = true
     }
 
     if (typeof data.config.theme.dense === 'undefined') {
@@ -68,7 +76,7 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
 
     // assign unique instance id
     if (!instance.uniqueID) {
-      instance.uniqueID = ModuleAppWindow.generateWindowInstanceUniqueId()
+      instance.uniqueID = ModuleAppWindow.generateUniqueID()
     }
 
     // assign unique instance name
@@ -97,19 +105,19 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
       }
 
       if (typeof data.storage.opened !== 'undefined') {
-        instance.storage.opened = !!data.storage.opened
+        instance.storage.opened = data.storage.opened
       }
 
       if (typeof data.storage.minimized !== 'undefined') {
-        instance.storage.minimized = !!data.storage.minimized
+        instance.storage.minimized = data.storage.minimized
       }
 
       if (typeof data.storage.maximized !== 'undefined') {
-        instance.storage.maximized = !!data.storage.maximized
+        instance.storage.maximized = data.storage.maximized
       }
     }
 
-    // initialize storeInstance if module isn't a singleton
+    // initialize Vue store for this window instance
     if (instance.module.isSingleton === false) {
       instance.module.registerModuleStoreInstance(instance.uniqueName)
     }
@@ -239,7 +247,9 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
    * Validate and adjust window position
    */
   adjustPosition(): OwdModuleAppWindowConfigPosition {
-    this.instance.storage.position = helperWindow.calcPosition(this.instance)
+    const windowPosition = helperWindow.calcPosition(this.instance)
+
+    this.setPosition(windowPosition)
 
     return this.instance.storage.position
   }

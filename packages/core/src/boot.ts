@@ -1,9 +1,9 @@
 import { App } from 'vue'
 import {
   OwdClientConfiguration,
-  OwdClientExtensions,
+  OwdClientConfigurationExtensions,
   OwdCoreBootContext,
-  OwdCoreModulesContext
+  OwdCoreModuleContext
 } from "@owd-client/types";
 
 import { owdCreateStore } from './store'
@@ -11,9 +11,9 @@ import { owdCreateI18n } from './plugins/i18n'
 import { owdCreateRouter } from './plugins/router'
 import { owdCreateVuetify } from './plugins/vuetify'
 
-import owdTerminalExtend from './libraries/terminal/extend/terminalExtend.class'
-import owdModuleAppExtend from './libraries/module-app/extend/moduleAppExtend.class'
-import owdModuleDesktopExtend from "./libraries/module-desktop/extend/moduleDesktopExtend.class";
+import owdTerminalExtend from './libraries/terminal/extend/terminalExtend'
+import owdModuleAppExtend from "./libraries/module-app/extend/moduleAppExtend";
+import owdModuleDesktopExtend from "./libraries/module-desktop/extend/moduleDesktopExtend";
 
 // import plugins
 import moment from "./plugins/moment";
@@ -28,10 +28,10 @@ import './libraries/service-worker/registerServiceWorker'
 export default class OwdBoot {
   private readonly loaded: boolean = false
 
-  config: OwdClientConfiguration
-  extensions: OwdClientExtensions
-  store: any
-  terminal: any
+  private readonly config: OwdClientConfiguration
+  private readonly extensions: OwdClientConfigurationExtensions
+  private store: any
+  private terminal: any
 
   constructor(context: OwdCoreBootContext) {
     this.config = context.config
@@ -183,7 +183,7 @@ export default class OwdBoot {
   /**
    * Initialize modules
    */
-  initializeModules(context: OwdCoreModulesContext) {
+  initializeModules(context: OwdCoreModuleContext) {
     new owdModuleAppExtend(context)
     new owdModuleDesktopExtend(context)
   }

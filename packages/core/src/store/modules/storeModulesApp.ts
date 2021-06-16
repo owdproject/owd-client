@@ -1,33 +1,26 @@
-import {VuexModule, Module, Mutation, Action} from "vuex-class-modules";
-import {
-  OwdModuleApp
-} from "@owd-client/types";
+import {VuexModule, Module, Mutation} from "vuex-class-modules";
+import {OwdModuleApp} from "@owd-client/types";
 
 @Module
 export default class ModuleAppVuexModule extends VuexModule {
-  private modules: { [moduleName: string]: OwdModuleApp } = {}
+  private modulesAppProvider: any = null
 
   /**
-   * App installed
+   * Array of installed modules app
    */
-  get modulesAppInstalled() {
-    return Object.values(this.modules)
+  get modulesAppList(): OwdModuleApp[] {
+    return Object.values(this.modulesAppProvider.modules)
   }
 
   /**
-   * App installed (keymap)
+   * KeyMap of installed modules app
    */
-  get modulesAppKeyMap() {
-    return this.modules
+  get modulesAppKeyMap(): { [moduleName: string]: OwdModuleApp } {
+    return this.modulesAppProvider.modules
   }
 
   @Mutation
-  SET_MODULES_LOADED(modulesLoaded: any) {
-    this.modules = modulesLoaded
-  }
-
-  @Action
-  isModuleLoaded(moduleName: string): boolean {
-    return Object.keys(this.modulesAppInstalled).includes(moduleName)
+  REGISTER_MODULES_PROVIDER(modulesAppProvider: any) {
+    this.modulesAppProvider = modulesAppProvider
   }
 }

@@ -8,7 +8,6 @@
 <script setup lang="ts">
 import { getCurrentInstance, inject, ref, defineProps } from 'vue'
 import DesktopSystemBarMenu from "../../../components/SystemBar/components/SystemBarMenu.vue";
-import ModuleDesktopExtend from "@owd-client/core/src/libraries/module-desktop/extend/moduleDesktopExtend.class";
 
 const desktopOptions = inject('desktopOptions')
 

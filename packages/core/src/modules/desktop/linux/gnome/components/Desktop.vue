@@ -24,9 +24,9 @@
     </SystemBar>
 
     <div class="owd-desktop__content">
-      <DockMinimal v-if="desktopOptions.Dock.enabled" />
-
       <slot/>
+
+      <DockMinimal v-if="desktopOptions.Dock.enabled" />
     </div>
 
     <NoticeFullscreenExit />

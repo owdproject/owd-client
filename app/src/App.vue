@@ -5,10 +5,8 @@
 </template>
 
 <script setup>
-// import mdi icons for vuetify
+// import mdi icons and fonts
 import '@mdi/font/css/materialdesignicons.css'
-
-// import fonts
 import '@fontsource/oswald'
 
 // import app common styles

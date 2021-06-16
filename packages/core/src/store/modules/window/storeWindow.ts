@@ -1,6 +1,6 @@
 import {VuexModule, Module, Mutation, Action, RegisterOptions} from "vuex-class-modules";
 
-import ModuleAppWindow from "@owd-client/core/src/libraries/module-app/moduleAppWindow.class";
+import ModuleAppWindow from "@owd-client/core/src/libraries/core/modules/module-app/moduleAppWindow.class";
 
 import ModulesAppModule from "../storeModulesApp";
 import FullScreenModule from "../storeFullscreen";

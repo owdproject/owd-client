@@ -1,5 +1,6 @@
 import md5 from "md5";
 
+import * as helperWindow from "@owd-client/core/src/helpers/helperWindow";
 import {
   OwdModuleAppWindowInstance,
   OwdModuleAppWindowCreateInstanceData,
@@ -8,7 +9,6 @@ import {
   OwdModuleApp,
   OwdModuleAppWindowStorage, OwdModuleAppWindowConfig
 } from "@owd-client/types";
-import * as helperWindow from "../../helpers/helperWindow";
 
 export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
   private readonly instance: OwdModuleAppWindowInstance

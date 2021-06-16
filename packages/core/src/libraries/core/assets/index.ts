@@ -1,8 +1,8 @@
 import {App} from "vue";
 import {OwdCoreModuleContext} from "@owd-client/types";
 
-import WindowComponent from "@owd-client/core/src/components/window/Window.vue";
-import WindowAppComponent from "@owd-client/core/src/components/window/app/WindowApp.vue";
+import WindowComponent from "../../../../src/components/window/Window.vue";
+import WindowAppComponent from "../../../../src/components/window/app/WindowApp.vue";
 
 // import basic fonts
 import '@fontsource/jetbrains-mono'

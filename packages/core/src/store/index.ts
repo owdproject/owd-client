@@ -26,7 +26,7 @@ export const storeSse = new storeSseModule({ store, name: 'core/sse' })
 export const storeModulesApp = new storeModulesAppModule({ store, name: 'core/modulesApp' })
 export const storeWindowFocus = new storeWindowFocusModule( { store, name: 'core/windowFocus' })
 export const storeWindowCategory = new storeWindowCategoryModule(storeModulesApp, { store, name: 'core/windowCategory' })
-export const storeWindowDock = new storeWindowDockModule(storeModulesApp, { store, name: 'core/windowDock' })
+export const storeWindowDock = new storeWindowDockModule({ store, name: 'core/windowDock' })
 export const storeWindow = new storeWindowModule(storeModulesApp, storeFullScreen, storeWindowFocus, storeWindowDock, { store, name: 'core/window' })
 export const storeClient = new storeClientModule(storeSse, storeWindowDock, storeWindow, { store, name: 'core/client' })
 

@@ -7,7 +7,6 @@
     >
       <v-btn
           height="26"
-          v-if="!windowInstance.dummy"
           :class="{'v-btn--active': !windowInstance.storage.minimized}"
           @click="windowToggle(windowInstance)"
       >

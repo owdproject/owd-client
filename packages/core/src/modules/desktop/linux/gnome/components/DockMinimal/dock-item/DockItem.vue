@@ -20,10 +20,11 @@
 <script setup>
 import {getCurrentInstance, defineProps, computed} from "vue";
 import {useStore} from "vuex";
-import WindowIconMenu from '../../window/icon/WindowIconMenu.vue'
+import WindowIconMenu from '@owd-client/core/src/components/window/icon/WindowIconMenu.vue'
 
 const props = defineProps({
-  window: Object
+  window: Object,
+  dummy: Boolean
 })
 
 const app = getCurrentInstance();
@@ -56,15 +57,14 @@ const windowToggle = async (event, window) => {
     await store.dispatch('core/window/windowMinimizeAll')
   }
 
-  if (window.dummy) {
+  if (props.dummy) {
 
-    // create new window
     await store.dispatch('core/window/windowCreate', window.config.name)
 
   } else {
 
     if (window.storage.minimized || !window.storage.opened) {
-      await store.dispatch('core/window/windowCreate', window)
+      await store.dispatch('core/window/windowOpen', window)
     } else {
       await store.dispatch('core/window/windowMinimize', window)
     }

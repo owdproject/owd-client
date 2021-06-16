@@ -34,7 +34,6 @@
 
 <script setup>
 import {ref, watch, computed, defineProps, defineEmit} from "vue";
-import WindowApp from './WindowApp.vue'
 
 const props = defineProps({
   url: String,

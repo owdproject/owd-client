@@ -1,4 +1,8 @@
+import {App} from "vue";
 import {OwdCoreModuleContext} from "@owd-client/types";
+
+import WindowComponent from "@owd-client/core/src/components/window/Window.vue";
+import WindowAppComponent from "@owd-client/core/src/components/window/app/WindowApp.vue";
 
 // import basic fonts
 import '@fontsource/jetbrains-mono'
@@ -8,6 +12,8 @@ import '@fontsource/cantarell'
  * Initialize OWD assets
  */
 export default function initializeAssets(context: OwdCoreModuleContext) {
+  initializeGlobalComponents(context.app)
+
   // import core styles
   import('@owd-client/core/src/assets/css/app.scss')
 
@@ -26,4 +32,9 @@ export default function initializeAssets(context: OwdCoreModuleContext) {
     appElement.setAttribute('os-version', context.config.ui.de.split('/')[1])
     appElement.setAttribute('theme', context.config.ui.theme)
   }
+}
+
+function initializeGlobalComponents(app: App) {
+  app.component('Window', WindowComponent)
+  app.component('WindowApp', WindowAppComponent)
 }

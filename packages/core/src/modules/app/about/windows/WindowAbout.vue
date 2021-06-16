@@ -1,5 +1,5 @@
 <template>
-  <Window :window="window">
+  <WindowApp :window="window">
     <div class="container">
       <h2>
         Open Web Desktop <span v-text="clientVersion" />
@@ -16,12 +16,10 @@
         </ul>
       </div>
     </div>
-  </Window>
+  </WindowApp>
 </template>
 
 <script setup>
-  import Window from "@owd-client/core/src/components/window/app/WindowApp.vue";
-
   import {defineProps} from 'vue'
   import {useStore} from "vuex";
 

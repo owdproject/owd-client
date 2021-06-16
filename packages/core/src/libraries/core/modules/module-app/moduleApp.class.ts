@@ -16,7 +16,7 @@ interface OwdModuleAppClass {
   loadCommands?(context: OwdModuleAppLoadCommandsContext): OwdModuleAppCommands
   loadSseEvents?(context: OwdModuleAppLoadSseEventsContext): OwdModuleAppSseEvents
   loadStore?(context: OwdModuleAppLoadStoreContext): void | any
-  loadStoreInstance?(context: OwdModuleAppLoadStoreContext): void
+  loadStoreInstance?(context: OwdModuleAppLoadStoreContext)
 }
 
 abstract class OwdModuleAppClass {}

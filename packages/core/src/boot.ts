@@ -64,11 +64,11 @@ export default class OwdBoot {
     // plugins
     this.initializePlugins(context.app)
 
-    // router
-    this.initializeRouter(context.app)
-
     // internationalization
     this.initializeInternationalization(context.app)
+
+    // router
+    this.initializeRouter(context.app)
 
     // store
     this.store = this.initializeStore(context.app)

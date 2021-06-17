@@ -3,5 +3,5 @@
 .vscode
 
 # App
-/src/dist
+/dist
 /node_modules/

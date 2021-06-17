@@ -33,38 +33,36 @@
     </template>
 
     <template v-slot:nav-append>
-      <div class="ml-1">
-        <v-btn
-            v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable"
-            class="v-btn--essential btn-minimize" tile
-            @click="onMinimize"
-        >
-          <v-icon>{{desktopOptions.Window.icons.minimize}}</v-icon>
-        </v-btn>
+      <v-btn
+          v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable"
+          class="v-btn--essential btn-minimize" tile
+          @click="onMinimize"
+      >
+        <v-icon>{{desktopOptions.Window.icons.minimize}}</v-icon>
+      </v-btn>
 
-        <v-btn
-            v-if="window.config.maximizable"
-            class="v-btn--essential btn-maximize" tile
-            @click="onToggleMaximize"
-        >
-          <v-icon>{{desktopOptions.Window.icons.maximize}}</v-icon>
-        </v-btn>
+      <v-btn
+          v-if="window.config.maximizable"
+          class="v-btn--essential btn-maximize" tile
+          @click="onToggleMaximize"
+      >
+        <v-icon>{{desktopOptions.Window.icons.maximize}}</v-icon>
+      </v-btn>
 
-        <v-btn
-            v-if="window.config.fullscreenable"
-            class="v-btn--essential btn-fullscreen" tile
-            @click="onToggleFullscreen"
-        >
-          <v-icon>{{desktopOptions.Window.icons.fullscreen}}</v-icon>
-        </v-btn>
+      <v-btn
+          v-if="window.config.fullscreenable"
+          class="v-btn--essential btn-fullscreen" tile
+          @click="onToggleFullscreen"
+      >
+        <v-icon>{{desktopOptions.Window.icons.fullscreen}}</v-icon>
+      </v-btn>
 
-        <v-btn
-            class="v-btn--essential btn-close" tile
-            @click.stop="onClose"
-        >
-          <v-icon>{{desktopOptions.Window.icons.close}}</v-icon>
-        </v-btn>
-      </div>
+      <v-btn
+          class="v-btn--essential btn-close" tile
+          @click.stop="onClose"
+      >
+        <v-icon>{{desktopOptions.Window.icons.close}}</v-icon>
+      </v-btn>
 
       <slot name="nav-append" />
     </template>
@@ -81,8 +79,7 @@
 <script setup>
 import {computed, ref, watch, inject, onMounted, onUnmounted, defineProps, defineEmit} from 'vue'
 import {useStore} from 'vuex'
-import kebabCase from '@owd-client/core/src/libraries/kebab-case/index'
-import Window from '../Window.vue'
+import kebabCase from '@owd-client/core/src/libraries/kebab-case'
 
 const props = defineProps({
   title: {

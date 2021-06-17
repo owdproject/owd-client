@@ -1,10 +1,10 @@
 @import '../../vuetify/VBtn/mixins';
 
 .owd-window {
-  &__nav .v-btn {
+  .owd-window__nav .v-btn {
     min-width: inherit;
     width: $owd-window-button-width;
-    margin-top: -2px;
+    height: $owd-window-button-height;
     padding: 0;
     vertical-align: middle;
 

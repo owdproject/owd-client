@@ -25,7 +25,7 @@ export default class WindowCategoryModule extends VuexModule {
     const windowCategoriesOther: OwdModuleAppWindowConfig[] = []
 
     // for each loaded module
-    for (const owdModuleApp of this.modulesAppModule.modulesAppInstalled) {
+    for (const owdModuleApp of this.modulesAppModule.modulesAppList) {
 
       // skip if module doesn't have any window
       if (!owdModuleApp.moduleInfo.windows) continue
@@ -77,7 +77,7 @@ export default class WindowCategoryModule extends VuexModule {
         return obj;
       }, {})
 
-    // add "favorite" categpry at start, if category exists
+    // add "favorite" category at start, if category exists
     if (windowCategoriesFavorite.length > 0) {
       windowCategories = Object.assign({
         favorites: windowCategoriesFavorite

@@ -20,10 +20,11 @@
 <script setup>
 import {getCurrentInstance, defineProps, computed} from "vue";
 import {useStore} from "vuex";
-import WindowIconMenu from '../../window/icon/WindowIconMenu.vue'
+import WindowIconMenu from '@owd-client/core/src/components/window/icon/WindowIconMenu.vue'
 
 const props = defineProps({
-  window: Object
+  window: Object,
+  dummy: Boolean
 })
 
 const app = getCurrentInstance();
@@ -50,23 +51,22 @@ const menuItemStyles = computed(() => {
   return ''
 })
 
-const windowToggle = async (event, window) => {
+const windowToggle = async (event, windowInstance) => {
   // from mobile
   if (isMobile) {
     await store.dispatch('core/window/windowMinimizeAll')
   }
 
-  if (window.dummy) {
+  if (props.dummy) {
 
-    // create new window
-    await store.dispatch('core/window/windowCreate', window.config.name)
+    await store.dispatch('core/window/windowCreate', windowInstance.config.name)
 
   } else {
 
-    if (window.storage.minimized || !window.storage.opened) {
-      await store.dispatch('core/window/windowCreate', window)
+    if (windowInstance.storage.minimized || !windowInstance.storage.opened) {
+      await store.dispatch('core/window/windowOpen', windowInstance)
     } else {
-      await store.dispatch('core/window/windowMinimize', window)
+      await store.dispatch('core/window/windowMinimize', windowInstance)
     }
 
   }

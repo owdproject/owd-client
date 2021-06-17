@@ -18,7 +18,7 @@ import {useStore} from 'vuex'
 
 const store = useStore()
 
-const windowInstances = computed(() => store.getters['core/window/modulesAppWindowInstancesList'])
+const windowInstances = computed(() => store.getters['core/window/modulesAppWindowInstances'])
 </script>
 
 <style lang="scss">

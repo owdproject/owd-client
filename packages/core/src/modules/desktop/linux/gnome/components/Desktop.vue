@@ -1,5 +1,5 @@
 <template>
-  <div class="owd-desktop" :class="{
+  <DesktopBase :class="{
     'owd-desktop__system-bar--position-top': desktopOptions.SystemBar.position === 'top',
     'owd-desktop__system-bar--position-bottom': desktopOptions.SystemBar.position === 'bottom',
   }">
@@ -25,48 +25,30 @@
 
     <div class="owd-desktop__content">
       <slot/>
+
+      <DockMinimal v-if="desktopOptions.Dock.enabled" />
     </div>
 
     <NoticeFullscreenExit />
-  </div>
+  </DesktopBase>
 </template>
 
 <script setup>
-import {inject, onBeforeMount, onMounted, onUnmounted} from 'vue'
+import {inject} from 'vue'
 import {useStore} from "vuex";
+import DesktopBase from '@owd-client/core/src/components/desktop/DesktopBase.vue'
 import SystemBar from "./SystemBar/SystemBar.vue";
-import ModuleDesktopExtend from "@owd-client/core/src/libraries/module-desktop/extend/moduleDesktopExtend.class";
+import DockMinimal from "./DockMinimal/Dock.vue";
+
 import NoticeFullscreenExit from '@owd-client/core/src/components/notice/NoticeFullscreenExit.vue'
 
 const store = useStore()
-
-// provide desktop options globally
 const desktopOptions = inject('desktopOptions')
-
-// initialize client
-onBeforeMount(() => store.dispatch('core/client/initialize'))
-
-// handle desktop resize event
-onMounted(() => window.addEventListener('resize', handleDesktopResize))
-onUnmounted(() => window.removeEventListener('resize', handleDesktopResize))
-
-let timeoutHandleDesktopResize = null
-
-function handleDesktopResize() {
-  clearTimeout(timeoutHandleDesktopResize)
-
-  timeoutHandleDesktopResize = setTimeout(() => {
-    store.dispatch('core/window/windowsHandlePageResize')
-  }, 100)
-}
 </script>
 
 <style scoped lang="scss">
 .owd-desktop {
-  display: flex;
-  flex-flow: column;
   background: $owd-desktop-system-bar-background;
-  height: 100vh;
 
   &__system-bar {
     &--position-top {
@@ -85,9 +67,6 @@ function handleDesktopResize() {
   }
 
   &__content {
-    position: relative;
-    overflow: hidden;
-    flex: 1;
     background: $owd-background;
   }
 }

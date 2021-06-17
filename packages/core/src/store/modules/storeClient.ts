@@ -8,8 +8,6 @@ const clientDefaultTitle = import.meta.env.VITE_NAME || ''
 const clientVersion = import.meta.env.VITE_VERSION || '2.0.0'
 const clientWebsite = import.meta.env.VITE_WEBSITE || 'owdproject.com'
 
-import config from '/@/../client.config'
-
 @Module
 export default class ClientVuexModule extends VuexModule {
   private readonly storeSseModule: SseModule
@@ -57,7 +55,6 @@ export default class ClientVuexModule extends VuexModule {
     console.log('[OWD] App initialized')
 
     this.storeSseModule.initialize()
-    this.storeWindowDock.initialize()
     this.storeWindow.initialize()
   }
 

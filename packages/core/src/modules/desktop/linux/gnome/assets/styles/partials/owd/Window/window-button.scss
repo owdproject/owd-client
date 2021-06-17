@@ -9,9 +9,9 @@
       border-color: transparent;
       box-shadow: none;
       border-radius: 50%;
-      width: 28px;
-      min-width: 28px;
-      height: 28px;
+      width: 26px;
+      min-width: 26px;
+      height: 26px;
 
       i {
         font-size: 14px;
@@ -19,7 +19,7 @@
     }
   }
 
-  &__focused {
+  &--focused {
     .owd-window__nav .v-btn {
       &.v-btn--essential {
         &:not(:hover) {

@@ -19,9 +19,6 @@ const props = defineProps({
 
 <style lang="scss">
   .owd-logo {
-    position: absolute;
-    bottom: 0;
-    left: 0;
     padding: 24px;
     cursor: default;
     user-select: none;

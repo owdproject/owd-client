@@ -237,7 +237,7 @@ function onResizeEnd(data) {
   & &__content {
     position: relative;
     height: 100%;
-    padding: 12px;
+    padding: $owd-window-content-padding;
     box-sizing: border-box;
     overflow: hidden;
 
@@ -273,7 +273,7 @@ function onResizeEnd(data) {
   &--no-content-spacing {
     .owd-window__content {
       height: 100%;
-      padding: 0;
+      padding: $owd-window-content-padding-no-spacing;
     }
   }
 

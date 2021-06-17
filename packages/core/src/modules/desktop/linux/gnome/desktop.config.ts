@@ -14,8 +14,12 @@ export default {
     NotificationMenu,
     StatusMenu
   ],
+
   options: {
     Logo: {
+      enabled: true
+    },
+    Dock: {
       enabled: true
     },
     Window: {

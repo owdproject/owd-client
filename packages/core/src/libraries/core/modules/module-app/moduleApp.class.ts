@@ -11,17 +11,15 @@ import {
 import {MutationPayload} from "vuex";
 
 interface OwdModuleAppClass {
-  loadModule?(): OwdModuleAppInfo;
+  loadModule(): OwdModuleAppInfo;
   loadAssets?(): void;
   loadCommands?(context: OwdModuleAppLoadCommandsContext): OwdModuleAppCommands
   loadSseEvents?(context: OwdModuleAppLoadSseEventsContext): OwdModuleAppSseEvents
   loadStore?(context: OwdModuleAppLoadStoreContext): void | any
-  loadStoreInstance?(context: OwdModuleAppLoadStoreContext): void
+  loadStoreInstance?(context: OwdModuleAppLoadStoreContext)
 }
 
-abstract class OwdModuleAppClass {
-
-}
+abstract class OwdModuleAppClass {}
 
 export default abstract class ModuleApp extends OwdModuleAppClass {
   private readonly app
@@ -60,31 +58,6 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
       typeof this.moduleInfo.singleton === 'undefined' ||
       typeof this.moduleInfo.singleton === 'boolean' && this.moduleInfo.singleton === true
     )
-  }
-
-  /**
-   * Parse module info to fix errors or missing values
-   */
-  checkModuleInfo(moduleInfo: OwdModuleAppInfo) {
-    //this.moduleInfo = moduleInfo
-
-    if (this.moduleInfo.windows) {
-      let i = 0;
-      for (const moduleWindow of this.moduleInfo.windows) {
-        if (typeof moduleWindow.menu === 'undefined') {
-          this.moduleInfo.windows[i].menu = true
-        }
-
-        if (typeof moduleWindow.menuApp === 'undefined') {
-          this.moduleInfo.windows[i].menuApp = true
-        }
-
-        if (typeof moduleWindow.dense === 'undefined') {
-          this.moduleInfo.windows[i].dense = true
-        }
-        i++
-      }
-    }
   }
 
   // ### MODULE ASSETS

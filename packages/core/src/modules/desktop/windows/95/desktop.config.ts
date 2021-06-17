@@ -8,11 +8,13 @@ import StatusMenu from "./modules/StatusMenu";
 
 export default {
   component: Desktop,
+
   modules: [
     ApplicationMenu,
     DockMenu,
     StatusMenu
   ],
+
   options: {
     Logo: {
       enabled: true

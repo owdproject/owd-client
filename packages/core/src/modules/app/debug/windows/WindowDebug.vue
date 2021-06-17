@@ -1,5 +1,5 @@
 <template>
-  <Window :window="window">
+  <WindowApp :window="window">
     <div class="container">
       <div class="options">
 
@@ -75,11 +75,10 @@
 
       </div>
     </div>
-  </Window>
+  </WindowApp>
 </template>
 
 <script setup>
-import Window from "@owd-client/core/src/components/window/app/WindowApp.vue";
 import {useStore} from "vuex"
 
 const store = useStore()

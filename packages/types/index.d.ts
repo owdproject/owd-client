@@ -24,7 +24,7 @@ export interface OwdClientConfiguration {
   vuetify: any
 }
 
-export interface OwdClientExtensions {
+export interface OwdClientConfigurationExtensions {
   routes: any[]
   app: {
     modules?: any[]
@@ -55,24 +55,28 @@ export interface OwdClientConfigurationSse {
 export interface OwdCoreBootContext {
   app: App
   config: OwdClientConfiguration
-  extensions: OwdClientExtensions
+  extensions: OwdClientConfigurationExtensions
 }
 
 // modulesExtend.class
-export interface OwdCoreModulesContext {
+export interface OwdCoreModuleContext {
   app: App
   config: OwdClientConfiguration
-  extensions: OwdClientExtensions
+  extensions: OwdClientConfigurationExtensions
   store: any
   terminal: any
 }
 
 // module.class
-export interface OwdModuleAppContext extends OwdCoreModulesContext {
+export interface OwdModuleAppContext extends OwdCoreModuleContext {
   moduleInfo: OwdModuleAppInfo
 }
 
 // OWD MODULES APP
+
+export interface OwdModulesApp {
+  [key: string]: OwdModuleApp[]
+}
 
 export interface OwdModuleApp {
   moduleInfo: OwdModuleAppInfo
@@ -88,16 +92,8 @@ export interface OwdModuleApp {
 
 export interface OwdModuleAppInfo {
   name: string
-  version: string
-  license?: string
-  homepage?: string
-  author?: {
-    name?: string
-    email?: string
-    url?: string
-  }
 
-  config: boolean
+  config?: boolean
   singleton?: boolean
 
   windows: OwdModuleAppWindowConfig[]
@@ -116,7 +112,7 @@ export interface OwdModuleAppLoadSseEventsContext {
 
 export interface OwdModuleAppLoadStoreContext {
   store: Store<any>,
-  terminal: any
+  terminal?: any
 }
 
 export interface OwdModuleAppCommands {
@@ -178,7 +174,6 @@ export interface OwdModuleAppWindowCreateInstanceData {
   module: OwdModuleApp
   config: OwdModuleAppWindowConfig
   storage?: OwdModuleAppWindowStorage
-  dummy?: boolean
 }
 
 export interface OwdModuleAppWindowInstance extends OwdModuleAppWindowCreateInstanceData {
@@ -226,7 +221,8 @@ export interface OwdModuleAppWindowStorage {
   minimized: boolean
   maximized: boolean
   fullscreen?: boolean
-  focused: boolean
+  focused: boolean,
+  metaData?: any
 }
 
 export interface OwdModuleAppWindowsStorage {

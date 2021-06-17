@@ -48,7 +48,7 @@ $owd-window-container-box-shadow: none;
 $owd-window-nav-height: 46px;
 $owd-window-nav-height-dense: 36px;
 $owd-window-nav-border: 0;
-$owd-window-nav-padding: 0 5px;
+$owd-window-nav-padding: 0 6px;
 
 $owd-window-nav-background: linear-gradient(to bottom, #e1dedb, #dad6d2);
 $owd-window-nav-background-inactive: #f6f5f4;
@@ -113,7 +113,7 @@ $owd-window-button-primary-color-inactive: $owd-window-button-primary-color;
 
 // window input
 $owd-window-input-height: inherit;
-$owd-window-input-padding: 0 2px;
+$owd-window-input-padding: 0 15px;
 $owd-window-input-color: black;
 $owd-window-input-color-hover: $owd-window-input-color;
 $owd-window-input-color-active: $owd-window-input-color;
@@ -124,11 +124,11 @@ $owd-window-input-background-active: $owd-window-input-background;
 $owd-window-input-background-inactive: $owd-window-input-background;
 $owd-window-input-border: 1px solid;
 $owd-window-input-border-radius: 2px;
-$owd-window-input-border-color: #000000 #bfbfbf #bfbfbf #000000;
+$owd-window-input-border-color: #d5d0cc;
 $owd-window-input-border-color-hover: $owd-window-input-border-color;
 $owd-window-input-border-color-active: $owd-window-input-border-color;
 $owd-window-input-border-color-inactive: $owd-window-input-border-color;
-$owd-window-input-box-shadow: 1px 1px 0 0 #ffffff, 0px 1px 0 0 #ffffff, 1px 0 0 0 #ffffff, -1px -1px 0 0 #828282, 0 -1px 0 0 #828282, -1px 0 0 0 #828282;
+$owd-window-input-box-shadow: inherit;
 $owd-window-input-box-shadow-hover: $owd-window-input-box-shadow;
 $owd-window-input-box-shadow-active: $owd-window-input-box-shadow;
 $owd-window-input-box-shadow-inactive: $owd-window-input-box-shadow;
@@ -136,9 +136,9 @@ $owd-window-input-box-shadow-inactive: $owd-window-input-box-shadow;
 // window content
 $owd-window-content-padding: 12px;
 $owd-window-content-padding-no-spacing: 0;
-$owd-window-content-border-color: #222;
-$owd-window-content-separator: #2C2C2C;
-$owd-window-content-tag: #2e2e2e;
+$owd-window-content-border-color: #dedddc;
+$owd-window-content-separator: #dedddc;
+$owd-window-content-tag: #e6e6e6;
 
 $owd-window-table-row-hover: rgba(0, 0, 0, 0.08);
 

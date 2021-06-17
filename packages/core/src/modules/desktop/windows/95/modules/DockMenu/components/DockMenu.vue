@@ -2,18 +2,17 @@
   <div class="owd-desktop__dock-menu">
 
     <template
-      v-for="windowInstance of dock.items"
-      :key="windowInstance.uniqueID"
+        v-for="windowInstance of dock.items"
+        :key="windowInstance.uniqueID"
     >
       <v-btn
           height="26"
-          :class="{'v-btn--active': !windowInstance.storage.minimized}"
+          :class="{'v-btn--active': !windowInstance.storage.minimized && windowInstance.storage.opened}"
           @click="windowToggle(windowInstance)"
       >
         {{windowInstance.config.titleMenu || windowInstance.config.title}}
       </v-btn>
     </template>
-
 
   </div>
 </template>
@@ -45,7 +44,11 @@ store.subscribe((mutation) => {
 })
 
 async function windowToggle(windowInstance) {
-  await store.dispatch('core/window/windowMinimizeToggle', windowInstance)
+  if (windowInstance.storage.minimized || !windowInstance.storage.opened) {
+    await store.dispatch('core/window/windowOpen', windowInstance)
+  } else {
+    await store.dispatch('core/window/windowMinimize', windowInstance)
+  }
 }
 </script>
 

@@ -51,7 +51,7 @@ const menuItemStyles = computed(() => {
   return ''
 })
 
-const windowToggle = async (event, window) => {
+const windowToggle = async (event, windowInstance) => {
   // from mobile
   if (isMobile) {
     await store.dispatch('core/window/windowMinimizeAll')
@@ -59,14 +59,14 @@ const windowToggle = async (event, window) => {
 
   if (props.dummy) {
 
-    await store.dispatch('core/window/windowCreate', window.config.name)
+    await store.dispatch('core/window/windowCreate', windowInstance.config.name)
 
   } else {
 
-    if (window.storage.minimized || !window.storage.opened) {
-      await store.dispatch('core/window/windowOpen', window)
+    if (windowInstance.storage.minimized || !windowInstance.storage.opened) {
+      await store.dispatch('core/window/windowOpen', windowInstance)
     } else {
-      await store.dispatch('core/window/windowMinimize', window)
+      await store.dispatch('core/window/windowMinimize', windowInstance)
     }
 
   }

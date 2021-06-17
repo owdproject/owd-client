@@ -47,6 +47,7 @@ $owd-window-container-box-shadow: none;
 $owd-window-nav-height: 24px;
 $owd-window-nav-height-dense: 24px;
 $owd-window-nav-border: 2px solid;
+$owd-window-nav-padding: 0 3px;
 
 $owd-window-nav-background: #000181;
 $owd-window-nav-background-inactive: #808080;
@@ -111,7 +112,7 @@ $owd-window-button-primary-color-inactive: $owd-window-button-primary-color;
 
 // window input
 $owd-window-input-height: inherit;
-$owd-window-input-padding: 0 2px;
+$owd-window-input-padding: 0 5px;
 $owd-window-input-color: black;
 $owd-window-input-color-hover: $owd-window-input-color;
 $owd-window-input-color-active: $owd-window-input-color;
@@ -132,6 +133,8 @@ $owd-window-input-box-shadow-active: $owd-window-input-box-shadow;
 $owd-window-input-box-shadow-inactive: $owd-window-input-box-shadow;
 
 // window content
+$owd-window-content-padding: 12px;
+$owd-window-content-padding-no-spacing: 4px 2px 2px 2px;
 $owd-window-content-border-color: #222;
 $owd-window-content-separator: #2C2C2C;
 $owd-window-content-tag: #2e2e2e;

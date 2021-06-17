@@ -1,5 +1,5 @@
-.owd-window {
-  .v-input {
+.owd-desktop {
+  .v-input:not(.preserve-material) {
     border: $owd-window-input-border;
     border-color: $owd-window-input-border-color;
     border-radius: $owd-window-input-border-radius;

@@ -36,6 +36,7 @@ const props = defineProps({
     display: flex;
     height: $owd-window-nav-height;
     line-height: $owd-window-nav-height;
+    padding: $owd-window-nav-padding;
     border: $owd-window-nav-border;
     border-color: $owd-window-nav-border-color-inactive;
     background: $owd-window-nav-background-inactive;
@@ -75,7 +76,6 @@ const props = defineProps({
 
     &__btn-group {
       display: flex;
-      position: absolute;
       height: 100%;
       align-items: center;
 
@@ -84,7 +84,7 @@ const props = defineProps({
       }
     }
 
-    .v-btn {
+    .v-btn.v-btn--density-default {
       position: relative;
       min-width: $owd-window-button-width;
       height: $owd-window-button-height;

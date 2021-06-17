@@ -75,8 +75,7 @@ const closeSystemBarDesktopModule = (desktopModule) => {
 
 <style scoped lang="scss">
 .owd-desktop__system-bar {
-  display: grid;
-  grid-template-columns: 50% 50%;
+  display: flex;
   color: $owd-desktop-system-bar-text;
   height: $owd-desktop-system-bar-height;
   line-height: $owd-desktop-system-bar-height - 2px;
@@ -86,12 +85,14 @@ const closeSystemBarDesktopModule = (desktopModule) => {
   box-shadow: inset 0 1px 0 0 white;
   cursor: default;
 
-  &__middle {
-    text-align: center;
+  &__left {
+    display: flex;
+    width: 100%;
   }
 
   &__right {
     text-align: right;
+    width: 180px;
   }
 }
 </style>

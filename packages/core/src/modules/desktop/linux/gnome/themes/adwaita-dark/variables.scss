@@ -47,6 +47,7 @@ $owd-window-container-box-shadow: none;
 $owd-window-nav-height: 46px;
 $owd-window-nav-height-dense: 36px;
 $owd-window-nav-border: 0;
+$owd-window-nav-padding: 0 5px;
 
 $owd-window-nav-background: linear-gradient(to bottom, #2b2b2b, #262626);
 $owd-window-nav-background-inactive: #353535;
@@ -132,6 +133,8 @@ $owd-window-input-box-shadow-active: $owd-window-input-box-shadow;
 $owd-window-input-box-shadow-inactive: $owd-window-input-box-shadow;
 
 // window content
+$owd-window-content-padding: 12px;
+$owd-window-content-padding-no-spacing: 0;
 $owd-window-content-border-color: #222;
 $owd-window-content-separator: #2C2C2C;
 $owd-window-content-tag: #2e2e2e;

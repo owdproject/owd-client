@@ -60,7 +60,6 @@ const contentStyle = computed(() => {
 
   &__arrow, &__arrow:before {
     position: absolute;
-    top: -12.5px;
     left: 50%;
     margin-left: -12.5px;
     width: 0;
@@ -80,6 +79,10 @@ const contentStyle = computed(() => {
       right: 20px;
       margin-left: 0;
     }
+  }
+
+  &__arrow {
+    top: -10px;
   }
 
   &__arrow:before {
@@ -112,7 +115,7 @@ const contentStyle = computed(() => {
 
         &__arrow:before {
           bottom: -1px;
-          border-top: 12px solid $owd-desktop-system-bar-menu-content-border-color;
+          border-top: 12px solid $owd-desktop-system-bar-menu-content-background;
           z-index: -1;
         }
       }

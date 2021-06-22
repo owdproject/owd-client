@@ -1,4 +1,4 @@
-import { App } from 'vue'
+import {App, createApp} from 'vue'
 import {
   OwdClientConfiguration,
   OwdClientConfigurationExtensions,
@@ -18,16 +18,16 @@ export default class OwdBoot {
   private readonly config: OwdClientConfiguration
   private readonly extensions: OwdClientConfigurationExtensions
 
+  private readonly app: App
+
   constructor(context: OwdCoreBootContext) {
     this.config = context.config
     this.extensions = context.extensions
 
-    try {
-      this.initialize(context)
-      this.loaded = true
-    } catch(e) {
-      console.error(e)
-    }
+    this.app = createApp(context.component)
+
+    this.initialize()
+    this.mount()
   }
 
   hasLoaded(): boolean {
@@ -41,7 +41,7 @@ export default class OwdBoot {
    */
   initialize(context: OwdCoreBootContext) {
     // assign owd config to Vue app.config globalProperties
-    context.app.config.globalProperties.$owd = this.config
+    this.app.config.globalProperties.$owd = this.config
 
     // store
     context.store = this.initializeStore(context.app)
@@ -59,18 +59,7 @@ export default class OwdBoot {
     initializeModules(context)
   }
 
-  /**
-   * Initialize store
-   *
-   * @param app
-   */
-  initializeStore(app: App) {
-    // create owd store
-    const owdStore = owdCreateStore()
-
-    // initialize owd store
-    app.use(owdStore)
-
-    return owdStore
+  mount() {
+    this.app.mount('#app')
   }
 }

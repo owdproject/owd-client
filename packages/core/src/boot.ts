@@ -5,7 +5,7 @@ import {
   OwdCoreBootContext
 } from "@owd-client/types";
 
-import { owdCreateStore } from './store'
+import { initializeDesktopTerminal } from "./libraries/core/terminal";
 
 import initializeAssets from "./libraries/core/assets";
 import initializeModules from "./libraries/core/modules";
@@ -19,6 +19,8 @@ export default class OwdBoot {
   private readonly extensions: OwdClientConfigurationExtensions
 
   private readonly app: App
+
+  private terminal: any
 
   constructor(context: OwdCoreBootContext) {
     this.config = context.config
@@ -47,7 +49,9 @@ export default class OwdBoot {
     context.store = this.initializeStore(context.app)
 
     // terminal
-    context.terminal = initializeTerminal()
+    this.terminal = initializeDesktopTerminal({
+      app: this.app
+    })
 
     // plugins
     initializePlugins(context)

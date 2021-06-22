@@ -8,7 +8,7 @@ export default class {
   }
 
   /**
-   * Add global command to terminal
+   * Add command to terminal
    *
    * @param name
    * @param fn
@@ -22,7 +22,7 @@ export default class {
   }
 
   /**
-   * Does terminal global command exists?
+   * Does terminal command exists?
    *
    * @param name
    */
@@ -31,7 +31,7 @@ export default class {
   }
 
   /**
-   * Run terminal global command
+   * Run terminal command
    *
    * @param instance
    * @param name

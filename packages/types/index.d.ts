@@ -17,6 +17,7 @@ export interface OwdClientConfiguration {
     theme: string
   }
   sse: OwdClientConfigurationSse
+  i18n: OwdClientConfigurationI18n
   store: OwdClientConfigurationStore
   vuetify: any
 }
@@ -24,6 +25,11 @@ export interface OwdClientConfiguration {
 export interface OwdClientConfigurationStore {
   strict?: boolean
   devtools: boolean
+}
+
+export interface OwdClientConfigurationI18n {
+  locale: string
+  fallbackLocale: string
 }
 
 export interface OwdClientConfigurationSse {
@@ -54,6 +60,11 @@ export interface OwdCoreStoreContext {
   app: App
   config: OwdClientConfigurationStore
   modules: ModuleTree<any>
+}
+
+export interface OwdCoreI18nContext {
+  app: App
+  config: OwdClientConfigurationI18n
 }
 
 export interface OwdCoreTerminalContext {

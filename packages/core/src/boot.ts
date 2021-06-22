@@ -6,6 +6,7 @@ import {
 } from "@owd-client/types";
 
 import { initializeDesktopStore } from './store'
+import { initializeDesktopI18n } from "./plugins/i18n";
 import { initializeDesktopTerminal } from "./libraries/core/terminal";
 
 import initializeAssets from "./libraries/core/assets";
@@ -64,6 +65,11 @@ export default class OwdBoot {
     // terminal
     this.terminal = initializeDesktopTerminal({
       app: this.app
+    })
+
+    initializeDesktopI18n({
+      app: this.app,
+      config: this.config.i18n
     })
 
     // plugins

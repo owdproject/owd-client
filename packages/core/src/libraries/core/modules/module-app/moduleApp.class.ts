@@ -296,7 +296,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
       this.moduleInfo.windows.forEach((windowConfig: OwdModuleAppWindowConfig) => {
         if (!windowConfig.name) {
           if (this.app.config.globalProperties.$owd.debug) {
-            console.error(`[OWD] Component name is missing in ${windowConfig.name}.`)
+            console.error(`[owd] Component name is missing in ${windowConfig.name}.`)
           }
 
           return false

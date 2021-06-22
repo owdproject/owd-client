@@ -52,7 +52,7 @@ export default class ClientVuexModule extends VuexModule {
 
   @Action
   async initialize() {
-    console.log('[OWD] App initialized')
+    console.log('[owd] App initialized')
 
     this.storeSseModule.initialize()
     this.storeWindow.initialize()

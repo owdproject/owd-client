@@ -32,11 +32,11 @@ export default class SseVuexModule extends VuexModule {
   @Action
   connect() {
     if (!config.sse.enabled) {
-      return console.log(`[OWD] SSE integration is disabled`)
+      return console.log(`[owd] SSE integration is disabled`)
     }
 
     if (this.connected) {
-      return console.error('[OWD] Already connected to SSE')
+      return console.error('[owd] Already connected to SSE')
     }
 
     const sse = new EventSource(import.meta.env.VITE_SSE_BASE_URL)

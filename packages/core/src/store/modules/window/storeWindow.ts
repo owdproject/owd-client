@@ -169,7 +169,7 @@ export default class WindowModule extends VuexModule {
         // for each window config in moduleInfo.windows (for example WindowSample)
         for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
 
-          console.log('[OWD] Window initialized: ' + owdModuleAppWindowConfig.name)
+          console.log('[owd] Window initialized: ' + owdModuleAppWindowConfig.name)
 
           this.REGISTER_WINDOW_NAMESPACE({
             moduleName: owdModuleApp.moduleInfo.name,
@@ -354,7 +354,7 @@ export default class WindowModule extends VuexModule {
         return resolve(windowInstance)
       }
 
-      return reject(`[OWD] Window "${windowName}" not found`)
+      return reject(`[owd] Window "${windowName}" not found`)
     })
   }
 
@@ -369,7 +369,7 @@ export default class WindowModule extends VuexModule {
       const windowName = data
 
       if (!helperWindow.isWindowNameExisting(windowName)) {
-        return console.error(`[OWD] Unable to create new window because "${windowName}" window doesn\'t exist`)
+        return console.error(`[owd] Unable to create new window because "${windowName}" window doesn\'t exist`)
       }
 
       const owdModuleAppWindowGroup = helperWindow.getWindowGroupInfo(windowName)

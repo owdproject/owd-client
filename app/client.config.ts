@@ -39,5 +39,10 @@ export default {
       }
     },
     rtl: false
+  },
+
+  store: {
+    strict: false,
+    devtools: true
   }
 }

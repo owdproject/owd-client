@@ -24,8 +24,5 @@ export default {
   // not implemented
   plugins: [],
 
-  // not implemented
-  store: {
-    modules: {}
-  }
+  store: {}
 }

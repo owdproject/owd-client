@@ -5,6 +5,7 @@ import {
   OwdCoreBootContext
 } from "@owd-client/types";
 
+import { initializeDesktopStore } from './store'
 import { initializeDesktopTerminal } from "./libraries/core/terminal";
 
 import initializeAssets from "./libraries/core/assets";
@@ -20,6 +21,7 @@ export default class OwdBoot {
 
   private readonly app: App
 
+  private store: any
   private terminal: any
 
   constructor(context: OwdCoreBootContext) {
@@ -45,8 +47,12 @@ export default class OwdBoot {
     // assign owd config to Vue app.config globalProperties
     this.app.config.globalProperties.$owd = this.config
 
-    // store
-    context.store = this.initializeStore(context.app)
+    // vue store
+    this.store = initializeDesktopStore({
+      app: this.app,
+      config: this.config.store,
+      modules: this.extensions.store
+    })
 
     // terminal
     this.terminal = initializeDesktopTerminal({

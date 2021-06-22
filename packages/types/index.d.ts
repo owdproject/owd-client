@@ -1,9 +1,5 @@
-//import { AppStateType } from '@/store/modules/app/state'
-//import { ConsoleStateType } from '@/store/modules/console/state'
-
-// vue
-import { createApp, App } from 'vue'
-import {Store} from "vuex";
+import { App } from 'vue'
+import { Store, ModuleTree } from 'vuex'
 import extensions from "owd-client/client.extensions";
 
 // vuex
@@ -21,7 +17,19 @@ export interface OwdClientConfiguration {
     theme: string
   }
   sse: OwdClientConfigurationSse
+  store: OwdClientConfigurationStore
   vuetify: any
+}
+
+export interface OwdClientConfigurationStore {
+  strict?: boolean
+  devtools: boolean
+}
+
+export interface OwdClientConfigurationSse {
+  enabled: boolean
+  reconnectOnError: boolean
+  reconnectTimeout: number
 }
 
 export interface OwdClientConfigurationExtensions {
@@ -36,24 +44,24 @@ export interface OwdClientConfigurationExtensions {
       [key: string]: any
     }
   },
-  plugins?: any[]
-  store?: any
-}
-
-export interface OwdClientConfigurationIcons {
-  [key: string]: any
-}
-
-export interface OwdClientConfigurationSse {
-  enabled: boolean
-  reconnectOnError: boolean
-  reconnectTimeout: number
+  plugins: any[]
+  store: ModuleTree<any>
 }
 
 // OWD CORE
 
-export interface OwdCoreBootContext {
+export interface OwdCoreStoreContext {
   app: App
+  config: OwdClientConfigurationStore
+  modules: ModuleTree<any>
+}
+
+export interface OwdCoreTerminalContext {
+  app: App
+}
+
+export interface OwdCoreBootContext {
+  component: any
   config: OwdClientConfiguration
   extensions: OwdClientConfigurationExtensions
 }

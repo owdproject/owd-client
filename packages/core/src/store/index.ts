@@ -1,4 +1,5 @@
-import { createStore } from 'vuex'
+import { Store, createStore } from 'vuex'
+import {OwdCoreStoreContext} from "@owd-client/types";
 
 import storeClientModule from './modules/storeClient'
 import storeModulesAppModule from './modules/storeModulesApp'
@@ -10,32 +11,41 @@ import storeWindowDockModule from './modules/window/storeWindowDock'
 import storeWindowFocusModule from './modules/window/storeWindowFocus'
 import storeSseModule from './modules/storeSse'
 
-const store = createStore({
-  devtools: true,
-  modules: {
-    core: {
-      namespaced: true,
-      modules: {}
+let store: Store<any>
+
+/**
+ * Initialize OWD vuex store
+ */
+export function initializeDesktopStore(context: OwdCoreStoreContext) {
+  store = createStore({
+    strict: context.config.strict,
+    devtools: context.config.devtools,
+    modules: {
+      core: {
+        namespaced: true,
+        modules: {}
+      },
+      // load vuex modules defined in app/client.extensions.ts
+      ...context.modules
     }
-  }
-})
+  })
 
-export const storeFullScreen = new storeFullscreenModule({ store, name: 'core/fullscreen' })
-export const storeNotification = new storeNotificationModule({ store, name: 'core/notification' })
-export const storeSse = new storeSseModule({ store, name: 'core/sse' })
-export const storeModulesApp = new storeModulesAppModule({ store, name: 'core/modulesApp' })
-export const storeWindowFocus = new storeWindowFocusModule( { store, name: 'core/windowFocus' })
-export const storeWindowCategory = new storeWindowCategoryModule(storeModulesApp, { store, name: 'core/windowCategory' })
-export const storeWindowDock = new storeWindowDockModule({ store, name: 'core/windowDock' })
-export const storeWindow = new storeWindowModule(storeModulesApp, storeFullScreen, storeWindowFocus, storeWindowDock, { store, name: 'core/window' })
-export const storeClient = new storeClientModule(storeSse, storeWindowDock, storeWindow, { store, name: 'core/client' })
+  const storeFullScreen = new storeFullscreenModule({ store, name: 'core/fullscreen' })
+  const storeNotification = new storeNotificationModule({ store, name: 'core/notification' })
+  const storeSse = new storeSseModule({ store, name: 'core/sse' })
+  const storeModulesApp = new storeModulesAppModule({ store, name: 'core/modulesApp' })
+  const storeWindowFocus = new storeWindowFocusModule( { store, name: 'core/windowFocus' })
+  const storeWindowCategory = new storeWindowCategoryModule(storeModulesApp, { store, name: 'core/windowCategory' })
+  const storeWindowDock = new storeWindowDockModule({ store, name: 'core/windowDock' })
+  const storeWindow = new storeWindowModule(storeModulesApp, storeFullScreen, storeWindowFocus, storeWindowDock, { store, name: 'core/window' })
+  const storeClient = new storeClientModule(storeSse, storeWindowDock, storeWindow, { store, name: 'core/client' })
 
-export default store
+  // install as vue plugin
+  context.app.use(store)
 
-export const owdCreateStore = function() {
   return store
 }
 
-export function useStore() {
+export function useDesktopStore() {
   return store
 }

@@ -69,8 +69,12 @@ export default class OwdBoot {
       routes: this.extensions.routes
     })
 
+    initializePlugins({
+      app: this.app,
+      plugins: this.extensions.plugins
+    })
+
     initializeDesktopI18n(this.app)
-    initializePlugins(this.app)
     initializeAssets(this.app)
 
     this.modulesApp = initializeAppModules({

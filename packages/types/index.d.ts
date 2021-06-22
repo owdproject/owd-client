@@ -60,6 +60,11 @@ export interface OwdCoreRouterContext {
   routes: RouteRecordRaw[]
 }
 
+export interface OwdCorePluginsContext {
+  app: App
+  plugins: any
+}
+
 export interface OwdCoreBootContext {
   component: any
   config: OwdClientConfiguration

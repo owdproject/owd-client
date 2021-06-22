@@ -10,7 +10,6 @@ import { initializeDesktopTerminal } from "./libraries/core/terminal";
 
 import initializeAssets from "./libraries/core/assets";
 import initializeModules from "./libraries/core/modules";
-import initializeTerminal from "./libraries/core/terminal";
 import {initializePlugins} from "./libraries/core/plugins";
 
 export default class OwdBoot {
@@ -38,12 +37,20 @@ export default class OwdBoot {
     return this.loaded
   }
 
+  get context() {
+    return {
+      app: this.app,
+      config: this.config,
+      extensions: this.extensions,
+      store: this.store,
+      terminal: this.terminal
+    }
+  }
+
   /**
    * Initialize OWD
-   *
-   * @param context
    */
-  initialize(context: OwdCoreBootContext) {
+  initialize() {
     // assign owd config to Vue app.config globalProperties
     this.app.config.globalProperties.$owd = this.config
 
@@ -60,13 +67,13 @@ export default class OwdBoot {
     })
 
     // plugins
-    initializePlugins(context)
+    initializePlugins(this.context)
 
     // global components & assets
-    initializeAssets(context)
+    initializeAssets(this.context)
 
     // modules extend
-    initializeModules(context)
+    initializeModules(this.context)
   }
 
   mount() {

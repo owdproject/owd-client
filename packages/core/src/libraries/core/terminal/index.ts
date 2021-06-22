@@ -1,12 +1,11 @@
 import TerminalExtend from './extend/terminalExtend'
-import {OwdCoreTerminalContext} from "@owd-client/types";
 
 let terminal: any
 
 /**
  * Initialize OWD terminal support
  */
-export function initializeDesktopTerminal(context: OwdCoreTerminalContext) {
+export function initializeDesktopTerminal() {
   terminal = new TerminalExtend()
 
   return terminal

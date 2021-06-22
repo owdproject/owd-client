@@ -1,12 +1,6 @@
 import { App } from 'vue'
 import { Store, ModuleTree } from 'vuex'
-import extensions from "owd-client/client.extensions";
-
-// vuex
-type ModuleType = any //{ app: AppStateType; console: ConsoleStateType }
-
-
-export type StateType = ModuleType
+import {RouteRecordRaw} from "vue-router";
 
 // OWD CLIENT
 
@@ -58,17 +52,12 @@ export interface OwdClientConfigurationExtensions {
 
 export interface OwdCoreStoreContext {
   app: App
-  config: OwdClientConfigurationStore
   modules: ModuleTree<any>
 }
 
-export interface OwdCoreI18nContext {
+export interface OwdCoreRouterContext {
   app: App
-  config: OwdClientConfigurationI18n
-}
-
-export interface OwdCoreTerminalContext {
-  app: App
+  routes: RouteRecordRaw[]
 }
 
 export interface OwdCoreBootContext {
@@ -80,7 +69,6 @@ export interface OwdCoreBootContext {
 // modulesExtend.class
 export interface OwdCoreModuleContext {
   app: App
-  config: OwdClientConfiguration
   extensions: OwdClientConfigurationExtensions
   store: any
   terminal: any

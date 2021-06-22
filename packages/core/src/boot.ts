@@ -5,13 +5,14 @@ import {
   OwdCoreBootContext
 } from "@owd-client/types";
 
-import { initializeDesktopStore } from './store'
-import { initializeDesktopI18n } from "./plugins/i18n";
-import { initializeDesktopTerminal } from "./libraries/core/terminal";
+import {initializeDesktopStore} from './store'
+import {initializeDesktopI18n} from "./plugins/i18n";
+import {initializeDesktopTerminal} from "./libraries/core/terminal";
 
-import initializeAssets from "./libraries/core/assets";
-import initializeModules from "./libraries/core/modules";
+import {initializeAssets} from "./libraries/core/assets";
+import {initializeAppModules, initializeDesktopModules} from "./libraries/core/modules";
 import {initializePlugins} from "./libraries/core/plugins";
+import {initializeDesktopRouter} from "./plugins/router";
 
 export default class OwdBoot {
   private readonly loaded: boolean = false
@@ -23,6 +24,8 @@ export default class OwdBoot {
 
   private store: any
   private terminal: any
+  private modulesApp: any
+  private modulesDesktop: any
 
   constructor(context: OwdCoreBootContext) {
     this.config = context.config
@@ -52,34 +55,37 @@ export default class OwdBoot {
    * Initialize OWD
    */
   initialize() {
-    // assign owd config to Vue app.config globalProperties
     this.app.config.globalProperties.$owd = this.config
 
-    // vue store
     this.store = initializeDesktopStore({
       app: this.app,
-      config: this.config.store,
       modules: this.extensions.store
     })
 
-    // terminal
-    this.terminal = initializeDesktopTerminal({
-      app: this.app
-    })
+    this.terminal = initializeDesktopTerminal()
 
-    initializeDesktopI18n({
+    initializeDesktopRouter({
       app: this.app,
-      config: this.config.i18n
+      routes: this.extensions.routes
     })
 
-    // plugins
-    initializePlugins(this.context)
+    initializeDesktopI18n(this.app)
+    initializePlugins(this.app)
+    initializeAssets(this.app)
 
-    // global components & assets
-    initializeAssets(this.context)
+    this.modulesApp = initializeAppModules({
+      app: this.app,
+      extensions: this.extensions,
+      store: this.store,
+      terminal: this.terminal
+    })
 
-    // modules extend
-    initializeModules(this.context)
+    this.modulesDesktop = initializeDesktopModules({
+      app: this.app,
+      extensions: this.extensions,
+      store: this.store,
+      terminal: this.terminal
+    })
   }
 
   mount() {

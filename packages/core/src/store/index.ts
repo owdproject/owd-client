@@ -17,9 +17,11 @@ let store: Store<any>
  * Initialize OWD vuex store
  */
 export function initializeDesktopStore(context: OwdCoreStoreContext) {
+  const config = context.app.config.globalProperties.$owd.store
+
   store = createStore({
-    strict: context.config.strict,
-    devtools: context.config.devtools,
+    strict: config.strict,
+    devtools: config.devtools,
     modules: {
       core: {
         namespaced: true,

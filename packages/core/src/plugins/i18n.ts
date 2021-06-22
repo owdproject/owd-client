@@ -1,17 +1,19 @@
 // @ts-ignore
-import { createI18n, I18n } from 'vue-i18n'
+import { createI18n, I18n } from 'vue-i18n/index'
 // @ts-ignore
 import messages from '/@/../src/locales/index'
-import {OwdCoreI18nContext} from "@owd-client/types";
+import {App} from "vue";
 
 let i18n: I18n
 
-export function initializeDesktopI18n(context: OwdCoreI18nContext) {
+export function initializeDesktopI18n(app: App) {
+  const config = app.config.globalProperties.$owd.i18n
+
   i18n = createI18n({
-    locale: context.config.locale,
-    fallbackLocale: context.config.fallbackLocale,
+    locale: config.locale,
+    fallbackLocale: config.fallbackLocale,
     messages
   })
 
-  context.app.use(i18n)
+  app.use(i18n)
 }

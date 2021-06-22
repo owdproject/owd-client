@@ -1,10 +1,15 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { Router, createRouter, createWebHistory } from 'vue-router'
+import {OwdCoreRouterContext} from "@owd-client/types";
 
-export function owdCreateRouter(owdPageRoutes: any) {
-  return createRouter({
+let router: Router
+
+export function initializeDesktopRouter(context: OwdCoreRouterContext) {
+  router = createRouter({
     history: createWebHistory(),
-    routes: owdMergeRoutes(owdPageRoutes)
+    routes: mergeRoutes(context.routes)
   })
+
+  context.app.use(router)
 }
 
 /**
@@ -12,7 +17,7 @@ export function owdCreateRouter(owdPageRoutes: any) {
  *
  * @param owdPageRoutes
  */
-function owdMergeRoutes(owdPageRoutes: any) {
+function mergeRoutes(owdPageRoutes: any) {
   let vueRoutes: any[] = []
 
   owdPageRoutes.forEach((owdRoutes: any) => {

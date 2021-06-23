@@ -27,7 +27,8 @@ export function initializeDesktopStore(context: OwdCoreStoreContext) {
         namespaced: true,
         modules: {}
       },
-      // load vuex modules defined in app/client.extensions.ts
+      // load additional vuex modules
+      // defined in app/client.extensions.ts
       ...context.modules
     }
   })

@@ -5,7 +5,7 @@ import {OwdCoreBootContext} from "@owd-client/types";
 
 let owd: any
 
-export async function createWebDesktop(context: OwdCoreBootContext) {
+export async function createDesktop(context: OwdCoreBootContext) {
   return new Promise((resolve, reject) => {
     try {
       owd = new Boot(context)
@@ -17,7 +17,7 @@ export async function createWebDesktop(context: OwdCoreBootContext) {
   })
 }
 
-export function useWebDesktop() {
+export function useDesktop() {
   return owd
 }
 

@@ -1,4 +1,4 @@
-import { createWebDesktop } from '@owd-client/core/index'
+import {createDesktop} from '@owd-client/core/index'
 import { name, version } from '../package.json'
 
 // main vue component
@@ -9,7 +9,7 @@ import config from '../client.config'
 import extensions from '../client.extensions'
 
 // create an Open Web Desktop instance
-createWebDesktop({
+createDesktop({
   component: App,
   config,
   extensions

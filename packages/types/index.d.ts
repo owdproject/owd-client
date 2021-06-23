@@ -1,4 +1,4 @@
-import { App } from 'vue'
+import { App, Component } from 'vue'
 import { Store, ModuleTree } from 'vuex'
 import {RouteRecordRaw} from "vue-router";
 
@@ -38,7 +38,7 @@ export interface OwdClientConfigurationExtensions {
     modules?: any[]
   },
   desktop: {
-    component: any
+    component: Component
     modules?: any[]
     options: {
       [key: string]: any
@@ -66,7 +66,7 @@ export interface OwdCorePluginsContext {
 }
 
 export interface OwdCoreBootContext {
-  component: any
+  component: Component
   config: OwdClientConfiguration
   extensions: OwdClientConfigurationExtensions
 }
@@ -108,21 +108,24 @@ export interface OwdModuleAppInfo {
   config?: boolean
   singleton?: boolean
 
-  windows: OwdModuleAppWindowConfig[]
+  windows?: OwdModuleAppWindowConfig[]
   dependencies?: {[key: string]: string}
 }
 
-export interface OwdModuleAppLoadCommandsContext {
+export interface OwdModuleAppSetupCommandsContext {
+  config: OwdModuleAppInfo,
   store: Store<any>,
   terminal: any
 }
 
-export interface OwdModuleAppLoadSseEventsContext {
+export interface OwdModuleAppSetupSseEventsContext {
+  config: OwdModuleAppInfo,
   store: Store<any>,
   terminal: any
 }
 
-export interface OwdModuleAppLoadStoreContext {
+export interface OwdModuleAppSetupStoreContext {
+  config: OwdModuleAppInfo,
   store: Store<any>,
   terminal?: any
 }
@@ -136,7 +139,7 @@ export interface OwdModuleAppSseEvents {
 }
 
 export interface OwdModuleAppWindowConfig {
-  component: any
+  component: Component
   name: string
   category: string
   title: string

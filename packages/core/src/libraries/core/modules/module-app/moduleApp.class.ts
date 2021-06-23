@@ -3,20 +3,24 @@ import {
   OwdModuleAppWindowConfig,
   OwdModuleAppInfo,
   OwdModuleAppWindowsInstances,
-  OwdModuleAppLoadCommandsContext,
+  OwdModuleAppSetupCommandsContext,
   OwdModuleAppCommands,
   OwdModuleAppSseEvents,
-  OwdModuleAppLoadSseEventsContext, OwdModuleAppLoadStoreContext,
+  OwdModuleAppSetupSseEventsContext,
+  OwdModuleAppSetupStoreContext,
+  OwdModuleAppWindowsStorage,
+  OwdModuleAppWindowCreateInstanceData, OwdModuleAppWindowStorage,
 } from "@owd-client/types";
 import {MutationPayload} from "vuex";
+import {Component} from "vue";
 
 interface OwdModuleAppClass {
-  loadModule(): OwdModuleAppInfo;
-  loadAssets?(): void;
-  loadCommands?(context: OwdModuleAppLoadCommandsContext): OwdModuleAppCommands
-  loadSseEvents?(context: OwdModuleAppLoadSseEventsContext): OwdModuleAppSseEvents
-  loadStore?(context: OwdModuleAppLoadStoreContext): void | any
-  loadStoreInstance?(context: OwdModuleAppLoadStoreContext)
+  setup(): OwdModuleAppInfo;
+  setupAssets?(): void;
+  setupCommands?(context: OwdModuleAppSetupCommandsContext): OwdModuleAppCommands
+  setupSseEvents?(context: OwdModuleAppSetupSseEventsContext): OwdModuleAppSseEvents
+  setupStore?(context: OwdModuleAppSetupStoreContext): void | any
+  setupStoreInstance?(context: OwdModuleAppSetupStoreContext): any
 }
 
 abstract class OwdModuleAppClass {}
@@ -26,12 +30,14 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
   private readonly store
   private readonly terminal
 
-  private readonly moduleInfo: OwdModuleAppInfo;
+  public readonly moduleInfo: OwdModuleAppInfo;
   public moduleStore: any
   public moduleStoreConfig: any
   public moduleStoreInstance: any
+  public moduleCommands: any
+  public moduleSseEvents: any
 
-  public windowInstances: OwdModuleAppWindowsInstances
+  public windowInstances: OwdModuleAppWindowsInstances = {}
 
   constructor(context: OwdModuleAppContext) {
     super()
@@ -40,17 +46,15 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     this.store = context.store
     this.terminal = context.terminal
 
-    this.windowInstances = {}
+    this.moduleInfo = this.initializeModuleApp()
 
-    this.moduleInfo = this.loadModuleApp()
-
-    if (this.loadModuleStoreConfig) this.loadModuleStoreConfig()
-    if (this.loadModuleStore) this.loadModuleStore()
-    if (this.loadModuleStoreInstance) this.loadModuleStoreInstance()
-    if (this.loadModuleWindowComponents) this.loadModuleWindowComponents()
-    if (this.loadModuleCommands) this.loadModuleCommands()
-    if (this.loadModuleAssets) this.loadModuleAssets()
-    if (this.loadModuleSseEvents) this.loadModuleSseEvents()
+    this.initializeModuleStoreConfig()
+    this.initializeModuleStore()
+    this.initializeModuleStoreInstance()
+    this.initializeModuleWindowComponents()
+    this.initializeModuleCommands()
+    this.initializeModuleAssets()
+    this.initializeModuleSseEvents()
   }
 
   public get isSingleton() {
@@ -60,32 +64,39 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     )
   }
 
-  // ### MODULE ASSETS
-
   /**
    * Load module assets
    */
-  loadModuleAssets() {
-    // load module assets
-    if (typeof this.loadAssets === 'function') {
-      this.loadAssets()
+  private initializeModuleAssets() {
+    if (typeof this.setupAssets !== 'function') {
+      return false
     }
-  }
 
-  // ### MODULE STORE
+    // load module assets
+    this.setupAssets()
+  }
 
   /**
    * Load module store
    */
-  loadModuleStore() {
-    // load module store
-    if (typeof this.loadStore === 'function') {
-      this.moduleStore = this.loadStore({ store: this.store })
-
-      if (this.moduleStore) {
-        this.registerModuleStore()
-      }
+  private initializeModuleStore() {
+    if (typeof this.setupStore !== 'function') {
+      return false
     }
+
+    // load module store
+    this.moduleStore = this.setupStore({
+      config: this.moduleInfo,
+      store: this.store
+    })
+
+    if (this.moduleStore) {
+      this.registerModuleStore()
+
+      return true
+    }
+
+    throw Error('Unable to intialize module store')
   }
 
   /**
@@ -144,25 +155,28 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
         }
       }
 
-      return true;
+    } else {
+
+      // import single store module with basic config (if available)
+      this.store.registerModule(this.moduleInfo.name, {
+        // import vuex store
+        ...this.moduleStore,
+
+        state: {
+          // import default state
+          ...this.moduleStore.state,
+
+          // import basic config into state
+          ...this.moduleStoreConfig || {},
+        },
+
+        // set namespaced as true
+        namespaced: true
+      })
+
     }
 
-    // import single store module with basic config (if available)
-    this.store.registerModule(this.moduleInfo.name, {
-      // import vuex store
-      ...this.moduleStore,
-
-      state: {
-        // import default state
-        ...this.moduleStore.state,
-
-        // import basic config into state
-        ...this.moduleStoreConfig || {},
-      },
-
-      // set namespaced as true
-      namespaced: true
-    })
+    return true
   }
 
   // ### MODULE STORE INSTANCE
@@ -170,15 +184,18 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
   /**
    * Load module store instance
    */
-  loadModuleStoreInstance() {
+  private initializeModuleStoreInstance() {
     // load module store instance
     if (!this.moduleInfo.singleton) {
-      if (typeof this.loadStoreInstance === 'function') {
-        this.moduleStoreInstance = this.loadStoreInstance({
-          store: this.store,
-          terminal: this.terminal
-        })
+      if (typeof this.setupStoreInstance !== 'function') {
+        return false
       }
+
+      this.moduleStoreInstance = this.setupStoreInstance({
+        config: this.moduleInfo,
+        store: this.store,
+        terminal: this.terminal
+      })
     }
   }
 
@@ -218,12 +235,12 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
   }
 
   // ### MODULE INFO
-  loadModuleApp() {
-    if (this.loadModule) {
-      return this.loadModule()
+  initializeModuleApp() {
+    if (this.setup) {
+      return this.setup()
     }
 
-    throw new Error('Module app has no initializer')
+    throw new Error('Module app has no setup')
   }
 
   // ### MODULE STORE CONFIG
@@ -231,7 +248,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
   /**
    * Load module store config
    */
-  loadModuleStoreConfig() {
+  private initializeModuleStoreConfig() {
     if (this.moduleInfo.config) {
       this.moduleStoreConfig = this.moduleInfo.config
     }
@@ -242,19 +259,23 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
   /**
    * Load module commands
    */
-  loadModuleCommands() {
-    // load commands
-    if (typeof this.loadCommands === 'function') {
-      const moduleCommands = this.loadCommands({
-        store: this.store,
-        terminal: this.terminal
-      })
+  private initializeModuleCommands() {
+    if (typeof this.setupCommands !== 'function') {
+      return false
+    }
 
-      // register commands to OWD global terminal commands
-      if (moduleCommands) {
-        for (const commandName in moduleCommands) {
-          if (Object.prototype.hasOwnProperty.call(moduleCommands, commandName))
-            this.terminal.addCommand(commandName, moduleCommands[commandName])
+    // load commands
+    this.moduleCommands = this.setupCommands({
+      config: this.moduleInfo,
+      store: this.store,
+      terminal: this.terminal
+    })
+
+    // register commands to OWD global terminal commands
+    if (this.moduleCommands) {
+      for (const commandName in this.moduleCommands) {
+        if (Object.prototype.hasOwnProperty.call(this.moduleCommands, commandName)) {
+          this.terminal.addCommand(commandName, this.moduleCommands[commandName])
         }
       }
     }
@@ -265,7 +286,11 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
   /**
    * Load module SSE events
    */
-  loadModuleSseEvents() {
+  private initializeModuleSseEvents(): boolean {
+    if (typeof this.setupSseEvents !== 'function') {
+      return false
+    }
+
     // load events sse
     if (typeof this.loadSseEvents === 'function') {
       const moduleSseEvents = this.loadSseEvents({
@@ -273,38 +298,48 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
         terminal: this.terminal
       })
 
-      const moduleSseEventsKeys = Object.keys(moduleSseEvents);
+    const moduleSseEventsKeys = Object.keys(this.moduleSseEvents);
 
-      this.store.subscribe((mutation: MutationPayload) => {
-        if (mutation.type === 'core/sse/LOG_EVENT') {
-          const event = mutation.payload
+    // run sse event
+    this.store.subscribe((mutation: MutationPayload) => {
+      if (mutation.type === 'core/sse/LOG_EVENT') {
+        const event = mutation.payload
 
-          if (moduleSseEventsKeys.includes(event.name)) {
-            if (typeof moduleSseEvents[event.name] === 'function') moduleSseEvents[event.name](event.data)
-          }
+        if (moduleSseEventsKeys.includes(event.name)) {
+          if (typeof this.moduleSseEvents[event.name] === 'function') this.moduleSseEvents[event.name](event.data)
         }
-      })
-    }
+      }
+    })
+
+    return true
   }
 
   /**
    * Register module window components
    */
-  loadModuleWindowComponents() {
-    // load all module window components
-    if (Array.isArray(this.moduleInfo.windows)) {
-      this.moduleInfo.windows.forEach((windowConfig: OwdModuleAppWindowConfig) => {
-        if (!windowConfig.name) {
-          if (this.app.config.globalProperties.$owd.debug) {
-            console.error(`[owd] Component name is missing in ${windowConfig.name}.`)
-          }
+  private initializeModuleWindowComponents() {
+    if (!Array.isArray(this.moduleInfo.windows)) {
+      return false
+    }
 
-          return false
+    // load all module window components
+    this.moduleInfo.windows.forEach((windowConfig: OwdModuleAppWindowConfig) => {
+      if (!windowConfig.name) {
+        if (this.app.config.globalProperties.$owd.debug) {
+          console.error(`[owd] Component name is missing in ${windowConfig.name}.`)
         }
 
-        // vue component sync registration
-        this.app.component(windowConfig.name, windowConfig.component)
-      })
-    }
+        return false
+      }
+
+      // vue component sync registration
+      this.registerWindowComponent(windowConfig.name, windowConfig.component)
+    })
+
+    return true
+  }
+
+  public registerWindowComponent(name: string, component: Component) {
+    this.app.component(name, component)
   }
 }

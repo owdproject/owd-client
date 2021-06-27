@@ -30,6 +30,7 @@
 
     <div class="owd-window-iframe__content">
       <iframe
+          v-if="iframeSrc"
           :id="iframeId"
           :src="iframeSrc"
           @load="onIframeLoaded"
@@ -97,17 +98,13 @@ function focusOut() {
 }
 
 function iframeFocus() {
-  document.getElementById(iframeId.value).focus()
+  if (document.getElementById(iframeId.value)) {
+    document.getElementById(iframeId.value).focus()
+  }
 }
 
 function onIframeLoaded() {
-  if (iframeSrc.value !== '') {
-    loaded.value = true
-  } else {
-    if (props.window.storage.opened === true) {
-      iframeSrc.value = this.url || props.window.metaData.iframeUrl
-    }
-  }
+  iframeFocus()
 
   emit('iframeLoaded')
 }
@@ -118,6 +115,12 @@ watch(() => props.url, url => {
   }
 })
 
+watch(() => props.window.config, config => {
+  if (props.window.storage.opened === true) {
+    iframeSrc.value = config.metaData.iframeUrl
+  }
+}, {deep: true})
+
 watch(() => props.window.storage.focused, val => {
   focused.value = val
 
@@ -126,16 +129,20 @@ watch(() => props.window.storage.focused, val => {
   }
 })
 
-watch(() => props.window.storage.opened, val => {
-  if (val === true) {
-    if (props.window.storage.opened === true) {
-      iframeSrc.value = props.url || props.window.config.metaData.iframeUrl
-    }
-  } else {
-    iframeSrc.value = ''
-    loaded.value = false
+function windowOpen(data) {
+  emit('open', data)
+
+  if (props.window.storage.opened === true) {
+    iframeSrc.value = props.url || props.window.config.metaData.iframeUrl
   }
-})
+}
+
+function windowClose(data) {
+  emit('close', data)
+
+  iframeSrc.value = ''
+  loaded.value = false
+}
 </script>
 
 <style lang="scss">

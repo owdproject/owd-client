@@ -1,12 +1,7 @@
 import {useDesktopStore} from '../store'
 import {
-  OwdModuleAppWindowDetail,
   OwdModuleAppWindowInstance
 } from "@owd-client/types";
-
-interface CallbackWindowInstance<T1, T2 = void> {
-  (windowInstance: T1): T2;
-}
 
 /**
  * Calculate window position
@@ -129,57 +124,4 @@ export function findWindowInstanceByAttr(attr: string, value: string) {
         return owdModuleAppWindowInstance.config.name === value
       }
     })
-}
-
-/**
- * For each window instance
- *
- * @param cb
- */
-export async function forEachWindowInstance(cb: CallbackWindowInstance<OwdModuleAppWindowInstance>) {
-  const store = useDesktopStore()
-
-  for (const owdModuleAppWindowInstance of store.getters['core/window/modulesAppWindowInstances']) {
-    await cb(owdModuleAppWindowInstance)
-  }
-}
-
-export function getWindowInstances(moduleName: string) {
-  const store = useDesktopStore()
-
-  return store.getters['core/modulesApp/modulesAppKeyMap'][moduleName].windowInstances
-}
-
-export function getWindowInstance(moduleName: string, windowName: string, uniqueID: string) {
-  return getWindowInstances(moduleName)[windowName][uniqueID]
-}
-
-// WINDOW GROUPS
-
-export async function forEachInstanceInWindowGroup(
-  windowName: string,
-  cb: CallbackWindowInstance<OwdModuleAppWindowInstance>
-) {
-  const store = useDesktopStore()
-
-  if (isWindowNameExisting(windowName)) {
-    for (const owdModuleAppWindowInstance of store.getters['core/window/modulesAppWindowGroups'][windowName].list) {
-      await cb(owdModuleAppWindowInstance)
-    }
-  }
-}
-
-export function isWindowNameExisting(windowName: string): boolean {
-  const store = useDesktopStore()
-  return typeof store.getters['core/window/modulesAppWindowGroups'][windowName] !== 'undefined'
-}
-
-export function getWindowGroupInfo(windowName: string): OwdModuleAppWindowDetail {
-  const store = useDesktopStore()
-  return store.getters['core/window/modulesAppWindowGroups'][windowName]
-}
-
-export function getWindowInstancesInWindowGroup(windowName: string): OwdModuleAppWindowInstance[] {
-  const store = useDesktopStore()
-  return store.getters['core/window/modulesAppWindowGroups'][windowName].list
 }

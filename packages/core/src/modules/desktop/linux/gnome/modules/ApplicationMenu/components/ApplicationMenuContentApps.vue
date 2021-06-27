@@ -93,7 +93,12 @@ const selectNextApp = () => {
 
 async function windowOpen() {
   emit('menu-close')
-  await store.dispatch('core/window/windowCreate', props.appSelected.name)
+
+  const windowInstance = await props.appSelected.module.createWindow(props.appSelected.config)
+
+  if (windowInstance) {
+    windowInstance.open(true)
+  }
 }
 
 function appMouseOver(e: Event, moduleAppWindow: Object) {

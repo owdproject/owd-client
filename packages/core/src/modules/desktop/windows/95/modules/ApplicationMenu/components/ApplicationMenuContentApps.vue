@@ -59,7 +59,12 @@ const applicationMenuList = ref(null)
 
 async function windowOpen() {
   emit('menu-close')
-  await store.dispatch('core/window/windowCreate', props.appSelected.name)
+
+  const windowInstance = await props.appSelected.module.createWindow(props.appSelected.config)
+
+  if (windowInstance) {
+    windowInstance.open(true)
+  }
 }
 
 // initial focus on buttons to enable key navigation

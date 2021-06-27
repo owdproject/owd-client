@@ -53,7 +53,7 @@ const categoriesKeys = Object.keys(props.categories)
 // initial focus on buttons to enable key navigation
 watch(() => props.allowKeysNavigation, (active) => {
   if (active) {
-    if (props.categorySelected == '') {
+    if (props.categorySelected === '') {
       categoriesMenuList.value.querySelector('ul > li:first-child button').focus()
     } else {
       nextTick(() => categoriesMenuList.value.querySelector('ul > li.selected button').focus())

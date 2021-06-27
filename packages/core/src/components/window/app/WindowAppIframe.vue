@@ -5,6 +5,20 @@
       class="owd-window-iframe"
       v-click-outside="focusOut"
       @click="focusIn"
+      @open="windowOpen"
+      @close="windowClose"
+      @resize:start="(data) => emit('resize:start', data)"
+      @resize:move="(data) => emit('resize:move', data)"
+      @resize:end="(data) => emit('resize:end', data)"
+      @drag:start="(data) => emit('drag:start', data)"
+      @drag:move="(data) => emit('drag:move', data)"
+      @drag:end="(data) => emit('drag:end', data)"
+      @blur="(data) => emit('blur', data)"
+      @focus="(data) => emit('focus', data)"
+      @minimize="(data) => emit('minimize', data)"
+      @restore="(data) => emit('restore', data)"
+      @maximize="(data) => emit('maximize', data)"
+      @unmaximize="(data) => emit('unmaximize', data)"
   >
     <template v-slot:nav-prepend>
       <slot name="nav-prepend" />
@@ -48,7 +62,21 @@ const props = defineProps({
 const emit = defineEmit([
   'iframeFocusIn',
   'iframeFocusOut',
-  'iframeLoaded'
+  'iframeLoaded',
+  'resize:start',
+  'resize:move',
+  'resize:end',
+  'drag:start',
+  'drag:move',
+  'drag:end',
+  'close',
+  'open',
+  'blur',
+  'focus',
+  'minimize',
+  'restore',
+  'maximize',
+  'unmaximize',
 ])
 
 const iframeSrc = ref('')

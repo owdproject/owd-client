@@ -8,15 +8,15 @@ import {
   OwdModuleAppSseEvents,
   OwdModuleAppSetupSseEventsContext,
   OwdModuleAppSetupStoreContext,
-  OwdModuleAppWindowsStorage,
-  OwdModuleAppWindowCreateInstanceData, OwdModuleAppWindowStorage,
+  OwdModuleAppWindowStorage, OwdModuleAppWindowInstance, OwdModuleAppSetupContext, OwdModuleAppSetupAssetsContext,
 } from "@owd-client/types";
 import {MutationPayload} from "vuex";
-import {Component} from "vue";
+import {markRaw} from "vue";
+import ModuleAppWindow from "./moduleAppWindow.class";
 
 interface OwdModuleAppClass {
-  setup(): OwdModuleAppInfo;
-  setupAssets?(): void;
+  setup(context: OwdModuleAppSetupContext): OwdModuleAppInfo;
+  setupAssets?(context: OwdModuleAppSetupAssetsContext): void;
   setupCommands?(context: OwdModuleAppSetupCommandsContext): OwdModuleAppCommands
   setupSseEvents?(context: OwdModuleAppSetupSseEventsContext): OwdModuleAppSseEvents
   setupStore?(context: OwdModuleAppSetupStoreContext): void | any
@@ -26,9 +26,9 @@ interface OwdModuleAppClass {
 abstract class OwdModuleAppClass {}
 
 export default abstract class ModuleApp extends OwdModuleAppClass {
-  private readonly app
-  private readonly store
-  private readonly terminal
+  public readonly app
+  public readonly store
+  public readonly terminal
 
   public readonly moduleInfo: OwdModuleAppInfo;
   public moduleStore: any
@@ -47,6 +47,10 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     this.terminal = context.terminal
 
     this.moduleInfo = this.initializeModuleApp()
+
+    if (!this.moduleInfo.windows) {
+      this.moduleInfo.windows = []
+    }
 
     this.initializeModuleStoreConfig()
     this.initializeModuleStore()
@@ -73,7 +77,11 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     }
 
     // load module assets
-    this.setupAssets()
+    this.setupAssets({
+      app: this.app,
+      config: this.moduleInfo,
+      store: this.store
+    })
   }
 
   /**
@@ -86,8 +94,10 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
 
     // load module store
     this.moduleStore = this.setupStore({
+      app: this.app,
       config: this.moduleInfo,
-      store: this.store
+      store: this.store,
+      terminal: this.terminal
     })
 
     if (this.moduleStore) {
@@ -186,12 +196,13 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
    */
   private initializeModuleStoreInstance() {
     // load module store instance
-    if (!this.moduleInfo.singleton) {
+    if (!this.isSingleton) {
       if (typeof this.setupStoreInstance !== 'function') {
         return false
       }
 
       this.moduleStoreInstance = this.setupStoreInstance({
+        app: this.app,
         config: this.moduleInfo,
         store: this.store,
         terminal: this.terminal
@@ -237,7 +248,17 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
   // ### MODULE INFO
   initializeModuleApp() {
     if (this.setup) {
-      return this.setup()
+      let moduleInfo = this.setup({
+        app: this.app
+      })
+
+      if (moduleInfo.windows) {
+        moduleInfo.windows.forEach(window => {
+          window.component = markRaw(window.component)
+        })
+      }
+
+      return moduleInfo
     }
 
     throw new Error('Module app has no setup')
@@ -266,6 +287,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
 
     // load commands
     this.moduleCommands = this.setupCommands({
+      app: this.app,
       config: this.moduleInfo,
       store: this.store,
       terminal: this.terminal
@@ -292,11 +314,12 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     }
 
     // load events sse
-    if (typeof this.loadSseEvents === 'function') {
-      const moduleSseEvents = this.loadSseEvents({
-        store: this.store,
-        terminal: this.terminal
-      })
+    this.moduleSseEvents = this.setupSseEvents({
+      app: this.app,
+      config: this.moduleInfo,
+      store: this.store,
+      terminal: this.terminal
+    })
 
     const moduleSseEventsKeys = Object.keys(this.moduleSseEvents);
 
@@ -318,28 +341,116 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
    * Register module window components
    */
   private initializeModuleWindowComponents() {
-    if (!Array.isArray(this.moduleInfo.windows)) {
-      return false
-    }
-
-    // load all module window components
-    this.moduleInfo.windows.forEach((windowConfig: OwdModuleAppWindowConfig) => {
-      if (!windowConfig.name) {
-        if (this.app.config.globalProperties.$owd.debug) {
-          console.error(`[owd] Component name is missing in ${windowConfig.name}.`)
-        }
-
-        return false
-      }
-
-      // vue component sync registration
-      this.registerWindowComponent(windowConfig.name, windowConfig.component)
-    })
-
     return true
   }
 
-  public registerWindowComponent(name: string, component: Component) {
-    this.app.component(name, component)
+  /**
+   * Restore previous opened windows
+   *
+   * @param config
+   */
+  public restoreWindows(config: OwdModuleAppWindowConfig|string): boolean {
+    if (typeof config === 'string') {
+      config = this.resolveWindowConfigByName(config)
+    }
+
+    return this.addWindow(config).restore()
+  }
+
+  /**
+   * Restore windows or create a new one
+   *
+   * @param config
+   */
+  public restoreOrCreateWindow(config: OwdModuleAppWindowConfig|string): OwdModuleAppWindowInstance|boolean {
+    if (typeof config === 'string') {
+      config = this.resolveWindowConfigByName(config)
+    }
+
+    if (this.restoreWindows(config)) {
+      return true
+    }
+
+    return this.createWindow(config)
+  }
+
+  /**
+   * Add a new window (just register it),
+   * instead of declaring it statically from the module conf
+   *
+   * @param config
+   * @param storage
+   */
+  public addWindow(config: OwdModuleAppWindowConfig|string, storage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance {
+    if (typeof config === 'string') {
+      config = this.resolveWindowConfigByName(config)
+    }
+
+    return new ModuleAppWindow({
+      module: this,
+      config: config,
+      storage: storage
+    })
+  }
+
+  /**
+   * Create a new window
+   *
+   * @param config
+   * @param storage
+   */
+  public createWindow(config: OwdModuleAppWindowConfig|string, storage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance {
+    if (typeof config === 'string') {
+      config = this.resolveWindowConfigByName(config)
+    }
+
+    const instance = this.addWindow(config, storage)
+
+    if (instance) {
+      instance.create()
+    }
+
+    return instance
+  }
+
+  /**
+   * Resolve window config from a window name
+   * @param windowName
+   */
+  public resolveWindowConfigByName(windowName: string): OwdModuleAppWindowConfig {
+    if (this.moduleInfo.windows) {
+      const windowConfig = this.moduleInfo.windows.find(windowConfig => windowConfig.name === windowName)
+
+      if (windowConfig) {
+        return windowConfig
+      }
+    }
+
+    throw new Error(`unable to find a window called '${windowName}'`)
+  }
+
+  /**
+   * Get number of window instances for this group of windows
+   *
+   * @param windowName
+   */
+  public windowGroupInstancesCount(windowName: string): number {
+    if (this.windowInstances[windowName]) {
+      return Object.keys(this.windowInstances[windowName]).length
+    }
+
+    return 0
+  }
+
+  /**
+   * Get the first window instance from a window group
+   * @param windowName
+   */
+  public windowGroupInstancesFirstInstance(windowName: string): OwdModuleAppWindowInstance|boolean {
+    if (this.windowGroupInstancesCount(windowName) > 0) {
+      return Object.values(this.windowInstances[windowName])[0]
+    }
+
+    return false
   }
 }

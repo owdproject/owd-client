@@ -11,8 +11,8 @@
   >
     <ul v-if="apps && apps.length > 0">
       <li
-          :class="{selected: appSelected === moduleAppWindow && allowKeysNavigation}"
           v-for="(moduleAppWindow, i) of apps"
+          :class="{selected: appSelected.config === moduleAppWindow.config && allowKeysNavigation}"
           :key="i"
       >
         <button
@@ -21,14 +21,14 @@
         >
           <div class="owd-desktop__application-menu__list__icon">
             <WindowIconMenu
-                v-if="moduleAppWindow.icon"
-                :icon="moduleAppWindow.icon"
-                :force-svg="moduleAppWindow.icon.forceMenuAppSvg"
+                v-if="moduleAppWindow.config.icon"
+                :icon="moduleAppWindow.config.icon"
+                :force-svg="moduleAppWindow.config.icon.forceMenuAppSvg"
                 is-application-menu
             />
           </div>
           <div class="owd-desktop__application-menu__list__name">
-            <div class="owd-desktop__application-menu__list__name-inner" v-html="moduleAppWindow.titleApp || moduleAppWindow.title"/>
+            <div class="owd-desktop__application-menu__list__name-inner" v-html="moduleAppWindow.config.titleApp || moduleAppWindow.config.title"/>
           </div>
         </button>
       </li>
@@ -38,7 +38,6 @@
 
 <script setup lang="ts">
 import {ref, watch, defineProps, defineEmit, nextTick} from "vue";
-import {useStore} from "vuex";
 import WindowIconMenu from "@owd-client/core/src/components/window/icon/WindowIconMenu.vue";
 
 const props = defineProps({
@@ -52,8 +51,6 @@ const emit = defineEmit([
   'select',
   'set-navigation-keys-section'
 ])
-
-const store = useStore()
 
 // element ref
 const applicationMenuList = ref(null)
@@ -74,7 +71,7 @@ watch(() => props.allowKeysNavigation, (active) => {
 const selectPrevApp = () => {
   if (!props.allowKeysNavigation) return false
 
-  const currentIndex = props.apps.indexOf(props.appSelected)
+  const currentIndex = props.apps.findIndex((app) => app.config === props.appSelected.config)
 
   if (currentIndex - 1 > -1) {
     emit('select', props.apps[currentIndex - 1])
@@ -82,9 +79,11 @@ const selectPrevApp = () => {
 }
 
 const selectNextApp = () => {
-  if (!props.allowKeysNavigation) return false
+  if (!props.allowKeysNavigation) {
+    return false
+  }
 
-  const currentIndex = props.apps.indexOf(props.appSelected)
+  const currentIndex = props.apps.findIndex((app) => app.config === props.appSelected.config)
 
   if (currentIndex + 1 < props.apps.length) {
     emit('select', props.apps[currentIndex + 1])
@@ -93,7 +92,12 @@ const selectNextApp = () => {
 
 async function windowOpen() {
   emit('menu-close')
-  await store.dispatch('core/window/windowCreate', props.appSelected.name)
+
+  const windowInstance = await props.appSelected.module.createWindow(props.appSelected.config)
+
+  if (windowInstance) {
+    windowInstance.open(true)
+  }
 }
 
 function appMouseOver(e: Event, moduleAppWindow: Object) {

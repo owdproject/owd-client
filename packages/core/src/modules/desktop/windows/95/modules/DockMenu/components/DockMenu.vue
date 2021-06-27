@@ -8,7 +8,7 @@
       <v-btn
           height="26"
           :class="{'v-btn--active': !windowInstance.storage.minimized && windowInstance.storage.opened}"
-          @click="windowToggle(windowInstance)"
+          @click="windowInstance.minimizeToggle()"
       >
         {{windowInstance.config.titleMenu || windowInstance.config.title}}
       </v-btn>
@@ -42,14 +42,6 @@ store.subscribe((mutation) => {
     dock.items.splice(dock.items.indexOf(windowInstance), 1)
   }
 })
-
-async function windowToggle(windowInstance) {
-  if (windowInstance.storage.minimized || !windowInstance.storage.opened) {
-    await store.dispatch('core/window/windowOpen', windowInstance)
-  } else {
-    await store.dispatch('core/window/windowMinimize', windowInstance)
-  }
-}
 </script>
 
 <style scoped lang="scss">

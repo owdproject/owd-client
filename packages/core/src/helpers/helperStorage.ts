@@ -15,7 +15,7 @@ export function loadStorage(name: string) {
       return JSON.parse(storage)
     }
   } catch (e) {
-    console.error('[owd] Error while loading window storage', e)
+    console.error('[owd] error while loading window storage', e)
   }
 
   return null

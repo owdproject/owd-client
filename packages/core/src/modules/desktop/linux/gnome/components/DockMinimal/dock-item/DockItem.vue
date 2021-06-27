@@ -59,14 +59,15 @@ const windowToggle = async (event, windowInstance) => {
 
   if (props.dummy) {
 
-    await store.dispatch('core/window/windowCreate', windowInstance.config.name)
+    windowInstance = await windowInstance.module.createWindow(windowInstance.config, windowInstance.storage)
+    windowInstance.open(true)
 
   } else {
 
     if (windowInstance.storage.minimized || !windowInstance.storage.opened) {
-      await store.dispatch('core/window/windowOpen', windowInstance)
+      windowInstance.open(true)
     } else {
-      await store.dispatch('core/window/windowMinimize', windowInstance)
+      windowInstance.minimize()
     }
 
   }

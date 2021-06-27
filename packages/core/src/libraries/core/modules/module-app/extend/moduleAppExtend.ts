@@ -1,5 +1,5 @@
 import {
-  OwdCoreModuleContext,
+  OwdCoreModuleContext, OwdModuleApp,
   OwdModulesApp
 } from "@owd-client/types";
 
@@ -10,7 +10,7 @@ export default class ModuleAppExtend {
   constructor(context: OwdCoreModuleContext) {
     this.context = context
 
-    this.loadModulesApp()
+    this.initializeModulesApp()
     this.registerModulesAppProvider()
   }
 
@@ -24,10 +24,10 @@ export default class ModuleAppExtend {
   /**
    * Initialize app modules that have been defined in the client.extensions.ts
    */
-  private loadModulesApp() {
+  private initializeModulesApp() {
     if (typeof this.context.extensions.app.modules !== 'undefined') {
       for (const ModuleApp of this.context.extensions.app.modules) {
-        this.installModuleApp(ModuleApp)
+        this.createModuleApp(ModuleApp)
       }
     }
   }
@@ -35,12 +35,16 @@ export default class ModuleAppExtend {
   /**
    * Install module app
    */
-  public installModuleApp(ModuleApp: any) {
+  public createModuleApp(ModuleApp: any): OwdModuleApp {
     const moduleAppInstance = new ModuleApp(this.context)
 
     if (moduleAppInstance) {
       this.modules[moduleAppInstance.moduleInfo.name] = moduleAppInstance
+
+      return moduleAppInstance
     }
+
+    throw Error('Error while creating a module app')
   }
 
   /**

@@ -2,6 +2,7 @@ import {VuexModule, Module, Mutation, Action} from "vuex-class-modules";
 
 let reconnectTimeout: any = null
 
+// @ts-ignore
 import config from '/@/../client.config'
 
 @Module
@@ -32,11 +33,11 @@ export default class SseVuexModule extends VuexModule {
   @Action
   connect() {
     if (!config.sse.enabled) {
-      return console.log(`[owd] SSE integration is disabled`)
+      return console.log(`[owd] SSE integration is disabled by configuration`)
     }
 
     if (this.connected) {
-      return console.error('[owd] Already connected to SSE')
+      return console.error('[owd] already connected to SSE')
     }
 
     const sse = new EventSource(import.meta.env.VITE_SSE_BASE_URL)

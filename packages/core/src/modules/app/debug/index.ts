@@ -4,7 +4,7 @@ import {ModuleApp} from '@owd-client/core/index';
 import WindowDebug from "./windows/WindowDebug.vue";
 
 export default class DebugModuleApp extends ModuleApp {
-  loadModule() {
+  setup() {
     return {
       "name": "debug",
       "singleton": true,

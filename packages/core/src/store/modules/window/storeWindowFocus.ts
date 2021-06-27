@@ -1,5 +1,6 @@
 import {Action, Module, Mutation, VuexModule} from "vuex-class-modules";
 import * as helperStorage from "@owd-client/core/src/helpers/helperStorage";
+import * as helperWindow from "../../../helpers/helperWindow";
 
 @Module
 export default class WindowFocusModule extends VuexModule {
@@ -41,10 +42,25 @@ export default class WindowFocusModule extends VuexModule {
     if (windowFocusIndex > -1) {
       this.windowFocusIds.splice(windowFocusIndex, 1)
     }
+
+    helperStorage.saveStorage('window-focus', this.windowFocusIds)
   }
 
   @Action
   getWindowFocusIndex(uniqueID: string) {
     return this.windowFocusIds.indexOf(uniqueID)
+  }
+
+  @Action
+  restorePreviousWindowFocus() {
+    const focusedWindowUniqueID = this.windowFocusActiveUniqueID
+
+    if (focusedWindowUniqueID) {
+      const windowInstance = helperWindow.findWindowInstanceByAttr('uniqueID', focusedWindowUniqueID)
+
+      if (windowInstance) {
+        windowInstance.storage.focused = true
+      }
+    }
   }
 }

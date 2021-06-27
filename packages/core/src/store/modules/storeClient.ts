@@ -36,23 +36,23 @@ export default class ClientVuexModule extends VuexModule {
   }
 
   @Mutation
-  TITLE_SET(title: string) {
+  SET_TITLE(title: string) {
     this.title = title
   }
 
   @Mutation
-  TITLE_RESET() {
+  RESET_TITLE() {
     this.title = clientDefaultTitle
   }
 
   @Mutation
-  VERSION_SET(version: string) {
+  SET_VERSION(version: string) {
     this.version = version
   }
 
   @Action
   async initialize() {
-    console.log('[owd] App initialized')
+    console.log('[owd] app initialized')
 
     this.storeSseModule.initialize()
     this.storeWindow.initialize()

@@ -89,9 +89,9 @@ $owd-window-button-border-color-hover: #1b1b1b #1b1b1b #070707 #1b1b1b;
 $owd-window-button-border-color-active: #1b1b1b;
 $owd-window-button-border-color-inactive: #202020;
 $owd-window-button-icon-color: #b4b4b4;
-$owd-window-button-icon-color-hover: inherit;
-$owd-window-button-icon-color-active: inherit;
-$owd-window-button-icon-color-inactive: inherit;
+$owd-window-button-icon-color-hover: #919190;
+$owd-window-button-icon-color-active: #919190;
+$owd-window-button-icon-color-inactive: #919190;
 
 // window buttons primary
 $owd-window-button-primary-background: $owd-primary; // linear-gradient(to bottom, #3483e4, #2379e2);
@@ -139,6 +139,8 @@ $owd-window-content-padding-no-spacing: 0;
 $owd-window-content-border-color: #222;
 $owd-window-content-separator: #2C2C2C;
 $owd-window-content-tag: #2e2e2e;
+$owd-window-content-background-1: rgba(0, 0, 0, 0.05);
+$owd-window-content-background-2: rgba(0, 0, 0, 0.1);
 
 $owd-window-table-row-hover: rgba(0, 0, 0, 0.08);
 

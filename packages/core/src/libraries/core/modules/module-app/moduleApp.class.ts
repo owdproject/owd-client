@@ -105,8 +105,6 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
 
       return true
     }
-
-    throw Error('Unable to intialize module store')
   }
 
   /**

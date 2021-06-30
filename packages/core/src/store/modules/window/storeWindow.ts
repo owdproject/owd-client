@@ -138,7 +138,6 @@ export default class WindowModule extends VuexModule {
 
       // update local storage
       helperStorage.saveStorage('window', storage)
-      console.log('SALVATO E', storage)
 
     }, 250)
   }

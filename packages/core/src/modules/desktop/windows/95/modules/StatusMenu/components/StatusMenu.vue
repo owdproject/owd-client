@@ -45,12 +45,12 @@ const props = defineProps({
 
   .v-icon {
     &:not(:last-child) {
-      margin: 0 4px;
+      width: auto;
     }
   }
 
   &__icons {
-    margin: 0 8px 0 0;
+    margin: 0 8px 0 4px;
   }
 }
 </style>

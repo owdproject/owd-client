@@ -292,6 +292,8 @@ onMounted(() => {
   if (props.window.config.autoCloseBeforePageUnload) {
     window.addEventListener('beforeunload', () => props.window.close())
   }
+
+  store.dispatch('core/window/saveWindowsStorage')
 })
 
 onUnmounted(() => {
@@ -322,10 +324,5 @@ watch(
     (maximized) => emit(maximized ? 'maximize' : 'unmaximize')
 )
 
-let timeoutSaveToLocalStorage = null
-
-watch(() => props.window.storage, () => {
-  clearTimeout(timeoutSaveToLocalStorage)
-  timeoutSaveToLocalStorage = setTimeout(() => store.dispatch('core/window/saveWindowsStorage'), 250)
-}, {deep: true})
+watch(() => props.window.storage, () => store.dispatch('core/window/saveWindowsStorage'), {deep: true})
 </script>

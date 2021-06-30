@@ -29,9 +29,9 @@ export function initializeAssets(app: App) {
   const appElement = document.getElementById('app')
 
   if (appElement) {
-    appElement.setAttribute('os-name', config.de.split('/')[0])
-    appElement.setAttribute('os-version', config.de.split('/')[1])
-    appElement.setAttribute('theme', config.theme)
+    appElement.setAttribute('data-ui-name', config.de.split('/')[0])
+    appElement.setAttribute('data-ui-version', config.de.split('/')[1])
+    appElement.setAttribute('data-ui-theme', config.theme)
   }
 }
 

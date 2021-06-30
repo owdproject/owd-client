@@ -366,7 +366,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
    *
    * @param config
    */
-  public restoreOrAddWindow(config: OwdModuleAppWindowConfig|string): OwdModuleAppWindowInstance|boolean {
+  public restoreOrAddWindow(config: OwdModuleAppWindowConfig|string): OwdModuleAppWindowInstance {
     if (typeof config === 'string') {
       config = this.resolveWindowConfigByName(config)
     }
@@ -405,7 +405,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
    *
    * @param config
    */
-  public restoreOrCreateWindow(config: OwdModuleAppWindowConfig|string): OwdModuleAppWindowInstance|boolean {
+  public restoreOrCreateWindow(config: OwdModuleAppWindowConfig|string): OwdModuleAppWindowInstance {
     if (typeof config === 'string') {
       config = this.resolveWindowConfigByName(config)
     }

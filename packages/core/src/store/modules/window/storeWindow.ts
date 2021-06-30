@@ -80,17 +80,15 @@ export default class WindowModule extends VuexModule {
           if (Object.prototype.hasOwnProperty.call(this.storage.value, owdModuleAppWindowConfig.name)) {
 
             // create owdModuleApp window instances restoring previous local storage
-            owdModuleApp.restoreWindows(owdModuleAppWindowConfig)
+            owdModuleApp.restoreOrAddWindow(owdModuleAppWindowConfig)
 
           } else {
 
             // generate at least an owdModuleApp window instance if .autoOpen is set to true
-            if (owdModuleAppWindowConfig.autoOpen) {
-              const windowInstance = owdModuleApp.createWindow(owdModuleAppWindowConfig)
+            const windowInstance = owdModuleApp.addWindow(owdModuleAppWindowConfig)
 
-              if (windowInstance) {
-                windowInstance.open(true)
-              }
+            if (owdModuleAppWindowConfig.autoOpen && windowInstance) {
+              windowInstance.create()
             }
 
           }
@@ -140,6 +138,7 @@ export default class WindowModule extends VuexModule {
 
       // update local storage
       helperStorage.saveStorage('window', storage)
+      console.log('SALVATO E', storage)
 
     }, 250)
   }

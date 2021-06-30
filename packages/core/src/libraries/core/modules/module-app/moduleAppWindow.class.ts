@@ -157,6 +157,10 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     return true
   }
 
+  get isCreated() {
+    return typeof this.module.windowInstances[this.config.name][this.storage.uniqueID] !== 'undefined'
+  }
+
   restore(): boolean {
     const storage = helperStorage.loadStorage('window') || []
 
@@ -166,10 +170,10 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
 
           if (Object.prototype.hasOwnProperty.call(storage[this.config.name], uniqueID)) {
             const windowStorage = storage[this.config.name][uniqueID]
-            const windowInstance = this.module.createWindow(this.config, windowStorage)
+            const windowInstance = this.module.addWindow(this.config, windowStorage)
 
             if (windowInstance && windowStorage.opened) {
-              windowInstance.open()
+              windowInstance.open(true)
             }
           }
 
@@ -211,6 +215,10 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
 
   // soft open
   open(focus: boolean = false): boolean {
+    if (!this.isCreated) {
+      return this.create()
+    }
+
     this.instance.storage.opened = true
     this.instance.storage.minimized = false
 

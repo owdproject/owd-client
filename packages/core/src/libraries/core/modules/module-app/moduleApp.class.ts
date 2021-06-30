@@ -343,36 +343,6 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
   }
 
   /**
-   * Restore previous opened windows
-   *
-   * @param config
-   */
-  public restoreWindows(config: OwdModuleAppWindowConfig|string): boolean {
-    if (typeof config === 'string') {
-      config = this.resolveWindowConfigByName(config)
-    }
-
-    return this.addWindow(config).restore()
-  }
-
-  /**
-   * Restore windows or create a new one
-   *
-   * @param config
-   */
-  public restoreOrCreateWindow(config: OwdModuleAppWindowConfig|string): OwdModuleAppWindowInstance|boolean {
-    if (typeof config === 'string') {
-      config = this.resolveWindowConfigByName(config)
-    }
-
-    if (this.restoreWindows(config)) {
-      return true
-    }
-
-    return this.createWindow(config)
-  }
-
-  /**
    * Add a new window (just register it),
    * instead of declaring it statically from the module conf
    *
@@ -389,6 +359,25 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
       config: config,
       storage: storage
     })
+  }
+
+  /**
+   * Restore windows or create a new one
+   *
+   * @param config
+   */
+  public restoreOrAddWindow(config: OwdModuleAppWindowConfig|string): OwdModuleAppWindowInstance|boolean {
+    if (typeof config === 'string') {
+      config = this.resolveWindowConfigByName(config)
+    }
+
+    const windowInstance = this.addWindow(config)
+
+    if (windowInstance) {
+      windowInstance.restore()
+    }
+
+    return windowInstance
   }
 
   /**
@@ -409,6 +398,25 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     }
 
     return instance
+  }
+
+  /**
+   * Restore windows or create a new one
+   *
+   * @param config
+   */
+  public restoreOrCreateWindow(config: OwdModuleAppWindowConfig|string): OwdModuleAppWindowInstance|boolean {
+    if (typeof config === 'string') {
+      config = this.resolveWindowConfigByName(config)
+    }
+
+    const windowInstance = this.addWindow(config)
+
+    if (windowInstance.restore()) {
+      return windowInstance
+    }
+
+    return this.createWindow(config)
   }
 
   /**

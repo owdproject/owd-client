@@ -152,7 +152,7 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     // add to dock
     this.module.store.commit('core/windowDock/ADD', this)
 
-    this.open()
+    this.open(true)
 
     return true
   }

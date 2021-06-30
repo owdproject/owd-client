@@ -6,13 +6,13 @@ import {
 } from "@owd-client/types";
 
 import {initializeDesktopStore} from './store'
-import {initializeDesktopI18n} from "./plugins/i18n";
 import {initializeDesktopTerminal} from "./libraries/core/terminal";
+import {initializeDesktopI18n} from "./plugins/i18n";
+import {initializeDesktopRouter} from "./plugins/router";
 
 import {initializeAssets} from "./libraries/core/assets";
 import {initializeAppModules, initializeDesktopModules} from "./libraries/core/modules";
 import {initializePlugins} from "./libraries/core/plugins";
-import {initializeDesktopRouter} from "./plugins/router";
 
 export default class OwdBoot {
   private readonly loaded: boolean = false

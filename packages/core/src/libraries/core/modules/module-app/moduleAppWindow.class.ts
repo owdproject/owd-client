@@ -145,14 +145,16 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
   }
 
   create(): boolean {
+    if (this.module.isSingleton && this.module.windowGroupInstancesCount(this.config.name) > 0) {
+      return false
+    }
+
     // register instance
     this.module.windowInstances[this.config.name][this.storage.uniqueID] = this
     this.module.store.commit('core/window/REGISTER_WINDOW_INSTANCE', this)
 
     // add to dock
     this.module.store.commit('core/windowDock/ADD', this)
-
-    this.open(true)
 
     return true
   }
@@ -172,8 +174,10 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
             const windowStorage = storage[this.config.name][uniqueID]
             const windowInstance = this.module.addWindow(this.config, windowStorage)
 
+            windowInstance.create()
+
             if (windowInstance && windowStorage.opened) {
-              windowInstance.open(true)
+              windowInstance.open()
             }
           }
 
@@ -215,10 +219,6 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
 
   // soft open
   open(focus: boolean = false): boolean {
-    if (!this.isCreated) {
-      return this.create()
-    }
-
     this.instance.storage.opened = true
     this.instance.storage.minimized = false
 
@@ -243,16 +243,17 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
 
   minimize(value: boolean = true): boolean {
     this.instance.storage.minimized = value
-
-    if (value) {
-      this.instance.storage.opened = false
-    }
+    this.instance.storage.opened = !value
 
     return true
   }
 
   minimizeToggle(): boolean {
     this.minimize(!this.instance.storage.minimized)
+
+    if (this.instance.storage.minimized === false) {
+      this.focus()
+    }
 
     return true
   }

@@ -56,10 +56,6 @@ store.subscribe((mutation) => {
     padding: 0 6px;
 
     &--active {
-      border: 1px solid;
-      border-color: #828282 #c3c3c3 #c3c3c3 #828282;
-      box-shadow: -1px -1px 0 0 black, 0 -1px 0 0 black, -1px 0 0 0 black, 1px 1px 0 0 white, 0 1px 0 0 white, 1px 0 0 0 white;
-
       // Colors
       $bg-color: #ffffff;
       $dot-color: #c3c3c3;
@@ -68,11 +64,14 @@ store.subscribe((mutation) => {
       $dot-size: 1px;
       $dot-space: 2px;
 
+      border: 1px solid !important;
+      border-color: #828282 #c3c3c3 #c3c3c3 #828282 !important;
+      box-shadow: -1px -1px 0 0 black, 0 -1px 0 0 black, -1px 0 0 0 black, 1px 1px 0 0 white, 0 1px 0 0 white, 1px 0 0 0 white !important;
       background:
           linear-gradient(90deg, $bg-color ($dot-space - $dot-size), transparent 1%) center,
           linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center,
-          $dot-color;
-      background-size: $dot-space $dot-space;
+          $dot-color !important;
+      background-size: $dot-space $dot-space !important;
     }
   }
 }

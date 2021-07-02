@@ -10,7 +10,7 @@
   >
     <ul v-if="apps && apps.length > 0">
       <li
-          :class="{selected: appSelected.config === moduleAppWindow && allowKeysNavigation}"
+          :class="{selected: appSelected.config === moduleAppWindow.config && allowKeysNavigation}"
           v-for="(moduleAppWindow, i) of apps"
           :key="i"
       >
@@ -57,11 +57,7 @@ const applicationMenuList = ref(null)
 async function windowOpen() {
   emit('menu-close')
 
-  const windowInstance = await props.appSelected.module.createWindow(props.appSelected.config)
-
-  if (windowInstance) {
-    windowInstance.open(true)
-  }
+  await props.appSelected.module.createWindow(props.appSelected.config)
 }
 
 // initial focus on buttons to enable key navigation

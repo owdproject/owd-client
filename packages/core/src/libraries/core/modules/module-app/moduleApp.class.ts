@@ -395,6 +395,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
 
     if (instance) {
       instance.create()
+      instance.open(true)
     }
 
     return instance

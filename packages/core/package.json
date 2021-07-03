@@ -1,6 +1,6 @@
 {
   "name": "@owd-client/core",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.2",
   "description": "Open Web Desktop client",
   "keywords": [
     "web",
@@ -62,7 +62,7 @@
   "devDependencies": {
     "@babel/node": "^7.14.7",
     "@babel/preset-env": "^7.14.7",
-    "@owd-client/types": "2.0.0-beta.1",
+    "@owd-client/types": "2.0.0-beta.2",
     "@types/jest": "^26.0.23",
     "@types/md5": "^2.3.0",
     "@vue/test-utils": "^2.0.0-alpha.8",

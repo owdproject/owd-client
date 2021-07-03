@@ -21,11 +21,7 @@ export default {
     ...routesMain,
   ],
 
-  // not implemented
   plugins: [],
 
-  // not implemented
-  store: {
-    modules: {}
-  }
+  store: {}
 }

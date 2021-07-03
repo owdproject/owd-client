@@ -5,6 +5,20 @@
       class="owd-window-iframe"
       v-click-outside="focusOut"
       @click="focusIn"
+      @open="windowOpen"
+      @close="windowClose"
+      @resize:start="(data) => emit('resize:start', data)"
+      @resize:move="(data) => emit('resize:move', data)"
+      @resize:end="(data) => emit('resize:end', data)"
+      @drag:start="(data) => emit('drag:start', data)"
+      @drag:move="(data) => emit('drag:move', data)"
+      @drag:end="(data) => emit('drag:end', data)"
+      @blur="(data) => emit('blur', data)"
+      @focus="(data) => emit('focus', data)"
+      @minimize="(data) => emit('minimize', data)"
+      @restore="(data) => emit('restore', data)"
+      @maximize="(data) => emit('maximize', data)"
+      @unmaximize="(data) => emit('unmaximize', data)"
   >
     <template v-slot:nav-prepend>
       <slot name="nav-prepend" />
@@ -16,6 +30,7 @@
 
     <div class="owd-window-iframe__content">
       <iframe
+          v-if="iframeSrc"
           :id="iframeId"
           :src="iframeSrc"
           @load="onIframeLoaded"
@@ -48,7 +63,21 @@ const props = defineProps({
 const emit = defineEmit([
   'iframeFocusIn',
   'iframeFocusOut',
-  'iframeLoaded'
+  'iframeLoaded',
+  'resize:start',
+  'resize:move',
+  'resize:end',
+  'drag:start',
+  'drag:move',
+  'drag:end',
+  'close',
+  'open',
+  'blur',
+  'focus',
+  'minimize',
+  'restore',
+  'maximize',
+  'unmaximize',
 ])
 
 const iframeSrc = ref('')
@@ -69,17 +98,13 @@ function focusOut() {
 }
 
 function iframeFocus() {
-  document.getElementById(iframeId.value).focus()
+  if (document.getElementById(iframeId.value)) {
+    document.getElementById(iframeId.value).focus()
+  }
 }
 
 function onIframeLoaded() {
-  if (iframeSrc.value !== '') {
-    loaded.value = true
-  } else {
-    if (props.window.storage.opened === true) {
-      iframeSrc.value = this.url || props.window.metaData.iframeUrl
-    }
-  }
+  iframeFocus()
 
   emit('iframeLoaded')
 }
@@ -90,6 +115,12 @@ watch(() => props.url, url => {
   }
 })
 
+watch(() => props.window.config, config => {
+  if (props.window.storage.opened === true) {
+    iframeSrc.value = config.metaData.iframeUrl
+  }
+}, {deep: true})
+
 watch(() => props.window.storage.focused, val => {
   focused.value = val
 
@@ -98,16 +129,20 @@ watch(() => props.window.storage.focused, val => {
   }
 })
 
-watch(() => props.window.storage.opened, val => {
-  if (val === true) {
-    if (props.window.storage.opened === true) {
-      iframeSrc.value = props.url || props.window.config.metaData.iframeUrl
-    }
-  } else {
-    iframeSrc.value = ''
-    loaded.value = false
+function windowOpen(data) {
+  emit('open', data)
+
+  if (props.window.storage.opened === true) {
+    iframeSrc.value = props.url || props.window.config.metaData.iframeUrl
   }
-})
+}
+
+function windowClose(data) {
+  emit('close', data)
+
+  iframeSrc.value = ''
+  loaded.value = false
+}
 </script>
 
 <style lang="scss">

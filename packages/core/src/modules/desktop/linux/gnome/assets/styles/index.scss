@@ -1,6 +1,12 @@
+// import basic fonts
+@import '@fontsource/cantarell';
+@import '@fontsource/jetbrains-mono';
+
+// import generic owd styles
 @import 'partials/owd/Logo/logo';
 @import 'partials/owd/Window/window';
 @import 'partials/owd/Window/window-button';
 @import 'partials/owd/Scrollbar/scrollbar';
 
+// overwrite vuetify styles
 @import 'partials/vuetify/VInput/styles';

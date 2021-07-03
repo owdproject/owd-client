@@ -8,21 +8,21 @@ export default class {
   }
 
   /**
-   * Add global command to terminal
+   * Add command to terminal
    *
    * @param name
    * @param fn
    */
   addCommand(name: string, fn: any) {
     if (this.hasCommand(name)) {
-      console.error(`[OWD] Command "${name}" was already defined, it has been overwritten`)
+      console.error(`[owd] command "${name}" was already defined, it has been overwritten`)
     }
 
     this.commands[name] = fn
   }
 
   /**
-   * Does terminal global command exists?
+   * Does terminal command exists?
    *
    * @param name
    */
@@ -31,7 +31,7 @@ export default class {
   }
 
   /**
-   * Run terminal global command
+   * Run terminal command
    *
    * @param instance
    * @param name

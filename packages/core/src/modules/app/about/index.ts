@@ -4,7 +4,7 @@ import {ModuleApp} from '@owd-client/core/index';
 import WindowAbout from "./windows/WindowAbout.vue";
 
 export default class AboutModuleApp extends ModuleApp {
-  loadModule() {
+  setup() {
     return {
       name: "about",
       singleton: true,

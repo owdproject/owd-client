@@ -158,7 +158,7 @@ const windowMinHeight = computed(() => {
  * Window minimize event
  */
 function onMinimize() {
-  store.dispatch('core/window/windowMinimize', props.window)
+  props.window.minimize()
 }
 
 /**
@@ -169,10 +169,11 @@ function onToggleMaximize() {
     return false
   }
 
-  store.dispatch(
-      props.window.storage.maximized ? 'core/window/windowUnmaximize' : 'core/window/windowMaximize',
-      props.window
-  )
+  if (props.window.storage.maximized) {
+    props.window.maximize(false)
+  } else {
+    props.window.maximize(true)
+  }
 }
 
 /**
@@ -183,25 +184,25 @@ function onToggleFullscreen() {
     return false
   }
 
-  store.dispatch(
-      props.window.storage.fullscreen ? 'core/window/windowUnfullscreen' : 'core/window/windowFullscreen',
-      props.window
-  )
+  if (props.window.storage.fullscreen) {
+    props.window.fullscreen(false)
+  } else {
+    props.window.fullscreen(true)
+  }
 }
 
 /**
  * Window close event
  */
 function onClose() {
-  store.dispatch('core/window/windowDestroy', props.window)
+  props.window.destroy()
 }
 
 /**
  * Window focus event
  */
 function onFocus() {
-  // prevent focus when minimizing or closing
-  setTimeout(() => store.dispatch('core/window/windowFocus', props.window), 20)
+  props.window.focus()
 }
 
 /**
@@ -209,7 +210,7 @@ function onFocus() {
  */
 function onMouseDown(e) {
   if (!e.target.closest('.owd-window__nav__btn-group')) {
-    onFocus()
+    props.window.focus()
   }
 }
 
@@ -238,15 +239,8 @@ function onResizeEnd(data) {
   // emit to parent component
   emit('resize:end', data)
 
-  store.dispatch('core/window/windowUpdateSize', {
-    window: props.window,
-    size: {width: data.width, height: data.height}
-  })
-
-  store.dispatch('core/window/windowSetPosition', {
-    window: props.window,
-    position: {x: data.left, y: data.top, z: props.window.storage.position.z}
-  })
+  props.window.setSize({width: data.width, height: data.height})
+  props.window.setPosition({x: data.left, y: data.top, z: props.window.storage.position.z})
 
   resizing.value = false
 }
@@ -286,38 +280,25 @@ function onDragEnd(data) {
       props.window.storage.size.width !== data.width ||
       props.window.storage.size.height !== data.height
   ) {
-    store.dispatch('core/window/windowSetPosition', {
-      window: props.window,
-      position: {x: data.left, y: data.top, z: props.window.storage.position.z}
-    })
+    props.window.setPosition({x: data.left, y: data.top, z: props.window.storage.position.z})
   }
-}
-
-async function autoCloseWindowBeforePageUnload() {
-  await store.dispatch('core/window/windowClose', props.window)
-  await store.dispatch('core/window/saveWindowsStorage')
-}
-
-async function autoDestroyWindowBeforePageUnload() {
-  await store.dispatch('core/window/windowDestroy', props.window)
-  await store.dispatch('core/window/saveWindowsStorage')
 }
 
 onMounted(() => {
+  if (props.window.storage.opened) {
+    emit('open')
+  }
+
   if (props.window.config.autoCloseBeforePageUnload) {
-    window.addEventListener('beforeunload', () => autoCloseWindowBeforePageUnload)
+    window.addEventListener('beforeunload', () => props.window.close())
   }
-  if (props.window.config.autoDestroyBeforePageUnload) {
-    window.addEventListener('beforeunload', () => autoDestroyWindowBeforePageUnload)
-  }
+
+  store.dispatch('core/window/saveWindowsStorage')
 })
 
 onUnmounted(() => {
   if (props.window.config.autoCloseBeforePageUnload) {
-    window.removeEventListener('beforeunload', () => autoCloseWindowBeforePageUnload)
-  }
-  if (props.window.config.autoDestroyBeforePageUnload) {
-    window.removeEventListener('beforeunload', () => autoDestroyWindowBeforePageUnload)
+    window.removeEventListener('beforeunload', () => props.window.close())
   }
 })
 
@@ -328,7 +309,9 @@ watch(
 
 watch(
     () => props.window.storage.opened,
-    (opened) => emit(opened ? 'open' : 'close')
+    (opened) => {
+      emit(opened ? 'open' : 'close')
+    }
 )
 
 watch(
@@ -341,14 +324,5 @@ watch(
     (maximized) => emit(maximized ? 'maximize' : 'unmaximize')
 )
 
-let timeoutSaveToLocalStorage = null
-
-watch(
-    () => props.window.storage,
-    (maximized) => {
-      clearTimeout(timeoutSaveToLocalStorage)
-      timeoutSaveToLocalStorage = setTimeout(() => store.dispatch('core/window/saveWindowsStorage'), 500)
-    },
-    {deep: true}
-)
+watch(() => props.window.storage, () => store.dispatch('core/window/saveWindowsStorage'), {deep: true})
 </script>

@@ -43,13 +43,7 @@ const props = defineProps({
   border-color: #828282 white white #828282;
   pointer-events: none;
 
-  .v-icon {
-    &:not(:last-child) {
-      margin: 0 4px;
-    }
-  }
-
-  &__icons {
+  &__icons i {
     margin: 0 8px 0 0;
   }
 }

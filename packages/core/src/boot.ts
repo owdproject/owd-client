@@ -1,15 +1,17 @@
-import { App } from 'vue'
+import {App, createApp} from 'vue'
 import {
   OwdClientConfiguration,
   OwdClientConfigurationExtensions,
   OwdCoreBootContext
 } from "@owd-client/types";
 
-import { owdCreateStore } from './store'
+import {initializeDesktopStore} from './store'
+import {initializeDesktopTerminal} from "./libraries/core/terminal";
+import {initializeDesktopI18n} from "./plugins/i18n";
+import {initializeDesktopRouter} from "./plugins/router";
 
-import initializeAssets from "./libraries/core/assets";
-import initializeModules from "./libraries/core/modules";
-import initializeTerminal from "./libraries/core/terminal";
+import {initializeAssets} from "./libraries/core/assets";
+import {initializeAppModules, initializeDesktopModules} from "./libraries/core/modules";
 import {initializePlugins} from "./libraries/core/plugins";
 
 export default class OwdBoot {
@@ -18,59 +20,79 @@ export default class OwdBoot {
   private readonly config: OwdClientConfiguration
   private readonly extensions: OwdClientConfigurationExtensions
 
+  private readonly app: App
+
+  private store: any
+  private terminal: any
+  private modulesApp: any
+  private modulesDesktop: any
+
   constructor(context: OwdCoreBootContext) {
     this.config = context.config
     this.extensions = context.extensions
 
-    try {
-      this.initialize(context)
-      this.loaded = true
-    } catch(e) {
-      console.error(e)
-    }
+    this.app = createApp(context.component)
+
+    this.initialize()
+    this.mount()
   }
 
   hasLoaded(): boolean {
     return this.loaded
   }
 
-  /**
-   * Initialize OWD
-   *
-   * @param context
-   */
-  initialize(context: OwdCoreBootContext) {
-    // assign owd config to Vue app.config globalProperties
-    context.app.config.globalProperties.$owd = this.config
-
-    // store
-    context.store = this.initializeStore(context.app)
-
-    // terminal
-    context.terminal = initializeTerminal()
-
-    // plugins
-    initializePlugins(context)
-
-    // global components & assets
-    initializeAssets(context)
-
-    // modules extend
-    initializeModules(context)
+  get context() {
+    return {
+      app: this.app,
+      config: this.config,
+      extensions: this.extensions,
+      store: this.store,
+      terminal: this.terminal
+    }
   }
 
   /**
-   * Initialize store
-   *
-   * @param app
+   * Initialize OWD
    */
-  initializeStore(app: App) {
-    // create owd store
-    const owdStore = owdCreateStore()
+  initialize() {
+    this.app.config.globalProperties.$owd = this.config
 
-    // initialize owd store
-    app.use(owdStore)
+    this.store = initializeDesktopStore({
+      app: this.app,
+      modules: this.extensions.store
+    })
 
-    return owdStore
+    this.terminal = initializeDesktopTerminal()
+
+    initializeDesktopRouter({
+      app: this.app,
+      routes: this.extensions.routes
+    })
+
+    initializePlugins({
+      app: this.app,
+      plugins: this.extensions.plugins
+    })
+
+    initializeDesktopI18n(this.app)
+    initializeAssets(this.app)
+
+    this.modulesApp = initializeAppModules({
+      app: this.app,
+      extensions: this.extensions,
+      store: this.store,
+      terminal: this.terminal
+    })
+
+    this.modulesDesktop = initializeDesktopModules({
+      app: this.app,
+      extensions: this.extensions,
+      store: this.store,
+      terminal: this.terminal
+    })
+  }
+
+  mount() {
+    this.app.mount('#app')
   }
 }

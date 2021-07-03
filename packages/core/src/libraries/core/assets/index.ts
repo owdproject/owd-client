@@ -1,25 +1,26 @@
 import {App} from "vue";
-import {OwdCoreModuleContext} from "@owd-client/types";
 
 import WindowComponent from "../../../../src/components/window/Window.vue";
 import WindowAppComponent from "../../../../src/components/window/app/WindowApp.vue";
 
 // import basic fonts
-import '@fontsource/jetbrains-mono'
-import '@fontsource/cantarell'
+import {initializeVuetify} from "@owd-client/core/src/plugins/vuetify";
 
-/**
- * Initialize OWD assets
- */
-export default function initializeAssets(context: OwdCoreModuleContext) {
-  initializeGlobalComponents(context.app)
+export function initializeAssets(app: App) {
+  const config = app.config.globalProperties.$owd.ui
+
+  // initialize vuetify
+  initializeVuetify(app)
+
+  // initialize global components
+  initializeGlobalComponents(app)
 
   // import core styles
   import('@owd-client/core/src/assets/css/app.scss')
 
   // import custom theme styles from owd-client/app
   try {
-    import(/* @vite-ignore */ `/@/../src/assets/themes/${context.config.ui.de}/${context.config.ui.theme}/index.scss`)
+    import(/* @vite-ignore */ `/@/../src/assets/themes/${config.de}/${config.theme}/index.scss`)
   } catch(e) {
     console.error('Error while loading theme styles')
   }
@@ -28,9 +29,9 @@ export default function initializeAssets(context: OwdCoreModuleContext) {
   const appElement = document.getElementById('app')
 
   if (appElement) {
-    appElement.setAttribute('os-name', context.config.ui.de.split('/')[0])
-    appElement.setAttribute('os-version', context.config.ui.de.split('/')[1])
-    appElement.setAttribute('theme', context.config.ui.theme)
+    appElement.setAttribute('data-ui-name', config.de.split('/')[0])
+    appElement.setAttribute('data-ui-version', config.de.split('/')[1])
+    appElement.setAttribute('data-ui-theme', config.theme)
   }
 }
 

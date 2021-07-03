@@ -11,14 +11,14 @@ export default class ModuleDesktopExtend {
   constructor(context: OwdCoreModuleContext) {
     this.context = context
 
-    this.loadModulesDesktop()
+    this.initializeModulesDesktop()
     this.registerDesktopEnvironment()
   }
 
-  private loadModulesDesktop() {
+  private initializeModulesDesktop() {
     if (this.context.extensions.desktop.modules) {
       for (const moduleDesktop of this.context.extensions.desktop.modules) {
-        this.installModuleDesktop(moduleDesktop)
+        this.createModuleDesktop(moduleDesktop)
       }
     }
   }
@@ -26,7 +26,7 @@ export default class ModuleDesktopExtend {
   /**
    * Load desktop modules that have been defined in the client.extensions.ts
    */
-  public installModuleDesktop(moduleDesktop: OwdModuleDesktop) {
+  public createModuleDesktop(moduleDesktop: OwdModuleDesktop) {
     if (!this.modules[moduleDesktop.config.area]) {
       this.modules[moduleDesktop.config.area] = {}
     }

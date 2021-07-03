@@ -10,14 +10,14 @@
   >
     <ul>
       <li
-          :class="{selected: categorySelected === category && allowKeysNavigation}"
           v-for="(appList, category) in categories"
+          :class="{selected: categorySelected === category && allowKeysNavigation}"
           :key="category"
       >
         <button
-            @click="categoryClick(category)"
-            @mouseover="(e) => categoryMouseOver(e, category)"
-            v-text="$t(`desktop.SystemBar.ApplicationMenu.categories.${category}`)"
+          @click="categoryClick(category)"
+          @mouseover="(e) => categoryMouseOver(e, category)"
+          v-text="$t(`desktop.SystemBar.ApplicationMenu.categories.${category}`)"
         />
       </li>
     </ul>
@@ -50,7 +50,7 @@ const categoriesKeys = Object.keys(props.categories)
 // initial focus on buttons to enable key navigation
 watch(() => props.allowKeysNavigation, (active) => {
   if (active) {
-    if (props.categorySelected == '') {
+    if (props.categorySelected === '') {
       categoriesMenuList.value.querySelector('ul > li:first-child button').focus()
     } else {
       nextTick(() => categoriesMenuList.value.querySelector('ul > li.selected button').focus())

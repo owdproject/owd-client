@@ -19,7 +19,6 @@
         </template>
       </template>
 
-
       <slot name="append" />
     </ul>
   </div>
@@ -59,6 +58,7 @@ onMounted(() => {
         }
 
         dock.itemsFavorite[owdModuleAppWindowConfig.name]['dummy'] = {
+          module: owdModuleApp,
           config: owdModuleAppWindowConfig,
           storage: {
             opened: false,

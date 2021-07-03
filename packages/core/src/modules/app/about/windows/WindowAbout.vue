@@ -40,7 +40,7 @@
   }
 }
 
-#app[os-name="windows"][os-version="95"] {
+#app[data-ui-name="windows"][data-ui-version="95"] {
   .owd-window-about {
     .powered-by .v-icon {
       color: #777 !important;

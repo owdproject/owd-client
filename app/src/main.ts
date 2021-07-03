@@ -1,26 +1,18 @@
-import { createApp } from 'vue'
-import { createWebDesktop } from '@owd-client/core/index'
+import {createDesktop} from '@owd-client/core/index'
+import { name, version } from '../package.json'
 
+// main vue component
 import App from './App.vue'
 
-/**
- * Vue initialization
- */
-const app = createApp(App)
-
-/**
- * OWD initialization
- */
+// client configuration
 import config from '../client.config'
 import extensions from '../client.extensions'
 
-// load Open Web Desktop & its modules
-const owdInstance = new createWebDesktop({
-  app,
+// create an Open Web Desktop instance
+createDesktop({
+  component: App,
   config,
   extensions
+}).then(() => {
+  console.log(`[owd] initialize ${name} ${version}`)
 })
-
-if (owdInstance.hasLoaded()) {
-  app.mount('#app')
-}

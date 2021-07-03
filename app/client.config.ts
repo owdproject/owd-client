@@ -39,5 +39,15 @@ export default {
       }
     },
     rtl: false
+  },
+
+  i18n: {
+    locale: 'en',
+    fallbackLocale: 'en',
+  },
+
+  store: {
+    strict: false,
+    devtools: true
   }
 }

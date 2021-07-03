@@ -1,6 +1,6 @@
 import {Module, RegisterOptions, VuexModule} from "vuex-class-modules";
 import ModulesAppModule from "../storeModulesApp";
-import {OwdModuleAppWindowConfig} from "@owd-client/types";
+import {OwdModuleAppWindowCreateInstanceData} from "@owd-client/types";
 
 @Module
 export default class WindowCategoryModule extends VuexModule {
@@ -19,10 +19,10 @@ export default class WindowCategoryModule extends VuexModule {
    * keymap by window category
    */
   get modulesAppWindowCategories() {
-    let windowCategories: { [key: string]: OwdModuleAppWindowConfig[] } = {}
+    let windowCategories: { [key: string]: OwdModuleAppWindowCreateInstanceData[] } = {}
 
-    const windowCategoriesFavorite: OwdModuleAppWindowConfig[] = []
-    const windowCategoriesOther: OwdModuleAppWindowConfig[] = []
+    const windowCategoriesFavorite: OwdModuleAppWindowCreateInstanceData[] = []
+    const windowCategoriesOther: OwdModuleAppWindowCreateInstanceData[] = []
 
     // for each loaded module
     for (const owdModuleApp of this.modulesAppModule.modulesAppList) {
@@ -32,6 +32,11 @@ export default class WindowCategoryModule extends VuexModule {
 
       // for each window config
       for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
+        const windowCreateInstanceData: OwdModuleAppWindowCreateInstanceData = {
+          module: owdModuleApp,
+          config: owdModuleAppWindowConfig
+        }
+
         if (
           typeof owdModuleAppWindowConfig.hostname !== 'undefined' &&
           owdModuleAppWindowConfig.hostname !== window.location.hostname
@@ -48,14 +53,14 @@ export default class WindowCategoryModule extends VuexModule {
           owdModuleAppWindowConfig.category = 'other'
 
           // add to special category list "other"
-          windowCategoriesOther.push(owdModuleAppWindowConfig)
+          windowCategoriesOther.push(windowCreateInstanceData)
 
           continue
         }
 
         // add to special category list "favorite"
         if (owdModuleAppWindowConfig.favorite) {
-          windowCategoriesFavorite.push(owdModuleAppWindowConfig)
+          windowCategoriesFavorite.push(windowCreateInstanceData)
         }
 
         // map window categories
@@ -63,7 +68,7 @@ export default class WindowCategoryModule extends VuexModule {
           windowCategories[owdModuleAppWindowConfig.category] = []
         }
 
-        windowCategories[owdModuleAppWindowConfig.category].push(owdModuleAppWindowConfig)
+        windowCategories[owdModuleAppWindowConfig.category].push(windowCreateInstanceData)
       }
 
     }
@@ -94,13 +99,13 @@ export default class WindowCategoryModule extends VuexModule {
     // reorder window list for each category
     for (const categoryName in windowCategories) {
       windowCategories[categoryName] = windowCategories[categoryName].sort((a, b) => {
-        a.titleApp = a.titleApp || a.title
-        b.titleApp = b.titleApp || b.title
+        a.config.titleApp = a.config.titleApp || a.config.title
+        b.config.titleApp = b.config.titleApp || b.config.title
 
-        if (a.titleApp < b.titleApp) {
+        if (a.config.titleApp < b.config.titleApp) {
           return -1;
         }
-        if (a.titleApp > b.titleApp) {
+        if (a.config.titleApp > b.config.titleApp) {
           return 1;
         }
 

@@ -108,6 +108,9 @@ const props = defineProps({
   isResizable: {
     type: Boolean
   },
+  isMaximized: {
+    type: Boolean
+  },
   isFullscreen: {
     type: Boolean
   },

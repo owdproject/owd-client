@@ -3,15 +3,17 @@ import Desktop from './components/Desktop.vue'
 
 // desktop modules
 import ApplicationMenu from "./modules/ApplicationMenu";
-import DockMenu from "./modules/DockMenu";
+import NotificationMenu from "./modules/NotificationMenu";
 import StatusMenu from "./modules/StatusMenu";
 
 export default {
+  name: 'midnight-black',
+
   component: Desktop,
 
   modules: [
     ApplicationMenu,
-    DockMenu,
+    NotificationMenu,
     StatusMenu
   ],
 
@@ -19,17 +21,21 @@ export default {
     Logo: {
       enabled: true
     },
+    Dock: {
+      enabled: true
+    },
     Window: {
       icons: {
-        minimize: 'mdi-color-helper',
+        minimize: 'mdi-window-minimize',
         maximize: 'mdi-window-maximize',
         fullscreen: 'mdi-fullscreen',
-        close: 'mdi-window-close'
+        close: 'mdi-window-close',
+        external: 'mdi-open-in-new'
       }
     },
     SystemBar: {
       enabled: true,
-      position: 'bottom',
+      position: 'top',
       icons: {
         'battery': 'mdi-battery',
         'battery-0': 'mdi-battery-alert-variant-outline',
@@ -40,7 +46,10 @@ export default {
         'battery-100': 'mdi-battery'
       }
     },
-    StatusMenu: {
+    ApplicationMenu: {
+      categoryAppsTriggerType: 'mouseover'
+    },
+    NotificationMenu: {
       menu: {
         dateFormat: 'MMM D',
         timeFormat: 'HH:mm'
@@ -50,6 +59,10 @@ export default {
           dayOfWeekFormat: 'dddd',
           dateFormat: 'MMMM D YYYY'
         }
+      },
+      floatingNotification: {
+        max: 2,
+        duration: 8000
       }
     }
   }

@@ -38,6 +38,7 @@ export interface OwdClientConfigurationExtensions {
     modules?: any[]
   },
   desktop: {
+    name?: string
     component: Component
     modules?: any[]
     options: {

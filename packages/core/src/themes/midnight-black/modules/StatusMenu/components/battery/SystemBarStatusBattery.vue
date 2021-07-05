@@ -10,7 +10,6 @@ import {ref, onMounted} from 'vue'
 const batteryStatus = ref('idle')
 const batteryLevel = ref(55)
 
-// todo implement using vuetify
 const isMobile = false
 
 onMounted(() => {

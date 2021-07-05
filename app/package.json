@@ -32,7 +32,6 @@
     "@owd-client/core": "^2.0.0-beta.2"
   },
   "devDependencies": {
-    "@fontsource/oswald": "^4.4.5",
     "@mdi/font": "^5.9.55",
     "@owd-client/types": "^2.0.0-beta.2",
     "@vitejs/plugin-vue": "^1.2.3",

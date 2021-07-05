@@ -1,12 +1,6 @@
 export default {
   debug: false,
 
-  // user interface
-  ui: {
-    de: 'linux/gnome',
-    theme: 'adwaita-dark',
-  },
-
   // sse integration
   sse: {
     enabled: false,
@@ -44,10 +38,5 @@ export default {
   i18n: {
     locale: 'en',
     fallbackLocale: 'en',
-  },
-
-  store: {
-    strict: false,
-    devtools: false
   }
 }

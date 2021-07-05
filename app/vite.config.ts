@@ -2,8 +2,6 @@ import { defineConfig } from 'vite';
 import path from 'path';
 import vue from '@vitejs/plugin-vue'
 
-import clientConfig from './client.config'
-
 export default defineConfig({
   plugins: [
     vue()
@@ -11,7 +9,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "./src/assets/themes/${clientConfig.ui.de}/${clientConfig.ui.theme}/variables.scss";`
+        additionalData: `@import "./src/assets/themes/variables.scss";`
       }
     }
   },

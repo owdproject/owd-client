@@ -7,8 +7,6 @@ import WindowAppComponent from "../../../../src/components/window/app/WindowApp.
 import {initializeVuetify} from "@owd-client/core/src/plugins/vuetify";
 
 export function initializeAssets(app: App) {
-  const config = app.config.globalProperties.$owd.ui
-
   // initialize vuetify
   initializeVuetify(app)
 
@@ -18,20 +16,12 @@ export function initializeAssets(app: App) {
   // import core styles
   import('@owd-client/core/src/assets/css/app.scss')
 
-  // import custom theme styles from owd-client/app
-  try {
-    import(/* @vite-ignore */ `/@/../src/assets/themes/${config.de}/${config.theme}/index.scss`)
-  } catch(e) {
-    console.error('Error while loading theme styles')
-  }
-
   // append desktop-environment and theme to #app classes
   const appElement = document.getElementById('app')
 
   if (appElement) {
-    appElement.setAttribute('data-ui-name', config.de.split('/')[0])
-    appElement.setAttribute('data-ui-version', config.de.split('/')[1])
-    appElement.setAttribute('data-ui-theme', config.theme)
+    // todo get the active theme name somewhere
+    // appElement.setAttribute('data-theme', themeName)
   }
 }
 

@@ -45,8 +45,6 @@
     "root": true
   },
   "dependencies": {
-    "@fontsource/cantarell": "^4.4.5",
-    "@fontsource/jetbrains-mono": "^4.4.5",
     "axios": "^0.21.1",
     "md5": "^2.3.0",
     "moment": "^2.29.1",
@@ -60,6 +58,9 @@
     "vuex-class-modules": "^1.3.0"
   },
   "devDependencies": {
+    "@fontsource/cantarell": "^4.4.5",
+    "@fontsource/jetbrains-mono": "^4.4.5",
+    "@fontsource/oswald": "^4.4.5",
     "@babel/node": "^7.14.7",
     "@babel/preset-env": "^7.14.7",
     "@owd-client/types": "2.0.0-beta.2",

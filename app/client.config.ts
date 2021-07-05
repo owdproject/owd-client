@@ -48,6 +48,6 @@ export default {
 
   store: {
     strict: false,
-    devtools: true
+    devtools: false
   }
 }

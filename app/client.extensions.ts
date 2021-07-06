@@ -1,4 +1,4 @@
-import desktopConfig from "@owd-client/core/src/modules/desktop/linux/gnome/desktop.config"
+import desktopConfig from "@owd-client/core/src/themes/midnight-black/desktop.config"
 
 // routes
 import routesMain from './src/pages/main/routes'

@@ -2,7 +2,7 @@ import {VuexModule, Module, Mutation} from "vuex-class-modules";
 import {OwdModuleApp} from "@owd-client/types";
 
 @Module
-export default class ModuleAppVuexModule extends VuexModule {
+export default class StoreModulesApp extends VuexModule {
   private modulesAppProvider: any = null
 
   /**

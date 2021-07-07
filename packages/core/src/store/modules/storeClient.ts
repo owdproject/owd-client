@@ -1,7 +1,6 @@
 import {VuexModule, Module, Mutation, Action, RegisterOptions} from "vuex-class-modules";
 
 import SseModule from "./storeSse";
-import WindowDockModule from "./window/storeWindowDock";
 import WindowModule from "./window/storeWindow";
 
 const clientDefaultTitle = import.meta.env.VITE_NAME || ''
@@ -9,9 +8,8 @@ const clientVersion = import.meta.env.VITE_VERSION || '2.0.0'
 const clientWebsite = import.meta.env.VITE_WEBSITE || 'owdproject.com'
 
 @Module
-export default class ClientVuexModule extends VuexModule {
+export default class StoreClient extends VuexModule {
   private readonly storeSseModule: SseModule
-  private readonly storeWindowDock: WindowDockModule
   private readonly storeWindow: WindowModule
 
   // client title
@@ -25,13 +23,11 @@ export default class ClientVuexModule extends VuexModule {
 
   constructor(
     storeSseModule: SseModule,
-    storeWindowDock: WindowDockModule,
     storeWindow: WindowModule,
     options: RegisterOptions
   ) {
     super(options);
     this.storeSseModule = storeSseModule
-    this.storeWindowDock = storeWindowDock
     this.storeWindow = storeWindow
   }
 

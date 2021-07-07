@@ -3,7 +3,7 @@ import ModulesAppModule from "../storeModulesApp";
 import {OwdModuleAppWindowCreateInstanceData} from "@owd-client/types";
 
 @Module
-export default class WindowCategoryModule extends VuexModule {
+export default class StoreWindowCategory extends VuexModule {
   private readonly modulesAppModule: ModulesAppModule
 
   constructor(

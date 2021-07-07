@@ -12,7 +12,7 @@ import {
 } from "@owd-client/types";
 
 @Module
-export default class WindowModule extends VuexModule {
+export default class StoreWindow extends VuexModule {
   private readonly modulesAppModule: ModulesAppModule
   private readonly windowFocusModule: WindowFocusModule
   private readonly windowDockModule: WindowDockModule

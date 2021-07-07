@@ -6,7 +6,7 @@ let reconnectTimeout: any = null
 import config from '/@/../client.config'
 
 @Module
-export default class SseVuexModule extends VuexModule {
+export default class StoreSse extends VuexModule {
   private eventSource: any = null
   private connected: boolean = false
 

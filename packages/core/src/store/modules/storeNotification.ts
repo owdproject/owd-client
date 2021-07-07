@@ -13,7 +13,7 @@ interface StoreNotificationItem {
 }
 
 @Module
-export default class NotificationVuexModule extends VuexModule {
+export default class StoreNotification extends VuexModule {
   private items: StoreNotificationItem[] = []
 
   get list() {

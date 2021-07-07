@@ -8,14 +8,15 @@ import AboutModule from "@owd-client/core/src/modules/app/about";
 import DebugModule from "@owd-client/core/src/modules/app/debug";
 
 export default {
-  app: {
-    modules: [
+  desktop: desktopConfig,
+
+  modules: {
+    app: [
       AboutModule,
       DebugModule
-    ]
+    ],
+    desktop: []
   },
-
-  desktop: desktopConfig,
 
   routes: [
     ...routesMain,

@@ -25,8 +25,8 @@ export default class ModuleAppExtend {
    * Initialize app modules that have been defined in the client.extensions.ts
    */
   private initializeModulesApp() {
-    if (typeof this.context.extensions.app.modules !== 'undefined') {
-      for (const ModuleApp of this.context.extensions.app.modules) {
+    if (typeof this.context.extensions.modules.app !== 'undefined') {
+      for (const ModuleApp of this.context.extensions.modules.app) {
         this.createModuleApp(ModuleApp)
       }
     }

@@ -34,9 +34,10 @@ export interface OwdClientConfigurationSse {
 
 export interface OwdClientConfigurationExtensions {
   routes: any[]
-  app: {
-    modules?: any[]
-  },
+  modules: {
+    app?: any[]
+    desktop?: any[]
+  }
   desktop: {
     name?: string
     component: Component

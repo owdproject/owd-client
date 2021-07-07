@@ -16,8 +16,16 @@ export default class ModuleDesktopExtend {
   }
 
   private initializeModulesDesktop() {
+    // initialize specific desktop modules
     if (this.context.extensions.desktop.modules) {
       for (const moduleDesktop of this.context.extensions.desktop.modules) {
+        this.createModuleDesktop(moduleDesktop)
+      }
+    }
+
+    // initialize generic desktop modules
+    if (this.context.extensions.modules.desktop) {
+      for (const moduleDesktop of this.context.extensions.modules.desktop) {
         this.createModuleDesktop(moduleDesktop)
       }
     }

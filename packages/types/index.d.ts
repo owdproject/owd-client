@@ -6,13 +6,9 @@ import {RouteRecordRaw} from "vue-router";
 
 export interface OwdClientConfiguration {
   debug: boolean
-  ui: {
-    de: string
-    theme: string
-  }
   sse: OwdClientConfigurationSse
-  i18n: OwdClientConfigurationI18n
-  store: OwdClientConfigurationStore
+  i18n?: OwdClientConfigurationI18n
+  store?: OwdClientConfigurationStore
   vuetify: any
 }
 

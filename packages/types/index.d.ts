@@ -35,7 +35,7 @@ export interface OwdClientConfigurationExtensions {
     desktop?: any[]
   }
   desktop: {
-    name?: string
+    name: string
     component: Component
     modules?: any[]
     options: {
@@ -75,6 +75,11 @@ export interface OwdCoreModuleContext {
   extensions: OwdClientConfigurationExtensions
   store: any
   terminal: any
+}
+
+export interface OwdCoreAssetsContext {
+  app: App
+  extensions: OwdClientConfigurationExtensions
 }
 
 // module.class

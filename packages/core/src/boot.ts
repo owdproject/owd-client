@@ -75,7 +75,10 @@ export default class OwdBoot {
     })
 
     initializeDesktopI18n(this.app)
-    initializeAssets(this.app)
+    initializeAssets({
+      app: this.app,
+      extensions: this.extensions
+    })
 
     this.modulesApp = initializeAppModules({
       app: this.app,

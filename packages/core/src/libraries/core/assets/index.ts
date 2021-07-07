@@ -5,13 +5,18 @@ import WindowAppComponent from "../../../../src/components/window/app/WindowApp.
 
 // import basic fonts
 import {initializeVuetify} from "@owd-client/core/src/plugins/vuetify";
+import {OwdCoreAssetsContext} from "@owd-client/types";
 
-export function initializeAssets(app: App) {
+export function initializeAssets(context: OwdCoreAssetsContext) {
+  context.app.config.globalProperties.$owd.desktop = {
+    theme: context.extensions.desktop.name
+  }
+
   // initialize vuetify
-  initializeVuetify(app)
+  initializeVuetify(context.app)
 
   // initialize global components
-  initializeGlobalComponents(app)
+  initializeGlobalComponents(context.app)
 
   // import core styles
   import('@owd-client/core/src/assets/css/app.scss')
@@ -20,8 +25,7 @@ export function initializeAssets(app: App) {
   const appElement = document.getElementById('app')
 
   if (appElement) {
-    // todo get the active theme name somewhere
-    // appElement.setAttribute('data-theme', themeName)
+    appElement.setAttribute('data-theme', context.extensions.desktop.name)
   }
 }
 

@@ -5,9 +5,6 @@
 </template>
 
 <script setup>
-// import mdi icons and fonts
+// import icons and additional fonts
 import '@mdi/font/css/materialdesignicons.css'
-
-// import app common styles
-import './assets/themes/index.scss'
 </script>

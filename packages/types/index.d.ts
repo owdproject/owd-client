@@ -101,9 +101,9 @@ export interface OwdModuleApp {
   moduleStoreConfig: any;
   moduleStoreInstance: any
   windowInstances: OwdModuleAppWindowsInstances;
-  registerModuleStoreInstance(storeName: string): void;
-  unregisterModuleStoreInstance(storeName: string): void;
-  hasModuleStoreInstance(): boolean;
+  registerStoreInstance(storeName: string): void;
+  unregisterStoreInstance(storeName: string): void;
+  hasStoreInstance(): boolean;
   isSingleton: boolean;
   registerWindow(config: OwdModuleAppWindowConfig, storage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance;
   createWindow(config: OwdModuleAppWindowConfig, storage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance;
@@ -280,7 +280,7 @@ export interface OwdModuleAppWindowConfigIcon extends OwdLauncherEntryIcon {}
 
 export interface OwdLauncherEntry {
   name: string
-  icon: OwdLauncherEntryIcon,
+  icon: string | OwdLauncherEntryIcon,
   category: string
   favorite?: boolean
   callback: any

@@ -147,7 +147,7 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
 
     // initialize Vue store for this window instance
     if (!instance.module.isSingleton) {
-      instance.module.registerModuleStoreInstance(instance.config.name+'-'+instance.storage.uniqueID)
+      instance.module.registerStoreInstance(instance.config.name+'-'+instance.storage.uniqueID)
     }
 
     return instance
@@ -190,8 +190,8 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     }
 
     // unregister store instance
-    if (!this.module.isSingleton && this.instance.module.hasModuleStoreInstance()) {
-      this.instance.module.unregisterModuleStoreInstance(this.uniqueName)
+    if (!this.module.isSingleton && this.instance.module.hasStoreInstance()) {
+      this.instance.module.unregisterStoreInstance(this.uniqueName)
     }
 
     return true

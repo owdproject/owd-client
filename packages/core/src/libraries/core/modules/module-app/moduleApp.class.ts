@@ -8,7 +8,11 @@ import {
   OwdModuleAppSseEvents,
   OwdModuleAppSetupSseEventsContext,
   OwdModuleAppSetupStoreContext,
-  OwdModuleAppWindowStorage, OwdModuleAppWindowInstance, OwdModuleAppSetupContext, OwdModuleAppSetupAssetsContext,
+  OwdModuleAppWindowStorage,
+  OwdModuleAppWindowInstance,
+  OwdModuleAppSetupContext,
+  OwdModuleAppSetupAssetsContext,
+  OwdLauncherEntry,
 } from "@owd-client/types";
 import {MutationPayload} from "vuex";
 import {markRaw} from "vue";
@@ -47,21 +51,25 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     this.store = context.store
     this.terminal = context.terminal
 
-    this.moduleInfo = this.initializeModuleApp()
+    this.moduleInfo = this.initialize()
 
     if (!this.moduleInfo.windows) {
       this.moduleInfo.windows = []
     }
 
-    this.initializeModuleStoreConfig()
-    this.initializeModuleStore()
-    this.initializeModuleStoreInstance()
-    this.initializeModuleWindows()
-    this.initializeModuleCommands()
-    this.initializeModuleAssets()
-    this.initializeModuleSseEvents()
+    this.initializeConfig()
+    this.initializeStore()
+    this.initializeStoreInstance()
+    this.initializeWindows()
+    this.initializeCommands()
+    this.initializeAssets()
+    this.initializeSseEvents()
   }
 
+  /**
+   * Is this module app a singleton?
+   * (it doesn't allow multiple window instances)
+   */
   public get isSingleton() {
     return (
       typeof this.moduleInfo.singleton === 'undefined' ||
@@ -70,25 +78,54 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
   }
 
   /**
-   * Load module assets
+   * Check if store has sub-modules
    */
-  private initializeModuleAssets() {
-    if (typeof this.setupAssets !== 'function') {
-      return false
+  public get isMultiStore(): boolean {
+    return Object.prototype.hasOwnProperty.call(this.moduleStore, 'modules')
+  }
+
+  /**
+   * Check if has module store instance
+   */
+  public hasStoreInstance() {
+    if (this.moduleStoreInstance) {
+      return true
     }
 
-    // load module assets
-    this.setupAssets({
-      app: this.app,
-      config: this.moduleInfo,
-      store: this.store
-    })
+    return false
+  }
+
+  private initialize() {
+    if (this.setup) {
+      let moduleInfo = this.setup({
+        app: this.app
+      })
+
+      if (moduleInfo.windows) {
+        moduleInfo.windows.forEach(window => {
+          window.component = markRaw(window.component)
+        })
+      }
+
+      return moduleInfo
+    }
+
+    throw new Error('Module app has no setup')
+  }
+
+  /**
+   * Load module store config
+   */
+  private initializeConfig() {
+    if (this.moduleInfo.config) {
+      this.moduleStoreConfig = this.moduleInfo.config
+    }
   }
 
   /**
    * Load module store
    */
-  private initializeModuleStore() {
+  private initializeStore() {
     if (typeof this.setupStore !== 'function') {
       return false
     }
@@ -102,29 +139,37 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     })
 
     if (this.moduleStore) {
-      this.registerModuleStore()
+      this.registerStore()
 
       return true
     }
   }
 
   /**
-   * Check if store has sub-modules
-   * @private
+   * Load module assets
    */
-  private get isModuleMultiStore(): boolean {
-    return Object.prototype.hasOwnProperty.call(this.moduleStore, 'modules')
+  private initializeAssets() {
+    if (typeof this.setupAssets !== 'function') {
+      return false
+    }
+
+    // load module assets
+    this.setupAssets({
+      app: this.app,
+      config: this.moduleInfo,
+      store: this.store
+    })
   }
 
   /**
    * Register module store
    */
-  registerModuleStore() {
+  private registerStore() {
 
     // does store contain multiple vuex modules?
     // if "strict" = true, register vuex submodules using the Vuex original way
     // if "strict" = false, register vuex submodules with the OWD way
-    if (this.isModuleMultiStore && !this.moduleStore.strict) {
+    if (this.isMultiStore && !this.moduleStore.strict) {
 
       // list of vuex modules of this OWD Module
       const owdModuleMultiStoreModules = this.moduleStore.modules
@@ -188,12 +233,10 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     return true
   }
 
-  // ### MODULE STORE INSTANCE
-
   /**
    * Load module store instance
    */
-  private initializeModuleStoreInstance() {
+  private initializeStoreInstance() {
     // load module store instance
     if (!this.isSingleton) {
       if (typeof this.setupStoreInstance !== 'function') {
@@ -214,7 +257,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
    *
    * @param storeName
    */
-  public registerModuleStoreInstance(storeName: string) {
+  public registerStoreInstance(storeName: string) {
     const storeModule = {
       namespaced: true,
       ...this.moduleStoreInstance
@@ -229,57 +272,14 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
    *
    * @param storeName
    */
-  public unregisterModuleStoreInstance(storeName: string) {
+  public unregisterStoreInstance(storeName: string) {
     this.store.unregisterModule(storeName)
   }
 
   /**
-   * Check if has module store instance
-   */
-  public hasModuleStoreInstance() {
-    if (this.moduleStoreInstance) {
-      return true
-    }
-
-    return false
-  }
-
-  // ### MODULE INFO
-  initializeModuleApp() {
-    if (this.setup) {
-      let moduleInfo = this.setup({
-        app: this.app
-      })
-
-      if (moduleInfo.windows) {
-        moduleInfo.windows.forEach(window => {
-          window.component = markRaw(window.component)
-        })
-      }
-
-      return moduleInfo
-    }
-
-    throw new Error('Module app has no setup')
-  }
-
-  // ### MODULE STORE CONFIG
-
-  /**
-   * Load module store config
-   */
-  private initializeModuleStoreConfig() {
-    if (this.moduleInfo.config) {
-      this.moduleStoreConfig = this.moduleInfo.config
-    }
-  }
-
-  // ### MODULE COMMANDS
-
-  /**
    * Load module commands
    */
-  private initializeModuleCommands() {
+  private initializeCommands() {
     if (typeof this.setupCommands !== 'function') {
       return false
     }
@@ -307,7 +307,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
   /**
    * Load module SSE events
    */
-  private initializeModuleSseEvents(): boolean {
+  private initializeSseEvents(): boolean {
     if (typeof this.setupSseEvents !== 'function') {
       return false
     }
@@ -339,10 +339,10 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
   /**
    * Register module window components
    */
-  private initializeModuleWindows() {
+  private initializeWindows() {
     if (this.moduleInfo.windows) {
       this.moduleInfo.windows.forEach((windowConfig: OwdModuleAppWindowConfig) => {
-        this.store.commit('core/launcher/ADD', {
+        this.addLauncherEntry({
           title: windowConfig.titleApp || windowConfig.title,
           icon: windowConfig.icon,
           category: windowConfig.category,
@@ -425,6 +425,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
 
   /**
    * Resolve window config from a window name
+   *
    * @param windowName
    */
   public resolveWindowConfigByName(windowName: string): OwdModuleAppWindowConfig {
@@ -454,6 +455,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
 
   /**
    * Get the first window instance from a window group
+   *
    * @param windowName
    */
   public getFirstWindowInstance(windowName: string) {

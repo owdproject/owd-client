@@ -66,7 +66,7 @@ export default class StoreWindow extends VuexModule {
    */
   @Action
   initialize() {
-    for (const owdModuleApp of this.modulesAppModule.modulesAppList) {
+    for (const owdModuleApp of this.modulesAppModule.list) {
 
       // does module contain any windows?
       if (owdModuleApp.moduleInfo.windows && owdModuleApp.moduleInfo.windows.length > 0) {

@@ -8,14 +8,14 @@ export default class StoreModulesApp extends VuexModule {
   /**
    * Array of installed modules app
    */
-  get modulesAppList(): OwdModuleApp[] {
+  get list(): OwdModuleApp[] {
     return Object.values(this.modulesAppProvider.modules)
   }
 
   /**
    * KeyMap of installed modules app
    */
-  get modulesAppKeyMap(): { [moduleName: string]: OwdModuleApp } {
+  get modules(): { [moduleName: string]: OwdModuleApp } {
     return this.modulesAppProvider.modules
   }
 

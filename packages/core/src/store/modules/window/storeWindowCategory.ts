@@ -25,7 +25,7 @@ export default class StoreWindowCategory extends VuexModule {
     const windowCategoriesOther: OwdModuleAppWindowCreateInstanceData[] = []
 
     // for each loaded module
-    for (const owdModuleApp of this.modulesAppModule.modulesAppList) {
+    for (const owdModuleApp of this.modulesAppModule.list) {
 
       // skip if module doesn't have any window
       if (!owdModuleApp.moduleInfo.windows) continue

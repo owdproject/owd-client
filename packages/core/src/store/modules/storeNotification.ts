@@ -1,4 +1,4 @@
-import {VuexModule, Module, Mutation, Action, RegisterOptions} from "vuex-class-modules";
+import {VuexModule, Module, Mutation} from "vuex-class-modules";
 
 interface StoreNotificationItem {
   name: string;

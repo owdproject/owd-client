@@ -17,6 +17,7 @@ export default {
     rtl: false
   },
 
+  // locale options
   i18n: {
     locale: 'en',
     fallbackLocale: 'en',

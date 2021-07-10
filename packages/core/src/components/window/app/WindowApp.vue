@@ -77,7 +77,7 @@
 </template>
 
 <script setup>
-import {computed, ref, watch, inject, onMounted, onUnmounted, defineProps, defineEmit} from 'vue'
+import {computed, ref, watch, inject, onMounted, onUnmounted, defineProps, defineEmit, nextTick} from 'vue'
 import {useStore} from 'vuex'
 import kebabCase from '@owd-client/core/src/libraries/kebab-case'
 
@@ -286,7 +286,9 @@ function onDragEnd(data) {
 
 onMounted(() => {
   if (props.window.storage.opened) {
-    emit('open')
+    // force window "storage.opened" watch event triggering
+    props.window.close()
+    nextTick(() => props.window.open())
   }
 
   if (props.window.config.autoCloseBeforePageUnload) {

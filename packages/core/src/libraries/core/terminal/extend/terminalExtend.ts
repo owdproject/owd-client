@@ -22,6 +22,17 @@ export default class {
   }
 
   /**
+   * Remove command from terminal
+   *
+   * @param name
+   */
+  removeCommand(name: string) {
+    if (this.hasCommand(name)) {
+      delete this.commands[name]
+    }
+  }
+
+  /**
    * Does terminal command exists?
    *
    * @param name

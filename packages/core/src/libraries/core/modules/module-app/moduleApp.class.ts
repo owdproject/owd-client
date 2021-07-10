@@ -465,4 +465,22 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
 
     throw Error(`This window group doesn't have any window instance`)
   }
+
+  /**
+   * Add app to launcher
+   *
+   * @param item
+   */
+  public addLauncherEntry(item: OwdLauncherEntry) {
+    this.store.commit('core/launcher/ADD', item)
+  }
+
+  /**
+   * Remove app to launcher
+   *
+   * @param item
+   */
+  public removeLauncherEntry(item: OwdLauncherEntry) {
+    this.store.commit('core/launcher/REMOVE', item)
+  }
 }

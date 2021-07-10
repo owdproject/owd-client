@@ -15,19 +15,38 @@ export default class ModuleDesktopExtend {
     this.registerDesktopEnvironment()
   }
 
-  private initializeModulesDesktop() {
-    // initialize specific desktop modules
+  /**
+   * Get desktop modules from client.extensions.ts
+   *
+   * @private
+   */
+  private getModulesDesktopFromConfig() {
+    let modules = []
+
     if (this.context.extensions.desktop.modules) {
-      for (const moduleDesktop of this.context.extensions.desktop.modules) {
-        this.createModuleDesktop(moduleDesktop)
-      }
+      modules = modules.concat(this.context.extensions.desktop.modules)
     }
 
-    // initialize generic desktop modules
-    if (this.context.extensions.modules.desktop) {
-      for (const moduleDesktop of this.context.extensions.modules.desktop) {
-        this.createModuleDesktop(moduleDesktop)
-      }
+    if (
+      typeof this.context.extensions.modules !== 'undefined' &&
+      typeof this.context.extensions.modules.desktop !== 'undefined'
+    ) {
+      modules = modules.concat(this.context.extensions.modules.desktop)
+    }
+
+    return modules
+  }
+
+  /**
+   * Initialize desktop modules
+   *
+   * @private
+   */
+  private initializeModulesDesktop() {
+    const modulesDesktop = this.getModulesDesktopFromConfig()
+
+    for (const moduleDesktop of modulesDesktop) {
+      this.createModuleDesktop(moduleDesktop)
     }
   }
 

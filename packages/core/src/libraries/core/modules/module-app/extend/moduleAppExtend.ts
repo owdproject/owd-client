@@ -22,13 +22,29 @@ export default class ModuleAppExtend {
   }
 
   /**
+   * Get app modules from client.extensions.ts
+   *
+   * @private
+   */
+  private getModulesAppFromConfig() {
+    if (
+      typeof this.context.extensions.modules !== 'undefined' &&
+      typeof this.context.extensions.modules.app !== 'undefined'
+    ) {
+      return this.context.extensions.modules.app
+    }
+
+    return []
+  }
+
+  /**
    * Initialize app modules that have been defined in the client.extensions.ts
    */
   private initializeModulesApp() {
-    if (typeof this.context.extensions.modules.app !== 'undefined') {
-      for (const ModuleApp of this.context.extensions.modules.app) {
-        this.createModuleApp(ModuleApp)
-      }
+    const modulesApp = this.getModulesAppFromConfig()
+
+    for (const ModuleApp of modulesApp) {
+      this.createModuleApp(ModuleApp)
     }
   }
 

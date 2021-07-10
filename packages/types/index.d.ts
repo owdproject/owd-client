@@ -276,15 +276,24 @@ export interface OwdModuleAppWindowsStorage {
   }
 }
 
-export interface OwdModuleAppWindowConfigIcon {
-  name?: string
+export interface OwdModuleAppWindowConfigIcon extends OwdLauncherEntryIcon {}
+
+export interface OwdLauncherEntry {
+  name: string
+  icon: OwdLauncherEntryIcon,
+  category: string
+  favorite?: boolean
+  callback: any
+}
+
+export interface OwdLauncherEntryIcon {
+  name: string
   offset?: {
     x?: number
     y?: number
   },
   background?: string
   color?: string
-  forceMenuAppSvg?: boolean
 }
 
 // OWD MODULES DESKTOP

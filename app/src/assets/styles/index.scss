@@ -1,5 +1,5 @@
 // import index.scss of the active theme
-@import '@owd-client/core/src/themes/midnight-black/variants/default/index.scss';
+@import 'owd-theme-deep-sea/variants/default/index.scss';
 
 body {
   background: $owd-background;
@@ -9,6 +9,5 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: $owd-font-title;
 }
-
 
 // put here your custom theme styles

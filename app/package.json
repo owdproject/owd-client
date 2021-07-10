@@ -29,7 +29,8 @@
     "@types"
   ],
   "dependencies": {
-    "@owd-client/core": "^2.0.0-beta.2"
+    "@owd-client/core": "^2.0.0-beta.2",
+    "owd-theme-deep-sea": "https://github.com/hacklover/owd-theme-deep-sea"
   },
   "devDependencies": {
     "@mdi/font": "^5.9.55",

@@ -1,4 +1,4 @@
-import desktopConfig from "@owd-client/core/src/themes/midnight-black/desktop.config"
+import desktopConfig from "owd-theme-deep-sea/desktop.config"
 
 // routes
 import routesMain from './src/pages/main/routes'

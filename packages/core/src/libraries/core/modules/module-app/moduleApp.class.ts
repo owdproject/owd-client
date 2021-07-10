@@ -13,6 +13,7 @@ import {
 import {MutationPayload} from "vuex";
 import {markRaw} from "vue";
 import ModuleAppWindow from "./moduleAppWindow.class";
+import * as helperStorage from "@owd-client/core/src/helpers/helperStorage";
 
 interface OwdModuleAppClass {
   setup(context: OwdModuleAppSetupContext): OwdModuleAppInfo;
@@ -55,7 +56,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     this.initializeModuleStoreConfig()
     this.initializeModuleStore()
     this.initializeModuleStoreInstance()
-    this.initializeModuleWindowComponents()
+    this.initializeModuleWindows()
     this.initializeModuleCommands()
     this.initializeModuleAssets()
     this.initializeModuleSseEvents()
@@ -338,7 +339,25 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
   /**
    * Register module window components
    */
-  private initializeModuleWindowComponents() {
+  private initializeModuleWindows() {
+    if (this.moduleInfo.windows) {
+      this.moduleInfo.windows.forEach((windowConfig: OwdModuleAppWindowConfig) => {
+        this.store.commit('core/launcher/ADD', {
+          title: windowConfig.titleApp || windowConfig.title,
+          icon: windowConfig.icon,
+          category: windowConfig.category,
+          favorite: windowConfig.favorite,
+          callback: () => {
+            const windowInstance = this.createWindow(windowConfig)
+
+            if (windowInstance) {
+              windowInstance.open(true)
+            }
+          }
+        })
+      })
+    }
+
     return true
   }
 
@@ -346,78 +365,62 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
    * Add a new window (just register it),
    * instead of declaring it statically from the module conf
    *
-   * @param config
-   * @param storage
+   * @param windowConfig
+   * @param windowStorage
    */
-  public addWindow(config: OwdModuleAppWindowConfig|string, storage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance {
-    if (typeof config === 'string') {
-      config = this.resolveWindowConfigByName(config)
+  public registerWindow(windowConfig: OwdModuleAppWindowConfig|string, windowStorage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance {
+    if (typeof windowConfig === 'string') {
+      windowConfig = this.resolveWindowConfigByName(windowConfig)
     }
 
     return new ModuleAppWindow({
       module: this,
-      config: config,
-      storage: storage
+      config: windowConfig,
+      storage: windowStorage
     })
   }
 
   /**
-   * Restore windows or create a new one
+   * Create a new window
    *
-   * @param config
+   * @param windowConfig
+   * @param windowStorage
    */
-  public restoreOrAddWindow(config: OwdModuleAppWindowConfig|string): OwdModuleAppWindowInstance {
-    if (typeof config === 'string') {
-      config = this.resolveWindowConfigByName(config)
-    }
-
-    const windowInstance = this.addWindow(config)
+  public createWindow(windowConfig: OwdModuleAppWindowConfig|string, windowStorage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance {
+    const windowInstance = this.registerWindow(windowConfig, windowStorage)
 
     if (windowInstance) {
-      windowInstance.restore()
+      windowInstance.create()
+      windowInstance.open(true)
     }
 
     return windowInstance
   }
 
   /**
-   * Create a new window
+   * Restore windows
    *
-   * @param config
-   * @param storage
+   * @param windowConfig
    */
-  public createWindow(config: OwdModuleAppWindowConfig|string, storage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance {
-    if (typeof config === 'string') {
-      config = this.resolveWindowConfigByName(config)
+  public restoreWindows(windowConfig: OwdModuleAppWindowConfig) {
+    const storageWindows = helperStorage.loadStorage('window') || []
+
+    if (storageWindows) {
+      if (Object.prototype.hasOwnProperty.call(storageWindows, windowConfig.name)) {
+        for (const uniqueID in storageWindows[windowConfig.name]) {
+
+          if (Object.prototype.hasOwnProperty.call(storageWindows[windowConfig.name], uniqueID)) {
+            const windowStorage = storageWindows[windowConfig.name][uniqueID]
+            this.createWindow(windowConfig, windowStorage)
+          }
+
+        }
+
+        return true
+      }
     }
 
-    const instance = this.addWindow(config, storage)
-
-    if (instance) {
-      instance.create()
-      instance.open(true)
-    }
-
-    return instance
-  }
-
-  /**
-   * Restore windows or create a new one
-   *
-   * @param config
-   */
-  public restoreOrCreateWindow(config: OwdModuleAppWindowConfig|string): OwdModuleAppWindowInstance {
-    if (typeof config === 'string') {
-      config = this.resolveWindowConfigByName(config)
-    }
-
-    const windowInstance = this.addWindow(config)
-
-    if (windowInstance.restore()) {
-      return windowInstance
-    }
-
-    return this.createWindow(config)
+    return false
   }
 
   /**
@@ -441,7 +444,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
    *
    * @param windowName
    */
-  public windowGroupInstancesCount(windowName: string): number {
+  public getWindowInstancesCount(windowName: string): number {
     if (this.windowInstances[windowName]) {
       return Object.keys(this.windowInstances[windowName]).length
     }
@@ -453,11 +456,11 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
    * Get the first window instance from a window group
    * @param windowName
    */
-  public windowGroupInstancesFirstInstance(windowName: string): OwdModuleAppWindowInstance|boolean {
-    if (this.windowGroupInstancesCount(windowName) > 0) {
+  public getFirstWindowInstance(windowName: string) {
+    if (this.getWindowInstancesCount(windowName) > 0) {
       return Object.values(this.windowInstances[windowName])[0]
     }
 
-    return false
+    throw Error(`This window group doesn't have any window instance`)
   }
 }

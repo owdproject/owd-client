@@ -75,25 +75,25 @@ export default class StoreWindow extends VuexModule {
         if (!owdModuleApp.moduleInfo.windows) continue
 
         // for each window config in moduleInfo.windows (for example WindowSample)
-        for (const owdModuleAppWindowConfig of owdModuleApp.moduleInfo.windows) {
+        for (const windowConfig of owdModuleApp.moduleInfo.windows) {
 
-          if (Object.prototype.hasOwnProperty.call(this.storage.value, owdModuleAppWindowConfig.name)) {
+          if (Object.prototype.hasOwnProperty.call(this.storage.value, windowConfig.name)) {
 
-            // create owdModuleApp window instances restoring previous local storage
-            owdModuleApp.restoreOrAddWindow(owdModuleAppWindowConfig)
+            owdModuleApp.restoreWindows(windowConfig)
 
           } else {
 
             // generate at least an owdModuleApp window instance if .autoOpen is set to true
-            const windowInstance = owdModuleApp.addWindow(owdModuleAppWindowConfig)
+            const windowInstance = owdModuleApp.registerWindow(windowConfig)
 
-            if (owdModuleAppWindowConfig.autoOpen && windowInstance) {
+            if (windowConfig.autoOpen && windowInstance) {
               windowInstance.create()
+              windowInstance.open()
             }
 
           }
 
-          console.log('[owd] window initialized: ' + owdModuleAppWindowConfig.name)
+          console.log('[owd] window initialized: ' + windowConfig.name)
 
         }
 

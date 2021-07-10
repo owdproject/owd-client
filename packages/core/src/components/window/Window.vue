@@ -53,6 +53,7 @@
       </div>
 
       <slot name="outer-append" />
+      
     </div>
   </vue-resizable>
 </template>

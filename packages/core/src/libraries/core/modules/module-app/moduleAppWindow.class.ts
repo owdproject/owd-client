@@ -1,5 +1,4 @@
 import md5 from "md5";
-import * as helperStorage from "@owd-client/core/src/helpers/helperStorage";
 import * as helperWindow from "@owd-client/core/src/helpers/helperWindow";
 import {
   OwdModuleAppWindowInstance,
@@ -29,12 +28,12 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     return this.instance.module
   }
 
-  get windowName(): string {
-    return this.config.name
-  }
-
   get moduleName(): string {
     return this.module.moduleInfo.name
+  }
+
+  get windowName(): string {
+    return this.config.name
   }
 
   get uniqueID(): string {
@@ -52,17 +51,43 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     return md5(Date.now().toString() + Math.random())
   }
 
+  /**
+   * Register window
+   *
+   * @param data
+   * @private
+   */
   private register(data: OwdModuleAppWindowCreateInstanceData): OwdModuleAppWindowInstance {
-    let instance: any = {
+    if (typeof data.module.windowInstances[data.config.name] === 'undefined') {
+      // register windowName (WindowSample) to module window instances
+      data.module.windowInstances[data.config.name] = {}
+
+      if (data.config.component) {
+        // register vue component
+        data.module.app.component(data.config.name, data.config.component)
+
+        // component is no more needed once registered
+        // @ts-ignore
+        delete data.config.component
+      }
+
+      // if window is generated dynamically, populate window config definition under moduleInfo.windows
+      if (data.module.moduleInfo.windows && !data.module.moduleInfo.windows.find((window: OwdModuleAppWindowConfig) => window.name === data.config.name)) {
+        data.module.moduleInfo.windows.push(data.config)
+      }
+    }
+
+    // check if module is a singleton and an instance already exists
+    if (data.module.isSingleton && data.module.getWindowInstancesCount(data.config.name) > 0) {
+      // module is a singleton, you don't need to create a new window.
+      // return first instance of this window group and you'll be fine
+      return data.module.getFirstWindowInstance(data.config.name)
+    }
+
+    const instance: any = {
       module: data.module,
       config: {...data.config},
       storage: {...data.storage},
-    }
-
-    if (instance.module.isSingleton && instance.module.windowGroupInstancesCount(instance.config.name) > 0) {
-      // module is a singleton, you don't need to create a new window.
-      // return first instance of this window group and you'll be fine
-      return instance.module.windowGroupInstancesFirstInstance(instance.config.name)
     }
 
     if (!instance.config.theme) {
@@ -125,30 +150,13 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
       instance.module.registerModuleStoreInstance(instance.config.name+'-'+instance.storage.uniqueID)
     }
 
-    // add windowName (WindowSample) to module window instances
-    if (typeof instance.module.windowInstances[instance.config.name] === 'undefined') {
-      instance.module.windowInstances[instance.config.name] = {}
-
-      // register vue component
-      instance.module.app.component(instance.config.name, instance.config.component)
-
-      // component is no more needed once registered
-      delete instance.config.component
-
-      // populate window config definition under moduleInfo.windows, if missing
-      if (instance.module.moduleInfo.windows && !instance.module.moduleInfo.windows.find((window: OwdModuleAppWindowConfig) => window.name === data.config.name)) {
-        instance.module.moduleInfo.windows.push(instance.config)
-      }
-    }
-
     return instance
   }
 
+  /**
+   * Create window
+   */
   create(): boolean {
-    if (this.module.isSingleton && this.module.windowGroupInstancesCount(this.config.name) > 0) {
-      return false
-    }
-
     // register instance
     this.module.windowInstances[this.config.name][this.storage.uniqueID] = this
     this.module.store.commit('core/window/REGISTER_WINDOW_INSTANCE', this)
@@ -159,37 +167,9 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     return true
   }
 
-  get isCreated() {
-    return typeof this.module.windowInstances[this.config.name][this.storage.uniqueID] !== 'undefined'
-  }
-
-  restore(): boolean {
-    const storage = helperStorage.loadStorage('window') || []
-
-    if (storage) {
-      if (Object.prototype.hasOwnProperty.call(storage, this.config.name)) {
-        for (const uniqueID in storage[this.config.name]) {
-
-          if (Object.prototype.hasOwnProperty.call(storage[this.config.name], uniqueID)) {
-            const windowStorage = storage[this.config.name][uniqueID]
-            const windowInstance = this.module.addWindow(this.config, windowStorage)
-
-            windowInstance.create()
-
-            if (windowInstance && windowStorage.opened) {
-              windowInstance.open()
-            }
-          }
-
-        }
-
-        return true
-      }
-    }
-
-    return false
-  }
-
+  /**
+   * Destroy window
+   */
   destroy(): boolean {
     // set no more focused
     this.setFocusActive(false)

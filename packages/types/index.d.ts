@@ -105,12 +105,11 @@ export interface OwdModuleApp {
   unregisterModuleStoreInstance(storeName: string): void;
   hasModuleStoreInstance(): boolean;
   isSingleton: boolean;
-  addWindow(config: OwdModuleAppWindowConfig, storage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance;
-  restoreOrAddWindow(config: OwdModuleAppWindowConfig): OwdModuleAppWindowInstance;
+  registerWindow(config: OwdModuleAppWindowConfig, storage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance;
   createWindow(config: OwdModuleAppWindowConfig, storage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance;
-  restoreOrCreateWindow(config: OwdModuleAppWindowConfig): OwdModuleAppWindowInstance;
-  windowGroupInstancesCount(windowName: string): number;
-  windowGroupInstancesFirstInstance(windowName: string): OwdModuleAppWindowInstance|boolean;
+  restoreWindows(config: OwdModuleAppWindowConfig): boolean;
+  getWindowInstancesCount(windowName: string): number;
+  getFirstWindowInstance(windowName: string): OwdModuleAppWindowInstance;
 }
 
 export interface OwdModuleAppInfo {
@@ -223,7 +222,6 @@ export interface OwdModuleAppWindowInstance extends OwdModuleAppWindowCreateInst
   uniqueID: string
   uniqueName: string
   create(): boolean
-  restore(): boolean
   destroy(): boolean
   open(focus?: boolean): boolean
   close(): void

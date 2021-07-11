@@ -2,6 +2,9 @@ import {Module, RegisterOptions, VuexModule} from "vuex-class-modules";
 import ModulesAppModule from "../storeModulesApp";
 import {OwdModuleAppWindowCreateInstanceData} from "@owd-client/types";
 
+// todo - this module is deprecated
+// use storeLauncher instead
+
 @Module
 export default class StoreWindowCategory extends VuexModule {
   private readonly modulesAppModule: ModulesAppModule

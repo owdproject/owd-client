@@ -62,44 +62,10 @@ export default class StoreWindow extends VuexModule {
   }
 
   /**
-   * Initialize all windows instances and load positions from local storage
+   * Initialize window behaviours
    */
   @Action
   initialize() {
-    for (const owdModuleApp of this.modulesAppModule.list) {
-
-      // does module contain any windows?
-      if (owdModuleApp.moduleInfo.windows && owdModuleApp.moduleInfo.windows.length > 0) {
-
-        // skip if module doesn't have any window
-        if (!owdModuleApp.moduleInfo.windows) continue
-
-        // for each window config in moduleInfo.windows (for example WindowSample)
-        for (const windowConfig of owdModuleApp.moduleInfo.windows) {
-
-          if (Object.prototype.hasOwnProperty.call(this.storage.value, windowConfig.name)) {
-
-            owdModuleApp.restoreWindows(windowConfig)
-
-          } else {
-
-            // generate at least an owdModuleApp window instance if .autoOpen is set to true
-            const windowInstance = owdModuleApp.registerWindow(windowConfig)
-
-            if (windowConfig.autoOpen && windowInstance) {
-              windowInstance.create()
-              windowInstance.open()
-            }
-
-          }
-
-          console.log('[owd] window initialized: ' + windowConfig.name)
-
-        }
-
-      }
-    }
-
     // restore previous window focus
     this.windowFocusModule.restorePreviousWindowFocus()
   }

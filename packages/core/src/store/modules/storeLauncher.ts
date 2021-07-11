@@ -8,7 +8,7 @@ export default class StoreLauncher extends VuexModule {
   } = {}
 
   get categories() {
-    const categories = Object.keys(this.launcher)
+    const categories = Object.keys(this.launcher).sort()
 
     const indexFavorites = categories.indexOf('favorites')
     const indexOther = categories.indexOf('other')

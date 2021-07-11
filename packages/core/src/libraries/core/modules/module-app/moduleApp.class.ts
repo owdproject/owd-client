@@ -51,7 +51,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     this.store = context.store
     this.terminal = context.terminal
 
-    this.moduleInfo = this.initialize()
+    this.moduleInfo = this.initializeModuleApp()
 
     if (!this.moduleInfo.windows) {
       this.moduleInfo.windows = []
@@ -95,7 +95,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     return false
   }
 
-  private initialize() {
+  private initializeModuleApp() {
     if (this.setup) {
       let moduleInfo = this.setup({
         app: this.app
@@ -364,7 +364,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
 
       console.log('[owd] window initialized: ' + windowConfig.name)
 
-      if (!windowConfig.menu && !windowConfig.menuApp) {
+      if (windowConfig.menuApp === false) {
         continue
       }
 

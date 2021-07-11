@@ -8,11 +8,13 @@ import App from './App.vue'
 import config from '../client.config'
 import extensions from '../client.extensions'
 
+console.log(`[owd] app initializing / ${name} ${version}`)
+
 // create an Open Web Desktop instance
 createDesktop({
   component: App,
   config,
   extensions
 }).then(() => {
-  console.log(`[owd] initialize ${name} ${version}`)
+  console.log('[owd] app initialized')
 })

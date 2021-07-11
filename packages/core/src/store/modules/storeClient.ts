@@ -48,8 +48,6 @@ export default class StoreClient extends VuexModule {
 
   @Action
   async initialize() {
-    console.log('[owd] app initialized')
-
     this.storeSseModule.initialize()
     this.storeWindow.initialize()
   }

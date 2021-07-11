@@ -39,14 +39,6 @@
     align-items: center;
   }
 }
-
-#app[data-ui-name="windows"][data-ui-version="95"] {
-  .owd-window-about {
-    .powered-by .v-icon {
-      color: #777 !important;
-    }
-  }
-}
 </style>
 
 <style scoped lang="scss">
@@ -85,7 +77,7 @@
       }
 
       .v-icon {
-        color: darkgrey;
+        color: $owd-window-button-icon-color;
       }
     }
   }

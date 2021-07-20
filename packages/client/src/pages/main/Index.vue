@@ -1,7 +1,7 @@
 <template>
   <Desktop :system-bar="systemBar">
 
-    <Logo />
+    <Logo :title="$store.state.core.client.title" />
     <Menu />
 
     <WindowsList />

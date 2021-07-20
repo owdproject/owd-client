@@ -34,7 +34,7 @@ export default {
       width: 100%;
       padding-left: 12px;
       font-family: $fontMono;
-      color: #FFF;
+      color: $windowNavTitleColor;
       cursor: default;
       white-space: nowrap;
       overflow: hidden;
@@ -61,7 +61,7 @@ export default {
         cursor: pointer;
 
         .v-icon {
-          color: #aaa;
+          color: $windowNavTitleColor;
           font-size: 19px;
         }
 

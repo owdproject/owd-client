@@ -23,4 +23,4 @@ OWD is a project that aims to provide a simple environment to create your own we
 Check the README.md of the [owd-client](https://github.com/owdproject/owd-client) repository on GitHub.
 
 ## License
-This project is released under the [MIT License](LICENSE)
+This project is released under the [GNU GPL3 License](LICENSE).

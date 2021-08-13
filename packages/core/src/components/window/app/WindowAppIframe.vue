@@ -48,7 +48,7 @@
 </template>
 
 <script setup>
-import {ref, watch, computed, defineProps, defineEmit} from "vue";
+import {ref, watch, computed, defineProps, defineEmits} from "vue";
 
 const props = defineProps({
   url: String,
@@ -60,7 +60,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmit([
+const emit = defineEmits([
   'iframeFocusIn',
   'iframeFocusOut',
   'iframeLoaded',

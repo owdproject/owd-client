@@ -77,7 +77,7 @@
 </template>
 
 <script setup>
-import {computed, ref, watch, inject, onMounted, onUnmounted, defineProps, defineEmit, nextTick} from 'vue'
+import {computed, ref, watch, inject, onMounted, onUnmounted, defineProps, defineEmits, nextTick} from 'vue'
 import {useStore} from 'vuex'
 import kebabCase from '@owd-client/core/src/libraries/kebab-case'
 
@@ -92,7 +92,7 @@ const props = defineProps({
   window: Object
 })
 
-const emit = defineEmit([
+const emit = defineEmits([
   'resize:start',
   'resize:move',
   'resize:end',

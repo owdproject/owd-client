@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-import {defineEmit, defineProps, ref} from "vue";
+import {defineEmits, defineProps, ref} from "vue";
 import VueResizable from 'vue-resizable/src/components/vue-resizable.vue'
 import WindowNav from './nav/WindowNav.vue'
 
@@ -129,7 +129,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmit([
+const emit = defineEmits([
   'resize:start',
   'resize:move',
   'resize:end',

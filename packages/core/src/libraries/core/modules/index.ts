@@ -4,9 +4,9 @@ import ModuleAppExtend from "./module-app/extend/moduleAppExtend";
 import ModuleDesktopExtend from "./module-desktop/extend/moduleDesktopExtend";
 
 /**
- * Initialize OWD app modules
+ * Initialize OWD desktop apps
  */
-export function initializeAppModules(context: OwdCoreModuleContext) {
+export function initializeDesktopApps(context: OwdCoreModuleContext) {
   return new ModuleAppExtend(context)
 }
 

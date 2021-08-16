@@ -6,6 +6,7 @@ import {RouteRecordRaw} from "vue-router";
 
 export interface OwdClientConfiguration {
   debug: boolean
+  desktop: OwdClientConfigurationDesktop
   sse: OwdClientConfigurationSse
   i18n?: OwdClientConfigurationI18n
   store?: OwdClientConfigurationStore
@@ -20,6 +21,10 @@ export interface OwdClientConfigurationStore {
 export interface OwdClientConfigurationI18n {
   locale: string
   fallbackLocale: string
+}
+
+export interface OwdClientConfigurationDesktop {
+  autostart: boolean
 }
 
 export interface OwdClientConfigurationSse {

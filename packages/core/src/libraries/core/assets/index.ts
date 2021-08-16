@@ -6,7 +6,12 @@ import WindowAppComponent from "../../../../src/components/window/app/WindowApp.
 import {initializeVuetify} from "@owd-client/core/src/plugins/vuetify";
 import {OwdCoreAssetsContext} from "@owd-client/types";
 
-export function initializeAssets(context: OwdCoreAssetsContext) {
+export function initializeAppAssets(context: OwdCoreAssetsContext) {
+  // initialize vuetify
+  initializeVuetify(context.app)
+}
+
+export function initializeDesktopAssets(context: OwdCoreAssetsContext) {
   // import core styles
   import('@owd-client/core/src/assets/css/app.scss')
 
@@ -15,11 +20,8 @@ export function initializeAssets(context: OwdCoreAssetsContext) {
     theme: context.extensions.desktop.name
   }
 
-  // initialize vuetify
-  initializeVuetify(context.app)
-
   // initialize global components
-  initializeGlobalComponents(context.app)
+  initializeDesktopGlobalComponents(context.app)
 
   // append desktop-environment and theme to #app classes
   const appElement = document.getElementById('app')
@@ -29,7 +31,7 @@ export function initializeAssets(context: OwdCoreAssetsContext) {
   }
 }
 
-function initializeGlobalComponents(app: App) {
+function initializeDesktopGlobalComponents(app: App) {
   app.component('Window', WindowComponent)
   app.component('WindowApp', WindowAppComponent)
 }

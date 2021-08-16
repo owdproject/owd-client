@@ -4,7 +4,7 @@ import moment from "@owd-client/core/src/plugins/moment"
 // register service worker
 import '@owd-client/core/src/libraries/service-worker/registerServiceWorker'
 
-export function initializePlugins(context: OwdCorePluginsContext) {
+export function initializeAppPlugins(context: OwdCorePluginsContext) {
   context.app.use(moment)
 
   window.addEventListener('load', function() {

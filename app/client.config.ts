@@ -1,7 +1,12 @@
 export default {
   debug: false,
 
-  // sse integration
+  // desktop config
+  desktop: {
+    autostart: true
+  },
+
+  // sse config
   sse: {
     enabled: false,
     reconnectOnError: true,
@@ -17,7 +22,7 @@ export default {
     rtl: false
   },
 
-  // locale options
+  // i18n config
   i18n: {
     locale: 'en',
     fallbackLocale: 'en',

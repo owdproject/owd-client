@@ -6,7 +6,7 @@ import {App} from "vue";
 
 let i18n: I18n
 
-export function initializeDesktopI18n(app: App) {
+export function initializeAppI18n(app: App) {
   const config = app.config.globalProperties.$owd.i18n || {
     locale: 'en',
     fallbackLocale: 'en',

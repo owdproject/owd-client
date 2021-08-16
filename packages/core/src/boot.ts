@@ -39,7 +39,7 @@ export default class OwdBoot {
 
     this.initializeApp()
 
-    if (!!this.config.desktop.autostart) {
+    if (!!this.config.desktop?.autostart) {
       this.initializeDesktop()
     }
 

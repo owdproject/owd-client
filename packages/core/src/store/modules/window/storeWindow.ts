@@ -1,9 +1,6 @@
 import {VuexModule, Module, Action, RegisterOptions, Mutation} from "vuex-class-modules";
 
-import ModulesAppModule from "../storeModulesApp";
-import FullScreenModule from "../storeFullscreen";
 import WindowFocusModule from "./storeWindowFocus";
-import WindowDockModule from "./storeWindowDock";
 
 import * as helperStorage from "@owd-client/core/src/helpers/helperStorage";
 
@@ -13,10 +10,7 @@ import {
 
 @Module
 export default class StoreWindow extends VuexModule {
-  private readonly modulesAppModule: ModulesAppModule
   private readonly windowFocusModule: WindowFocusModule
-  private readonly windowDockModule: WindowDockModule
-  private readonly fullscreenModule: FullScreenModule
 
   // all window instances
   private readonly windows: {[uniqueID: string]: OwdModuleAppWindowInstance} = {}
@@ -31,17 +25,11 @@ export default class StoreWindow extends VuexModule {
   }
 
   constructor(
-    modulesAppModule: ModulesAppModule,
-    fullscreenModule: FullScreenModule,
     windowFocusModule: WindowFocusModule,
-    windowDockModule: WindowDockModule,
     options: RegisterOptions
   ) {
     super(options);
-    this.modulesAppModule = modulesAppModule
-    this.fullscreenModule = fullscreenModule
     this.windowFocusModule = windowFocusModule
-    this.windowDockModule = windowDockModule
   }
 
   /**

@@ -162,7 +162,7 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     this.module.store.commit('core/window/REGISTER_WINDOW_INSTANCE', this)
 
     // add to dock
-    this.module.store.commit('core/windowDock/ADD', this)
+    this.module.store.commit('core/dock/ADD', this)
 
     return true
   }
@@ -178,7 +178,7 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     this.close()
 
     // remove from dock
-    this.instance.module.store.commit('core/windowDock/REMOVE', this)
+    this.instance.module.store.commit('core/dock/REMOVE', this)
 
     // remove from window focus ids
     this.module.store.commit('core/windowFocus/UNSET_WINDOW_FOCUS', this.uniqueID)
@@ -265,7 +265,7 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
 
     this.instance.storage.fullscreen = toggle
 
-    this.module.store.commit('core/windowFocus/SET_FULLSCREEN_MODE', toggle)
+    this.module.store.commit('core/windowFullscreen/SET_FULLSCREEN_MODE', toggle)
 
     return true
   }

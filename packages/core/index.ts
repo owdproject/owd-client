@@ -1,5 +1,5 @@
 import Boot from './src/boot'
-import ModuleAppClass from './src/libraries/core/modules/module-app/moduleApp.class'
+import ModuleAppClass from './src/libraries/core/modules/app/classes/moduleApp.class'
 
 import {OwdCoreBootContext} from "@owd-client/types";
 import OwdBoot from "./src/boot";

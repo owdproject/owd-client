@@ -60,6 +60,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     this.initializeConfig()
     this.initializeStore()
     this.initializeStoreInstance()
+    this.initializeWindowsDock()
     this.initializeWindows()
     this.initializeCommands()
     this.initializeAssets()
@@ -115,6 +116,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
 
   /**
    * Load module store config
+   * (it'll be set to the vuex module state)
    */
   private initializeConfig() {
     if (this.moduleInfo.config) {
@@ -348,6 +350,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     const windowStorage = helperStorage.loadStorage('window') || {}
 
     for (const windowConfig of this.moduleInfo.windows) {
+
       if (Object.prototype.hasOwnProperty.call(windowStorage, windowConfig.name)) {
         // restore previous opened windows
         this.restoreWindows(windowConfig)
@@ -387,6 +390,22 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     return true
   }
 
+  private initializeWindowsDock() {
+    // no module app windows? go ahead
+    if (this.moduleInfo.windows && this.moduleInfo.windows.length === 0) {
+      return false
+    }
+
+    if (this.moduleInfo.windows && this.moduleInfo.windows.length > 0) {
+      for (const windowConfig of this.moduleInfo.windows) {
+        this.store.commit('core/dock/ADD_CATEGORY', {
+          config: windowConfig,
+          module: this
+        })
+      }
+    }
+  }
+
   /**
    * Add a new window (just register it),
    * instead of declaring it statically from the module conf
@@ -394,9 +413,19 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
    * @param windowConfig
    * @param windowStorage
    */
-  public registerWindow(windowConfig: OwdModuleAppWindowConfig|string, windowStorage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance {
+  public registerWindow(windowConfig: OwdModuleAppWindowConfig|string, windowStorage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance|boolean {
     if (typeof windowConfig === 'string') {
       windowConfig = this.resolveWindowConfigByName(windowConfig)
+    }
+
+    if (this.isSingleton && this.getWindowInstancesCount(windowConfig.name) > 0) {
+      const windowInstance = this.getFirstWindowInstance(windowConfig.name)
+
+      if (windowInstance) {
+        windowInstance.open(true)
+      }
+
+      throw new Error('[owd] this app is a singleton and is already opened')
     }
 
     const windowInstance = new ModuleAppWindow({
@@ -425,12 +454,12 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
   public createWindow(windowConfig: OwdModuleAppWindowConfig|string, windowStorage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance {
     const windowInstance = this.registerWindow(windowConfig, windowStorage)
 
-    if (windowInstance) {
+    if (typeof windowInstance !== 'boolean') {
       windowInstance.create()
       windowInstance.open(true)
-    }
 
-    return windowInstance
+      return windowInstance
+    }
   }
 
   /**

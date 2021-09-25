@@ -3,22 +3,32 @@ import {
   OwdModulesApp
 } from "@owd-client/types";
 
-export default class ModuleAppExtend {
+export default class DesktopApps {
   private readonly context;
-  private modules: OwdModulesApp = {}
+  private apps: OwdModulesApp = {}
 
   constructor(context: OwdCoreModuleContext) {
     this.context = context
 
-    this.initializeModulesApp()
-    this.registerModulesAppProvider()
+    this.registerProvider()
   }
 
   /**
    * Register this class into modules app store
    */
-  private registerModulesAppProvider() {
+  private registerProvider() {
     this.context.store.commit('core/modulesApp/REGISTER_MODULES_PROVIDER', this)
+  }
+
+  /**
+   * Initialize app modules that have been defined in the client.extensions.ts
+   */
+  public initialize() {
+    const desktopApps = this.getModulesAppFromConfig()
+
+    for (const DesktopApp of desktopApps) {
+      this.installModuleApp(DesktopApp)
+    }
   }
 
   /**
@@ -38,24 +48,13 @@ export default class ModuleAppExtend {
   }
 
   /**
-   * Initialize app modules that have been defined in the client.extensions.ts
+   * Install desktop app
    */
-  private initializeModulesApp() {
-    const modulesApp = this.getModulesAppFromConfig()
-
-    for (const ModuleApp of modulesApp) {
-      this.createModuleApp(ModuleApp)
-    }
-  }
-
-  /**
-   * Install module app
-   */
-  public createModuleApp(ModuleApp: any): OwdModuleApp {
+  public installModuleApp(ModuleApp: any): OwdModuleApp {
     const moduleAppInstance = new ModuleApp(this.context)
 
     if (moduleAppInstance) {
-      this.modules[moduleAppInstance.moduleInfo.name] = moduleAppInstance
+      this.apps[moduleAppInstance.moduleInfo.name] = moduleAppInstance
 
       return moduleAppInstance
     }
@@ -64,20 +63,20 @@ export default class ModuleAppExtend {
   }
 
   /**
-   * Check if module app is installed
+   * Check if desktop app is installed
    *
    * @param moduleName
    */
   public isModuleAppInstalled(moduleName: string) {
-    return Object.prototype.hasOwnProperty.call(this.modules, moduleName)
+    return Object.prototype.hasOwnProperty.call(this.apps, moduleName)
   }
 
   /**
-   * Get module app by module name
+   * Get desktop app by its name
    *
    * @param moduleName
    */
   public findModuleApp(moduleName: string) {
-    return this.modules[moduleName]
+    return this.apps[moduleName]
   }
 }

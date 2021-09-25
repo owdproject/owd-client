@@ -1,7 +1,5 @@
-import {useDesktopStore} from '../store'
-import {
-  OwdModuleAppWindowInstance
-} from "@owd-client/types";
+import {useStore} from "vuex";
+import {OwdModuleAppWindowInstance} from "@owd-client/types";
 
 /**
  * Calculate window position
@@ -110,7 +108,7 @@ export function calcPositionY(owdModuleAppWindow: OwdModuleAppWindowInstance) {
  * @param value
  */
 export function findWindowInstanceByAttr(attr: string, value: string) {
-  const store = useDesktopStore()
+  const store = useStore()
 
   return store.getters['core/window/modulesAppWindowInstances']
     .find((owdModuleAppWindowInstance: OwdModuleAppWindowInstance) => {

@@ -31,7 +31,7 @@ function handleWindowInstanceFullscreen(e) {
 // detect window instance fullscreen/maximize event
 onBeforeMount(() => {
   store.subscribe((mutation) => {
-    if (mutation.type === 'core/fullscreen/SET_FULLSCREEN_MODE') {
+    if (mutation.type === 'core/windowFullscreen/SET_FULLSCREEN_MODE') {
       if (typeof mutation.payload === 'boolean') {
         if (mutation.payload) {
           clearTimeout(timeout.value)

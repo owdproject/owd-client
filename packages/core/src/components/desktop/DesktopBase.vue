@@ -11,9 +11,6 @@ import {useStore} from "vuex";
 const app = getCurrentInstance()
 const store = useStore()
 
-// initialize client
-onMounted(() => store.dispatch('core/client/initialize'))
-
 // handle desktop resize event
 onMounted(() => window.addEventListener('resize', handleDesktopResize))
 onUnmounted(() => window.removeEventListener('resize', handleDesktopResize))

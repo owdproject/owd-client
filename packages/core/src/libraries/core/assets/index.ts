@@ -15,11 +15,6 @@ export function initializeDesktopAssets(context: OwdCoreAssetsContext) {
   // import core styles
   import('@owd-client/core/src/assets/css/app.scss')
 
-  // set theme name to $owd globalProperties
-  context.app.config.globalProperties.$owd.desktop = {
-    theme: context.extensions.desktop.name
-  }
-
   // initialize global components
   initializeDesktopGlobalComponents(context.app)
 
@@ -27,7 +22,7 @@ export function initializeDesktopAssets(context: OwdCoreAssetsContext) {
   const appElement = document.getElementById('app')
 
   if (appElement) {
-    appElement.setAttribute('data-theme', context.extensions.desktop.name)
+    appElement.setAttribute('data-theme', context.app.config.globalProperties.$owd.desktop.name)
   }
 }
 

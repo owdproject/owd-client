@@ -7,9 +7,7 @@ import '@owd-client/core/src/libraries/service-worker/registerServiceWorker'
 export function initializeAppPlugins(context: OwdCorePluginsContext) {
   context.app.use(moment)
 
-  window.addEventListener('load', function() {
-    initializeAdditionalPlugins(context)
-  })
+  initializeAdditionalPlugins(context)
 }
 
 /**

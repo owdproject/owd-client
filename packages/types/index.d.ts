@@ -283,6 +283,11 @@ export interface OwdModuleAppWindowsStorage {
 
 export interface OwdModuleAppWindowConfigIcon extends OwdLauncherEntryIcon {}
 
+// OWD LAUNCHER
+
+export interface OwdLauncher {
+  [category: string]: OwdLauncherEntry[]
+}
 export interface OwdLauncherEntry {
   name: string
   icon: string | OwdLauncherEntryIcon,
@@ -299,6 +304,51 @@ export interface OwdLauncherEntryIcon {
   },
   background?: string
   color?: string
+}
+
+// OWD NOTIFICATIONS
+
+export interface OwdNotificationItem {
+  name: string;
+  service: string;
+  icon: string;
+  color: string;
+  title: string;
+  details: string;
+  sticky?: boolean;
+  duration: number;
+  date: Date;
+}
+
+// OWD SSE
+
+export interface OwdEvents {
+  [name: string]: OwdEvent
+}
+
+export interface OwdEvent extends OwdEventConfig {
+  source: EventSource,
+  connected: boolean
+}
+
+export interface OwdEventConfig {
+  name: string,
+  url: string,
+  reconnectOnError: boolean,
+  reconnectTimeout: number
+}
+
+// OWD DOCK
+
+export interface OwdDock {
+  apps: {
+    [key: string]: {
+      config: OwdModuleAppWindowConfig,
+      module: OwdModuleApp,
+      list: OwdModuleAppWindowInstance[]
+    }
+  },
+  list: OwdModuleAppWindowInstance[]
 }
 
 // OWD MODULES DESKTOP

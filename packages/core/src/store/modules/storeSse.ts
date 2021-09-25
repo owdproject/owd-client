@@ -1,23 +1,23 @@
 import {VuexModule, Module, Mutation, Action} from "vuex-class-modules";
-
-let reconnectTimeout: any = null
+import {OwdEvent, OwdEventConfig, OwdEvents} from "@owd-client/types";
 
 // @ts-ignore
 import config from '/@/../client.config'
 
+const reconnectTimeout: { [key: string]: ReturnType<typeof setTimeout> } = {}
+
 @Module
 export default class StoreSse extends VuexModule {
-  private eventSource: any = null
-  private connected: boolean = false
+  private events: OwdEvents = {}
 
   @Mutation
-  SET_EVENT_SOURCE(eventSource: any) {
-    this.eventSource = eventSource
+  SET_EVENT(data: OwdEvent) {
+    this.events[data.name] = data
   }
 
   @Mutation
-  SET_CONNECTED(value: boolean) {
-    this.connected = value
+  SET_CONNECTED(data: {name: string, value: boolean }) {
+    this.events[data.name].connected = data.value
   }
 
   @Mutation
@@ -31,38 +31,65 @@ export default class StoreSse extends VuexModule {
   }
 
   @Action
-  connect() {
+  connect(event: string|OwdEventConfig = 'default') {
+    // is sse globally enabled?
     if (!config.sse.enabled) {
       return console.log(`[owd] SSE integration is disabled by configuration`)
     }
 
-    if (this.connected) {
-      return console.error('[owd] already connected to SSE')
+    // define sse event config
+    const eventConfig: OwdEventConfig = {
+      name: (typeof event === 'string' ? event : event.name),
+      url: import.meta.env.VITE_SSE_BASE_URL,
+      reconnectOnError: (typeof event === 'string' ? false : event.reconnectOnError),
+      reconnectTimeout: (typeof event === 'string' ? config.sse.reconnectTimeout : event.reconnectTimeout)
     }
 
-    const sse = new EventSource(import.meta.env.VITE_SSE_BASE_URL)
+    // check if already to this sse
+    if (Object.prototype.hasOwnProperty.call(this.events, eventConfig.name) && this.events[eventConfig.name].connected) {
+      return console.error('[owd] already connected to this SSE: ' + eventConfig.name)
+    }
 
-    sse.onerror = () => {
-      // reset connected status
-      if (this.connected) {
-        this.SET_CONNECTED(false)
+    // overwrite sse url if provided by event param
+    if (typeof event === 'object' && Object.prototype.hasOwnProperty.call(event, 'url')) {
+      eventConfig.url = event.url
+    } else {
+      if (eventConfig.name !== 'default') {
+        eventConfig.url += eventConfig.name
+      }
+    }
+
+    const eventInstance: OwdEvent = {
+      ...eventConfig,
+      source: new EventSource(eventConfig.url),
+      connected: false
+    }
+
+    // assign sse to vuex
+    this.SET_EVENT(eventInstance)
+
+    eventInstance.source.onerror = () => {
+      // set sse disconnected
+      if (this.events[eventConfig.name].connected) {
+        this.SET_CONNECTED({name: eventConfig.name, value: false})
       }
 
-      sse.close()
+      eventInstance.source.close()
 
       // reconnect after X seconds
-      if (config.sse.reconnectOnError) {
-        clearTimeout(reconnectTimeout)
-        reconnectTimeout = setTimeout(() => this.connect(), config.sse.reconnectTimeout | 2000)
+      if (eventInstance.reconnectOnError) {
+        clearTimeout(reconnectTimeout[eventConfig.name])
+
+        reconnectTimeout[eventConfig.name] = setTimeout(() => this.connect(), config.sse.reconnectTimeout | 2000)
       }
     }
 
-    sse.onmessage = (message) => {
-      clearTimeout(reconnectTimeout)
+    eventInstance.source.onmessage = (message) => {
+      clearTimeout(reconnectTimeout[eventConfig.name])
 
-      // set as connected
-      if (!this.connected) {
-        this.SET_CONNECTED(true)
+      // set sse connected
+      if (!this.events[eventConfig.name].connected) {
+        this.SET_CONNECTED({name: eventConfig.name, value: true})
       }
 
       const data: any = JSON.parse(message.data)
@@ -74,15 +101,17 @@ export default class StoreSse extends VuexModule {
         this.LOG_EVENT(data)
       }
     }
-
-    this.SET_EVENT_SOURCE(sse)
   }
 
   @Action
-  disconnect() {
-    if (this.eventSource && this.connected) {
-      this.eventSource.close()
-      this.SET_CONNECTED(false)
+  disconnect(event: string|OwdEventConfig = 'default') {
+    const eventName: string = (typeof event === 'string' ? event : event.name)
+
+    if (Object.prototype.hasOwnProperty.call(this.events, eventName) && this.events[eventName].connected) {
+      this.events[eventName].source.close()
+
+      // set sse disconnected
+      this.SET_CONNECTED({name: eventName, value: false})
     }
   }
 }

@@ -212,7 +212,8 @@ function onResizeEnd(data) {
 <style lang="scss">
 .owd-window {
   background: $owd-window-background;
-  border: $owd-window-border;
+  border-width: $owd-window-border-width;
+  border-style: $owd-window-border-style;
   border-color: $owd-window-border-color-inactive;
   box-shadow: $owd-window-box-shadow-inactive;
   border-radius: $owd-window-border-radius;
@@ -242,6 +243,7 @@ function onResizeEnd(data) {
     position: relative;
     height: 100%;
     padding: $owd-window-content-padding;
+    background-color: $owd-window-content-background;
     box-sizing: border-box;
     overflow: hidden;
 

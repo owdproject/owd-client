@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="owd-desktop__system-bar__date-time">
     <span class="date" v-text="date" v-if="showDate" />
     <span class="time" v-text="time" />
   </div>
@@ -11,17 +11,25 @@ import { getCurrentInstance, inject, ref } from 'vue'
 const desktopOptions = inject('desktopOptions')
 
 const props = defineProps({
-  showDate: Boolean
+  showDate: Boolean,
+  dateFormat: {
+    type: String,
+    default: 'HH:mm'
+  },
+  timeFormat: {
+    type: String,
+    default: 'MMMM D YYYY'
+  }
 })
 
 const app = getCurrentInstance();
 const moment = app.appContext.config.globalProperties.$moment
 
 const getDate = () => {
-  return moment().format(desktopOptions.StatusMenu.menu.dateFormat)
+  return moment().format(props.dateFormat)
 }
 const getTime = () => {
-  return moment().format(desktopOptions.StatusMenu.menu.timeFormat)
+  return moment().format(desktopOptions.Status.menu.timeFormat)
 }
 
 let date = ref(getDate())
@@ -34,7 +42,9 @@ setInterval(() => {
 </script>
 
 <style scoped lang="scss">
-.date {
-  margin-right: 8px;
+.owd-desktop__system-bar__date-time {
+  .date {
+    margin-right: 8px;
+  }
 }
 </style>

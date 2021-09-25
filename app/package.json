@@ -30,7 +30,7 @@
   ],
   "dependencies": {
     "@owd-client/core": "^2.0.0-beta.2",
-    "owd-theme-deep-sea": "https://github.com/hacklover/owd-theme-deep-sea"
+    "owd-theme-gnome": "https://github.com/hacklover/owd-theme-gnome"
   },
   "devDependencies": {
     "@mdi/font": "^5.9.55",

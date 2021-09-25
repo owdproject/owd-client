@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import {defineProps, inject} from "vue";
+import {inject} from "vue";
 
 const desktopOptions = inject('desktopOptions')
 

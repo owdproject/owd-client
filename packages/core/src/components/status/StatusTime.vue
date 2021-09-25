@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import { getCurrentInstance, inject, ref, defineProps } from 'vue'
+import { getCurrentInstance, inject, ref } from 'vue'
 
 const desktopOptions = inject('desktopOptions')
 

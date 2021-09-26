@@ -4,7 +4,6 @@ import {OwdCoreStoreContext} from "@owd-client/types";
 import storeClientModule from './modules/storeClient'
 import storeFullscreenModule from './modules/window/storeWindowFullscreen'
 import storeLauncherModule from './modules/storeLauncher'
-import storeModulesAppModule from './modules/storeModulesApp'
 import storeNotificationModule from './modules/storeNotification'
 import storeSseModule from './modules/storeSse'
 import storeWindowModule from './modules/window/storeWindow'
@@ -42,7 +41,6 @@ export function initializeAppStore(context: OwdCoreStoreContext) {
   const storeNotification = new storeNotificationModule({ store, name: 'core/notification' })
   const storeSse = new storeSseModule({ store, name: 'core/sse' })
 
-  const storeModulesApp = new storeModulesAppModule({ store, name: 'core/modulesApp' })
   const storeWindowFocus = new storeWindowFocusModule( { store, name: 'core/windowFocus' })
   const storeWindowFullscreen = new storeFullscreenModule({ store, name: 'core/windowFullscreen' })
   const storeWindow = new storeWindowModule(storeWindowFocus, { store, name: 'core/window' })

@@ -43,5 +43,40 @@ export function useDesktop() {
   return owd
 }
 
+/**
+ * Use OWD store
+ */
+export function useDesktopStore() {
+  return owd.store
+}
+
+/**
+ * Use OWD store
+ */
+export function useDesktopRouter() {
+  return owd.router
+}
+
+/**
+ * Use OWD desktop apps
+ */
+export function useDesktopApps() {
+  return owd.modules.app
+}
+
+/**
+ * Use OWD desktop modules
+ */
+export function useDesktopModules() {
+  return owd.modules.desktop
+}
+
+/**
+ * Use OWD store
+ */
+export function useDesktopTerminal() {
+  return owd.terminal
+}
+
 // new moduleApp class
 export const ModuleApp = ModuleAppClass

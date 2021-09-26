@@ -14,6 +14,10 @@ export default class OwdBoot {
   private store: any
   private terminal: any
 
+  private stats = {
+    loaded: { app: false, desktop: false }
+  }
+
   constructor(context: OwdCoreBootContext) {
     this.config = context.config
     this.extensions = context.extensions
@@ -21,15 +25,16 @@ export default class OwdBoot {
     this.app = createApp(context.component)
 
     // set owd context to $owd vue globalProperties
-    this.app.config.globalProperties.$owd = {
-      ...this.config,
-      ...this.extensions
+    this.app.config.globalProperties.$owd = { ...this.config }
+
+    if (this.stats.loaded.app) {
+      throw Error('[owd] app already initialized')
     }
 
     initializeApp(this)
 
     if (this.config.desktop?.autostart) {
-      console.log('[owd] initializing desktop...')
+      if (debug) console.log('[owd] initializing desktop...')
       initializeDesktop(this)
     }
 
@@ -37,7 +42,7 @@ export default class OwdBoot {
   }
 
   initializeDesktop() {
-    console.log('[owd] initializing desktop manually...')
+    if (debug) console.log('[owd] initializing desktop manually...')
     initializeDesktop(this)
   }
 

@@ -34,7 +34,9 @@ export default class StoreSse extends VuexModule {
   connect(event: string|OwdEventConfig = 'default') {
     // is sse globally enabled?
     if (!config.sse.enabled) {
-      return console.log(`[owd] SSE integration is disabled by configuration`)
+      if (debug) console.error(`[owd] SSE integration is disabled by configuration`)
+
+      return false
     }
 
     // define sse event config

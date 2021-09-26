@@ -365,7 +365,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
         }
       }
 
-      console.log('[owd] window initialized: ' + windowConfig.name)
+      if (debug) console.log('[owd] window initialized: ' + windowConfig.name)
 
       if (windowConfig.menuApp === false) {
         continue

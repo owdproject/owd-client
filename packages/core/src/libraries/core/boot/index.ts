@@ -2,15 +2,17 @@ import {initializeAppStore} from "../../../store";
 import {initializeAppRouter} from "../../../plugins/router";
 import {initializeAppPlugins} from "../plugins";
 import {initializeAppI18n} from "../../../plugins/i18n";
-import {initializeAppAssets, initializeDesktopAssets} from "../assets";
+import {initializeAppAssets} from "../assets";
 import {initializeAppTerminal} from "../terminal";
+
 import {initializeDesktopApps, initializeDesktopModules} from "../modules";
+import {initializeDesktopAssets} from "../assets";
 
 /**
  * Initialize app
  */
 export function initializeApp(context: any) {
-    console.log('[owd] initializing app...')
+    if (debug) console.log('[owd] initializing app...')
 
     context.store = initializeAppStore({
         app: context.app,
@@ -35,14 +37,17 @@ export function initializeApp(context: any) {
     })
 
     context.terminal = initializeAppTerminal()
+    context.stats.loaded.app = true
 
-    console.log('[owd] initialized app.')
+    if (debug) console.log('[owd] initialized app.')
 }
 
 /**
  * Initialize desktop
  */
 export function initializeDesktop(context: any) {
+    context.stats.loaded.desktop = true
+
     initializeDesktopAssets({
         app: context.app,
         extensions: context.extensions
@@ -62,14 +67,14 @@ export function initializeDesktop(context: any) {
         terminal: context.terminal
     })
 
-    // on desktop components are ready
+    // on desktop components ready
     // todo improve dis
     setTimeout(() => {
         context.desktopApps.initialize()
 
         // initialize client
         context.store.dispatch('core/client/initialize')
-    }, 50)
 
-    console.log('[owd] initialized desktop.')
+        if (debug) console.log('[owd] initialized desktop.')
+    }, 50)
 }

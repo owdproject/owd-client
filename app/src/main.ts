@@ -8,7 +8,7 @@ import App from './App.vue'
 import config from '../client.config'
 import extensions from '../client.extensions'
 
-console.log(`[owd] ${name} ${version}`)
+if (debug) console.log(`[owd] ${name} ${version}`)
 
 // create an Open Web Desktop instance
 createApp({

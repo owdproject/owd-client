@@ -425,7 +425,8 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
         windowInstance.open(true)
       }
 
-      throw new Error('[owd] this app is a singleton and is already opened')
+      // app is a singleton and is already opened
+      return false
     }
 
     const windowInstance = new ModuleAppWindow({

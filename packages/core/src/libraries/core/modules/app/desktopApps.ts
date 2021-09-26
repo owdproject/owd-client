@@ -2,22 +2,20 @@ import {
   OwdCoreModuleContext, OwdModuleApp,
   OwdModulesApp
 } from "@owd-client/types";
+import {provide} from "vue";
 
 export default class DesktopApps {
   private readonly context;
-  private apps: OwdModulesApp = {}
+  private modules: OwdModulesApp = {}
 
   constructor(context: OwdCoreModuleContext) {
     this.context = context
 
-    this.registerProvider()
-  }
-
-  /**
-   * Register this class into modules app store
-   */
-  private registerProvider() {
-    this.context.store.commit('core/modulesApp/REGISTER_MODULES_PROVIDER', this)
+    // on desktop components ready
+    // todo improve dis
+    setTimeout(() => {
+      this.initialize()
+    }, 50)
   }
 
   /**
@@ -27,8 +25,13 @@ export default class DesktopApps {
     const desktopApps = this.getModulesAppFromConfig()
 
     for (const DesktopApp of desktopApps) {
-      this.installModuleApp(DesktopApp)
+      this.installApp(DesktopApp)
     }
+
+    provide('desktopApps', this)
+
+    // initialize client
+    this.context.store.dispatch('core/client/initialize')
   }
 
   /**
@@ -50,11 +53,11 @@ export default class DesktopApps {
   /**
    * Install desktop app
    */
-  public installModuleApp(ModuleApp: any): OwdModuleApp {
+  public installApp(ModuleApp: any): OwdModuleApp {
     const moduleAppInstance = new ModuleApp(this.context)
 
     if (moduleAppInstance) {
-      this.apps[moduleAppInstance.moduleInfo.name] = moduleAppInstance
+      this.modules[moduleAppInstance.moduleInfo.name] = moduleAppInstance
 
       return moduleAppInstance
     }
@@ -67,8 +70,8 @@ export default class DesktopApps {
    *
    * @param moduleName
    */
-  public isModuleAppInstalled(moduleName: string) {
-    return Object.prototype.hasOwnProperty.call(this.apps, moduleName)
+  public isAppInstalled(moduleName: string) {
+    return Object.prototype.hasOwnProperty.call(this.modules, moduleName)
   }
 
   /**
@@ -76,7 +79,7 @@ export default class DesktopApps {
    *
    * @param moduleName
    */
-  public findModuleApp(moduleName: string) {
-    return this.apps[moduleName]
+  public findApp(moduleName: string) {
+    return this.modules[moduleName]
   }
 }

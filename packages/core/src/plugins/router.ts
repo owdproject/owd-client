@@ -10,6 +10,8 @@ export function initializeAppRouter(context: OwdCoreRouterContext) {
   })
 
   context.app.use(router)
+
+  return router
 }
 
 /**

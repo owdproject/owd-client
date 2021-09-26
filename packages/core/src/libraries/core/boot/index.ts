@@ -19,7 +19,7 @@ export function initializeApp(context: any) {
         modules: context.extensions.store
     })
 
-    initializeAppRouter({
+    context.router = initializeAppRouter({
         app: context.app,
         routes: context.extensions.routes
     })
@@ -53,28 +53,19 @@ export function initializeDesktop(context: any) {
         extensions: context.extensions
     })
 
-    context.desktopModules = initializeDesktopModules({
+    context.modules = initializeDesktopModules({
         app: context.app,
         extensions: context.extensions,
         store: context.store,
         terminal: context.terminal
     })
 
-    context.desktopApps = initializeDesktopApps({
+    context.apps = initializeDesktopApps({
         app: context.app,
         extensions: context.extensions,
         store: context.store,
         terminal: context.terminal
     })
 
-    // on desktop components ready
-    // todo improve dis
-    setTimeout(() => {
-        context.desktopApps.initialize()
-
-        // initialize client
-        context.store.dispatch('core/client/initialize')
-
-        if (debug) console.log('[owd] initialized desktop.')
-    }, 50)
+    if (debug) console.log('[owd] initialized desktop.')
 }

@@ -53,19 +53,20 @@ export function initializeDesktop(context: any) {
         extensions: context.extensions
     })
 
-    context.modules = initializeDesktopModules({
-        app: context.app,
-        extensions: context.extensions,
-        store: context.store,
-        terminal: context.terminal
-    })
-
-    context.apps = initializeDesktopApps({
-        app: context.app,
-        extensions: context.extensions,
-        store: context.store,
-        terminal: context.terminal
-    })
+    context.modules = {
+        desktop: initializeDesktopModules({
+            app: context.app,
+            extensions: context.extensions,
+            store: context.store,
+            terminal: context.terminal
+        }),
+        app: initializeDesktopApps({
+            app: context.app,
+            extensions: context.extensions,
+            store: context.store,
+            terminal: context.terminal
+        })
+    }
 
     if (debug) console.log('[owd] initialized desktop.')
 }

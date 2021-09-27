@@ -21,7 +21,6 @@ export default class DebugModuleApp extends ModuleApp {
               "y": 0
             }
           },
-          "menu": true,
           "resizable": false,
           "size": {
             "width": 448,

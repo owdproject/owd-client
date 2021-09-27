@@ -179,8 +179,8 @@ export interface OwdModuleAppWindowConfig {
   size: OwdModuleAppWindowConfigSize
   position: OwdModuleAppWindowConfigPosition
   favorite?: boolean
-  menu?: boolean
-  menuApp?: boolean
+  launcher?: boolean
+  dock?: boolean
   resizable?: boolean
   minimized?: boolean
   maximized?: boolean

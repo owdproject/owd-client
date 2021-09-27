@@ -94,12 +94,12 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
       instance.config.theme = {}
     }
 
-    if (typeof instance.config.menu === 'undefined') {
-      instance.config.menu = true
+    if (typeof instance.config.dock === 'undefined') {
+      instance.config.dock = true
     }
 
-    if (typeof instance.config.menuApp === 'undefined') {
-      instance.config.menuApp = true
+    if (typeof instance.config.launcher === 'undefined') {
+      instance.config.launcher = true
     }
 
     if (typeof instance.config.theme.dense === 'undefined') {

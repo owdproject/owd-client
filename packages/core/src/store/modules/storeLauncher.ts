@@ -38,6 +38,7 @@ export default class StoreLauncher extends VuexModule {
 
   @Mutation
   ADD(item: OwdLauncherEntry) {
+    // set generic category if not provided
     if (!item.category) {
       item.category = 'other'
     }

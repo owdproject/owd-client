@@ -367,24 +367,29 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
 
       if (debug) console.log('[owd] window initialized: ' + windowConfig.name)
 
-      if (windowConfig.menuApp === false) {
-        continue
-      }
-
       // add entry to store launcher
-      this.addLauncherEntry({
-        title: windowConfig.titleApp || windowConfig.title,
-        icon: windowConfig.icon,
-        category: windowConfig.category,
-        favorite: windowConfig.favorite,
-        callback: () => {
-          const windowInstance = this.createWindow(windowConfig)
+      if (
+          typeof windowConfig.launcher === 'undefined' ||
+          typeof windowConfig.launcher === 'boolean' && windowConfig.launcher === true
+      ) {
+        this.addLauncherEntry({
+          title: windowConfig.titleApp || windowConfig.title,
+          icon: windowConfig.icon,
+          category: windowConfig.category,
+          favorite: windowConfig.favorite,
+          callback: () => {
+            this.createWindow(windowConfig)
 
-          if (windowInstance) {
-            windowInstance.open(true)
+            /*
+            const windowInstance = this.createWindow(windowConfig)
+
+            if (windowInstance) {
+              windowInstance.open(true)
+            }
+             */
           }
-        }
-      })
+        })
+      }
     }
 
     return true

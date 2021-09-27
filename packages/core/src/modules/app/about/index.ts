@@ -17,7 +17,6 @@ export default class AboutModuleApp extends ModuleApp {
           titleApp: "About",
           titleShort: "Open Web Desktop",
           icon: "mdi-hexagon-multiple-outline",
-          menu: true,
           favorite: true,
           resizable: false,
           size: {

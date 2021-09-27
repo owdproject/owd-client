@@ -28,7 +28,8 @@ export default class DesktopApps {
       this.installApp(DesktopApp)
     }
 
-    provide('desktopApps', this)
+    // is this really needed? todo
+    this.context.app.provide('desktopApps', this)
 
     // initialize client
     this.context.store.dispatch('core/client/initialize')

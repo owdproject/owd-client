@@ -1,5 +1,11 @@
+import { version } from './package.json'
+
 export default {
   debug: false,
+
+  name: 'owd-client',
+  hostname: 'owdproject.org',
+  version,
 
   // desktop config
   desktop: {

@@ -42,7 +42,7 @@ export default class StoreSse extends VuexModule {
     // define sse event config
     const eventConfig: OwdEventConfig = {
       name: (typeof event === 'string' ? event : event.name),
-      url: import.meta.env.VITE_SSE_BASE_URL,
+      url: '/api/sse',
       reconnectOnError: (typeof event === 'string' ? false : event.reconnectOnError),
       reconnectTimeout: (typeof event === 'string' ? config.sse.reconnectTimeout : event.reconnectTimeout)
     }

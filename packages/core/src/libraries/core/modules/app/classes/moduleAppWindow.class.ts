@@ -10,10 +10,32 @@ import {
 } from "@owd-client/types";
 
 export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
-  private readonly instance: OwdModuleAppWindowInstance
+  private instance: OwdModuleAppWindowInstance
+  private mounted: boolean = false
+
+  private events: { [eventName: string]: any[] } = {
+    onMounted: []
+  }
+  private initialStorage: OwdModuleAppWindowStorage|undefined
 
   constructor(data: OwdModuleAppWindowCreateInstanceData) {
-    this.instance = this.register(data)
+    this.initialize(data)
+  }
+
+  public onMounted(cb: any) {
+    this.events.onMounted.push(cb)
+  }
+
+  public async eventsExecute(eventName: string) {
+    for (const e of this.events[eventName]) {
+
+      // execute event callback
+      if (typeof e === 'function') {
+        await e(this)
+      }
+    }
+
+    this.events[eventName] = []
   }
 
   get config(): OwdModuleAppWindowConfig {
@@ -51,120 +73,163 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     return md5(Date.now().toString() + Math.random())
   }
 
-  /**
-   * Register window
-   *
-   * @param data
-   * @private
-   */
-  private register(data: OwdModuleAppWindowCreateInstanceData): OwdModuleAppWindowInstance {
-    if (typeof data.module.windowInstances[data.config.name] === 'undefined') {
-      // register windowName (WindowSample) to module window instances
+  static configValidate(config: OwdModuleAppWindowConfig) {
+    if (!config.theme) {
+      config.theme = {}
+    }
+
+    if (typeof config.dock === 'undefined') {
+      config.dock = true
+    }
+
+    if (typeof config.launcher === 'undefined') {
+      config.launcher = true
+    }
+
+    if (typeof config.theme.dense === 'undefined') {
+      config.theme.dense = true
+    }
+
+    return config
+  }
+
+  static register(data: OwdModuleAppWindowCreateInstanceData) {
+    // validate config
+    data.config = ModuleAppWindow.configValidate(data.config)
+
+    ModuleAppWindow.registerComponent(data)
+    ModuleAppWindow.registerLauncher(data)
+    ModuleAppWindow.registerDock(data)
+
+    // if it's a new windowConfig name
+    if (!Object.prototype.hasOwnProperty.call(data.module.windowInstances, data.config.name)) {
+      // define windowName (WindowSample) to module window instances
       data.module.windowInstances[data.config.name] = {}
-
-      if (data.config.component) {
-        // register vue component
-        data.module.app.component(data.config.name, data.config.component)
-
-        // component is no more needed once registered
-        // @ts-ignore
-        delete data.config.component
-      }
 
       // if window is generated dynamically, populate window config definition under moduleInfo.windows
       if (data.module.moduleInfo.windows && !data.module.moduleInfo.windows.find((window: OwdModuleAppWindowConfig) => window.name === data.config.name)) {
         data.module.moduleInfo.windows.push(data.config)
       }
     }
+  }
 
-    // check if module is a singleton and an instance already exists
-    if (data.module.isSingleton && data.module.getWindowInstancesCount(data.config.name) > 0) {
-      // module is a singleton, you don't need to create a new window.
-      // return first instance of this window group and you'll be fine
-      return data.module.getFirstWindowInstance(data.config.name)
+  private static registerComponent(data: OwdModuleAppWindowCreateInstanceData) {
+    if (!data.config.component) {
+      throw Error(`No window component provided for ${data.config.name} in OWD`)
     }
 
-    const instance: any = {
+    // register vue component
+    data.module.app.component(data.config.name, data.config.component)
+
+    // i don't need it anymore in the config
+    delete data.config.component
+  }
+
+  private static registerDock(data: OwdModuleAppWindowCreateInstanceData) {
+    // add window to store dock
+    data.module.store.commit('core/dock/ADD_CATEGORY', {
+      config: data.config,
+      module: data.module
+    })
+  }
+
+  private static registerLauncher(data: OwdModuleAppWindowCreateInstanceData) {
+    if (data.config.launcher === true) {
+      data.module.store.commit('core/launcher/ADD', {
+        title: data.config.titleApp || data.config.title,
+        icon: data.config.icon,
+        category: data.config.category,
+        favorite: data.config.favorite,
+        callback: () => {
+
+          // check if module is a singleton and an instance already exists
+          if (data.module.isSingleton && data.module.getWindowInstancesCount(data.config.name) > 0) {
+            // throw Error(`You can't open more than a window for ${windowConfig.name}, since it's a singleton`)
+            // module is a singleton, you don't need to create a new window.
+            // return first instance of this window group and you'll be fine
+            return data.module.getFirstWindowInstance(data.config.name).open(true)
+          }
+
+          data.module.createWindow(data.config).open(true)
+        }
+      })
+    }
+  }
+
+  /**
+   * Register window
+   *
+   * @param data
+   * @private
+   */
+  private initialize(data: OwdModuleAppWindowCreateInstanceData): void {
+    this.instance = {
       module: data.module,
       config: {...data.config},
       storage: {...data.storage},
     }
 
-    if (!instance.config.theme) {
-      instance.config.theme = {}
-    }
-
-    if (typeof instance.config.dock === 'undefined') {
-      instance.config.dock = true
-    }
-
-    if (typeof instance.config.launcher === 'undefined') {
-      instance.config.launcher = true
-    }
-
-    if (typeof instance.config.theme.dense === 'undefined') {
-      instance.config.theme.dense = true
-    }
-
     // deep clone object
-    instance.storage = JSON.parse(JSON.stringify({
-      position: instance.config.position,
-      size: instance.config.size,
-      minimized: !!instance.config.minimized,
-      maximized: !!instance.config.maximized,
-      opened: false,
+    this.instance.storage = JSON.parse(JSON.stringify({
+      position: this.instance.config.position,
+      size: this.instance.config.size,
+      minimized: !!this.instance.config.minimized,
+      maximized: !!this.instance.config.maximized,
       focused: false,
-      metaData: instance.storage.metaData
+      metaData: this.instance.storage.metaData
     }))
 
+    this.initialStorage = data.storage
+
     if (data.storage && typeof data.storage.uniqueID !== 'undefined') {
-      instance.storage.uniqueID = data.storage.uniqueID
+      this.instance.storage.uniqueID = data.storage.uniqueID
     }
 
-    if (data.storage && typeof data.storage.size !== 'undefined') {
-      instance.storage.size = data.storage.size
-    }
-
-    if (data.storage && typeof data.storage.size !== 'undefined') {
-      instance.storage.position = data.storage.position
-    }
-
-    if (data.storage && typeof data.storage.opened !== 'undefined') {
-      instance.storage.opened = data.storage.opened
-    }
-
-    if (data.storage && typeof data.storage.minimized !== 'undefined') {
-      instance.storage.minimized = data.storage.minimized
-    }
-
-    if (data.storage && typeof data.storage.maximized !== 'undefined') {
-      instance.storage.maximized = data.storage.maximized
-    }
-
-    if (typeof instance.storage.uniqueID === 'undefined') {
-      instance.storage.uniqueID = ModuleAppWindow.generateUniqueID()
+    if (typeof this.instance.storage.uniqueID === 'undefined') {
+      this.instance.storage.uniqueID = ModuleAppWindow.generateUniqueID()
     }
 
     // initialize Vue store for this window instance
-    if (!instance.module.isSingleton) {
-      instance.module.registerStoreInstance(instance.config.name+'-'+instance.storage.uniqueID)
+    if (!this.instance.module.isSingleton) {
+      this.instance.module.registerStoreInstance(this.instance.config.name+'-'+this.instance.storage.uniqueID)
     }
 
-    return instance
-  }
-
-  /**
-   * Create window
-   */
-  create(): boolean {
     // register instance
-    this.module.windowInstances[this.config.name][this.storage.uniqueID] = this
-    this.module.store.commit('core/window/REGISTER_WINDOW_INSTANCE', this)
+    this.instance.module.windowInstances[this.instance.config.name][this.instance.storage.uniqueID] = this
+    this.instance.module.store.commit('core/window/REGISTER_WINDOW_INSTANCE', this)
 
     // add to dock
-    this.module.store.commit('core/dock/ADD', this)
+    if (this.instance.config.dock === true) {
+      this.instance.module.store.commit('core/dock/ADD', this)
+    }
+  }
 
-    return true
+  loadStorage() {
+    const storage = this.initialStorage
+
+    if (storage && typeof storage.size !== 'undefined') {
+      this.instance.storage.size = storage.size
+    }
+
+    if (storage && typeof storage.size !== 'undefined') {
+      this.instance.storage.position = storage.position
+    }
+
+    if (storage && typeof storage.minimized !== 'undefined') {
+      this.instance.storage.minimized = storage.minimized
+    }
+
+    if (storage && typeof storage.maximized !== 'undefined') {
+      this.instance.storage.maximized = storage.maximized
+    }
+  }
+
+  mount() {
+    this.loadStorage()
+
+    this.mounted = true
+
+    this.eventsExecute('onMounted')
   }
 
   /**
@@ -199,15 +264,20 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
 
   // soft open
   open(focus: boolean = false): boolean {
-    this.instance.storage.opened = true
-    this.instance.storage.minimized = false
+    if (!this.mounted) {
+      this.onMounted((windowInstance) => {
+        windowInstance.open(focus)
+      })
+    } else {
+      this.instance.storage.minimized = false
 
-    // recalculate window position
-    this.adjustPosition()
+      // recalculate window position
+      this.adjustPosition()
 
-    // focus window
-    if (focus) {
-      this.focus()
+      // focus window
+      if (focus) {
+        this.focus()
+      }
     }
 
     return true
@@ -215,7 +285,7 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
 
   // soft close
   close(): boolean {
-    this.instance.storage.opened = false
+    this.instance.storage.minimized = false
     this.instance.storage.maximized = false
 
     return true
@@ -223,17 +293,6 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
 
   minimize(value: boolean = true): boolean {
     this.instance.storage.minimized = value
-    this.instance.storage.opened = !value
-
-    return true
-  }
-
-  minimizeToggle(): boolean {
-    this.minimize(!this.instance.storage.minimized)
-
-    if (this.instance.storage.minimized === false) {
-      this.focus()
-    }
 
     return true
   }

@@ -5,14 +5,14 @@
       class="owd-window-iframe"
       v-click-outside="focusOut"
       @click="focusIn"
-      @open="windowOpen"
-      @close="windowClose"
       @resize:start="(data) => emit('resize:start', data)"
       @resize:move="(data) => emit('resize:move', data)"
       @resize:end="(data) => emit('resize:end', data)"
       @drag:start="(data) => emit('drag:start', data)"
       @drag:move="(data) => emit('drag:move', data)"
       @drag:end="(data) => emit('drag:end', data)"
+      @mount="(data) => emit('mount', data)"
+      @unmount="(data) => emit('unmount', data)"
       @blur="(data) => emit('blur', data)"
       @focus="(data) => emit('focus', data)"
       @minimize="(data) => emit('minimize', data)"
@@ -48,7 +48,7 @@
 </template>
 
 <script setup>
-import {ref, watch, computed} from "vue";
+import {ref, watch, computed, onMounted} from "vue";
 
 const props = defineProps({
   url: String,
@@ -61,6 +61,14 @@ const props = defineProps({
 })
 
 const emit = defineEmits([
+  'mount',
+  'unmount',
+  'blur',
+  'focus',
+  'minimize',
+  'restore',
+  'maximize',
+  'unmaximize',
   'iframeFocusIn',
   'iframeFocusOut',
   'iframeLoaded',
@@ -70,14 +78,6 @@ const emit = defineEmits([
   'drag:start',
   'drag:move',
   'drag:end',
-  'close',
-  'open',
-  'blur',
-  'focus',
-  'minimize',
-  'restore',
-  'maximize',
-  'unmaximize',
 ])
 
 const iframeSrc = ref('')
@@ -109,17 +109,9 @@ function onIframeLoaded() {
   emit('iframeLoaded')
 }
 
-watch(() => props.url, url => {
-  if (props.window.storage.opened === true) {
-    iframeSrc.value = url
-  }
-})
+watch(() => props.url, url => iframeSrc.value = url)
 
-watch(() => props.window.config, config => {
-  if (props.window.storage.opened === true) {
-    iframeSrc.value = config.metaData.iframeUrl
-  }
-}, {deep: true})
+watch(() => props.window.config, config => iframeSrc.value = config.metaData.iframeUrl, {deep: true})
 
 watch(() => props.window.storage.focused, val => {
   focused.value = val
@@ -129,20 +121,9 @@ watch(() => props.window.storage.focused, val => {
   }
 })
 
-function windowOpen(data) {
-  emit('open', data)
-
-  if (props.window.storage.opened === true) {
-    iframeSrc.value = props.url || props.window.config.metaData.iframeUrl
-  }
-}
-
-function windowClose(data) {
-  emit('close', data)
-
-  iframeSrc.value = ''
-  loaded.value = false
-}
+onMounted(() => {
+  iframeSrc.value = props.url || props.window.config.metaData.iframeUrl
+})
 </script>
 
 <style lang="scss">

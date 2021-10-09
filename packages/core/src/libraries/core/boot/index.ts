@@ -14,6 +14,9 @@ import {initializeDesktopAssets} from "../assets";
 export function initializeApp(context: any) {
     if (debug) console.log('[owd] initializing app...')
 
+    // set owd context to $owd vue globalProperties
+    context.app.config.globalProperties.$owd = { ...context.config }
+
     context.store = initializeAppStore({
         app: context.app,
         modules: context.extensions.store

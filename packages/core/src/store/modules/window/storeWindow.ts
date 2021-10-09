@@ -77,7 +77,6 @@ export default class StoreWindow extends VuexModule {
             uniqueID: windowInstance.uniqueID,
             position: windowInstance.storage.position,
             size: windowInstance.storage.size,
-            opened: windowInstance.storage.opened,
             minimized: windowInstance.storage.minimized,
             maximized: windowInstance.storage.maximized,
             focused: windowInstance.storage.focused

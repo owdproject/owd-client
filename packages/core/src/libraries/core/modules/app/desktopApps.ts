@@ -2,7 +2,6 @@ import {
   OwdCoreModuleContext, OwdModuleApp,
   OwdModulesApp
 } from "@owd-client/types";
-import {provide} from "vue";
 
 export default class DesktopApps {
   private readonly context;
@@ -12,10 +11,7 @@ export default class DesktopApps {
     this.context = context
 
     // on desktop components ready
-    // todo improve dis
-    setTimeout(() => {
-      this.initialize()
-    }, 50)
+    this.initialize()
   }
 
   /**
@@ -27,9 +23,6 @@ export default class DesktopApps {
     for (const DesktopApp of desktopApps) {
       this.installApp(DesktopApp)
     }
-
-    // is this really needed? todo
-    this.context.app.provide('desktopApps', this)
 
     // initialize client
     this.context.store.dispatch('core/client/initialize')

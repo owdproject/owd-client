@@ -12,10 +12,9 @@ import {
   OwdModuleAppWindowInstance,
   OwdModuleAppSetupContext,
   OwdModuleAppSetupAssetsContext,
-  OwdLauncherEntry,
 } from "@owd-client/types";
 import {MutationPayload} from "vuex";
-import {markRaw} from "vue";
+import {reactive} from "vue";
 import ModuleAppWindow from "./moduleAppWindow.class";
 import * as helperStorage from "@owd-client/core/src/helpers/helperStorage";
 
@@ -35,14 +34,14 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
   public readonly store
   public readonly terminal
 
-  public readonly moduleInfo: OwdModuleAppInfo;
+  public moduleInfo: OwdModuleAppInfo;
   public moduleStore: any
   public moduleStoreConfig: any
   public moduleStoreInstance: any
   public moduleCommands: any
   public moduleSseEvents: any
 
-  public windowInstances: OwdModuleAppWindowsInstances = {}
+  public windowInstances: OwdModuleAppWindowsInstances = reactive({})
 
   constructor(context: OwdModuleAppContext) {
     super()
@@ -51,20 +50,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     this.store = context.store
     this.terminal = context.terminal
 
-    this.moduleInfo = this.initializeModuleApp()
-
-    if (!this.moduleInfo.windows) {
-      this.moduleInfo.windows = []
-    }
-
-    this.initializeConfig()
-    this.initializeStore()
-    this.initializeStoreInstance()
-    this.initializeWindowsDock()
-    this.initializeWindows()
-    this.initializeCommands()
-    this.initializeAssets()
-    this.initializeSseEvents()
+    this.register()
   }
 
   /**
@@ -96,19 +82,22 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     return false
   }
 
-  private initializeModuleApp() {
+  private register() {
     if (this.setup) {
-      let moduleInfo = this.setup({
+      this.moduleInfo = this.setup({
         app: this.app
       })
 
-      if (moduleInfo.windows) {
-        moduleInfo.windows.forEach(window => {
-          window.component = markRaw(window.component)
-        })
-      }
+      // initialize other module features
+      this.initializeConfig()
+      this.initializeStore()
+      this.initializeStoreInstance()
+      this.initializeWindows()
+      this.initializeCommands()
+      this.initializeAssets()
+      this.initializeSseEvents()
 
-      return moduleInfo
+      return true
     }
 
     throw new Error('Module app has no setup')
@@ -119,6 +108,12 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
    * (it'll be set to the vuex module state)
    */
   private initializeConfig() {
+    // assign empty array to "windows" if missing in moduleInfo
+    if (!Array.isArray(this.moduleInfo.windows)) {
+      this.moduleInfo.windows = []
+    }
+
+    //load main moduleApp store config
     if (this.moduleInfo.config) {
       this.moduleStoreConfig = this.moduleInfo.config
     }
@@ -343,112 +338,35 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
    */
   private initializeWindows() {
     // no module app windows? go ahead
-    if (!this.moduleInfo.windows) {
+    if (!this.moduleInfo.windows || this.moduleInfo.windows.length === 0) {
       return false
     }
 
-    const windowStorage = helperStorage.loadStorage('window') || {}
+    const storageWindows = helperStorage.loadStorage('window') || {}
 
     for (const windowConfig of this.moduleInfo.windows) {
 
-      if (Object.prototype.hasOwnProperty.call(windowStorage, windowConfig.name)) {
+      ModuleAppWindow.register({
+        module: this,
+        config: windowConfig
+      })
+
+      if (Object.prototype.hasOwnProperty.call(storageWindows, windowConfig.name)) {
         // restore previous opened windows
         this.restoreWindows(windowConfig)
       } else {
-        // register the window
-        const windowInstance = this.registerWindow(windowConfig)
-
         // open it if .autoOpen is set to true
-        if (windowConfig.autoOpen && windowInstance) {
-          windowInstance.create()
-          windowInstance.open()
+        if (windowConfig.autoOpen) {
+          this.createWindow(windowConfig).open(true)
         }
       }
 
+      // add window to store launcher
+
       if (debug) console.log('[owd] window initialized: ' + windowConfig.name)
-
-      // add entry to store launcher
-      if (
-          typeof windowConfig.launcher === 'undefined' ||
-          typeof windowConfig.launcher === 'boolean' && windowConfig.launcher === true
-      ) {
-        this.addLauncherEntry({
-          title: windowConfig.titleApp || windowConfig.title,
-          icon: windowConfig.icon,
-          category: windowConfig.category,
-          favorite: windowConfig.favorite,
-          callback: () => {
-            this.createWindow(windowConfig)
-
-            /*
-            const windowInstance = this.createWindow(windowConfig)
-
-            if (windowInstance) {
-              windowInstance.open(true)
-            }
-             */
-          }
-        })
-      }
     }
 
     return true
-  }
-
-  private initializeWindowsDock() {
-    // no module app windows? go ahead
-    if (this.moduleInfo.windows && this.moduleInfo.windows.length === 0) {
-      return false
-    }
-
-    if (this.moduleInfo.windows && this.moduleInfo.windows.length > 0) {
-      for (const windowConfig of this.moduleInfo.windows) {
-        this.store.commit('core/dock/ADD_CATEGORY', {
-          config: windowConfig,
-          module: this
-        })
-      }
-    }
-  }
-
-  /**
-   * Add a new window (just register it),
-   * instead of declaring it statically from the module conf
-   *
-   * @param windowConfig
-   * @param windowStorage
-   */
-  public registerWindow(windowConfig: OwdModuleAppWindowConfig|string, windowStorage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance|boolean {
-    if (typeof windowConfig === 'string') {
-      windowConfig = this.resolveWindowConfigByName(windowConfig)
-    }
-
-    if (this.isSingleton && this.getWindowInstancesCount(windowConfig.name) > 0) {
-      const windowInstance = this.getFirstWindowInstance(windowConfig.name)
-
-      if (windowInstance) {
-        windowInstance.open(true)
-      }
-
-      // app is a singleton and is already opened
-      return false
-    }
-
-    const windowInstance = new ModuleAppWindow({
-      module: this,
-      config: windowConfig,
-      storage: windowStorage
-    })
-
-    if (windowStorage?.opened || windowStorage?.minimized) {
-      windowInstance.create()
-    }
-
-    if (windowStorage?.opened) {
-      windowInstance.open()
-    }
-
-    return windowInstance
   }
 
   /**
@@ -458,14 +376,15 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
    * @param windowStorage
    */
   public createWindow(windowConfig: OwdModuleAppWindowConfig|string, windowStorage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance {
-    const windowInstance = this.registerWindow(windowConfig, windowStorage)
-
-    if (typeof windowInstance !== 'boolean') {
-      windowInstance.create()
-      windowInstance.open(true)
-
-      return windowInstance
+    if (typeof windowConfig === 'string') {
+      windowConfig = this.resolveWindowConfigByName(windowConfig)
     }
+
+    return new ModuleAppWindow({
+      module: this,
+      config: windowConfig,
+      storage: windowStorage
+    })
   }
 
   /**
@@ -482,7 +401,12 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
 
           if (Object.prototype.hasOwnProperty.call(storageWindows[windowConfig.name], uniqueID)) {
             const windowStorage = storageWindows[windowConfig.name][uniqueID]
-            this.registerWindow(windowConfig, windowStorage)
+
+            this.createWindow(windowConfig, windowStorage).onMounted((windowInstance) => {
+              if (!windowStorage.minimized) {
+                windowInstance.open()
+              }
+            })
           }
 
         }
@@ -517,7 +441,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
    * @param windowName
    */
   public getWindowInstancesCount(windowName: string): number {
-    if (this.windowInstances[windowName]) {
+    if (Object.prototype.hasOwnProperty.call(this.windowInstances, windowName)) {
       return Object.keys(this.windowInstances[windowName]).length
     }
 
@@ -535,23 +459,5 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     }
 
     throw Error(`This window group doesn't have any window instance`)
-  }
-
-  /**
-   * Add app to launcher
-   *
-   * @param item
-   */
-  public addLauncherEntry(item: OwdLauncherEntry) {
-    this.store.commit('core/launcher/ADD', item)
-  }
-
-  /**
-   * Remove app to launcher
-   *
-   * @param item
-   */
-  public removeLauncherEntry(item: OwdLauncherEntry) {
-    this.store.commit('core/launcher/REMOVE', item)
   }
 }

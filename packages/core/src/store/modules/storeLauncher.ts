@@ -53,7 +53,7 @@ export default class StoreLauncher extends VuexModule {
 
     // is a favorite launcherEntry? add to launcher favorites list
     if (typeof item.favorite === 'boolean' && item.favorite) {
-      if (!Object.prototype.hasOwnProperty.call(this.launcher, 'favorite')) {
+      if (!Object.prototype.hasOwnProperty.call(this.launcher, 'favorites')) {
         this.launcher['favorites'] = []
       }
 

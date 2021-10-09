@@ -115,6 +115,8 @@ export interface OwdModuleApp {
   restoreWindows(config: OwdModuleAppWindowConfig): boolean;
   getWindowInstancesCount(windowName: string): number;
   getFirstWindowInstance(windowName: string): OwdModuleAppWindowInstance;
+  addLauncherEntry(item: OwdLauncherEntry): void;
+  removeLauncherEntry(item: OwdLauncherEntry): void;
 }
 
 export interface OwdModuleAppInfo {
@@ -167,9 +169,9 @@ export interface OwdModuleAppSseEvents {
 }
 
 export interface OwdModuleAppWindowConfig {
-  component: Component
+  component?: Component
   name: string
-  category?: string
+  category: string
   title: string
   titleApp?: string
   titleWindow?: string
@@ -226,12 +228,10 @@ export interface OwdModuleAppWindowInstance extends OwdModuleAppWindowCreateInst
   moduleName: string
   uniqueID: string
   uniqueName: string
-  create(): boolean
   destroy(): boolean
   open(focus?: boolean): boolean
   close(): void
-  minimize(): boolean
-  minimizeToggle(): boolean
+  minimize(toggle?: boolean): boolean
   maximize(toggle: boolean): boolean
   fullscreen(toggle: boolean): void
 
@@ -265,7 +265,6 @@ export interface OwdModuleAppWindowStorage {
   title?: string
   position: OwdModuleAppWindowConfigPosition
   size: OwdModuleAppWindowConfigSize
-  opened: boolean
   minimized: boolean
   maximized: boolean
   fullscreen?: boolean
@@ -289,7 +288,7 @@ export interface OwdLauncher {
   [category: string]: OwdLauncherEntry[]
 }
 export interface OwdLauncherEntry {
-  name: string
+  title: string
   icon: string | OwdLauncherEntryIcon,
   category: string
   favorite?: boolean
@@ -297,7 +296,7 @@ export interface OwdLauncherEntry {
 }
 
 export interface OwdLauncherEntryIcon {
-  name: string
+  name?: string
   offset?: {
     x?: number
     y?: number

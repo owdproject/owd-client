@@ -22,7 +22,7 @@ export function initializeDesktopAssets(context: OwdCoreAssetsContext) {
   const appElement = document.getElementById('app')
 
   if (appElement) {
-    appElement.setAttribute('data-theme', context.app.config.globalProperties.$owd.desktop.name)
+    appElement.setAttribute('data-theme', context.extensions.desktop.name)
   }
 }
 

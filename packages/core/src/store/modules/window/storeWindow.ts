@@ -59,43 +59,6 @@ export default class StoreWindow extends VuexModule {
   }
 
   /**
-   * Save windows storage (position, size and more)
-   */
-  @Action
-  saveWindowsStorage() {
-    clearTimeout(this.storage.saveTimeout)
-    this.storage.saveTimeout = setTimeout(async () => {
-      let storage: OwdModuleAppWindowsStorage = {}
-
-      for (const windowInstance of this.modulesAppWindowInstances) {
-        if (typeof storage[windowInstance.config.name] === 'undefined') {
-          storage[windowInstance.config.name] = {}
-        }
-
-        if (windowInstance.uniqueID) {
-          storage[windowInstance.config.name][windowInstance.uniqueID] = {
-            uniqueID: windowInstance.uniqueID,
-            position: windowInstance.storage.position,
-            size: windowInstance.storage.size,
-            minimized: windowInstance.storage.minimized,
-            maximized: windowInstance.storage.maximized,
-            focused: windowInstance.storage.focused
-          }
-
-          // store metaData if present
-          if (typeof windowInstance.storage.metaData !== 'undefined') {
-            storage[windowInstance.config.name][windowInstance.uniqueID].metaData = windowInstance.storage.metaData
-          }
-        }
-      }
-
-      // update local storage
-      helperStorage.saveStorage('window', storage)
-
-    }, 250)
-  }
-
-  /**
    * Reset entire windows storage
    */
   @Action

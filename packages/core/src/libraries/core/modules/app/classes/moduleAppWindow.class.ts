@@ -1,12 +1,14 @@
 import md5 from "md5";
 import * as helperWindow from "@owd-client/core/src/helpers/helperWindow";
+import * as helperStorage from "@owd-client/core/src/helpers/helperStorage";
+
 import {
   OwdModuleAppWindowInstance,
   OwdModuleAppWindowCreateInstanceData,
   OwdModuleAppWindowConfigPosition,
   OwdModuleAppWindowConfigSize,
   OwdModuleApp,
-  OwdModuleAppWindowStorage, OwdModuleAppWindowConfig
+  OwdModuleAppWindowStorage, OwdModuleAppWindowConfig, OwdModuleAppWindowsStorage
 } from "@owd-client/types";
 
 export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
@@ -259,6 +261,14 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
       this.instance.module.unregisterStoreInstance(this.uniqueName)
     }
 
+    // remove window from storage
+    let storage: OwdModuleAppWindowsStorage = helperStorage.loadStorage('window') || {}
+
+    if (typeof storage[this.config.name] !== 'undefined') {
+      delete storage[this.config.name][this.uniqueID]
+      helperStorage.saveStorage('window', storage)
+    }
+
     return true
   }
 
@@ -315,6 +325,33 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
 
   get isMaximized(): boolean {
     return this.instance.storage.maximized
+  }
+
+  save() {
+    let storage: OwdModuleAppWindowsStorage = helperStorage.loadStorage('window') || {}
+
+    if (typeof storage[this.config.name] === 'undefined') {
+      storage[this.config.name] = {}
+    }
+
+    if (this.uniqueID) {
+      storage[this.config.name][this.uniqueID] = {
+        uniqueID: this.uniqueID,
+        position: this.storage.position,
+        size: this.storage.size,
+        minimized: this.storage.minimized,
+        maximized: this.storage.maximized,
+        focused: this.storage.focused
+      }
+
+      // store metaData if present
+      if (typeof this.storage.metaData !== 'undefined') {
+        storage[this.config.name][this.uniqueID].metaData = this.storage.metaData
+      }
+    }
+
+    // update local storage
+    helperStorage.saveStorage('window', storage)
   }
 
   fullscreen(toggle: boolean): boolean {

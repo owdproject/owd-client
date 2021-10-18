@@ -285,12 +285,6 @@ function onDragEnd(data) {
 }
 
 onMounted(() => {
-  if (props.window.config.autoCloseBeforePageUnload) {
-    window.addEventListener('beforeunload', () => props.window.close())
-  }
-
-  store.dispatch('core/window/saveWindowsStorage')
-
   watch(
       () => props.window.storage.focused,
       (focused) => emit(focused ? 'focus' : 'blur')
@@ -313,13 +307,9 @@ onMounted(() => {
 })
 
 onUnmounted(async () => {
-  if (props.window.config.autoCloseBeforePageUnload) {
-    window.removeEventListener('beforeunload', () => props.window.close())
-  }
-
   // emit event to moduleApp window
   await emit('unmount')
 })
 
-watch(() => props.window.storage, () => store.dispatch('core/window/saveWindowsStorage'), {deep: true})
+watch(() => props.window.storage, () => props.window.save(), {deep: true})
 </script>

@@ -1,12 +1,12 @@
-import {initializeAppStore} from "../../../store";
-import {initializeAppRouter} from "../../../plugins/router";
-import {initializeAppPlugins} from "../plugins";
-import {initializeAppI18n} from "../../../plugins/i18n";
-import {initializeAppAssets} from "../assets";
-import {initializeAppTerminal} from "../terminal";
+import {initializeAppStore} from "../../store";
+import {initializeAppRouter} from "../../plugins/router";
+import {initializeAppPlugins} from "./plugins";
+import {initializeAppI18n} from "../../plugins/i18n";
+import {initializeAppAssets} from "./assets";
+import {initializeAppTerminal} from "./terminal";
 
-import {initializeDesktopApps, initializeDesktopModules} from "../modules";
-import {initializeDesktopAssets} from "../assets";
+import {initializeDesktopApps, initializeDesktopModules} from "./modules";
+import {initializeDesktopAssets} from "./assets";
 
 /**
  * Initialize app
@@ -14,7 +14,7 @@ import {initializeDesktopAssets} from "../assets";
 export function initializeApp(context: any) {
     if (debug) console.log('[owd] initializing app...')
 
-    // set owd context to $owd vue globalProperties
+    // set owd config to $owd vue globalProperties
     context.app.config.globalProperties.$owd = { ...context.config }
 
     context.store = initializeAppStore({
@@ -40,8 +40,9 @@ export function initializeApp(context: any) {
     })
 
     context.terminal = initializeAppTerminal()
-    context.stats.loaded.app = true
 
+    // app loaded
+    context.booted.app = true
     if (debug) console.log('[owd] initialized app.')
 }
 
@@ -49,8 +50,6 @@ export function initializeApp(context: any) {
  * Initialize desktop
  */
 export function initializeDesktop(context: any) {
-    context.stats.loaded.desktop = true
-
     initializeDesktopAssets({
         app: context.app,
         extensions: context.extensions
@@ -71,5 +70,7 @@ export function initializeDesktop(context: any) {
         })
     }
 
+    // desktop loaded
+    context.booted.desktop = true
     if (debug) console.log('[owd] initialized desktop.')
 }

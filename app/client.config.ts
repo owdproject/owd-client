@@ -1,7 +1,7 @@
 import { version } from './package.json'
 
 export default {
-  debug: false,
+  debug: true,
 
   name: 'owd-client',
   hostname: 'owdproject.org',

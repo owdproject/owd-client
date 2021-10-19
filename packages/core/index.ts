@@ -1,8 +1,7 @@
-import Boot from './src/boot'
-import ModuleAppClass from './src/libraries/core/modules/app/classes/moduleApp.class'
-
+import Core from './src/core'
 import {OwdCoreBootContext} from "@owd-client/types";
-import OwdBoot from "./src/boot";
+
+import ModuleAppClass from './src/libraries/core/modules/app/classes/moduleApp.class'
 
 let owd: any
 
@@ -11,10 +10,10 @@ let owd: any
  *
  * @param context
  */
-export async function createApp(context: OwdCoreBootContext): Promise<OwdBoot> {
+export async function createApp(context: OwdCoreBootContext): Promise<Core> {
   return new Promise((resolve, reject) => {
     try {
-      owd = new Boot(context)
+      owd = new Core(context)
       resolve(owd)
     } catch(e) {
       reject(e)
@@ -39,44 +38,32 @@ export function createDesktop(context: OwdCoreBootContext) {
 /**
  * Use OWD instance
  */
-export function useDesktop() {
-  return owd
-}
+export function useDesktop() { return owd }
 
 /**
  * Use OWD store
  */
-export function useDesktopStore() {
-  return owd.store
-}
+export function useDesktopStore() { return owd.store }
 
 /**
- * Use OWD store
+ * Use OWD router
  */
-export function useDesktopRouter() {
-  return owd.router
-}
+export function useDesktopRouter() { return owd.router }
 
 /**
  * Use OWD desktop apps
  */
-export function useDesktopApps() {
-  return owd.modules.app
-}
+export function useDesktopApps() { return owd.modules.app }
 
 /**
  * Use OWD desktop modules
  */
-export function useDesktopModules() {
-  return owd.modules.desktop
-}
+export function useDesktopModules() { return owd.modules.desktop }
 
 /**
- * Use OWD store
+ * Use OWD terminal
  */
-export function useDesktopTerminal() {
-  return owd.terminal
-}
+export function useDesktopTerminal() { return owd.terminal }
 
 // new moduleApp class
 export const ModuleApp = ModuleAppClass

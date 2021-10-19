@@ -80,6 +80,10 @@ const props = defineProps({
       &--append {
         right: 0;
       }
+
+      .v-btn {
+        vertical-align: middle;
+      }
     }
 
     .v-btn.v-btn--density-default {

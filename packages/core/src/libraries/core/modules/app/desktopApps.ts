@@ -11,7 +11,9 @@ export default class DesktopApps {
     this.context = context
 
     // on desktop components ready
-    setTimeout(() => this.initialize(), 1)
+    this.context.on('owd/desktop:mounted', () => {
+      this.initialize()
+    })
   }
 
   /**

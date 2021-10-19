@@ -7,21 +7,24 @@ import {
 } from "@owd-client/types";
 
 import {initializeApp, initializeDesktop} from "./libraries/core/boot";
+import {EventEmitter} from "./libraries/core/event-emitter";
 
-export default class Core {
-  private readonly app: App
-  private readonly config: OwdClientConfiguration
-  private readonly extensions: OwdClientConfigurationExtensions
+export default class Core extends EventEmitter {
+  readonly app: App
+  readonly config: OwdClientConfiguration
+  readonly extensions: OwdClientConfigurationExtensions
 
-  private store: any
-  private terminal: any
+  store: any
+  terminal: any
 
-  private booted = {
+  booted = {
     app: false,
     desktop: false
   }
 
   constructor(context: OwdCoreBootContext) {
+    super()
+
     if (this.booted.app) {
       throw Error('[owd] app already initialized')
     }

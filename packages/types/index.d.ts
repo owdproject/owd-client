@@ -74,22 +74,21 @@ export interface OwdCoreBootContext {
   extensions: OwdClientConfigurationExtensions
 }
 
-// modulesExtend.class
-export interface OwdCoreModuleContext {
+export interface OwdCoreContext {
   app: App
+  config: OwdClientConfiguration
   extensions: OwdClientConfigurationExtensions
   store: any
   terminal: any
-}
-
-export interface OwdCoreAssetsContext {
-  app: App
-  extensions: OwdClientConfigurationExtensions
-}
-
-// module.class
-export interface OwdModuleAppContext extends OwdCoreModuleContext {
-  moduleInfo: OwdModuleAppInfo
+  router?: any
+  modules?: {
+    app: any
+    desktop: any
+  }
+  booted: {
+    app: boolean,
+    desktop: boolean
+  }
 }
 
 // OWD MODULES APP

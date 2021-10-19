@@ -7,11 +7,12 @@ import {initializeAppTerminal} from "./terminal";
 
 import {initializeDesktopApps, initializeDesktopModules} from "./modules";
 import {initializeDesktopAssets} from "./assets";
+import {OwdCoreContext} from "@owd-client/types";
 
 /**
  * Initialize app
  */
-export function initializeApp(context: any) {
+export function initializeApp(context: OwdCoreContext) {
     if (debug) console.log('[owd] initializing app...')
 
     // set owd config to $owd vue globalProperties
@@ -34,10 +35,7 @@ export function initializeApp(context: any) {
 
     initializeAppI18n(context.app)
 
-    initializeAppAssets({
-        app: context.app,
-        extensions: context.extensions
-    })
+    initializeAppAssets(context)
 
     context.terminal = initializeAppTerminal()
 
@@ -49,25 +47,12 @@ export function initializeApp(context: any) {
 /**
  * Initialize desktop
  */
-export function initializeDesktop(context: any) {
-    initializeDesktopAssets({
-        app: context.app,
-        extensions: context.extensions
-    })
+export function initializeDesktop(context: OwdCoreContext) {
+    initializeDesktopAssets(context)
 
     context.modules = {
-        desktop: initializeDesktopModules({
-            app: context.app,
-            extensions: context.extensions,
-            store: context.store,
-            terminal: context.terminal
-        }),
-        app: initializeDesktopApps({
-            app: context.app,
-            extensions: context.extensions,
-            store: context.store,
-            terminal: context.terminal
-        })
+        desktop: initializeDesktopModules(context),
+        app: initializeDesktopApps(context)
     }
 
     // desktop loaded

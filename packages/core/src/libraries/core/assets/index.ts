@@ -1,17 +1,17 @@
 import {App} from "vue";
 
-import WindowComponent from "../../../../src/components/window/Window.vue";
-import WindowAppComponent from "../../../../src/components/window/app/WindowApp.vue";
+import WindowComponent from "@owd-client/core/src/components/window/Window.vue";
+import WindowAppComponent from "@owd-client/core/src/components/window/app/WindowApp.vue";
 
 import {initializeVuetify} from "@owd-client/core/src/plugins/vuetify";
-import {OwdCoreAssetsContext} from "@owd-client/types";
+import {OwdCoreContext} from "@owd-client/types";
 
-export function initializeAppAssets(context: OwdCoreAssetsContext) {
+export function initializeAppAssets(context: OwdCoreContext) {
   // initialize vuetify
   initializeVuetify(context.app)
 }
 
-export function initializeDesktopAssets(context: OwdCoreAssetsContext) {
+export function initializeDesktopAssets(context: OwdCoreContext) {
   // import core styles
   import('@owd-client/core/src/assets/css/app.scss')
 

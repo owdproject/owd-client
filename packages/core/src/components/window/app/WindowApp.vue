@@ -19,6 +19,7 @@
       :is-fullscreen="window.config.fullscreenable && window.storage.fullscreen"
       :is-borderless="window.config.borderless"
       :is-rounded="window.config.theme.rounded"
+      :has-nav-title="window.config.theme.nav.title"
       :has-no-content-spacing="window.config.theme.noContentSpacing"
       :preserve-material="window.config.theme.preserveMaterial"
       @drag:start="onDragStart"

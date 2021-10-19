@@ -38,7 +38,11 @@
   >
     <div class="owd-window__container">
 
-      <WindowNav :title="props.title" @toggleMaximize="emit('toggle-maximize')">
+      <WindowNav
+          :title="props.title"
+          :hasNavTitle="hasNavTitle"
+          @toggleMaximize="emit('toggle-maximize')"
+      >
         <template v-slot:nav-prepend>
           <slot name="nav-prepend" />
         </template>
@@ -119,6 +123,9 @@ const props = defineProps({
     type: Boolean
   },
   isRounded: {
+    type: Boolean
+  },
+  hasNavTitle: {
     type: Boolean
   },
   hasNoContentSpacing: {

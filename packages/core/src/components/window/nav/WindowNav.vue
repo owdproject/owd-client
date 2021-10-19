@@ -1,5 +1,5 @@
 <template>
-  <div class="owd-window__nav">
+  <div class="owd-window__nav" @dblclick="$emit('toggleMaximize')">
 
     <div class="owd-window__nav__draggable" />
 
@@ -8,8 +8,8 @@
     </div>
 
     <div
+        v-if="hasNavTitle"
         class="owd-window__nav__title"
-        @dblclick="$emit('toggleMaximize')"
     >
       <div class="owd-window__nav__title-inner" v-text="title" />
     </div>
@@ -23,7 +23,8 @@
 
 <script setup>
 const props = defineProps({
-  title: String
+  title: String,
+  hasNavTitle: Boolean
 })
 </script>
 
@@ -76,6 +77,14 @@ const props = defineProps({
       display: flex;
       height: 100%;
       align-items: center;
+
+      &--prepend {
+        width: 100%;
+      }
+
+      &--prepend + &__title {
+        width: auto;
+      }
 
       &--append {
         right: 0;

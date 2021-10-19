@@ -88,8 +88,18 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
       config.launcher = true
     }
 
+    // theme dense check
     if (typeof config.theme.dense === 'undefined') {
       config.theme.dense = true
+    }
+
+    // theme nav check
+    if (typeof config.theme.nav === 'undefined') {
+      config.theme.nav = {}
+    }
+
+    if (typeof config.theme.nav.title === 'undefined') {
+      config.theme.nav.title = true
     }
 
     return config
@@ -275,7 +285,7 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
   // soft open
   open(focus: boolean = false): boolean {
     if (!this.mounted) {
-      this.onMounted((windowInstance) => {
+      this.onMounted((windowInstance: any) => {
         windowInstance.open(focus)
       })
     } else {

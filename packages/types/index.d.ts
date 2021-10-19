@@ -194,6 +194,9 @@ export interface OwdModuleAppWindowConfig {
   autoCloseBeforePageUnload?: boolean
   autoDestroyBeforePageUnload?: boolean
   theme?: {
+    nav?: {
+      title?: boolean
+    }
     dense?: boolean
     rounded?: boolean
     noContentSpacing?: boolean

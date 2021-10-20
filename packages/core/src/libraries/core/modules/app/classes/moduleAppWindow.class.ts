@@ -148,7 +148,7 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
   private static registerLauncher(data: OwdModuleAppWindowCreateInstanceData) {
     if (data.config.launcher === true) {
       data.module.store.commit('core/launcher/ADD', {
-        title: data.config.titleApp || data.config.title,
+        title: data.config.titleLauncher || data.config.title,
         icon: data.config.icon,
         category: data.config.category,
         favorite: data.config.favorite,

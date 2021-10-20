@@ -74,7 +74,13 @@ export interface OwdCoreBootContext {
   extensions: OwdClientConfigurationExtensions
 }
 
-export interface OwdCoreContext {
+export interface EventEmitter {
+  _events: any
+  on(name: string, listener: any)
+  emit(name: string, data: any)
+}
+
+export interface OwdCoreContext extends EventEmitter {
   app: App
   config: OwdClientConfiguration
   extensions: OwdClientConfigurationExtensions

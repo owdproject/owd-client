@@ -56,6 +56,7 @@
   a {
     color: var(--v-primary);
     font-size: 14px;
+    opacity: 0.75;
   }
 
   .powered-by {

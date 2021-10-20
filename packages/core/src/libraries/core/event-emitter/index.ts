@@ -1,30 +1,30 @@
 export class EventEmitter {
-  events: any
+  _events: any
 
   constructor() {
-    this.events = {};
+    this._events = {};
   }
 
   on(name: string, listener: any) {
-    if (!this.events[name]) {
-      this.events[name] = [];
+    if (!this._events[name]) {
+      this._events[name] = [];
     }
 
-    this.events[name].push(listener);
+    this._events[name].push(listener);
   }
 
   removeListener(name: string, listenerToRemove: any) {
-    if (!this.events[name]) {
+    if (!this._events[name]) {
       throw new Error(`[owd] Can't remove a listener. Event "${name}" doesn't exits.`);
     }
 
     const filterListeners = (listener: any) => listener !== listenerToRemove;
 
-    this.events[name] = this.events[name].filter(filterListeners);
+    this._events[name] = this._events[name].filter(filterListeners);
   }
 
   emit(name: string, data: any) {
-    if (!this.events[name]) {
+    if (!this._events[name]) {
       throw new Error(`[owd] Can't emit an event. Event "${name}" doesn't exits.`);
     }
 
@@ -32,6 +32,6 @@ export class EventEmitter {
       callback(data);
     };
 
-    this.events[name].forEach(fireCallbacks);
+    this._events[name].forEach(fireCallbacks);
   }
 }

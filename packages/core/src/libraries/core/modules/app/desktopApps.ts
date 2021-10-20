@@ -1,5 +1,6 @@
 import {
-  OwdCoreModuleContext, OwdModuleApp,
+  OwdCoreContext,
+  OwdModuleApp,
   OwdModulesApp
 } from "@owd-client/types";
 
@@ -7,7 +8,7 @@ export default class DesktopApps {
   private readonly context;
   private modules: OwdModulesApp = {}
 
-  constructor(context: OwdCoreModuleContext) {
+  constructor(context: OwdCoreContext) {
     this.context = context
 
     // on desktop components ready

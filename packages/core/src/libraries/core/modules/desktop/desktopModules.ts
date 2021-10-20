@@ -1,6 +1,6 @@
 import {reactive,markRaw} from 'vue'
 import {
-  OwdCoreModuleContext, OwdModuleDesktop,
+  OwdCoreContext, OwdModuleDesktop,
   OwdModulesDesktop
 } from "@owd-client/types";
 
@@ -8,7 +8,7 @@ export default class DesktopModules {
   private readonly context;
   private modules: OwdModulesDesktop = {}
 
-  constructor(context: OwdCoreModuleContext) {
+  constructor(context: OwdCoreContext) {
     this.context = context
 
     this.registerDesktopEnvironment()
@@ -20,9 +20,6 @@ export default class DesktopModules {
    * then register a global vue component called <Desktop> and provide desktop options
    */
   registerDesktopEnvironment() {
-    // register desktop vue component
-    this.context.app.component('Desktop', this.context.extensions.desktop.component)
-
     // provide desktop options
     this.context.app.provide('desktopOptions', this.context.extensions.desktop.options)
 
@@ -72,23 +69,25 @@ export default class DesktopModules {
     const desktopModules = this.getDesktopModulesFromConfig()
 
     for (const desktopModule of desktopModules) {
-      this.createDesktopModule(desktopModule)
+      this.registerDesktopModule(desktopModule)
     }
   }
 
   /**
-   * Load desktop modules that have been defined in the client.extensions.ts
+   * Register a new desktop module
    */
-  public createDesktopModule(desktopModule: OwdModuleDesktop) {
-    if (!this.modules[desktopModule.config.area]) {
+  public registerDesktopModule(desktopModule: OwdModuleDesktop) {
+    // define module area
+    if (!Object.prototype.hasOwnProperty.call(this.modules, desktopModule.config.area)) {
       this.modules[desktopModule.config.area] = {}
     }
 
+    // set default position if missing
     if (!desktopModule.config.position) {
       desktopModule.config.position = 'default'
     }
 
-    if (!this.modules[desktopModule.config.area][desktopModule.config.position]) {
+    if (!Object.prototype.hasOwnProperty.call(this.modules[desktopModule.config.area], desktopModule.config.position)) {
       this.modules[desktopModule.config.area][desktopModule.config.position] = []
     }
 

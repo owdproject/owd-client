@@ -2,6 +2,8 @@ import { App, Component } from 'vue'
 import { Store, ModuleTree } from 'vuex'
 import {RouteRecordRaw} from "vue-router";
 
+declare var debug: boolean
+
 // OWD CLIENT
 
 export interface OwdClientConfiguration {

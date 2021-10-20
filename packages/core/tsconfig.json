@@ -21,6 +21,7 @@
       ]
     },
     "types": [
+      "@owd-client/types",
       "@types/jest",
       "@types/md5",
       "vuetify/types",

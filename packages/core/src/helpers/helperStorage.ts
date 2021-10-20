@@ -27,16 +27,9 @@ export function loadStorage(name: string) {
 export function saveStorage(name: string, data: any) {
   const storeName = storageName(name)
 
-  // reset previous save execution
-  clearTimeout(timeoutSave[storeName])
-
-  // set next save execution
-  timeoutSave[storeName] = setTimeout(() => {
-
-    // save to local storage
+  if (storeName) {
     localStorage.setItem(storeName, JSON.stringify(data))
-
-  }, 200)
+  }
 }
 
 /**

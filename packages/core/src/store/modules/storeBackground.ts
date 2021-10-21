@@ -1,14 +1,8 @@
-import {Module, Mutation, Action, RegisterOptions, VuexModule} from "vuex-class-modules";
+import {Module, Mutation, Action, VuexModule} from "vuex-class-modules";
 import {loadStorage, saveStorage} from "../../helpers/helperStorage";
 
 @Module
 export default class StoreBackground extends VuexModule {
-  constructor(
-    options: RegisterOptions
-  ) {
-    super(options);
-  }
-
   private background: any = {
     color: '',
     image: '',
@@ -33,7 +27,7 @@ export default class StoreBackground extends VuexModule {
   }
 
   /**
-   * Load background from local storage
+   * Load background config from local storage
    */
   @Action
   initialize() {

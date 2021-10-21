@@ -1,14 +1,8 @@
-import {Module, Mutation, RegisterOptions, VuexModule} from "vuex-class-modules";
+import {Module, Mutation, VuexModule} from "vuex-class-modules";
 import {OwdDock, OwdModuleApp, OwdModuleAppWindowConfig, OwdModuleAppWindowInstance} from "@owd-client/types";
 
 @Module
 export default class StoreDock extends VuexModule {
-  constructor(
-    options: RegisterOptions
-  ) {
-    super(options);
-  }
-
   private dock: OwdDock = {
     apps: {},
     list: []

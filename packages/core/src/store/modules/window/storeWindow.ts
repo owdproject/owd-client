@@ -10,7 +10,7 @@ import {
 
 @Module
 export default class StoreWindow extends VuexModule {
-  private readonly windowFocusModule: WindowFocusModule
+  private readonly storeWindowFocus: WindowFocusModule
 
   // all window instances
   private readonly windows: {[uniqueID: string]: OwdModuleAppWindowInstance} = {}
@@ -25,11 +25,11 @@ export default class StoreWindow extends VuexModule {
   }
 
   constructor(
-    windowFocusModule: WindowFocusModule,
+    storeWindowFocus: WindowFocusModule,
     options: RegisterOptions
   ) {
     super(options);
-    this.windowFocusModule = windowFocusModule
+    this.storeWindowFocus = storeWindowFocus
   }
 
   /**
@@ -55,7 +55,7 @@ export default class StoreWindow extends VuexModule {
   @Action
   initialize() {
     // restore previous window focus
-    this.windowFocusModule.restorePreviousWindowFocus()
+    this.storeWindowFocus.restorePreviousWindowFocus()
   }
 
   /**

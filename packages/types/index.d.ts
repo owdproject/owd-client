@@ -48,6 +48,7 @@ export interface OwdClientConfigurationExtensions {
     options: {
       [key: string]: any
     }
+    locales: any
   },
   plugins: any[]
   store: ModuleTree<any>
@@ -78,8 +79,8 @@ export interface OwdCoreBootContext {
 
 export interface EventEmitter {
   _events: any
-  on(name: string, listener: any)
-  emit(name: string, data: any)
+  on(name: string, listener: any): void
+  emit(name: string, data: any): void
 }
 
 export interface OwdCoreContext extends EventEmitter {

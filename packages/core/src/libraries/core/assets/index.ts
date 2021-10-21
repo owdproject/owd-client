@@ -5,6 +5,7 @@ import WindowComponent from "../../../../src/components/window/Window.vue";
 import WindowAppComponent from "../../../../src/components/window/app/WindowApp.vue";
 
 import {initializeVuetify} from "@owd-client/core/src/plugins/vuetify";
+import {loadLocaleMessages} from "@owd-client/core/src/plugins/i18n";
 
 export function initializeAppAssets(context: OwdCoreContext) {
   // initialize vuetify
@@ -26,4 +27,7 @@ export function initializeDesktopAssets(context: OwdCoreContext) {
   if (appElement) {
     appElement.setAttribute('data-theme', context.extensions.desktop.name)
   }
+
+  // load desktop locales
+  loadLocaleMessages(context.extensions.desktop.locales)
 }

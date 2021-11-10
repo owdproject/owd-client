@@ -12,7 +12,7 @@
         'z-index': props.zIndex
       }"
       fit-parent
-      drag-selector=".owd-window__nav .owd-window__nav__draggable"
+      :drag-selector="dragDisabled ? null : '.owd-window__nav .owd-window__nav__draggable'"
       @drag:start="onDragStart"
       @drag:end="onDragEnd"
       @resize:start="onResizeStart"
@@ -134,6 +134,9 @@ const props = defineProps({
   preserveMaterial: {
     type: Boolean
   },
+  dragDisabled: {
+    type: Boolean
+  }
 })
 
 const emit = defineEmits([
@@ -264,6 +267,10 @@ function onResizeEnd(data) {
       background-size: cover;
       content: '';
     }
+  }
+
+  &--dragging {
+    cursor: move;
   }
 
   &--dragging, &--resizing {

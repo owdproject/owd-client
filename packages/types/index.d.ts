@@ -302,7 +302,10 @@ export interface OwdLauncherEntry {
   title: string
   icon: string | OwdLauncherEntryIcon,
   category: string
-  favorite?: boolean
+  favorite?: boolean|{
+    launcher: boolean
+    dock: boolean
+  }
   callback: any
 }
 

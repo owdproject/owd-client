@@ -20,15 +20,16 @@ export default class DesktopApps {
   /**
    * Initialize app modules that have been defined in the client.extensions.ts
    */
-  public initialize() {
+  public async initialize() {
     const desktopApps = this.getModulesAppFromConfig()
 
+    // initialize client
+    await this.context.store.dispatch('core/client/initialize')
+
+    // install apps
     for (const DesktopApp of desktopApps) {
       this.installApp(DesktopApp)
     }
-
-    // initialize client
-    this.context.store.dispatch('core/client/initialize')
   }
 
   /**

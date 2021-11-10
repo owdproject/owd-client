@@ -1,5 +1,4 @@
-// @ts-ignore
-import { createI18n, I18n } from 'vue-i18n/index'
+import { createI18n, I18n } from 'vue-i18n'
 // @ts-ignore
 import messages from '/@/../src/locales/index'
 import {App,nextTick} from "vue";

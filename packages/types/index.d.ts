@@ -150,21 +150,21 @@ export interface OwdModuleAppSetupAssetsContext {
 export interface OwdModuleAppSetupCommandsContext {
   app: App,
   config: OwdModuleAppInfo,
-  store: Store<any>,
+  store: Store<any>
   terminal: any
 }
 
 export interface OwdModuleAppSetupSseEventsContext {
   app: App,
-  config: OwdModuleAppInfo,
-  store: Store<any>,
+  config: OwdModuleAppInfo
+  store: Store<any>
   terminal: any
 }
 
 export interface OwdModuleAppSetupStoreContext {
   app: App,
   config: OwdModuleAppInfo,
-  store: Store<any>,
+  store: Store<any>
   terminal: any
 }
 
@@ -272,7 +272,7 @@ export interface OwdModuleAppWindowsInstances {
 }
 
 export interface OwdModuleAppWindowStorage {
-  uniqueID: string,
+  uniqueID: string
   title?: string
   position: OwdModuleAppWindowConfigPosition
   size: OwdModuleAppWindowConfigSize
@@ -300,7 +300,7 @@ export interface OwdLauncher {
 }
 export interface OwdLauncherEntry {
   title: string
-  icon: string | OwdLauncherEntryIcon,
+  icon: string | OwdLauncherEntryIcon
   category: string
   favorite?: boolean|{
     launcher: boolean
@@ -314,7 +314,7 @@ export interface OwdLauncherEntryIcon {
   offset?: {
     x?: number
     y?: number
-  },
+  }
   background?: string
   color?: string
 }
@@ -340,14 +340,14 @@ export interface OwdEvents {
 }
 
 export interface OwdEvent extends OwdEventConfig {
-  source: EventSource,
+  source: EventSource
   connected: boolean
 }
 
 export interface OwdEventConfig {
-  name: string,
-  url: string,
-  reconnectOnError: boolean,
+  name: string
+  url: string
+  reconnectOnError: boolean
   reconnectTimeout: number
 }
 
@@ -356,11 +356,11 @@ export interface OwdEventConfig {
 export interface OwdDock {
   apps: {
     [key: string]: {
-      config: OwdModuleAppWindowConfig,
-      module: OwdModuleApp,
+      config: OwdModuleAppWindowConfig
+      module: OwdModuleApp
       list: OwdModuleAppWindowInstance[]
     }
-  },
+  }
   list: OwdModuleAppWindowInstance[]
 }
 
@@ -373,15 +373,15 @@ export interface OwdModulesDesktop {
 }
 
 export interface OwdModuleDesktop {
-  config: OwdModuleDesktopConfig,
+  config: OwdModuleDesktopConfig
   components: {
     [key: string]: any
   }
 }
 
 export interface OwdModuleDesktopConfig {
-  name: string,
-  area: string,
-  position: string,
+  name: string
+  area: string
+  position: string
   opened?: boolean
 }

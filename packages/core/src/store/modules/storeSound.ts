@@ -17,7 +17,7 @@ export default class StoreSound extends VuexModule {
   }
 
   /**
-   * Load sound config from local storage
+   * Load sound status from local storage
    */
   @Action
   initialize() {

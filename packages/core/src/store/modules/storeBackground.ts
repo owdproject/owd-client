@@ -27,7 +27,7 @@ export default class StoreBackground extends VuexModule {
   }
 
   /**
-   * Load background config from local storage
+   * Load background status from local storage
    */
   @Action
   initialize() {

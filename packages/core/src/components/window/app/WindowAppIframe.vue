@@ -30,9 +30,11 @@
 
     <div class="owd-window-iframe__content">
       <iframe
-          v-if="iframeSrc"
+          v-if="iframe && iframe.src"
           :id="iframeId"
-          :src="iframeSrc"
+          :src="iframe.src"
+          :allow="iframe.allow"
+          :sandbox="iframe.sandbox"
           @load="onIframeLoaded"
       />
 
@@ -80,7 +82,7 @@ const emit = defineEmits([
   'drag:end',
 ])
 
-const iframeSrc = ref('')
+const iframe = ref(null)
 const loaded = ref(false)
 const focused = ref(false)
 
@@ -109,7 +111,7 @@ function onIframeLoaded() {
   emit('iframeLoaded')
 }
 
-watch(() => props.url, url => iframeSrc.value = url)
+watch(() => props.url, url => iframe.src.value = url)
 
 watch(() => props.window.config, config => iframeSrc.value = config.metaData.iframeUrl, {deep: true})
 
@@ -122,7 +124,11 @@ watch(() => props.window.storage.focused, val => {
 })
 
 onMounted(() => {
-  iframeSrc.value = props.url || props.window.config.metaData.iframeUrl
+  iframe.value = {
+    src: props.url || props.window.config.metaData.iframe.src,
+    allow: props.window.config.metaData?.iframe?.allow,
+    sandbox: props.window.config.metaData?.iframe?.sandbox
+  }
 })
 </script>
 

@@ -196,6 +196,7 @@ export interface OwdModuleAppWindowConfig {
   maximized?: boolean
   maximizable?: boolean
   fullscreenable?: boolean
+  workspace: number
   borderless?: boolean
   hostname?: string
   autoOpen?: boolean
@@ -278,8 +279,9 @@ export interface OwdModuleAppWindowStorage {
   size: OwdModuleAppWindowConfigSize
   minimized: boolean
   maximized: boolean
-  fullscreen?: boolean
-  focused: boolean,
+  fullscreen: boolean
+  workspace: number
+  focused: boolean
   metaData?: any
 }
 

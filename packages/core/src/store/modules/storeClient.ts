@@ -4,6 +4,7 @@ import SseModule from "./storeSse";
 import WindowModule from "./window/storeWindow";
 import BackgroundModule from "./storeBackground";
 import SoundModule from "./storeSound";
+import WorkspaceModule from "./storeWorkspace";
 
 @Module
 export default class StoreClient extends VuexModule {
@@ -11,12 +12,14 @@ export default class StoreClient extends VuexModule {
   private readonly storeWindow: WindowModule
   private readonly storeBackground: BackgroundModule
   private readonly storeSound: SoundModule
+  private readonly storeWorkspace: WorkspaceModule
 
   constructor(
     storeSse: SseModule,
     storeWindow: WindowModule,
     storeBackground: BackgroundModule,
     storeSound: SoundModule,
+    storeWorkspace: WorkspaceModule,
     options: RegisterOptions
   ) {
     super(options);
@@ -24,14 +27,16 @@ export default class StoreClient extends VuexModule {
     this.storeWindow = storeWindow
     this.storeBackground = storeBackground
     this.storeSound = storeSound
+    this.storeWorkspace = storeWorkspace
   }
 
   @Action
   async initialize() {
-    this.storeSse.initialize()
-    this.storeWindow.initialize()
-    this.storeBackground.initialize()
-    this.storeSound.initialize()
+    await this.storeSse.initialize()
+    await this.storeWindow.initialize()
+    await this.storeBackground.initialize()
+    await this.storeSound.initialize()
+    await this.storeWorkspace.initialize()
   }
 
   /**

@@ -1,6 +1,6 @@
-import md5 from "md5";
 import * as helperWindow from "@owd-client/core/src/helpers/helperWindow";
 import * as helperStorage from "@owd-client/core/src/helpers/helperStorage";
+import {generateUniqueID} from "@owd-client/core/src/helpers/helperStrings";
 
 import {
   OwdModuleAppWindowInstance,
@@ -18,10 +18,38 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
   private events: { [eventName: string]: any[] } = {
     onMounted: []
   }
-  private initialStorage: OwdModuleAppWindowStorage|undefined
 
   constructor(data: OwdModuleAppWindowCreateInstanceData) {
-    this.initialize(data)
+    this.instance = {
+      module: data.module,
+      config: {...data.config},
+      // @ts-ignore todo fix types error
+      storage: {...data.storage},
+    }
+
+    this.loadStorage(data.storage)
+
+    if (data.storage && typeof data.storage.uniqueID !== 'undefined') {
+      this.instance.storage.uniqueID = data.storage.uniqueID
+    } else {
+      this.instance.storage.uniqueID = generateUniqueID()
+    }
+
+    // initialize Vue store for this window instance
+    if (!this.instance.module.isSingleton) {
+      this.instance.module.registerStoreInstance(this.instance.config.name+'-'+this.instance.storage.uniqueID)
+    }
+
+    // register instance
+    this.instance.module.windowInstances[this.instance.config.name][this.instance.storage.uniqueID] = this
+    this.instance.module.store.commit('core/window/REGISTER_WINDOW_INSTANCE', this)
+
+    // add to dock
+    if (this.instance.config.dock === true) {
+      this.instance.module.store.commit('core/dock/ADD', this)
+    }
+
+    this.setWorkspace(this.storage.workspace)
   }
 
   public onMounted(cb: any) {
@@ -66,13 +94,6 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
 
   get uniqueName(): string {
     return `${this.config.name}-${this.uniqueID}`
-  }
-
-  /**
-   * Generate window instance uniqueID
-   */
-  private static generateUniqueID(): string {
-    return md5(Date.now().toString() + Math.random())
   }
 
   static configValidate(config: OwdModuleAppWindowConfig) {
@@ -168,79 +189,48 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     }
   }
 
-  /**
-   * Register window
-   *
-   * @param data
-   * @private
-   */
-  private initialize(data: OwdModuleAppWindowCreateInstanceData): void {
-    this.instance = {
-      module: data.module,
-      config: {...data.config},
-      storage: {...data.storage},
+  loadStorage(storage: OwdModuleAppWindowStorage | undefined) {
+    if (!storage) {
+
+      this.instance.storage = JSON.parse(JSON.stringify({
+        position: this.instance.config.position,
+        size: this.instance.config.size,
+        minimized: !!this.instance.config.minimized,
+        maximized: !!this.instance.config.maximized,
+        focused: false,
+        workspace: this.module.store.getters['core/workspace/workspaceActive'],
+        metaData: {}
+      }))
+
+    } else {
+
+      if (typeof storage.size !== 'undefined') {
+        this.instance.storage.size = storage.size
+      }
+
+      if (typeof storage.size !== 'undefined') {
+        this.instance.storage.position = storage.position
+      }
+
+      if (typeof storage.minimized !== 'undefined') {
+        this.instance.storage.minimized = storage.minimized
+      }
+
+      if (typeof storage.maximized !== 'undefined') {
+        this.instance.storage.maximized = storage.maximized
+      }
+
+      if (typeof storage.workspace !== 'undefined') {
+        this.instance.storage.workspace = storage.workspace
+      }
+
     }
 
-    // deep clone object
-    this.instance.storage = JSON.parse(JSON.stringify({
-      position: this.instance.config.position,
-      size: this.instance.config.size,
-      minimized: !!this.instance.config.minimized,
-      maximized: !!this.instance.config.maximized,
-      focused: false,
-      metaData: this.instance.storage.metaData
-    }))
-
-    this.initialStorage = data.storage
-
-    if (data.storage && typeof data.storage.uniqueID !== 'undefined') {
-      this.instance.storage.uniqueID = data.storage.uniqueID
-    }
-
-    if (typeof this.instance.storage.uniqueID === 'undefined') {
-      this.instance.storage.uniqueID = ModuleAppWindow.generateUniqueID()
-    }
-
-    // initialize Vue store for this window instance
-    if (!this.instance.module.isSingleton) {
-      this.instance.module.registerStoreInstance(this.instance.config.name+'-'+this.instance.storage.uniqueID)
-    }
-
-    // register instance
-    this.instance.module.windowInstances[this.instance.config.name][this.instance.storage.uniqueID] = this
-    this.instance.module.store.commit('core/window/REGISTER_WINDOW_INSTANCE', this)
-
-    // add to dock
-    if (this.instance.config.dock === true) {
-      this.instance.module.store.commit('core/dock/ADD', this)
-    }
-  }
-
-  loadStorage() {
-    const storage = this.initialStorage
-
-    if (storage && typeof storage.size !== 'undefined') {
-      this.instance.storage.size = storage.size
-    }
-
-    if (storage && typeof storage.size !== 'undefined') {
-      this.instance.storage.position = storage.position
-    }
-
-    if (storage && typeof storage.minimized !== 'undefined') {
-      this.instance.storage.minimized = storage.minimized
-    }
-
-    if (storage && typeof storage.maximized !== 'undefined') {
-      this.instance.storage.maximized = storage.maximized
-    }
+    return true
   }
 
   mount() {
-    this.loadStorage()
-
     this.mounted = true
-
     this.eventsExecute('onMounted')
   }
 
@@ -270,6 +260,12 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     if (!this.module.isSingleton && this.instance.module.hasStoreInstance()) {
       this.instance.module.unregisterStoreInstance(this.uniqueName)
     }
+
+    // remove uniqueID from workspace
+    this.instance.module.store.dispatch('core/workspace/removeWindowFromWorkspace', {
+      windowId: this.uniqueID,
+      workspaceId: this.storage.workspace
+    })
 
     // remove window from storage
     let storage: OwdModuleAppWindowsStorage = helperStorage.loadStorage('window') || {}
@@ -344,20 +340,19 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
       storage[this.config.name] = {}
     }
 
-    if (this.uniqueID) {
-      storage[this.config.name][this.uniqueID] = {
-        uniqueID: this.uniqueID,
-        position: this.storage.position,
-        size: this.storage.size,
-        minimized: this.storage.minimized,
-        maximized: this.storage.maximized,
-        focused: this.storage.focused
-      }
+    storage[this.config.name][this.uniqueID] = {
+      uniqueID: this.uniqueID,
+      position: this.storage.position,
+      size: this.storage.size,
+      minimized: this.storage.minimized,
+      maximized: this.storage.maximized,
+      focused: this.storage.focused,
+      fullscreen: this.storage.fullscreen,
+      workspace: this.storage.workspace
+    }
 
-      // store metaData if present
-      if (typeof this.storage.metaData !== 'undefined') {
-        storage[this.config.name][this.uniqueID].metaData = this.storage.metaData
-      }
+    if (typeof this.storage.metaData !== 'undefined') {
+      storage[this.config.name][this.uniqueID].metaData = this.storage.metaData
     }
 
     // update local storage
@@ -393,6 +388,25 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
 
   setFocusActive(focused: boolean): void {
     this.instance.storage.focused = focused
+  }
+
+  setWorkspace(id: number): boolean {
+    // remove window uniqueID from previous workspace
+    this.instance.module.store.dispatch('core/workspace/removeWindowFromWorkspace', {
+      windowId: this.uniqueID,
+      workspaceId: this.storage.workspace
+    })
+
+    // update window workspace
+    this.instance.storage.workspace = id
+
+    // add window uniqueID to current workspace
+    this.instance.module.store.dispatch('core/workspace/addWindowToWorkspace', {
+      windowId: this.uniqueID,
+      workspaceId: id
+    })
+
+    return true
   }
 
   getFocusIndex(): number {

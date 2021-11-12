@@ -294,6 +294,19 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
       if (focus) {
         this.focus()
       }
+
+      // if window workspace is different than current workspace, change it
+      if (this.instance.storage.workspace !== this.instance.module.store.getters['core/workspace/workspaceActive']) {
+        // dunno why setTimeout is needed
+        setTimeout(() => {
+          this.instance.module.store.dispatch('core/workspace/setCurrentWorkspace', this.instance.storage.workspace)
+        }, 10)
+      }
+
+      // set preview = false
+      if (this.instance.module.store.getters['core/workspace/workspaceOverview']) {
+        this.instance.module.store.commit('core/workspace/SET_OVERVIEW', false)
+      }
     }
 
     return true
@@ -390,7 +403,7 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     this.instance.storage.focused = focused
   }
 
-  setWorkspace(id: number): boolean {
+  setWorkspace(id: string): boolean {
     // remove window uniqueID from previous workspace
     this.instance.module.store.dispatch('core/workspace/removeWindowFromWorkspace', {
       windowId: this.uniqueID,

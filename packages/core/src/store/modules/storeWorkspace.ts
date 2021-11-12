@@ -6,9 +6,14 @@ import {generateUniqueID} from "../../helpers/helperStrings";
 export default class StoreBackground extends VuexModule {
   private current: string = ''
   private list: { [key: string]: string[] } = {}
+  private overview: boolean = false
 
   get workspaceActive() {
     return this.current
+  }
+
+  get workspaceOverview() {
+    return this.overview
   }
 
   get workspaces() {
@@ -30,6 +35,11 @@ export default class StoreBackground extends VuexModule {
     }
 
     this.current = id
+  }
+
+  @Mutation
+  SET_OVERVIEW(toggle: boolean) {
+    this.overview = toggle
   }
 
   @Mutation

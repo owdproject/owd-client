@@ -28,6 +28,10 @@ export default class StoreBackground extends VuexModule {
     return Object.keys(this.list).length
   }
 
+  get workspaceLatestId() {
+    return Object.keys(this.list).slice(-1)
+  }
+
   @Mutation
   SET_CURRENT_WORKSPACE(id: string) {
     if (this.workspacesIds && !this.workspacesIds.includes(id)) {
@@ -61,9 +65,13 @@ export default class StoreBackground extends VuexModule {
       // restore previous workspaces status
       this.SET_WORKSPACES(workspaceStorage.list)
     } else {
+      const workspaceId = generateUniqueID()
+
       this.SET_WORKSPACES({
-        [generateUniqueID()]: []
+        [workspaceId]: []
       })
+
+      this.SET_CURRENT_WORKSPACE(workspaceId)
       this.save()
     }
   }
@@ -79,10 +87,6 @@ export default class StoreBackground extends VuexModule {
       ...this.list,
       [workspaceId]: []
     })
-
-    if (this.workspaceCount === 1) {
-      this.SET_CURRENT_WORKSPACE(workspaceId)
-    }
 
     // update workspace storage
     await this.save()
@@ -146,9 +150,8 @@ export default class StoreBackground extends VuexModule {
     let firstEmptyWorkspaceExcluded = false
 
     for (const workspaceId of this.workspacesIds) {
-      console.log('XXX', this.workspacesIds.indexOf(this.workspaceActive), 'YYY', this.workspaceCount)
 
-      if (this.workspacesIds.indexOf(workspaceId) <= this.workspacesIds.indexOf(this.workspaceActive)) {
+      if (this.workspacesIds.indexOf(workspaceId) < 2) {
         continue
       }
 
@@ -156,9 +159,11 @@ export default class StoreBackground extends VuexModule {
         continue
       }
 
+      if (this.workspacesIds.indexOf(workspaceId) === (this.workspaceCount - 1) && this.list[workspaceId].length === 0) {
+        continue
+      }
+
       if (!firstEmptyWorkspaceExcluded) {
-        firstEmptyWorkspaceExcluded = true
-      } else {
         delete this.list[workspaceId]
       }
     }

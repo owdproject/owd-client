@@ -26,6 +26,25 @@ Open Web Desktop is a project that aims to provide a simple environment to creat
 - Vuetify.js and Moment.js implemented by default
 - TypeScript and Vite support
 
+## Getting started
+Required software:
+
+- [Git](https://git-scm.com)
+- [Node](https://nodejs.org)
+
+When you are ready, bootstrap a new instance by running:
+```
+npx create-owd-app <app-name>
+```
+Once the process is complete, you can start with the client development:
+```
+# Run the dev server
+npm run serve
+
+# Build for production
+npm run build
+```
+
 ## References
 - [Documentation](https://github.com/owdproject/owd-client/blob/next/README.md)
 - [Website](https://owdproject.org)

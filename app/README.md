@@ -39,9 +39,9 @@ Required software:
 
 When you are ready, bootstrap a new instance by running:
 ```
-npx create-owd-app <my-client>
+npx create-owd-app <app-name>
 ```
-Once the process is complete, you can start with the client development.
+Once the process is complete, you can start with the client development:
 ```
 # Run the dev server
 npm run serve

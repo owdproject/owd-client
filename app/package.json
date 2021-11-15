@@ -1,6 +1,6 @@
 {
   "name": "owd-client",
-  "version": "2.0.0-beta.2",
+  "version": "2.0.0-beta.3",
   "description": "Open Web Desktop client",
   "private": true,
   "homepage": "https://github.com/owdproject/owd-client#readme",
@@ -29,12 +29,12 @@
     "@types"
   ],
   "dependencies": {
-    "@owd-client/core": "^2.0.0-beta.2",
+    "@owd-client/core": "^2.0.0-beta.3",
     "owd-theme-gnome": "https://github.com/hacklover/owd-theme-gnome"
   },
   "devDependencies": {
     "@mdi/font": "^5.9.55",
-    "@owd-client/types": "^2.0.0-beta.2",
+    "@owd-client/types": "^2.0.0-beta.3",
     "@vitejs/plugin-vue": "^1.9.4",
     "@vue/compiler-sfc": "^3.2.21",
     "sass": "^1.43.4",

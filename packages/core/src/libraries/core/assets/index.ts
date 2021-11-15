@@ -1,41 +1,33 @@
 import {App} from "vue";
+import {OwdCoreContext} from "@owd-client/types";
 
 import WindowComponent from "../../../../src/components/window/Window.vue";
 import WindowAppComponent from "../../../../src/components/window/app/WindowApp.vue";
 
-// import basic fonts
 import {initializeVuetify} from "@owd-client/core/src/plugins/vuetify";
+import {loadLocaleMessages} from "@owd-client/core/src/plugins/i18n";
 
-export function initializeAssets(app: App) {
-  const config = app.config.globalProperties.$owd.ui
-
+export function initializeAppAssets(context: OwdCoreContext) {
   // initialize vuetify
-  initializeVuetify(app)
+  initializeVuetify(context.app)
+}
 
-  // initialize global components
-  initializeGlobalComponents(app)
-
+export function initializeDesktopAssets(context: OwdCoreContext) {
   // import core styles
   import('@owd-client/core/src/assets/css/app.scss')
 
-  // import custom theme styles from owd-client/app
-  try {
-    import(/* @vite-ignore */ `/@/../src/assets/themes/${config.de}/${config.theme}/index.scss`)
-  } catch(e) {
-    console.error('Error while loading theme styles')
-  }
+  // register global components
+  context.app.component('Desktop', context.extensions.desktop.component)
+  context.app.component('Window', WindowComponent)
+  context.app.component('WindowApp', WindowAppComponent)
 
   // append desktop-environment and theme to #app classes
   const appElement = document.getElementById('app')
 
   if (appElement) {
-    appElement.setAttribute('data-ui-name', config.de.split('/')[0])
-    appElement.setAttribute('data-ui-version', config.de.split('/')[1])
-    appElement.setAttribute('data-ui-theme', config.theme)
+    appElement.setAttribute('data-theme', context.extensions.desktop.name)
   }
-}
 
-function initializeGlobalComponents(app: App) {
-  app.component('Window', WindowComponent)
-  app.component('WindowApp', WindowAppComponent)
+  // load desktop locales
+  loadLocaleMessages(context.extensions.desktop.locales)
 }

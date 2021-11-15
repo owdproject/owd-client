@@ -1,32 +1,33 @@
 <template>
   <Window
-    v-show="window.storage.opened && !window.storage.minimized"
-    :name="windowNameClass"
-    :title="title || window.storage.title || window.config.titleWindow || window.config.title"
-    :max-width="windowMaxWidth"
-    :max-height="windowMaxHeight"
-    :min-width="windowMinWidth"
-    :min-height="windowMinHeight"
-    :width="window.storage.size.width"
-    :height="window.storage.size.height"
-    :left="window.storage.position.x"
-    :top="window.storage.position.y"
-    :z-index="window.storage.position.z"
-    :is-dense="typeof props.dense !== 'undefined' ? props.dense : window.config.theme.dense"
-    :is-focused="window.storage.focused"
-    :is-maximized="window.config.maximizable && window.storage.maximized"
-    :is-resizable="window.config.resizable"
-    :is-fullscreen="window.config.fullscreenable && window.storage.fullscreen"
-    :is-borderless="window.config.borderless"
-    :is-rounded="window.config.theme.rounded"
-    :has-no-content-spacing="window.config.theme.noContentSpacing"
-    :preserve-material="window.config.theme.preserveMaterial"
-    @drag:start="onDragStart"
-    @drag:end="onDragEnd"
-    @resize:start="onResizeStart"
-    @resize:end="onResizeEnd"
-    @mousedown="onMouseDown"
-    @toggleMaximize="onToggleMaximize"
+      v-show="!window.storage.minimized"
+      :name="windowNameClass"
+      :title="title || window.storage.title || window.config.titleWindow || window.config.title"
+      :max-width="windowMaxWidth"
+      :max-height="windowMaxHeight"
+      :min-width="windowMinWidth"
+      :min-height="windowMinHeight"
+      :width="window.config.resizable ? window.storage.size.width : window.config.size.width"
+      :height="window.config.resizable ? window.storage.size.height : window.config.size.height"
+      :left="window.storage.position.x"
+      :top="window.storage.position.y"
+      :z-index="window.storage.position.z"
+      :is-dense="typeof props.dense !== 'undefined' ? props.dense : window.config.theme.dense"
+      :is-focused="window.storage.focused"
+      :is-maximized="window.config.maximizable && window.storage.maximized"
+      :is-resizable="window.config.resizable"
+      :is-fullscreen="window.config.fullscreenable && window.storage.fullscreen"
+      :is-borderless="window.config.borderless"
+      :is-rounded="window.config.theme.rounded"
+      :has-nav-title="window.config.theme.nav.title"
+      :has-no-content-spacing="window.config.theme.noContentSpacing"
+      :preserve-material="window.config.theme.preserveMaterial"
+      @drag:start="onDragStart"
+      @drag:end="onDragEnd"
+      @resize:start="onResizeStart"
+      @resize:end="onResizeEnd"
+      @mousedown="onMouseDown"
+      @toggleMaximize="onToggleMaximize"
   >
     <template v-slot:nav-prepend>
       <slot name="nav-prepend" />
@@ -77,7 +78,7 @@
 </template>
 
 <script setup>
-import {computed, ref, watch, inject, onMounted, onUnmounted, defineProps, defineEmit} from 'vue'
+import {computed, ref, watch, inject, onMounted, onUnmounted, nextTick} from 'vue'
 import {useStore} from 'vuex'
 import kebabCase from '@owd-client/core/src/libraries/kebab-case'
 
@@ -92,21 +93,21 @@ const props = defineProps({
   window: Object
 })
 
-const emit = defineEmit([
-  'resize:start',
-  'resize:move',
-  'resize:end',
-  'drag:start',
-  'drag:move',
-  'drag:end',
-  'close',
-  'open',
+const emit = defineEmits([
+  'mount',
+  'unmount',
   'blur',
   'focus',
   'minimize',
   'restore',
   'maximize',
-  'unmaximize'
+  'unmaximize',
+  'resize:start',
+  'resize:move',
+  'resize:end',
+  'drag:start',
+  'drag:move',
+  'drag:end'
 ])
 
 const store = useStore()
@@ -285,44 +286,31 @@ function onDragEnd(data) {
 }
 
 onMounted(() => {
-  if (props.window.storage.opened) {
-    emit('open')
-  }
+  watch(
+      () => props.window.storage.focused,
+      (focused) => emit(focused ? 'focus' : 'blur')
+  )
 
-  if (props.window.config.autoCloseBeforePageUnload) {
-    window.addEventListener('beforeunload', () => props.window.close())
-  }
+  watch(
+      () => props.window.storage.minimized,
+      (minimized) => emit(minimized ? 'minimize' : 'restore')
+  )
 
-  store.dispatch('core/window/saveWindowsStorage')
+  watch(
+      () => props.window.storage.maximized,
+      (maximized) => emit(maximized ? 'maximize' : 'unmaximize')
+  )
+
+  props.window.mount()
+
+  // emit event to moduleApp window
+  emit('mount')
 })
 
-onUnmounted(() => {
-  if (props.window.config.autoCloseBeforePageUnload) {
-    window.removeEventListener('beforeunload', () => props.window.close())
-  }
+onUnmounted(async () => {
+  // emit event to moduleApp window
+  await emit('unmount')
 })
 
-watch(
-    () => props.window.storage.focused,
-    (focused) => emit(focused ? 'focus' : 'blur')
-)
-
-watch(
-    () => props.window.storage.opened,
-    (opened) => {
-      emit(opened ? 'open' : 'close')
-    }
-)
-
-watch(
-    () => props.window.storage.minimized,
-    (minimized) => emit(minimized ? 'minimize' : 'restore')
-)
-
-watch(
-    () => props.window.storage.maximized,
-    (maximized) => emit(maximized ? 'maximize' : 'unmaximize')
-)
-
-watch(() => props.window.storage, () => store.dispatch('core/window/saveWindowsStorage'), {deep: true})
+watch(() => props.window.storage, () => props.window.save(), {deep: true})
 </script>

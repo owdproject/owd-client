@@ -3,13 +3,15 @@ import {OwdCoreRouterContext} from "@owd-client/types";
 
 let router: Router
 
-export function initializeDesktopRouter(context: OwdCoreRouterContext) {
+export function initializeAppRouter(context: OwdCoreRouterContext) {
   router = createRouter({
     history: createWebHistory(),
     routes: mergeRoutes(context.routes)
   })
 
   context.app.use(router)
+
+  return router
 }
 
 /**

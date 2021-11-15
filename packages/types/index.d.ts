@@ -2,17 +2,16 @@ import { App, Component } from 'vue'
 import { Store, ModuleTree } from 'vuex'
 import {RouteRecordRaw} from "vue-router";
 
+declare var debug: boolean
+
 // OWD CLIENT
 
 export interface OwdClientConfiguration {
   debug: boolean
-  ui: {
-    de: string
-    theme: string
-  }
+  desktop: OwdClientConfigurationDesktop
   sse: OwdClientConfigurationSse
-  i18n: OwdClientConfigurationI18n
-  store: OwdClientConfigurationStore
+  i18n?: OwdClientConfigurationI18n
+  store?: OwdClientConfigurationStore
   vuetify: any
 }
 
@@ -26,6 +25,10 @@ export interface OwdClientConfigurationI18n {
   fallbackLocale: string
 }
 
+export interface OwdClientConfigurationDesktop {
+  autostart: boolean
+}
+
 export interface OwdClientConfigurationSse {
   enabled: boolean
   reconnectOnError: boolean
@@ -34,15 +37,18 @@ export interface OwdClientConfigurationSse {
 
 export interface OwdClientConfigurationExtensions {
   routes: any[]
-  app: {
-    modules?: any[]
-  },
+  modules: {
+    app?: any[]
+    desktop?: any[]
+  }
   desktop: {
+    name: string
     component: Component
     modules?: any[]
     options: {
       [key: string]: any
     }
+    locales: any
   },
   plugins: any[]
   store: ModuleTree<any>
@@ -71,17 +77,27 @@ export interface OwdCoreBootContext {
   extensions: OwdClientConfigurationExtensions
 }
 
-// modulesExtend.class
-export interface OwdCoreModuleContext {
+export interface EventEmitter {
+  _events: any
+  on(name: string, listener: any): void
+  emit(name: string, data: any): void
+}
+
+export interface OwdCoreContext extends EventEmitter {
   app: App
+  config: OwdClientConfiguration
   extensions: OwdClientConfigurationExtensions
   store: any
   terminal: any
-}
-
-// module.class
-export interface OwdModuleAppContext extends OwdCoreModuleContext {
-  moduleInfo: OwdModuleAppInfo
+  router?: any
+  modules?: {
+    app: any
+    desktop: any
+  }
+  booted: {
+    app: boolean,
+    desktop: boolean
+  }
 }
 
 // OWD MODULES APP
@@ -98,16 +114,17 @@ export interface OwdModuleApp {
   moduleStoreConfig: any;
   moduleStoreInstance: any
   windowInstances: OwdModuleAppWindowsInstances;
-  registerModuleStoreInstance(storeName: string): void;
-  unregisterModuleStoreInstance(storeName: string): void;
-  hasModuleStoreInstance(): boolean;
+  registerStoreInstance(storeName: string): void;
+  unregisterStoreInstance(storeName: string): void;
+  hasStoreInstance(): boolean;
   isSingleton: boolean;
-  addWindow(config: OwdModuleAppWindowConfig, storage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance;
-  restoreOrAddWindow(config: OwdModuleAppWindowConfig): OwdModuleAppWindowInstance;
+  registerWindow(config: OwdModuleAppWindowConfig, storage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance;
   createWindow(config: OwdModuleAppWindowConfig, storage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance;
-  restoreOrCreateWindow(config: OwdModuleAppWindowConfig): OwdModuleAppWindowInstance;
-  windowGroupInstancesCount(windowName: string): number;
-  windowGroupInstancesFirstInstance(windowName: string): OwdModuleAppWindowInstance|boolean;
+  restoreWindows(config: OwdModuleAppWindowConfig): boolean;
+  getWindowInstancesCount(windowName: string): number;
+  getFirstWindowInstance(windowName: string): OwdModuleAppWindowInstance;
+  addLauncherEntry(item: OwdLauncherEntry): void;
+  removeLauncherEntry(item: OwdLauncherEntry): void;
 }
 
 export interface OwdModuleAppInfo {
@@ -133,21 +150,21 @@ export interface OwdModuleAppSetupAssetsContext {
 export interface OwdModuleAppSetupCommandsContext {
   app: App,
   config: OwdModuleAppInfo,
-  store: Store<any>,
+  store: Store<any>
   terminal: any
 }
 
 export interface OwdModuleAppSetupSseEventsContext {
   app: App,
-  config: OwdModuleAppInfo,
-  store: Store<any>,
+  config: OwdModuleAppInfo
+  store: Store<any>
   terminal: any
 }
 
 export interface OwdModuleAppSetupStoreContext {
   app: App,
   config: OwdModuleAppInfo,
-  store: Store<any>,
+  store: Store<any>
   terminal: any
 }
 
@@ -160,31 +177,35 @@ export interface OwdModuleAppSseEvents {
 }
 
 export interface OwdModuleAppWindowConfig {
-  component: Component
+  component?: Component
   name: string
-  category?: string
+  category: string
   title: string
-  titleApp?: string
+  titleDock?: string
   titleWindow?: string
-  titleMenu?: string
+  titleLauncher?: string
   icon: string|OwdModuleAppWindowConfigIcon
 
   size: OwdModuleAppWindowConfigSize
   position: OwdModuleAppWindowConfigPosition
   favorite?: boolean
-  menu?: boolean
-  menuApp?: boolean
+  launcher?: boolean
+  dock?: boolean
   resizable?: boolean
   minimized?: boolean
   maximized?: boolean
   maximizable?: boolean
   fullscreenable?: boolean
+  workspace: number
   borderless?: boolean
   hostname?: string
   autoOpen?: boolean
   autoCloseBeforePageUnload?: boolean
   autoDestroyBeforePageUnload?: boolean
   theme?: {
+    nav?: {
+      title?: boolean
+    }
     dense?: boolean
     rounded?: boolean
     noContentSpacing?: boolean
@@ -219,13 +240,10 @@ export interface OwdModuleAppWindowInstance extends OwdModuleAppWindowCreateInst
   moduleName: string
   uniqueID: string
   uniqueName: string
-  create(): boolean
-  restore(): boolean
   destroy(): boolean
   open(focus?: boolean): boolean
   close(): void
-  minimize(): boolean
-  minimizeToggle(): boolean
+  minimize(toggle?: boolean): boolean
   maximize(toggle: boolean): boolean
   fullscreen(toggle: boolean): void
 
@@ -255,15 +273,15 @@ export interface OwdModuleAppWindowsInstances {
 }
 
 export interface OwdModuleAppWindowStorage {
-  uniqueID: string,
+  uniqueID: string
   title?: string
   position: OwdModuleAppWindowConfigPosition
   size: OwdModuleAppWindowConfigSize
-  opened: boolean
   minimized: boolean
   maximized: boolean
-  fullscreen?: boolean
-  focused: boolean,
+  fullscreen: boolean
+  workspace: number
+  focused: boolean
   metaData?: any
 }
 
@@ -275,15 +293,77 @@ export interface OwdModuleAppWindowsStorage {
   }
 }
 
-export interface OwdModuleAppWindowConfigIcon {
+export interface OwdModuleAppWindowConfigIcon extends OwdLauncherEntryIcon {}
+
+// OWD LAUNCHER
+
+export interface OwdLauncher {
+  [category: string]: OwdLauncherEntry[]
+}
+export interface OwdLauncherEntry {
+  title: string
+  icon: string | OwdLauncherEntryIcon
+  category: string
+  favorite?: boolean|{
+    launcher: boolean
+    dock: boolean
+  }
+  callback: any
+}
+
+export interface OwdLauncherEntryIcon {
   name?: string
   offset?: {
     x?: number
     y?: number
-  },
+  }
   background?: string
   color?: string
-  forceMenuAppSvg?: boolean
+}
+
+// OWD NOTIFICATIONS
+
+export interface OwdNotificationItem {
+  name: string;
+  service: string;
+  icon: string;
+  color: string;
+  title: string;
+  details: string;
+  sticky?: boolean;
+  duration: number;
+  date: Date;
+}
+
+// OWD SSE
+
+export interface OwdEvents {
+  [name: string]: OwdEvent
+}
+
+export interface OwdEvent extends OwdEventConfig {
+  source: EventSource
+  connected: boolean
+}
+
+export interface OwdEventConfig {
+  name: string
+  url: string
+  reconnectOnError: boolean
+  reconnectTimeout: number
+}
+
+// OWD DOCK
+
+export interface OwdDock {
+  apps: {
+    [key: string]: {
+      config: OwdModuleAppWindowConfig
+      module: OwdModuleApp
+      list: OwdModuleAppWindowInstance[]
+    }
+  }
+  list: OwdModuleAppWindowInstance[]
 }
 
 // OWD MODULES DESKTOP
@@ -295,15 +375,15 @@ export interface OwdModulesDesktop {
 }
 
 export interface OwdModuleDesktop {
-  config: OwdModuleDesktopConfig,
+  config: OwdModuleDesktopConfig
   components: {
     [key: string]: any
   }
 }
 
 export interface OwdModuleDesktopConfig {
-  name: string,
-  area: string,
-  position: string,
+  name: string
+  area: string
+  position: string
   opened?: boolean
 }

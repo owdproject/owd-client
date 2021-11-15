@@ -1,61 +1,42 @@
-import {VuexModule, Module, Mutation, Action, RegisterOptions} from "vuex-class-modules";
+import {VuexModule, Module, Action, RegisterOptions} from "vuex-class-modules";
 
 import SseModule from "./storeSse";
-import WindowDockModule from "./window/storeWindowDock";
 import WindowModule from "./window/storeWindow";
-
-const clientDefaultTitle = import.meta.env.VITE_NAME || ''
-const clientVersion = import.meta.env.VITE_VERSION || '2.0.0'
-const clientWebsite = import.meta.env.VITE_WEBSITE || 'owdproject.com'
+import BackgroundModule from "./storeBackground";
+import SoundModule from "./storeSound";
+import WorkspaceModule from "./storeWorkspace";
 
 @Module
-export default class ClientVuexModule extends VuexModule {
-  private readonly storeSseModule: SseModule
-  private readonly storeWindowDock: WindowDockModule
+export default class StoreClient extends VuexModule {
+  private readonly storeSse: SseModule
   private readonly storeWindow: WindowModule
-
-  // client title
-  public title: string = clientDefaultTitle
-
-  // client version
-  public version: string = clientVersion
-
-  // client website
-  public website: string = clientWebsite
+  private readonly storeBackground: BackgroundModule
+  private readonly storeSound: SoundModule
+  private readonly storeWorkspace: WorkspaceModule
 
   constructor(
-    storeSseModule: SseModule,
-    storeWindowDock: WindowDockModule,
+    storeSse: SseModule,
     storeWindow: WindowModule,
+    storeBackground: BackgroundModule,
+    storeSound: SoundModule,
+    storeWorkspace: WorkspaceModule,
     options: RegisterOptions
   ) {
     super(options);
-    this.storeSseModule = storeSseModule
-    this.storeWindowDock = storeWindowDock
+    this.storeSse = storeSse
     this.storeWindow = storeWindow
-  }
-
-  @Mutation
-  SET_TITLE(title: string) {
-    this.title = title
-  }
-
-  @Mutation
-  RESET_TITLE() {
-    this.title = clientDefaultTitle
-  }
-
-  @Mutation
-  SET_VERSION(version: string) {
-    this.version = version
+    this.storeBackground = storeBackground
+    this.storeSound = storeSound
+    this.storeWorkspace = storeWorkspace
   }
 
   @Action
   async initialize() {
-    console.log('[owd] app initialized')
-
-    this.storeSseModule.initialize()
-    this.storeWindow.initialize()
+    await this.storeSse.initialize()
+    await this.storeWindow.initialize()
+    await this.storeBackground.initialize()
+    await this.storeSound.initialize()
+    await this.storeWorkspace.initialize()
   }
 
   /**

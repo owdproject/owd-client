@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import path from 'path';
 import vue from '@vitejs/plugin-vue'
 
-import clientConfig from './client.config'
+import config from './client.config'
 
 export default defineConfig({
   plugins: [
@@ -11,7 +11,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "./src/assets/themes/${clientConfig.ui.de}/${clientConfig.ui.theme}/variables.scss";`
+        additionalData: `@import "./src/themes/variables.scss";`
       }
     }
   },
@@ -27,5 +27,8 @@ export default defineConfig({
   build: {
     chunkSizeWarningLimit: 600,
     cssCodeSplit: false
+  },
+  define: {
+    debug: config.debug
   }
 });

@@ -4,7 +4,7 @@
       <h2>
         Open Web Desktop <span v-text="clientVersion" />
       </h2>
-      <a href="https://github.com/owdproject/owd-client/tree/next" target="_blank">github.com/owdproject/owd-client</a>
+      <a href="https://github.com/owdproject/owd-client" target="_blank">github.com/owdproject/owd-client</a>
 
       <div class="powered-by">
         <ul>
@@ -20,8 +20,7 @@
 </template>
 
 <script setup>
-  import {defineProps} from 'vue'
-  import {useStore} from "vuex";
+ import {useStore} from "vuex";
 
   const store = useStore()
 
@@ -37,14 +36,6 @@
   .owd-window__content {
     display: flex;
     align-items: center;
-  }
-}
-
-#app[data-ui-name="windows"][data-ui-version="95"] {
-  .owd-window-about {
-    .powered-by .v-icon {
-      color: #777 !important;
-    }
   }
 }
 </style>
@@ -65,6 +56,7 @@
   a {
     color: var(--v-primary);
     font-size: 14px;
+    opacity: 0.75;
   }
 
   .powered-by {
@@ -85,7 +77,7 @@
       }
 
       .v-icon {
-        color: darkgrey;
+        color: $owd-window-button-icon-color;
       }
     }
   }

@@ -1,18 +1,18 @@
-import {OwdCoreModuleContext} from "@owd-client/types";
+import DesktopApps from "./app/desktopApps";
+import DesktopModules from "./desktop/desktopModules";
 
-import ModuleAppExtend from "./module-app/extend/moduleAppExtend";
-import ModuleDesktopExtend from "./module-desktop/extend/moduleDesktopExtend";
+import {OwdCoreContext} from "@owd-client/types";
 
 /**
- * Initialize OWD app modules
+ * Initialize OWD desktop apps
  */
-export function initializeAppModules(context: OwdCoreModuleContext) {
-  return new ModuleAppExtend(context)
+export function initializeDesktopApps(context: OwdCoreContext) {
+  return new DesktopApps(context)
 }
 
 /**
  * Initialize OWD desktop modules
  */
-export function initializeDesktopModules(context: OwdCoreModuleContext) {
-  return new ModuleDesktopExtend(context)
+export function initializeDesktopModules(context: OwdCoreContext) {
+  return new DesktopModules(context)
 }

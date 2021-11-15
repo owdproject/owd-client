@@ -1,7 +1,7 @@
-# Editors
+# editors
 .idea
 .vscode
 
-# App
+# app
 /dist
 /node_modules/

@@ -1,4 +1,4 @@
-import {createDesktop} from '@owd-client/core/index'
+import {createApp} from '@owd-client/core/index'
 import { name, version } from '../package.json'
 
 // main vue component
@@ -8,11 +8,13 @@ import App from './App.vue'
 import config from '../client.config'
 import extensions from '../client.extensions'
 
+if (debug) console.log(`[owd] ${name} ${version}`)
+
 // create an Open Web Desktop instance
-createDesktop({
+createApp({
   component: App,
   config,
   extensions
 }).then(() => {
-  console.log(`[owd] initialize ${name} ${version}`)
+  // app loaded
 })

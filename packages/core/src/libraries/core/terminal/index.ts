@@ -1,16 +1,16 @@
-import TerminalExtend from './extend/terminalExtend'
+import TerminalExtend from './terminalExtend'
 
 let terminal: any
 
 /**
  * Initialize OWD terminal support
  */
-export function initializeDesktopTerminal() {
+export function initializeAppTerminal() {
   terminal = new TerminalExtend()
 
   return terminal
 }
 
-export function useDesktopTerminal() {
+export function useAppTerminal() {
   return terminal
 }

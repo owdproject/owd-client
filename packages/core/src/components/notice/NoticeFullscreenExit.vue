@@ -7,7 +7,7 @@
       disabled
       v-show="visible"
     >
-      Press <kbd>ESC</kbd> to exit full screen
+      <slot />
     </v-btn>
   </transition>
 </template>
@@ -31,7 +31,7 @@ function handleWindowInstanceFullscreen(e) {
 // detect window instance fullscreen/maximize event
 onBeforeMount(() => {
   store.subscribe((mutation) => {
-    if (mutation.type === 'core/fullscreen/SET_FULLSCREEN_MODE') {
+    if (mutation.type === 'core/windowFullscreen/SET_FULLSCREEN_MODE') {
       if (typeof mutation.payload === 'boolean') {
         if (mutation.payload) {
           clearTimeout(timeout.value)
@@ -51,23 +51,14 @@ onUnmounted(() => window.removeEventListener('keydown', handleWindowInstanceFull
 </script>
 
 <style scoped lang="scss">
-.v-btn.owd-notice-fullscreen-exit.v-btn--disabled {
+.v-btn.owd-notice-fullscreen-exit {
   position: absolute;
   top: 24px;
   left: 50%;
+  transform: translateX(-50%);
+  max-width: 90vw;
   width: 330px;
   min-height: 44px;
-  margin-left: -165px;
-  color: #AAA !important;
-  text-align: center;
-  text-transform: inherit;
-  z-index: 9999;
-
-  kbd {
-    border: 1px solid #BBB;
-    padding: 3px 4px;
-    margin: 0 8px;
-    border-radius: 2px;
-  }
+  z-index: 999;
 }
 </style>

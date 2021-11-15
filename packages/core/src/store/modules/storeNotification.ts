@@ -1,27 +1,19 @@
-import {VuexModule, Module, Mutation, Action, RegisterOptions} from "vuex-class-modules";
-
-interface StoreNotificationItem {
-  name: string;
-  service: string;
-  icon: string;
-  color: string;
-  title: string;
-  details: string;
-  sticky?: boolean;
-  duration: number;
-  date: Date;
-}
+import {VuexModule, Module, Mutation} from "vuex-class-modules";
+import {OwdNotificationItem} from "@owd-client/types";
 
 @Module
-export default class NotificationVuexModule extends VuexModule {
-  private items: StoreNotificationItem[] = []
+export default class StoreNotification extends VuexModule {
+  private items: OwdNotificationItem[] = []
 
+  /**
+   * Get notification list
+   */
   get list() {
     return this.items
   }
 
   @Mutation
-  ADD(notification: StoreNotificationItem) {
+  ADD(notification: OwdNotificationItem) {
     // add date if missing
     if (!notification.date) {
       notification.date = new Date()
@@ -33,7 +25,7 @@ export default class NotificationVuexModule extends VuexModule {
   }
 
   @Mutation
-  REMOVE(notification: StoreNotificationItem) {
+  REMOVE(notification: OwdNotificationItem) {
     const index = this.items.indexOf(notification)
 
     if (index > -1) {

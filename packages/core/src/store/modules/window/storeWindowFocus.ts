@@ -3,7 +3,7 @@ import * as helperStorage from "@owd-client/core/src/helpers/helperStorage";
 import * as helperWindow from "../../../helpers/helperWindow";
 
 @Module
-export default class WindowFocusModule extends VuexModule {
+export default class StoreWindowFocus extends VuexModule {
   public windowFocusIds: string[] = helperStorage.loadStorage('window-focus') || []
 
   get windowFocusList() {

@@ -12,7 +12,7 @@
         'z-index': props.zIndex
       }"
       fit-parent
-      drag-selector=".owd-window__nav .owd-window__nav__draggable"
+      :drag-selector="dragDisabled ? null : '.owd-window__nav .owd-window__nav__draggable'"
       @drag:start="onDragStart"
       @drag:end="onDragEnd"
       @resize:start="onResizeStart"
@@ -38,7 +38,11 @@
   >
     <div class="owd-window__container">
 
-      <WindowNav :title="props.title" @toggleMaximize="emit('toggle-maximize')">
+      <WindowNav
+          :title="props.title"
+          :hasNavTitle="hasNavTitle"
+          @toggleMaximize="emit('toggle-maximize')"
+      >
         <template v-slot:nav-prepend>
           <slot name="nav-prepend" />
         </template>
@@ -53,12 +57,13 @@
       </div>
 
       <slot name="outer-append" />
+      
     </div>
   </vue-resizable>
 </template>
 
 <script setup>
-import {defineEmit, defineProps, ref} from "vue";
+import {ref} from "vue";
 import VueResizable from 'vue-resizable/src/components/vue-resizable.vue'
 import WindowNav from './nav/WindowNav.vue'
 
@@ -120,15 +125,21 @@ const props = defineProps({
   isRounded: {
     type: Boolean
   },
+  hasNavTitle: {
+    type: Boolean
+  },
   hasNoContentSpacing: {
     type: Boolean
   },
   preserveMaterial: {
     type: Boolean
   },
+  dragDisabled: {
+    type: Boolean
+  }
 })
 
-const emit = defineEmit([
+const emit = defineEmits([
   'resize:start',
   'resize:move',
   'resize:end',
@@ -211,7 +222,8 @@ function onResizeEnd(data) {
 <style lang="scss">
 .owd-window {
   background: $owd-window-background;
-  border: $owd-window-border;
+  border-width: $owd-window-border-width;
+  border-style: $owd-window-border-style;
   border-color: $owd-window-border-color-inactive;
   box-shadow: $owd-window-box-shadow-inactive;
   border-radius: $owd-window-border-radius;
@@ -241,6 +253,7 @@ function onResizeEnd(data) {
     position: relative;
     height: 100%;
     padding: $owd-window-content-padding;
+    background-color: $owd-window-content-background;
     box-sizing: border-box;
     overflow: hidden;
 
@@ -254,6 +267,10 @@ function onResizeEnd(data) {
       background-size: cover;
       content: '';
     }
+  }
+
+  &--dragging {
+    cursor: move;
   }
 
   &--dragging, &--resizing {

@@ -1,5 +1,8 @@
-import desktop from './desktop'
+import DesktopApplicationCategories from './desktop/DesktopApplicationCategories'
 
 export default {
-  desktop
+  // desktop
+  DesktopApplicationCategories
+
+  // your custom locales
 }

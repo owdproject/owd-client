@@ -5,14 +5,14 @@
       class="owd-window-iframe"
       v-click-outside="focusOut"
       @click="focusIn"
-      @open="windowOpen"
-      @close="windowClose"
       @resize:start="(data) => emit('resize:start', data)"
       @resize:move="(data) => emit('resize:move', data)"
       @resize:end="(data) => emit('resize:end', data)"
       @drag:start="(data) => emit('drag:start', data)"
       @drag:move="(data) => emit('drag:move', data)"
       @drag:end="(data) => emit('drag:end', data)"
+      @mount="(data) => emit('mount', data)"
+      @unmount="(data) => emit('unmount', data)"
       @blur="(data) => emit('blur', data)"
       @focus="(data) => emit('focus', data)"
       @minimize="(data) => emit('minimize', data)"
@@ -30,9 +30,11 @@
 
     <div class="owd-window-iframe__content">
       <iframe
-          v-if="iframeSrc"
+          v-if="iframe && iframe.src"
           :id="iframeId"
-          :src="iframeSrc"
+          :src="iframe.src"
+          :allow="iframe.allow"
+          :sandbox="iframe.sandbox"
           @load="onIframeLoaded"
       />
 
@@ -48,7 +50,7 @@
 </template>
 
 <script setup>
-import {ref, watch, computed, defineProps, defineEmit} from "vue";
+import {ref, watch, computed, onMounted} from "vue";
 
 const props = defineProps({
   url: String,
@@ -60,7 +62,15 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmit([
+const emit = defineEmits([
+  'mount',
+  'unmount',
+  'blur',
+  'focus',
+  'minimize',
+  'restore',
+  'maximize',
+  'unmaximize',
   'iframeFocusIn',
   'iframeFocusOut',
   'iframeLoaded',
@@ -70,17 +80,9 @@ const emit = defineEmit([
   'drag:start',
   'drag:move',
   'drag:end',
-  'close',
-  'open',
-  'blur',
-  'focus',
-  'minimize',
-  'restore',
-  'maximize',
-  'unmaximize',
 ])
 
-const iframeSrc = ref('')
+const iframe = ref(null)
 const loaded = ref(false)
 const focused = ref(false)
 
@@ -109,17 +111,9 @@ function onIframeLoaded() {
   emit('iframeLoaded')
 }
 
-watch(() => props.url, url => {
-  if (props.window.storage.opened === true) {
-    iframeSrc.value = url
-  }
-})
+watch(() => props.url, url => iframe.src.value = url)
 
-watch(() => props.window.config, config => {
-  if (props.window.storage.opened === true) {
-    iframeSrc.value = config.metaData.iframeUrl
-  }
-}, {deep: true})
+watch(() => props.window.config, config => iframeSrc.value = config.metaData.iframeUrl, {deep: true})
 
 watch(() => props.window.storage.focused, val => {
   focused.value = val
@@ -129,20 +123,13 @@ watch(() => props.window.storage.focused, val => {
   }
 })
 
-function windowOpen(data) {
-  emit('open', data)
-
-  if (props.window.storage.opened === true) {
-    iframeSrc.value = props.url || props.window.config.metaData.iframeUrl
+onMounted(() => {
+  iframe.value = {
+    src: props.url || props.window.config.metaData.iframe.src,
+    allow: props.window.config.metaData?.iframe?.allow,
+    sandbox: props.window.config.metaData?.iframe?.sandbox
   }
-}
-
-function windowClose(data) {
-  emit('close', data)
-
-  iframeSrc.value = ''
-  loaded.value = false
-}
+})
 </script>
 
 <style lang="scss">

@@ -1,7 +1,5 @@
-import {useDesktopStore} from '../store'
-import {
-  OwdModuleAppWindowInstance
-} from "@owd-client/types";
+import {useDesktop} from "@owd-client/core/index";
+import {OwdModuleAppWindowInstance} from "@owd-client/types";
 
 /**
  * Calculate window position
@@ -25,7 +23,7 @@ export function calcPositionX(owdModuleAppWindow: OwdModuleAppWindowInstance) {
 
   if (desktopWindowsContainerArea && desktopWindowsContainer) {
     const desktopWindowsContainerOffset = desktopWindowsContainer.getBoundingClientRect()
-    const desktopWindowsContainerAreaOffset = desktopWindowsContainerArea.getBoundingClientRect()
+    const desktopWindowsContainerOffsetArea = desktopWindowsContainerArea.getBoundingClientRect()
 
     const maxPositionLeft = owdModuleAppWindow.storage.position.x + owdModuleAppWindow.storage.size.width + desktopWindowsContainerOffset.left
 
@@ -36,16 +34,16 @@ export function calcPositionX(owdModuleAppWindow: OwdModuleAppWindowInstance) {
     }
 
     if (owdModuleAppWindow.storage.position.x === 0) {
-      return desktopWindowsContainerAreaOffset.left - desktopWindowsContainerOffset.left
+      return desktopWindowsContainerOffsetArea.left - desktopWindowsContainerOffset.left
     }
 
     if (owdModuleAppWindow.storage.position.x < 0 || maxPositionLeft > pageWindow.innerWidth) {
-      return desktopWindowsContainerAreaOffset.width + desktopWindowsContainerAreaOffset.left - desktopWindowsContainerOffset.left - owdModuleAppWindow.storage.size.width
+      return desktopWindowsContainerOffsetArea.width + desktopWindowsContainerOffsetArea.left - desktopWindowsContainerOffset.left - owdModuleAppWindow.storage.size.width
     }
 
     if (owdModuleAppWindow.storage.position.x > 0) {
-      if (owdModuleAppWindow.storage.position.x > (desktopWindowsContainerAreaOffset.width - desktopWindowsContainerAreaOffset.left)) {
-        return desktopWindowsContainerAreaOffset.left - desktopWindowsContainerOffset.left
+      if (owdModuleAppWindow.storage.position.x > (desktopWindowsContainerOffsetArea.width - desktopWindowsContainerOffsetArea.left)) {
+        return desktopWindowsContainerOffsetArea.left - desktopWindowsContainerOffset.left
       }
 
       return owdModuleAppWindow.storage.position.x
@@ -68,30 +66,30 @@ export function calcPositionY(owdModuleAppWindow: OwdModuleAppWindowInstance) {
 
   if (desktopWindowsContainerArea && desktopWindowsContainer) {
     const desktopWindowsContainerOffset = desktopWindowsContainer.getBoundingClientRect()
-    const desktopWindowsContainerAreaOffset = desktopWindowsContainerArea.getBoundingClientRect()
+    const desktopWindowsContainerOffsetArea = desktopWindowsContainerArea.getBoundingClientRect()
     
-    if (desktopWindowsContainerAreaOffset.height < owdModuleAppWindow.storage.size.height) {
+    if (desktopWindowsContainerOffsetArea.height < owdModuleAppWindow.storage.size.height) {
       return 0
     }
 
     if (owdModuleAppWindow.storage.position.y < 0) {
-      return desktopWindowsContainerAreaOffset.height + desktopWindowsContainerAreaOffset.top - desktopWindowsContainerOffset.top - owdModuleAppWindow.storage.size.height
+      return desktopWindowsContainerOffsetArea.height + desktopWindowsContainerOffsetArea.top - desktopWindowsContainerOffset.top - owdModuleAppWindow.storage.size.height
     }
 
     if (
       (pageWindow.innerHeight < owdModuleAppWindow.storage.position.y + owdModuleAppWindow.storage.size.height + desktopWindowsContainerOffset.top)
       || (owdModuleAppWindow.storage.position.y + owdModuleAppWindow.storage.size.height > desktopWindowsContainerOffset.bottom)
     ) {
-      return desktopWindowsContainerAreaOffset.height + desktopWindowsContainerAreaOffset.top - desktopWindowsContainerOffset.top - owdModuleAppWindow.storage.size.height
+      return desktopWindowsContainerOffsetArea.height + desktopWindowsContainerOffsetArea.top - desktopWindowsContainerOffset.top - owdModuleAppWindow.storage.size.height
     }
 
     if (owdModuleAppWindow.storage.position.y === 0) {
-      return desktopWindowsContainerAreaOffset.top - desktopWindowsContainerOffset.top
+      return desktopWindowsContainerOffsetArea.top - desktopWindowsContainerOffset.top
     }
 
     if (owdModuleAppWindow.storage.position.y > 0) {
-      if (owdModuleAppWindow.storage.position.y > (desktopWindowsContainerAreaOffset.height - desktopWindowsContainerAreaOffset.top)) {
-        return desktopWindowsContainerAreaOffset.top - desktopWindowsContainerOffset.top
+      if (owdModuleAppWindow.storage.position.y > (desktopWindowsContainerOffsetArea.height - desktopWindowsContainerOffsetArea.top)) {
+        return desktopWindowsContainerOffsetArea.top - desktopWindowsContainerOffset.top
       }
 
       return owdModuleAppWindow.storage.position.y
@@ -110,9 +108,8 @@ export function calcPositionY(owdModuleAppWindow: OwdModuleAppWindowInstance) {
  * @param value
  */
 export function findWindowInstanceByAttr(attr: string, value: string) {
-  const store = useDesktopStore()
-
-  return store.getters['core/window/modulesAppWindowInstances']
+  return useDesktop().store
+    .getters['core/window/modulesAppWindowInstances']
     .find((owdModuleAppWindowInstance: OwdModuleAppWindowInstance) => {
       if (attr === 'uniqueID') {
         return owdModuleAppWindowInstance.uniqueID === value

@@ -1,11 +1,11 @@
 <template>
-  <div class="owd-logo" v-if="desktopOptions.Logo.enabled">
+  <div class="owd-logo" v-if="desktopOptions && desktopOptions.Logo.enabled">
     <h2 v-text="props.title" />
   </div>
 </template>
 
 <script setup>
-import {defineProps, inject} from "vue";
+import {inject} from "vue";
 
 const desktopOptions = inject('desktopOptions')
 

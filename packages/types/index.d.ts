@@ -12,12 +12,17 @@ export interface OwdClientConfiguration {
   sse: OwdClientConfigurationSse
   i18n?: OwdClientConfigurationI18n
   store?: OwdClientConfigurationStore
+  router?: OwdClientConfigurationRouter
   vuetify: any
 }
 
 export interface OwdClientConfigurationStore {
   strict?: boolean
   devtools: boolean
+}
+
+export interface OwdClientConfigurationRouter {
+  mode: string
 }
 
 export interface OwdClientConfigurationI18n {

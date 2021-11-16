@@ -34,7 +34,6 @@
           :id="iframeId"
           :src="iframe.src"
           :allow="iframe.allow"
-          :sandbox="iframe.sandbox"
           @load="onIframeLoaded"
       />
 
@@ -126,8 +125,7 @@ watch(() => props.window.storage.focused, val => {
 onMounted(() => {
   iframe.value = {
     src: props.url || props.window.config.metaData.iframe.src,
-    allow: props.window.config.metaData?.iframe?.allow,
-    sandbox: props.window.config.metaData?.iframe?.sandbox
+    allow: props.window.config.metaData?.iframe?.allow
   }
 })
 </script>

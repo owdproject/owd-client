@@ -1,4 +1,4 @@
-import desktopConfig from "~/themes/owd-theme-gnome/desktop.config"
+import desktopConfig from "owd-theme-gnome/desktop.config"
 
 // routes
 import routesClient from './src/pages/client/routes'

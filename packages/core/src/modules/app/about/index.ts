@@ -14,7 +14,7 @@ export default class AboutModuleApp extends ModuleApp {
           name: "WindowAbout",
           category: "system-tools",
           title: "About",
-          icon: "mdi-hexagon-multiple-outline",
+          icon: "mdi mdi-hexagon-multiple-outline",
           favorite: true,
           resizable: false,
           size: {

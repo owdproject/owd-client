@@ -34,36 +34,36 @@
     </template>
 
     <template v-slot:nav-append>
-      <v-btn
+      <owd-btn
           v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable"
-          class="v-btn--essential btn-minimize" tile
+          class="owd-btn--essential owd-btn-minimize"
           @click="onMinimize"
       >
-        <v-icon>{{desktopOptions.Window.icons.minimize}}</v-icon>
-      </v-btn>
+        <owd-icon :name="desktopOptions.Window.icons.minimize" />
+      </owd-btn>
 
-      <v-btn
+      <owd-btn
           v-if="window.config.maximizable"
-          class="v-btn--essential btn-maximize" tile
+          class="owd-btn--essential owd-btn-maximize"
           @click="onToggleMaximize"
       >
-        <v-icon>{{desktopOptions.Window.icons.maximize}}</v-icon>
-      </v-btn>
+        <owd-icon :name="desktopOptions.Window.icons.maximize" />
+      </owd-btn>
 
-      <v-btn
+      <owd-btn
           v-if="window.config.fullscreenable"
-          class="v-btn--essential btn-fullscreen" tile
+          class="owd-btn--essential owd-btn-fullscreen"
           @click="onToggleFullscreen"
       >
-        <v-icon>{{desktopOptions.Window.icons.fullscreen}}</v-icon>
-      </v-btn>
+        <owd-icon :name="desktopOptions.Window.icons.fullscreen" />
+      </owd-btn>
 
-      <v-btn
-          class="v-btn--essential btn-close" tile
+      <owd-btn
+          class="owd-btn--essential owd-btn-close"
           @click.stop="onClose"
       >
-        <v-icon>{{desktopOptions.Window.icons.close}}</v-icon>
-      </v-btn>
+        <owd-icon :name="desktopOptions.Window.icons.close" />
+      </owd-btn>
 
       <slot name="nav-append" />
     </template>

@@ -89,28 +89,6 @@ const props = defineProps({
       &--append {
         right: 0;
       }
-
-      .v-btn {
-        vertical-align: middle;
-      }
-    }
-
-    .v-btn.v-btn--density-default {
-      position: relative;
-      min-width: $owd-window-button-width;
-      height: $owd-window-button-height;
-      padding: $owd-window-button-padding;
-      line-height: $owd-window-button-height;
-      font-size: $owd-window-nav-button-font-size;
-      overflow: hidden;
-
-      a {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-      }
     }
   }
 

@@ -11,8 +11,8 @@
           <li>
             Powered by
           </li>
-          <li><v-icon size="24">mdi-vuejs</v-icon></li>
-          <li><v-icon size="24">mdi-language-typescript</v-icon></li>
+          <li><owd-icon size="24" name="mdi mdi-vuejs" /></li>
+          <li><owd-icon size="24" name="mdi mdi-language-typescript" /></li>
         </ul>
       </div>
     </div>

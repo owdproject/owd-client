@@ -15,7 +15,7 @@ export default class DebugModuleApp extends ModuleApp {
           "category": "system-tools",
           "title": "Debug",
           "icon": {
-            "name": "mdi-bug",
+            "name": "mdi mdi-bug",
             "offset": {
               "x": -1,
               "y": 0

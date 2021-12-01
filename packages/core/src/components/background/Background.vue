@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import {computed, onMounted} from "vue";
+import {computed} from "vue";
 import {useStore} from "vuex";
 
 const store = useStore()

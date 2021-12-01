@@ -2,7 +2,6 @@ import {initializeAppStore} from "../../store";
 import {initializeAppRouter} from "../../plugins/router";
 import {initializeAppPlugins} from "./plugins";
 import {initializeAppI18n} from "../../plugins/i18n";
-import {initializeAppAssets} from "./assets";
 import {initializeAppTerminal} from "./terminal";
 
 import {initializeDesktopApps, initializeDesktopModules} from "./modules";
@@ -28,14 +27,9 @@ export function initializeApp(context: OwdCoreContext) {
         routes: context.extensions.routes
     })
 
-    initializeAppPlugins({
-        app: context.app,
-        plugins: context.extensions.plugins
-    })
+    initializeAppPlugins(context)
 
     initializeAppI18n(context.app)
-
-    initializeAppAssets(context)
 
     context.terminal = initializeAppTerminal()
 

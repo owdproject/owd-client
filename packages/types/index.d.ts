@@ -50,6 +50,7 @@ export interface OwdClientConfigurationExtensions {
     name: string
     component: Component
     modules?: any[]
+    plugins?: any[]
     options: {
       [key: string]: any
     }
@@ -69,11 +70,6 @@ export interface OwdCoreStoreContext {
 export interface OwdCoreRouterContext {
   app: App
   routes: RouteRecordRaw[]
-}
-
-export interface OwdCorePluginsContext {
-  app: App
-  plugins: any
 }
 
 export interface OwdCoreBootContext {

@@ -8,7 +8,6 @@ const props = defineProps({
   size: [Number, String]
 })
 
-console.log(props.size)
 const style = {
   'font-size': props.size + 'px'
 }

@@ -4,7 +4,7 @@
     <img src="https://i.imgur.com/TqD0gwI.png" alt="Open Web Desktop 2.0.0-beta with Vue 3 and TypeScript" />
 </p>
 
-<p style="text-align: center;">
+<p>
     <a href="https://npmjs.com/package/@owd-client/core"><img src="https://img.shields.io/npm/v/@owd-client/core.svg?color=1895b1" /></a>
     <a href="https://github.com/owdproject/owd-client"><img src="https://img.shields.io/badge/owd-client-blue" /></a>
     <a href="https://github.com/topics/owd-modules"><img src="https://img.shields.io/badge/owd-modules-777" /></a>
@@ -23,7 +23,7 @@ Open Web Desktop is a project that aims to provide a simple environment to creat
 - Fully extendable through pages and Vue components
 - Notifications, terminal commands, multiple themes
 - Vuex, Vue Router and Vue i18n implemented by default
-- Vuetify.js and Moment.js implemented by default
+- Compatible with Vuetify and Quasar Framework
 - TypeScript and Vite support
 
 ## About this project

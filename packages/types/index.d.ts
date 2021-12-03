@@ -28,6 +28,7 @@ export interface OwdClientConfigurationRouter {
 export interface OwdClientConfigurationI18n {
   locale: string
   fallbackLocale: string
+  messages: any
 }
 
 export interface OwdClientConfigurationDesktop {

@@ -1,6 +1,4 @@
 import { createI18n, I18n } from 'vue-i18n'
-// @ts-ignore
-import messages from '/@/../src/locales/index'
 import {App,nextTick} from "vue";
 
 let i18n: I18n
@@ -19,7 +17,7 @@ export function initializeAppI18n(app: App) {
   i18n = createI18n({
     locale: config.locale,
     fallbackLocale: config.fallbackLocale,
-    messages
+    messages: config.messages
   })
 
   app.use(i18n)

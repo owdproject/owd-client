@@ -1,5 +1,7 @@
 import { version } from './package.json'
 
+import messages from './src/locales'
+
 export default {
   debug: true,
 
@@ -21,6 +23,7 @@ export default {
 
   // i18n config
   i18n: {
+    messages,
     locale: 'en',
     fallbackLocale: 'en',
   }

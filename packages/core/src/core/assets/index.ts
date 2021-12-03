@@ -1,9 +1,9 @@
 import {OwdCoreContext} from "@owd-client/types";
 
-import Icon from "../../../../src/components/icon/Icon.vue";
-import Button from "../../../../src/components/button/Button.vue";
-import WindowComponent from "../../../../src/components/window/Window.vue";
-import WindowAppComponent from "../../../../src/components/window/app/WindowApp.vue";
+import Icon from "../../../src/components/icon/Icon.vue";
+import Button from "../../../src/components/button/Button.vue";
+import WindowComponent from "../../../src/components/window/Window.vue";
+import WindowAppComponent from "../../../src/components/window/app/WindowApp.vue";
 
 import {loadLocaleMessages} from "@owd-client/core/src/plugins/i18n";
 

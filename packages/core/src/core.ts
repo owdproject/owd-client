@@ -6,8 +6,8 @@ import {
   OwdCoreBootContext
 } from "@owd-client/types";
 
-import {initializeApp, initializeDesktop} from "./libraries/core/boot";
-import {EventEmitter} from "./libraries/core/event-emitter";
+import {initializeApp, initializeDesktop} from "./core/boot";
+import {EventEmitter} from "./core/event-emitter";
 
 export default class Core extends EventEmitter {
   readonly app: App
@@ -55,7 +55,7 @@ export default class Core extends EventEmitter {
 
   /**
    * Lazy desktop initialization
-   * (with t+his.config.desktop?.autostart === false)
+   * (it should be used when this.config.desktop?.autostart === false)
    */
   public initializeDesktop() {
     if (debug) console.log('[owd] initializing desktop manually...')

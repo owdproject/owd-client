@@ -1,7 +1,7 @@
-import {initializeAppStore} from "../../store";
-import {initializeAppRouter} from "../../plugins/router";
+import {initializeAppStore} from "../store";
+import {initializeAppRouter} from "../plugins/router";
 import {initializeAppPlugins} from "./plugins";
-import {initializeAppI18n} from "../../plugins/i18n";
+import {initializeAppI18n} from "../plugins/i18n";
 import {initializeAppTerminal} from "./terminal";
 
 import {initializeDesktopApps, initializeDesktopModules} from "./modules";
@@ -35,6 +35,7 @@ export function initializeApp(context: OwdCoreContext) {
 
     // app loaded
     context.booted.app = true
+
     if (debug) console.log('[owd] initialized app.')
 }
 

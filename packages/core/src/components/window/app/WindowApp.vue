@@ -78,9 +78,9 @@
 </template>
 
 <script setup>
-import {computed, ref, watch, inject, onMounted, onUnmounted, nextTick} from 'vue'
+import {computed, ref, watch, inject, onMounted, onUnmounted} from 'vue'
 import {useStore} from 'vuex'
-import kebabCase from '@owd-client/core/src/libraries/kebab-case'
+import {kebabCase} from "../../../helpers/helperStrings";
 
 const props = defineProps({
   title: {

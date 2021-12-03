@@ -2,7 +2,7 @@ import {OwdCoreContext} from "@owd-client/types";
 import moment from "@owd-client/core/src/plugins/moment"
 
 // register service worker
-import '@owd-client/core/src/libraries/service-worker/registerServiceWorker'
+import '@owd-client/core/src/core/service-worker/registerServiceWorker'
 
 export function initializeAppPlugins(context: OwdCoreContext) {
   context.app.use(moment)

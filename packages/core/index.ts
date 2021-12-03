@@ -1,7 +1,7 @@
 import Core from './src/core'
 import {OwdCoreBootContext} from "@owd-client/types";
 
-import ModuleAppClass from './src/libraries/core/modules/app/classes/moduleApp.class'
+import ModuleAppClass from './src/core/modules/app/classes/moduleApp.class'
 
 let owd: any
 

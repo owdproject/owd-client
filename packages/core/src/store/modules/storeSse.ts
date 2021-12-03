@@ -1,8 +1,6 @@
 import {VuexModule, Module, Mutation, Action} from "vuex-class-modules";
 import {OwdEvent, OwdEventConfig, OwdEvents} from "@owd-client/types";
-
-// @ts-ignore
-import config from '/@/../client.config'
+import {useDesktop} from "@owd-client/core/index";
 
 const reconnectTimeout: { [key: string]: ReturnType<typeof setTimeout> } = {}
 
@@ -25,15 +23,19 @@ export default class StoreSse extends VuexModule {
 
   @Action
   initialize() {
-    if (config.sse.enabled) {
+    const owd = useDesktop()
+
+    if (owd.config.sse.enabled) {
       this.connect()
     }
   }
 
   @Action
   connect(event: string|OwdEventConfig = 'default') {
+    const owd = useDesktop()
+
     // is sse globally enabled?
-    if (!config.sse.enabled) {
+    if (!owd.config.sse.enabled) {
       if (debug) console.error(`[owd] SSE integration is disabled by configuration`)
 
       return false
@@ -44,7 +46,7 @@ export default class StoreSse extends VuexModule {
       name: (typeof event === 'string' ? event : event.name),
       url: '/api/sse',
       reconnectOnError: (typeof event === 'string' ? false : event.reconnectOnError),
-      reconnectTimeout: (typeof event === 'string' ? config.sse.reconnectTimeout : event.reconnectTimeout)
+      reconnectTimeout: (typeof event === 'string' ? owd.config.sse.reconnectTimeout : event.reconnectTimeout)
     }
 
     // check if already to this sse
@@ -82,7 +84,7 @@ export default class StoreSse extends VuexModule {
       if (eventInstance.reconnectOnError) {
         clearTimeout(reconnectTimeout[eventConfig.name])
 
-        reconnectTimeout[eventConfig.name] = setTimeout(() => this.connect(), config.sse.reconnectTimeout | 2000)
+        reconnectTimeout[eventConfig.name] = setTimeout(() => this.connect(), owd.config.sse.reconnectTimeout | 2000)
       }
     }
 

@@ -4,8 +4,8 @@ import desktopConfig from "owd-theme-gnome/desktop.config"
 import routesClient from './src/pages/client/routes'
 
 // app modules
-import AboutModule from "@owd-client/core/src/modules/app/about";
-import DebugModule from "@owd-client/core/src/modules/app/debug";
+import AboutModule from "owd-app-about/client/index";
+import DebugModule from "owd-app-debug/client/index";
 
 export default {
   desktop: desktopConfig,

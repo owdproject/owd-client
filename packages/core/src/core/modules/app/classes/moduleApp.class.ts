@@ -1,5 +1,5 @@
 import {
-  OwdModuleAppContext,
+  OwdCoreContext,
   OwdModuleAppWindowConfig,
   OwdModuleAppInfo,
   OwdModuleAppWindowsInstances,
@@ -43,14 +43,29 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
 
   public windowInstances: OwdModuleAppWindowsInstances = reactive({})
 
-  constructor(context: OwdModuleAppContext) {
+  constructor(context: OwdCoreContext) {
     super()
 
     this.app = context.app
     this.store = context.store
     this.terminal = context.terminal
 
-    this.register()
+    if (this.setup) {
+      this.moduleInfo = this.setup({
+        app: this.app
+      })
+
+      // initialize other module features
+      this.initializeConfig()
+      this.initializeStore()
+      this.initializeStoreInstance()
+      this.initializeWindows()
+      this.initializeCommands()
+      this.initializeAssets()
+      this.initializeSseEvents()
+    }
+
+    throw new Error('Module app has no setup')
   }
 
   /**
@@ -80,27 +95,6 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     }
 
     return false
-  }
-
-  private register() {
-    if (this.setup) {
-      this.moduleInfo = this.setup({
-        app: this.app
-      })
-
-      // initialize other module features
-      this.initializeConfig()
-      this.initializeStore()
-      this.initializeStoreInstance()
-      this.initializeWindows()
-      this.initializeCommands()
-      this.initializeAssets()
-      this.initializeSseEvents()
-
-      return true
-    }
-
-    throw new Error('Module app has no setup')
   }
 
   /**
@@ -402,7 +396,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
           if (Object.prototype.hasOwnProperty.call(storageWindows[windowConfig.name], uniqueID)) {
             const windowStorage = storageWindows[windowConfig.name][uniqueID]
 
-            this.createWindow(windowConfig, windowStorage).onMounted((windowInstance) => {
+            this.createWindow(windowConfig, windowStorage).onMounted((windowInstance: OwdModuleAppWindowInstance) => {
               if (!windowStorage.minimized) {
                 windowInstance.open()
               }

@@ -12,9 +12,3 @@ const style = {
   'font-size': props.size + 'px'
 }
 </script>
-
-<style scoped lang="scss">
-.owd-icon {
-
-}
-</style>

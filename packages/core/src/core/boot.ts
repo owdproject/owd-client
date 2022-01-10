@@ -1,37 +1,34 @@
-import {initializeAppStore} from "../store";
-import {initializeAppRouter} from "../plugins/router";
-import {initializeAppPlugins} from "./plugins";
-import {initializeAppI18n} from "../plugins/i18n";
-import {initializeAppTerminal} from "./terminal";
+import {initializeStore} from "../plugins/store";
+import {initializeRouter} from "../plugins/router";
+import {initializeI18n} from "../plugins/i18n";
+import {initializePlugins} from "./plugins";
 
-import {initializeDesktopApps, initializeDesktopModules} from "./modules";
-import {initializeDesktopAssets} from "./assets";
+import {initializeDesktopTerminal, terminateDesktopTerminal} from "./terminal";
+import {initializeDesktopApps, terminateDesktopApps, initializeDesktopModules} from "./modules";
+import {initializeDesktopAssets, terminateDesktopAssets} from "./assets";
+
 import {OwdCoreContext} from "@owd-client/types";
 
 /**
- * Initialize app
+ * Initialize app and plugins
+ * (vuex, vue router and other libraries)
  */
 export function initializeApp(context: OwdCoreContext) {
     if (debug) console.log('[owd] initializing app...')
 
-    // set owd config to $owd vue globalProperties
+    // set owd config to $owd vue globalProperties.
+    // this will probably change in future
     context.app.config.globalProperties.$owd = { ...context.config }
 
-    context.store = initializeAppStore({
-        app: context.app,
-        modules: context.extensions.store
-    })
+    context.store = initializeStore(context)
 
-    context.router = initializeAppRouter({
-        app: context.app,
-        routes: context.extensions.routes
-    })
+    context.router = initializeRouter(context)
 
-    initializeAppPlugins(context)
+    initializeI18n(context)
 
-    initializeAppI18n(context.app)
+    initializePlugins(context)
 
-    context.terminal = initializeAppTerminal()
+    context.app.mount('#app')
 
     // app loaded
     context.booted.app = true
@@ -43,14 +40,43 @@ export function initializeApp(context: OwdCoreContext) {
  * Initialize desktop
  */
 export function initializeDesktop(context: OwdCoreContext) {
-    initializeDesktopAssets(context)
+    // initialize store client
+    context.store.dispatch('core/client/initialize')
 
+    initializeDesktopAssets(context)
+    initializeDesktopTerminal(context)
+
+    // owd modules can be "app modules" or "desktop modules"
     context.modules = {
-        desktop: initializeDesktopModules(context),
-        app: initializeDesktopApps(context)
+        app: initializeDesktopApps(context),
+        desktop: initializeDesktopModules(context)
     }
 
-    // desktop loaded
+    // set desktop loaded
     context.booted.desktop = true
+
     if (debug) console.log('[owd] initialized desktop.')
+}
+
+/**
+ * Terminate desktop
+ */
+export function terminateDesktop(context: OwdCoreContext) {
+    // terminate store client
+    context.store.dispatch('core/client/terminate')
+
+    terminateDesktopAssets(context)
+    terminateDesktopTerminal(context)
+    terminateDesktopApps(context)
+
+    // reset modules
+    context.modules = {
+        app: {},
+        desktop: {}
+    }
+
+    // set desktop unloaded
+    context.booted.desktop = false
+
+    if (debug) console.log('[owd] terminated desktop.')
 }

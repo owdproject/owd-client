@@ -30,9 +30,9 @@
   ],
   "dependencies": {
     "@owd-client/core": "^2.0.0-beta.3",
-    "owd-app-about": "https://github.com/owdproject/owd-app-about",
-    "owd-app-debug": "https://github.com/owdproject/owd-app-debug",
-    "owd-theme-gnome": "https://github.com/hacklover/owd-theme-gnome#next"
+    "owd-app-about": "owdproject/owd-app-about",
+    "owd-app-debug": "owdproject/owd-app-debug",
+    "owd-theme-gnome": "hacklover/owd-theme-gnome#next"
   },
   "devDependencies": {
     "@mdi/font": "^5.9.55",

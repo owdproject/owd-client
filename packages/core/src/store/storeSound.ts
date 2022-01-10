@@ -1,5 +1,5 @@
 import {Module, Mutation, Action, VuexModule} from "vuex-class-modules";
-import {loadStorage, saveStorage} from "../../helpers/helperStorage";
+import {loadStorage, saveStorage} from "../helpers/helperStorage";
 
 @Module
 export default class StoreSound extends VuexModule {

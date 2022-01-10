@@ -1,6 +1,6 @@
 import {Action, Module, Mutation, VuexModule} from "vuex-class-modules";
-import * as helperStorage from "@owd-client/core/src/helpers/helperStorage";
-import * as helperWindow from "../../../helpers/helperWindow";
+import * as helperStorage from "../../helpers/helperStorage";
+import * as helperWindow from "../../helpers/helperWindow";
 
 @Module
 export default class StoreWindowFocus extends VuexModule {

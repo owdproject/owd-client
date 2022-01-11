@@ -5,7 +5,7 @@
         class="owd-window-icon__image"
         :style="imageStyle"
     />
-    <v-icon v-else :style="iconStyle">{{iconName}}</v-icon>
+    <owd-icon v-else :style="iconStyle" :name="iconName" :size="props.icon.size || 24" />
   </div>
 </template>
 

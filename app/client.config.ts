@@ -1,16 +1,13 @@
 import { version } from './package.json'
 
+import messages from './src/locales'
+
 export default {
   debug: true,
 
   name: 'owd-client',
   hostname: 'owdproject.org',
   version,
-
-  // desktop config
-  desktop: {
-    autostart: true
-  },
 
   // sse config
   sse: {
@@ -19,17 +16,9 @@ export default {
     reconnectTimeout: 5000
   },
 
-  // vuetify config
-  vuetify: {
-    theme: {
-      defaultTheme: 'dark',
-      options: { customProperties: true }
-    },
-    rtl: false
-  },
-
   // i18n config
   i18n: {
+    messages,
     locale: 'en',
     fallbackLocale: 'en',
   }

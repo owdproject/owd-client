@@ -40,11 +40,13 @@
       <div v-if="!focused" class="detect-focus-in" />
     </div>
 
+    <!--
     <v-progress-linear
         v-if="progressBar && !loaded"
         color="#323232"
         indeterminate
     />
+    -->
   </WindowApp>
 </template>
 

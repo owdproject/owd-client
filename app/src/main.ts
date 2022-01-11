@@ -1,12 +1,12 @@
-import {createApp} from '@owd-client/core/index'
+import { createApp } from '@owd-client/core'
 import { name, version } from '../package.json'
+
+// configuration
+import config from '../client.config'
+import extensions from '../client.extensions'
 
 // main vue component
 import App from './App.vue'
-
-// client configuration
-import config from '../client.config'
-import extensions from '../client.extensions'
 
 if (debug) console.log(`[owd] ${name} ${version}`)
 

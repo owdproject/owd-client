@@ -21,11 +21,9 @@ export function initializeApp(context: OwdCoreContext) {
     context.app.config.globalProperties.$owd = { ...context.config }
 
     context.store = initializeStore(context)
-
     context.router = initializeRouter(context)
 
     initializeI18n(context)
-
     initializePlugins(context)
 
     context.app.mount('#app')

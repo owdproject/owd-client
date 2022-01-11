@@ -1,16 +1,15 @@
 import Core from './src/core'
-import {OwdCoreBootContext} from "@owd-client/types";
-
 import ModuleAppClass from './src/core/modules/app/classes/moduleApp.class'
+import {OwdCoreBootContext, OwdCoreContext} from "@owd-client/types";
 
-let owd: any
+let owd: OwdCoreContext
 
 /**
  * Create Vue app
  *
  * @param context
  */
-export async function createApp(context: OwdCoreBootContext): Promise<Core> {
+export async function createApp(context: OwdCoreBootContext): Promise<OwdCoreContext> {
   return new Promise((resolve, reject) => {
     try {
       owd = new Core(context)
@@ -18,20 +17,6 @@ export async function createApp(context: OwdCoreBootContext): Promise<Core> {
     } catch(e) {
       reject(e)
     }
-  })
-}
-
-/**
- * Create Vue app and initialize OWD
- *
- * @param context
- */
-export function createDesktop(context: OwdCoreBootContext) {
-  return createApp(context).then(owd => {
-    // initialize desktop
-    owd.initializeDesktop()
-
-    return owd
   })
 }
 
@@ -53,12 +38,12 @@ export function useDesktopRouter() { return owd.router }
 /**
  * Use OWD desktop apps
  */
-export function useDesktopApps() { return owd.modules.app }
+export function useDesktopApps() { return owd.modules?.app }
 
 /**
  * Use OWD desktop modules
  */
-export function useDesktopModules() { return owd.modules.desktop }
+export function useDesktopModules() { return owd.modules?.desktop }
 
 /**
  * Use OWD terminal

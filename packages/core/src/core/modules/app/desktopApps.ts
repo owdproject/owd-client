@@ -10,25 +10,40 @@ export default class DesktopApps {
 
   constructor(context: OwdCoreContext) {
     this.context = context
-
-    // on desktop components ready
-    this.context.on('owd/desktop:mounted', () => {
-      this.initialize()
-    })
   }
 
   /**
-   * Initialize app modules that have been defined in the client.extensions.ts
+   * Initialize desktop apps that have been defined in the client.extensions.ts
    */
   public async initialize() {
     const desktopApps = this.getModulesAppFromConfig()
 
-    // initialize client
-    await this.context.store.dispatch('core/client/initialize')
-
     // install apps
     for (const DesktopApp of desktopApps) {
       this.installApp(DesktopApp)
+    }
+  }
+
+  /**
+   * Terminate desktop apps
+   */
+  public async terminate() {
+    if (this.context.app._instance) {
+      const moduleNames = Object.keys(this.modules)
+
+      if (moduleNames.length > 0) {
+        for (const moduleName of moduleNames) {
+          const moduleWindows = this.modules[moduleName].moduleInfo.windows
+
+          if (moduleWindows) {
+            for (const moduleWindow of moduleWindows) {
+              delete this.context.app._instance.appContext.components[moduleWindow.name]
+            }
+          }
+        }
+      }
+
+      this.modules = {}
     }
   }
 

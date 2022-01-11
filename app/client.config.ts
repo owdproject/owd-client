@@ -9,11 +9,6 @@ export default {
   hostname: 'owdproject.org',
   version,
 
-  // desktop config
-  desktop: {
-    autostart: true
-  },
-
   // sse config
   sse: {
     enabled: false,

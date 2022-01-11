@@ -1,12 +1,15 @@
-import { Router, createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
-import {OwdCoreRouterContext} from "@owd-client/types";
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
+import {OwdCoreContext} from "@owd-client/types";
 
-let router: Router
-
-export function initializeAppRouter(context: OwdCoreRouterContext) {
-  router = createRouter({
-    history: context.app.config.globalProperties.$owd.router?.mode === 'hash' ? createWebHashHistory() : createWebHistory(),
-    routes: mergeRoutes(context.routes)
+/**
+ * Initialize vue router
+ *
+ * @param context
+ */
+export function initializeRouter(context: OwdCoreContext) {
+  const router = createRouter({
+    history: context.config.router?.mode === 'hash' ? createWebHashHistory() : createWebHistory(),
+    routes: mergeRoutes(context.extensions.routes)
   })
 
   context.app.use(router)
@@ -15,7 +18,7 @@ export function initializeAppRouter(context: OwdCoreRouterContext) {
 }
 
 /**
- * Merge provided client/src/pages/:page/routes
+ * Merge client/src/pages/:page/routes
  *
  * @param owdPageRoutes
  */

@@ -37,8 +37,8 @@ const props = defineProps({
 
     @media(min-width: 480px) {
       &:not(.inactive):hover {
-        border: 1px solid $owd-window-item-border-color;
-        background: $owd-window-item-background-hover;
+        border: 1px solid var(--owd-window-item-border-color);
+        background: var(--owd-window-item-background-hover);
       }
     }
 

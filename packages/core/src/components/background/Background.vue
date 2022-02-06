@@ -42,6 +42,6 @@ const backgroundStyle = computed(() => {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: $owd-background;
+    background-color: var(--owd-background);
   }
 </style>

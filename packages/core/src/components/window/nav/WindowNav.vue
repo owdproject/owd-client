@@ -33,17 +33,17 @@ const props = defineProps({
   &__nav {
     position: relative;
     display: flex;
-    height: $owd-window-nav-height;
-    line-height: $owd-window-nav-height;
-    padding: $owd-window-nav-padding;
-    border: $owd-window-nav-border;
-    border-color: $owd-window-nav-border-color-inactive;
-    background: $owd-window-nav-background-inactive;
-    box-shadow: $owd-window-nav-box-shadow-inactive;
+    height: var(--owd-window-nav-height);
+    line-height: var(--owd-window-nav-height);
+    padding: var(--owd-window-nav-padding);
+    border: var(--owd-window-nav-border);
+    border-color: var(--owd-window-nav-border-color-inactive);
+    background: var(--owd-window-nav-background-inactive);
+    box-shadow: var(--owd-window-nav-box-shadow-inactive);
     box-sizing: content-box;
-    font-family: $owd-window-nav-title-font-family;
-    font-weight: $owd-window-nav-title-font-weight;
-    font-size: $owd-window-nav-title-font-size;
+    font-family: var(--owd-window-nav-title-font-family);
+    font-weight: var(--owd-window-nav-title-font-weight);
+    font-size: var(--owd-window-nav-title-font-size);
     user-select: none;
     z-index: 1;
 
@@ -58,9 +58,9 @@ const props = defineProps({
     &__title {
       display: inline-block;
       width: 100%;
-      text-align: $owd-window-nav-title-align;
-      padding: $owd-window-nav-title-padding;
-      color: $owd-window-nav-color-inactive;
+      text-align: var(--owd-window-nav-title-align);
+      padding: var(--owd-window-nav-title-padding);
+      color: var(--owd-window-nav-color-inactive);
       cursor: default;
       white-space: nowrap;
       overflow: hidden;
@@ -94,12 +94,12 @@ const props = defineProps({
 
   &--focused {
     .owd-window__nav {
-      background: $owd-window-nav-background;
-      box-shadow: $owd-window-nav-box-shadow;
-      border-color: $owd-window-nav-border-color;
+      background: var(--owd-window-nav-background);
+      box-shadow: var(--owd-window-nav-box-shadow);
+      border-color: var(--owd-window-nav-border-color);
 
       &__title {
-        color: $owd-window-nav-color;
+        color: var(--owd-window-nav-color);
       }
     }
   }

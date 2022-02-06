@@ -221,13 +221,13 @@ function onResizeEnd(data) {
 
 <style lang="scss">
 .owd-window {
-  background: $owd-window-background;
-  border-width: $owd-window-border-width;
-  border-style: $owd-window-border-style;
-  border-color: $owd-window-border-color-inactive;
-  box-shadow: $owd-window-box-shadow-inactive;
-  border-radius: $owd-window-border-radius;
-  color: $owd-window-text;
+  background: var(--owd-window-background);
+  border-width: var(--owd-window-border-width);
+  border-style: var(--owd-window-border-style);
+  border-color: var(--owd-window-border-color-inactive);
+  box-shadow: var(--owd-window-box-shadow-inactive);
+  border-radius: var(--owd-window-border-radius);
+  color: var(--owd-window-text);
   overflow: hidden;
   user-select: none;
   pointer-events: initial;
@@ -246,14 +246,14 @@ function onResizeEnd(data) {
     display: grid;
     grid-template-rows: 100%;
     height: 100%;
-    box-shadow: $owd-window-container-box-shadow;
+    box-shadow: var(--owd-window-container-box-shadow);
   }
 
   & &__content {
     position: relative;
     height: 100%;
-    padding: $owd-window-content-padding;
-    background-color: $owd-window-content-background;
+    padding: var(--owd-window-content-padding);
+    background-color: var(--owd-window-content-background);
     box-sizing: border-box;
     overflow: hidden;
 
@@ -293,13 +293,13 @@ function onResizeEnd(data) {
   &--no-content-spacing {
     .owd-window__content {
       height: 100%;
-      padding: $owd-window-content-padding-no-spacing;
+      padding: var(--owd-window-content-padding-no-spacing);
     }
   }
 
   &--focused {
-    box-shadow: $owd-window-box-shadow;
-    border-color: $owd-window-border-color;
+    box-shadow: var(--owd-window-box-shadow);
+    border-color: var(--owd-window-border-color);
   }
 
   &--borderless {
@@ -310,17 +310,17 @@ function onResizeEnd(data) {
 
   &:not(&--borderless) {
     .owd-window__container {
-      grid-template-rows: $owd-window-nav-height calc(100% - #{$owd-window-nav-height});
+      grid-template-rows: var(--owd-window-nav-height) calc(100% - var(--owd-window-nav-height));
     }
 
     &.owd-window--dense {
       .owd-window__container {
-        grid-template-rows: $owd-window-nav-height-dense calc(100% - #{$owd-window-nav-height-dense});
+        grid-template-rows: var(--owd-window-nav-height-dense) calc(100% - var(--owd-window-nav-height-dense));
       }
 
       .owd-window__nav {
-        height: $owd-window-nav-height-dense;
-        line-height: $owd-window-nav-height-dense;
+        height: var(--owd-window-nav-height-dense);
+        line-height: var(--owd-window-nav-height-dense);
       }
     }
   }
@@ -334,7 +334,7 @@ function onResizeEnd(data) {
     height: 100% !important;
     margin: 0 !important;
     z-index: 999;
-    background: $owd-window-background;
+    background: var(--owd-window-background);
 
     @media (max-width: 768px) {
       left: auto !important;
@@ -351,7 +351,7 @@ function onResizeEnd(data) {
       height: 100% !important;
       margin: 0 !important;
       z-index: 999;
-      background: $owd-window-background;
+      background: var(--owd-window-background);
 
       @media (max-width: 768px) {
         left: auto !important;

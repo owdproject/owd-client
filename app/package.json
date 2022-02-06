@@ -37,6 +37,7 @@
   "devDependencies": {
     "@mdi/font": "^5.9.55",
     "@owd-client/types": "^2.0.0-beta.3",
+    "@owd-client/vite-plugin": "^0.0.1",
     "@vitejs/plugin-vue": "^1.9.4",
     "@vue/compiler-sfc": "^3.2.21",
     "sass": "^1.43.4",

@@ -1,12 +1,14 @@
 import { defineConfig } from 'vite';
 import path from 'path';
 import vue from '@vitejs/plugin-vue'
+import owd from '@owd-client/vite-plugin'
 
 import config from './client.config'
 
 export default defineConfig({
   plugins: [
-    vue()
+    vue(),
+    owd(config)
   ],
   server: {
     port: 3000
@@ -20,8 +22,5 @@ export default defineConfig({
   build: {
     chunkSizeWarningLimit: 600,
     cssCodeSplit: false
-  },
-  define: {
-    debug: config.debug
   }
 });

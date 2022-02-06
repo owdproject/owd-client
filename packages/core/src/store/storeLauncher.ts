@@ -100,4 +100,13 @@ export default class StoreLauncher extends VuexModule {
       }
     }
   }
+
+  @Mutation
+  RESET() {
+    this.launcher = {}
+  }
+
+  terminate() {
+    this.RESET()
+  }
 }

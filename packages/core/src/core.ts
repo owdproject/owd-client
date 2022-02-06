@@ -2,63 +2,124 @@ import {App, createApp} from 'vue'
 
 import {
   OwdClientConfiguration,
-  OwdClientConfigurationExtensions,
-  OwdCoreBootContext
+  OwdClientExtensions,
+  OwdCoreContext
 } from "@owd-client/types";
+import CoreModule from "./core/core.module";
 
-import {initializeApp, initializeDesktop} from "./core/boot";
-import {EventEmitter} from "./core/event-emitter";
+import CoreModulesApp from "./core/modules/app";
+import CoreModulesDesktop from "./core/modules/desktop";
+import CoreStore from "./core/store";
+import CoreRouter from "./core/router";
+import CorePlugins from "./core/plugins";
+import CoreTerminal from "./core/terminal";
+import CoreAssets from "./core/assets";
+import CoreI18n from "./core/i18n";
 
-export default class Core extends EventEmitter {
-  readonly app: App
-  readonly config: OwdClientConfiguration
-  readonly extensions: OwdClientConfigurationExtensions
+export default class Core extends CoreModule implements OwdCoreContext {
+  private readonly app: App
 
-  store: any
-  terminal: any
+  private readonly config: OwdClientConfiguration
+  private readonly extensions: OwdClientExtensions
 
-  booted = {
+  private store: any
+  private router: any
+  private i18n: any
+  private plugins: any
+  private terminal: any
+  private assets: any
+  private modules: { app: any, desktop: any } = {
+    app: null,
+    desktop: null
+  }
+
+  private booted = {
     app: false,
     desktop: false
   }
 
-  constructor(context: OwdCoreBootContext) {
-    super()
+  constructor(ctx) {
+    super(ctx)
 
     if (this.booted.app) {
       throw Error('[owd] app already initialized')
     }
 
-    this.config = context.config
-    this.extensions = context.extensions
+    // assign client.config.ts and client.extensions.ts objects internally
+    this.config = ctx.config
+    this.extensions = ctx.extensions
 
-    this.app = createApp(context.component)
+    // create vue app
+    this.app = createApp(ctx.component)
 
-    this.boot()
+    // initialize plugins
+    // (vuex, vue router and other core libraries)
+    if (debug) console.log('[owd] initializing app...')
+
+    // set owd config to $owd vue globalProperties.
+    this.app.config.globalProperties.$owd = { ...this.config }
+
+    this.store = new CoreStore(this)
+    this.router = new CoreRouter(this)
+    this.plugins = new CorePlugins(this)
+    this.terminal = new CoreTerminal(this)
+    this.assets = new CoreAssets(this)
+    this.i18n = new CoreI18n(this)
+    this.modules.app = new CoreModulesApp(this)
+    this.modules.desktop = new CoreModulesDesktop(this)
+
+    // mount vue app
+    this.app.mount('#app')
+
+    // app loaded
+    this.booted.app = true
+
+    if (debug) console.log('[owd] initialized app.')
   }
 
   /**
-   * Boot desktop
-   * @private
+   * Initialize desktop
    */
-  private boot() {
-    initializeApp(this)
-
-    // desktop autostart (no custom login or other behaviour)
-    if (this.config.desktop?.autostart) {
-      if (debug) console.log('[owd] initializing desktop...')
-      initializeDesktop(this)
+  public initialize() {
+    if (this.booted.desktop) {
+      throw Error('[owd] desktop already initialized')
     }
 
-    this.app.mount('#app')
+    if (debug) console.log('[owd] initializing desktop...')
+
+    // initialize store client
+    this.store.dispatch('core/client/initialize')
+
+    this.assets.initialize()
+    this.modules.app.initialize()
+    this.modules.desktop.initialize()
+
+    // set desktop loaded
+    this.booted.desktop = true
+
+    if (debug) console.log('[owd] initialized desktop.')
   }
 
   /**
-   * Lazy desktop initialization
-   * (it should be used when this.config.desktop?.autostart === false)
+   * Terminate desktop
    */
-  public initializeDesktop() {
-    if (debug) console.log('[owd] initializing desktop manually...')
-    initializeDesktop(this)
+  public terminate() {
+    if (!this.booted.desktop) {
+      throw Error('[owd] desktop not initialized')
+    }
+
+    if (debug) console.log('[owd] terminating desktop...')
+
+    // terminate store client
+    this.store.dispatch('core/client/terminate')
+
+    this.assets.terminate()
+    this.modules.app.terminate()
+    this.modules.desktop.terminate()
+
+    // set desktop unloaded
+    this.booted.desktop = false
+
+    if (debug) console.log('[owd] terminated desktop.')
   }
 }

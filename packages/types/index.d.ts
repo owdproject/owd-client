@@ -1,19 +1,20 @@
 import { App, Component } from 'vue'
 import { Store, ModuleTree } from 'vuex'
-import {RouteRecordRaw} from "vue-router";
+import {RouteRecordRaw} from "vue-router"
 
 declare var debug: boolean
 
 // OWD CLIENT
 
 export interface OwdClientConfiguration {
-  debug: boolean
-  desktop: OwdClientConfigurationDesktop
+  name: string
+  hostname: string
+  version: string
+  dev: boolean
   sse: OwdClientConfigurationSse
   i18n?: OwdClientConfigurationI18n
   store?: OwdClientConfigurationStore
-  router?: OwdClientConfigurationRouter
-  vuetify: any
+  router?: any
 }
 
 export interface OwdClientConfigurationStore {
@@ -31,34 +32,44 @@ export interface OwdClientConfigurationI18n {
   messages: any
 }
 
-export interface OwdClientConfigurationDesktop {
-  autostart: boolean
-}
-
 export interface OwdClientConfigurationSse {
   enabled: boolean
   reconnectOnError: boolean
   reconnectTimeout: number
 }
 
-export interface OwdClientConfigurationExtensions {
+export interface OwdClientExtensions {
   routes: any[]
   modules: {
     app?: any[]
     desktop?: any[]
   }
-  desktop: {
-    name: string
-    component: Component
-    modules?: any[]
-    plugins?: any[]
-    options: {
-      [key: string]: any
-    }
-    locales: any
-  },
+  theme: OwdClientExtensionsTheme,
   plugins: any[]
   store: ModuleTree<any>
+}
+
+export interface OwdClientExtensionsTheme {
+  components: {
+    [name: string]: Component
+  }
+  modules?: any[]
+  plugins?: any[]
+}
+
+export interface OwdClientConfigTheme {
+  name: string
+  compatibility: string
+  variants: any
+
+  path: string
+  variant: string
+
+  options: {
+    [key: string]: any
+  }
+  icons: any
+  locales: any
 }
 
 // OWD CORE
@@ -74,32 +85,31 @@ export interface OwdCoreRouterContext {
 }
 
 export interface OwdCoreBootContext {
-  component: Component
   config: OwdClientConfiguration
-  extensions: OwdClientConfigurationExtensions
+  extensions: OwdClientExtensions
+  component: Component
 }
 
-export interface EventEmitter {
-  _events: any
-  on(name: string, listener: any): void
-  emit(name: string, data: any): void
-}
-
-export interface OwdCoreContext extends EventEmitter {
+export interface OwdCoreContext {
   app: App
   config: OwdClientConfiguration
-  extensions: OwdClientConfigurationExtensions
+  extensions: OwdClientExtensions
   store: any
+  router: any
+  i18n: any
+  plugins: any
   terminal: any
-  router?: any
-  modules?: {
+  assets: any
+  modules: {
     app: any
     desktop: any
   }
-  booted: {
+  booted?: {
     app: boolean,
     desktop: boolean
-  }
+  },
+  initialize(): void
+  terminate(): void
 }
 
 // OWD MODULES APP
@@ -113,20 +123,20 @@ export interface OwdModuleApp {
   store: Store<any>
   moduleInfo: OwdModuleAppInfo
   moduleStore: any
-  moduleStoreConfig: any;
+  moduleStoreConfig: any
   moduleStoreInstance: any
-  windowInstances: OwdModuleAppWindowsInstances;
-  registerStoreInstance(storeName: string): void;
-  unregisterStoreInstance(storeName: string): void;
-  hasStoreInstance(): boolean;
-  isSingleton: boolean;
-  registerWindow(config: OwdModuleAppWindowConfig, storage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance;
-  createWindow(config: OwdModuleAppWindowConfig, storage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance;
-  restoreWindows(config: OwdModuleAppWindowConfig): boolean;
-  getWindowInstancesCount(windowName: string): number;
-  getFirstWindowInstance(windowName: string): OwdModuleAppWindowInstance;
-  addLauncherEntry(item: OwdLauncherEntry): void;
-  removeLauncherEntry(item: OwdLauncherEntry): void;
+  windowInstances: OwdModuleAppWindowsInstances
+  registerStoreInstance(storeName: string): void
+  unregisterStoreInstance(storeName: string): void
+  hasStoreInstance(): boolean
+  isSingleton: boolean
+  registerWindow(config: OwdModuleAppWindowConfig, storage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance
+  createWindow(config: OwdModuleAppWindowConfig, storage?: OwdModuleAppWindowStorage): OwdModuleAppWindowInstance
+  restoreWindows(config: OwdModuleAppWindowConfig): boolean
+  getWindowInstancesCount(windowName: string): number
+  getFirstWindowInstance(windowName: string): OwdModuleAppWindowInstance
+  addLauncherEntry(item: OwdLauncherEntry): void
+  removeLauncherEntry(item: OwdLauncherEntry): void
 }
 
 export interface OwdModuleAppInfo {
@@ -144,28 +154,28 @@ export interface OwdModuleAppSetupContext {
 }
 
 export interface OwdModuleAppSetupAssetsContext {
-  app: App,
-  config: OwdModuleAppInfo,
+  app: App
+  config: OwdModuleAppInfo
   store: Store<any>
 }
 
 export interface OwdModuleAppSetupCommandsContext {
-  app: App,
-  config: OwdModuleAppInfo,
+  app: App
+  config: OwdModuleAppInfo
   store: Store<any>
   terminal: any
 }
 
 export interface OwdModuleAppSetupSseEventsContext {
-  app: App,
+  app: App
   config: OwdModuleAppInfo
   store: Store<any>
   terminal: any
 }
 
 export interface OwdModuleAppSetupStoreContext {
-  app: App,
-  config: OwdModuleAppInfo,
+  app: App
+  config: OwdModuleAppInfo
   store: Store<any>
   terminal: any
 }
@@ -326,15 +336,15 @@ export interface OwdLauncherEntryIcon {
 // OWD NOTIFICATIONS
 
 export interface OwdNotificationItem {
-  name: string;
-  service: string;
-  icon: string;
-  color: string;
-  title: string;
-  details: string;
-  sticky?: boolean;
-  duration: number;
-  date: Date;
+  name: string
+  service: string
+  icon: string
+  color: string
+  title: string
+  details: string
+  sticky?: boolean
+  duration: number
+  date: Date
 }
 
 // OWD SSE

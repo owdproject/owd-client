@@ -5,6 +5,8 @@ import WindowModule from "./window/storeWindow";
 import BackgroundModule from "./storeBackground";
 import SoundModule from "./storeSound";
 import WorkspaceModule from "./storeWorkspace";
+import DockModule from "./storeDock";
+import LauncherModule from "./storeLauncher";
 
 @Module
 export default class StoreClient extends VuexModule {
@@ -13,6 +15,8 @@ export default class StoreClient extends VuexModule {
   private readonly storeBackground: BackgroundModule
   private readonly storeSound: SoundModule
   private readonly storeWorkspace: WorkspaceModule
+  private readonly storeDock: DockModule
+  private readonly storeLauncher: LauncherModule
 
   constructor(
     storeSse: SseModule,
@@ -20,6 +24,8 @@ export default class StoreClient extends VuexModule {
     storeBackground: BackgroundModule,
     storeSound: SoundModule,
     storeWorkspace: WorkspaceModule,
+    storeDock: DockModule,
+    storeLauncher: LauncherModule,
     options: RegisterOptions
   ) {
     super(options);
@@ -28,6 +34,8 @@ export default class StoreClient extends VuexModule {
     this.storeBackground = storeBackground
     this.storeSound = storeSound
     this.storeWorkspace = storeWorkspace
+    this.storeDock = storeDock
+    this.storeLauncher = storeLauncher
   }
 
   @Action
@@ -37,6 +45,13 @@ export default class StoreClient extends VuexModule {
     await this.storeBackground.initialize()
     await this.storeSound.initialize()
     await this.storeWorkspace.initialize()
+  }
+
+  @Action
+  async terminate() {
+    await this.storeSse.terminate()
+    await this.storeDock.terminate()
+    await this.storeLauncher.terminate()
   }
 
   /**

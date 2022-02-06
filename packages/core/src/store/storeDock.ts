@@ -23,6 +23,14 @@ export default class StoreDock extends VuexModule {
   }
 
   @Mutation
+  RESET() {
+    this.dock = {
+      apps: {},
+      list: []
+    }
+  }
+
+  @Mutation
   ADD_CATEGORY(data: { config: OwdModuleAppWindowConfig, module: OwdModuleApp }) {
     this.dock.apps[data.config.name] = {
       config: data.config,
@@ -56,5 +64,9 @@ export default class StoreDock extends VuexModule {
 
     // delete from dock.list
     this.dock.list.splice(this.dock.list.indexOf(windowInstance), 1)
+  }
+
+  terminate() {
+    this.RESET()
   }
 }

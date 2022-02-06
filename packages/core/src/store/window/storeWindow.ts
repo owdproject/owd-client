@@ -2,7 +2,7 @@ import {VuexModule, Module, Action, RegisterOptions, Mutation} from "vuex-class-
 
 import WindowFocusModule from "./storeWindowFocus";
 
-import * as helperStorage from "@owd-client/core/src/helpers/helperStorage";
+import * as helperStorage from "../../helpers/helperStorage";
 
 import {
   OwdModuleAppWindowInstance, OwdModuleAppWindowsStorage

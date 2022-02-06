@@ -1,6 +1,6 @@
 import {Module, Mutation, Action, VuexModule} from "vuex-class-modules";
-import {loadStorage, saveStorage} from "../../helpers/helperStorage";
-import {generateUniqueID} from "../../helpers/helperStrings";
+import {loadStorage, saveStorage} from "../helpers/helperStorage";
+import {generateUniqueID} from "../helpers/helperStrings";
 
 @Module
 export default class StoreBackground extends VuexModule {

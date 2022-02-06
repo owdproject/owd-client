@@ -1,6 +1,6 @@
 import {VuexModule, Module, Mutation, Action} from "vuex-class-modules";
 import {OwdEvent, OwdEventConfig, OwdEvents} from "@owd-client/types";
-import {useDesktop} from "@owd-client/core/index";
+import {useDesktop} from "@owd-client/core";
 
 const reconnectTimeout: { [key: string]: ReturnType<typeof setTimeout> } = {}
 
@@ -27,6 +27,15 @@ export default class StoreSse extends VuexModule {
 
     if (owd.config.sse.enabled) {
       this.connect()
+    }
+  }
+
+  @Action
+  terminate() {
+    const owd = useDesktop()
+
+    if (owd.config.sse.enabled) {
+      this.disconnect()
     }
   }
 

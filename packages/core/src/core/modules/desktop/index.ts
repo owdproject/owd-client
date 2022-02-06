@@ -1,18 +1,24 @@
 import {reactive,markRaw} from 'vue'
 import {
-  OwdCoreContext, OwdModuleDesktop,
+  OwdModuleDesktop,
   OwdModulesDesktop
 } from "@owd-client/types";
+import CoreModule from "../../core.module";
 
-export default class DesktopModules {
-  private readonly context;
-  private modules: OwdModulesDesktop = {}
+export default class CoreModulesDesktop extends CoreModule {
+  private _modules: OwdModulesDesktop = {}
 
-  constructor(context: OwdCoreContext) {
-    this.context = context
+  constructor(ctx) {
+    super(ctx)
+  }
 
+  public initialize() {
     this.registerDesktopEnvironment()
     this.initializeDesktopModules()
+  }
+
+  public terminate() {
+    this._modules = {}
   }
 
   /**
@@ -21,11 +27,11 @@ export default class DesktopModules {
    */
   registerDesktopEnvironment() {
     // provide desktop options
-    this.context.app.provide('desktopOptions', this.context.extensions.desktop.options)
+    this.app.provide('desktopConfig', this.theme)
 
     // provide desktop modules
-    this.context.app.provide('desktopModules', {
-      list: reactive(this.modules),
+    this.app.provide('desktopModules', {
+      list: reactive(this._modules),
       get: function(area?: string, position?: string) {
         if (area && position && this.list[area]) {
           return this.list[area][position]
@@ -46,15 +52,15 @@ export default class DesktopModules {
   private getDesktopModulesFromConfig() {
     let modules: any[] = []
 
-    if (this.context.extensions.desktop.modules) {
-      modules = modules.concat(this.context.extensions.desktop.modules)
+    if (Object.prototype.hasOwnProperty.call(this.theme, 'modules')) {
+      modules = modules.concat(this.theme.modules)
     }
 
     if (
-      typeof this.context.extensions.modules !== 'undefined' &&
-      typeof this.context.extensions.modules.desktop !== 'undefined'
+        Object.prototype.hasOwnProperty.call(this.extensions, 'modules') &&
+        Object.prototype.hasOwnProperty.call(this.extensions.modules, 'desktop')
     ) {
-      modules = modules.concat(this.context.extensions.modules.desktop)
+      modules = modules.concat(this.extensions.modules.desktop)
     }
 
     return modules
@@ -78,8 +84,8 @@ export default class DesktopModules {
    */
   public registerDesktopModule(desktopModule: OwdModuleDesktop) {
     // define module area
-    if (!Object.prototype.hasOwnProperty.call(this.modules, desktopModule.config.area)) {
-      this.modules[desktopModule.config.area] = {}
+    if (!Object.prototype.hasOwnProperty.call(this._modules, desktopModule.config.area)) {
+      this._modules[desktopModule.config.area] = {}
     }
 
     // set default position if missing
@@ -87,11 +93,11 @@ export default class DesktopModules {
       desktopModule.config.position = 'default'
     }
 
-    if (!Object.prototype.hasOwnProperty.call(this.modules[desktopModule.config.area], desktopModule.config.position)) {
-      this.modules[desktopModule.config.area][desktopModule.config.position] = []
+    if (!Object.prototype.hasOwnProperty.call(this._modules[desktopModule.config.area], desktopModule.config.position)) {
+      this._modules[desktopModule.config.area][desktopModule.config.position] = []
     }
 
-    this.modules[desktopModule.config.area][desktopModule.config.position].push({
+    this._modules[desktopModule.config.area][desktopModule.config.position].push({
       config: desktopModule.config,
       components: markRaw(desktopModule.components)
     })

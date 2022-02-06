@@ -1,16 +1,69 @@
-import TerminalExtend from './terminalExtend'
+import CoreModule from "../core.module";
 
-let terminal: any
+export default class CoreTerminal extends CoreModule {
+  public commands: any = {}
+  public events: any = {}
 
-/**
- * Initialize OWD terminal support
- */
-export function initializeAppTerminal() {
-  terminal = new TerminalExtend()
+  constructor(ctx) {
+    super(ctx)
+  }
 
-  return terminal
-}
+  /**
+   * Add command to terminal
+   *
+   * @param name
+   * @param fn
+   */
+  addCommand(name: string, fn: any) {
+    if (this.hasCommand(name)) {
+      console.error(`[owd] command "${name}" was already defined, it has been overwritten`)
+    }
 
-export function useAppTerminal() {
-  return terminal
+    this.commands[name] = fn
+  }
+
+  /**
+   * Remove command from terminal
+   *
+   * @param name
+   */
+  removeCommand(name: string) {
+    if (this.hasCommand(name)) {
+      delete this.commands[name]
+    }
+  }
+
+  /**
+   * Does terminal command exists?
+   *
+   * @param name
+   */
+  hasCommand(name: string) {
+    return typeof this.commands[name] === 'function'
+  }
+
+  /**
+   * Run terminal command
+   *
+   * @param instance
+   * @param name
+   * @param args
+   */
+  execCommand(instance: any, name: string, args: string[] = []) {
+    this.commands[name](instance, args)
+  }
+
+  /**
+   * Add event to terminal
+   *
+   * @param event
+   * @param fn
+   */
+  addEvent(event: string, fn: any) {
+    if (typeof this.events[event] === 'undefined') {
+      this.events[event] = []
+    }
+
+    this.events[event].push(fn)
+  }
 }

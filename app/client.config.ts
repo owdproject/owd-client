@@ -1,30 +1,26 @@
 import { version } from './package.json'
 
+// locales
 import messages from './src/locales'
 
 export default {
-  debug: true,
-
   name: 'owd-client',
   hostname: 'owdproject.org',
   version,
 
-  // desktop config
-  desktop: {
-    autostart: true
+  dev: true,
+
+  // desktop internationalization config
+  i18n: {
+    messages,
+    locale: 'en',
+    fallbackLocale: 'en',
   },
 
-  // sse config
+  // desktop server-sent events config
   sse: {
     enabled: false,
     reconnectOnError: true,
     reconnectTimeout: 5000
   },
-
-  // i18n config
-  i18n: {
-    messages,
-    locale: 'en',
-    fallbackLocale: 'en',
-  }
 }

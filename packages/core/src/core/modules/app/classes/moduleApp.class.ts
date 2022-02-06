@@ -50,7 +50,7 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
     this.store = context.store
     this.terminal = context.terminal
 
-    if (this.setup) {
+    if (typeof this.setup === 'function') {
       this.moduleInfo = this.setup({
         app: this.app
       })
@@ -63,9 +63,9 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
       this.initializeCommands()
       this.initializeAssets()
       this.initializeSseEvents()
+    } else {
+      throw new Error('Module app has no setup')
     }
-
-    throw new Error('Module app has no setup')
   }
 
   /**
@@ -452,6 +452,6 @@ export default abstract class ModuleApp extends OwdModuleAppClass {
       return Object.values(this.windowInstances[windowName])[0]
     }
 
-    throw Error(`This window group doesn't have any window instance`)
+    throw Error(`[owd] this window group doesn't have any window instance`)
   }
 }

@@ -39,7 +39,7 @@
           class="owd-btn--essential owd-btn-minimize"
           @click="onMinimize"
       >
-        <owd-icon :name="desktopOptions.Window.icons.minimize" />
+        <owd-icon :name="desktopConfig.options.Window.icons.minimize" />
       </owd-btn>
 
       <owd-btn
@@ -47,7 +47,7 @@
           class="owd-btn--essential owd-btn-maximize"
           @click="onToggleMaximize"
       >
-        <owd-icon :name="desktopOptions.Window.icons.maximize" />
+        <owd-icon :name="desktopConfig.options.Window.icons.maximize" />
       </owd-btn>
 
       <owd-btn
@@ -55,14 +55,14 @@
           class="owd-btn--essential owd-btn-fullscreen"
           @click="onToggleFullscreen"
       >
-        <owd-icon :name="desktopOptions.Window.icons.fullscreen" />
+        <owd-icon :name="desktopConfig.options.Window.icons.fullscreen" />
       </owd-btn>
 
       <owd-btn
           class="owd-btn--essential owd-btn-close"
           @click.stop="onClose"
       >
-        <owd-icon :name="desktopOptions.Window.icons.close" />
+        <owd-icon :name="desktopConfig.options.Window.icons.close" />
       </owd-btn>
 
       <slot name="nav-append" />
@@ -111,7 +111,7 @@ const emit = defineEmits([
 ])
 
 const store = useStore()
-const desktopOptions = inject('desktopOptions')
+const desktopConfig = inject('desktopConfig')
 
 const resizing = ref(false)
 const dragging = ref(false)

@@ -148,7 +148,7 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
 
   private static registerComponent(data: OwdModuleAppWindowCreateInstanceData) {
     if (!data.config.component) {
-      throw Error(`No window component provided for ${data.config.name} in OWD`)
+      throw Error(`[owd] no window component provided for ${data.config.name} in OWD`)
     }
 
     // register vue component

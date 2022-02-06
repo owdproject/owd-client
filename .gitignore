@@ -5,5 +5,8 @@
 # Tests
 coverage
 
+# Logs
+.yarn-error.log
+
 # App
 node_modules

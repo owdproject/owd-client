@@ -1,6 +1,6 @@
 {
   "name": "owd-client",
-  "version": "2.0.0-beta.3",
+  "version": "2.0.0-beta.4",
   "description": "Open Web Desktop client",
   "private": true,
   "homepage": "https://github.com/owdproject/owd-client#readme",
@@ -20,8 +20,8 @@
     "build": "vite build --out-dir dist",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "preview": "vite preview --open --port 8080",
-    "serve": "vite --open",
+    "preview": "vite preview --port 8080",
+    "serve": "vite",
     "test": "jest"
   },
   "main": "dist/index.js",
@@ -29,18 +29,17 @@
     "@types"
   ],
   "dependencies": {
-    "@owd-client/core": "^2.0.0-beta.3",
+    "@owd-client/core": "^2.0.0-beta.4",
     "owd-app-about": "owdproject/owd-app-about",
-    "owd-app-debug": "owdproject/owd-app-debug",
-    "owd-theme-gnome": "hacklover/owd-theme-gnome#next"
+    "owd-app-debug": "owdproject/owd-app-debug"
   },
   "devDependencies": {
     "@mdi/font": "^5.9.55",
     "@owd-client/types": "^2.0.0-beta.3",
-    "@owd-client/vite-plugin": "^0.0.1",
-    "@vitejs/plugin-vue": "^1.9.4",
-    "@vue/compiler-sfc": "^3.2.21",
-    "sass": "^1.43.4",
-    "vite": "^2.6.14"
+    "@owd-client/vite-plugin": "owdproject/owd-vite-plugin",
+    "@vitejs/plugin-vue": "^2.2.0",
+    "@vue/compiler-sfc": "^3.2.30",
+    "sass": "^1.49.7",
+    "vite": "^2.8.0"
   }
 }

@@ -31,7 +31,8 @@
   "dependencies": {
     "@owd-client/core": "^2.0.0-beta.4",
     "owd-app-about": "owdproject/owd-app-about",
-    "owd-app-debug": "owdproject/owd-app-debug"
+    "owd-app-debug": "owdproject/owd-app-debug",
+    "owd-theme-gnome": "hacklover/owd-theme-gnome#next-experimental"
   },
   "devDependencies": {
     "@mdi/font": "^5.9.55",

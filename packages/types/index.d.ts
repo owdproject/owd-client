@@ -206,6 +206,7 @@ export interface OwdModuleAppWindowConfig {
   resizable?: boolean
   minimized?: boolean
   maximized?: boolean
+  minimizable?: boolean
   maximizable?: boolean
   fullscreenable?: boolean
   workspace: number

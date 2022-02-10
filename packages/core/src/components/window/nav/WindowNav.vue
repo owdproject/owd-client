@@ -28,7 +28,7 @@ const props = defineProps({
 })
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .owd-window {
   &__nav {
     position: relative;

@@ -1,6 +1,6 @@
 import * as helperWindow from "@owd-client/core/src/helpers/helperWindow";
 import * as helperStorage from "@owd-client/core/src/helpers/helperStorage";
-import {generateUniqueID} from "@owd-client/core/src/helpers/helperStrings";
+import {generateUniqueID, kebabCase} from "@owd-client/core/src/helpers/helperStrings";
 
 import {
   OwdModuleAppWindowInstance,
@@ -84,6 +84,10 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     return this.module.moduleInfo.name
   }
 
+  get className(): string {
+    return 'owd-'+kebabCase(this.config.name).slice(1)
+  }
+
   get windowName(): string {
     return this.config.name
   }
@@ -99,6 +103,10 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
   static configValidate(config: OwdModuleAppWindowConfig) {
     if (!config.theme) {
       config.theme = {}
+    }
+
+    if (typeof config.minimizable === 'undefined') {
+      config.minimizable = true
     }
 
     if (typeof config.dock === 'undefined') {
@@ -346,6 +354,18 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     return this.instance.storage.maximized
   }
 
+  toggleMaximize() {
+    if (!this.config.maximizable) {
+      return false
+    }
+
+    if (this.isMaximized) {
+      this.maximize(false)
+    } else {
+      this.maximize(true)
+    }
+  }
+
   save() {
     let storage: OwdModuleAppWindowsStorage = helperStorage.loadStorage('window') || {}
 
@@ -382,6 +402,18 @@ export default class ModuleAppWindow implements OwdModuleAppWindowInstance {
     this.module.store.commit('core/windowFullscreen/SET_FULLSCREEN_MODE', toggle)
 
     return true
+  }
+
+  toggleFullscreen() {
+    if (!this.config.fullscreenable) {
+      return false
+    }
+
+    if (this.instance.storage.fullscreen) {
+      this.fullscreen(false)
+    } else {
+      this.fullscreen(true)
+    }
   }
 
   focus() {

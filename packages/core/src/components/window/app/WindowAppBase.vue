@@ -1,7 +1,7 @@
 <template>
-  <Window
+  <WindowBase
       v-show="!window.storage.minimized"
-      :name="windowNameClass"
+      :name="window.className"
       :title="title || window.storage.title || window.config.titleWindow || window.config.title"
       :max-width="windowMaxWidth"
       :max-height="windowMaxHeight"
@@ -29,58 +29,15 @@
       @mousedown="onMouseDown"
       @toggleMaximize="onToggleMaximize"
   >
-    <template v-slot:nav-prepend>
-      <slot name="nav-prepend" />
-    </template>
-
-    <template v-slot:nav-append>
-      <owd-btn
-          v-if="typeof window.config.minimizable === 'undefined' || typeof window.config.minimizable === 'boolean' && window.config.minimizable"
-          class="owd-btn--essential owd-btn-minimize"
-          @click="onMinimize"
-      >
-        <owd-icon :name="desktopConfig.options.Window.icons.minimize" />
-      </owd-btn>
-
-      <owd-btn
-          v-if="window.config.maximizable"
-          class="owd-btn--essential owd-btn-maximize"
-          @click="onToggleMaximize"
-      >
-        <owd-icon :name="desktopConfig.options.Window.icons.maximize" />
-      </owd-btn>
-
-      <owd-btn
-          v-if="window.config.fullscreenable"
-          class="owd-btn--essential owd-btn-fullscreen"
-          @click="onToggleFullscreen"
-      >
-        <owd-icon :name="desktopConfig.options.Window.icons.fullscreen" />
-      </owd-btn>
-
-      <owd-btn
-          class="owd-btn--essential owd-btn-close"
-          @click.stop="onClose"
-      >
-        <owd-icon :name="desktopConfig.options.Window.icons.close" />
-      </owd-btn>
-
-      <slot name="nav-append" />
-    </template>
-
-    <template v-slot:append-outer>
-      <slot name="outer-append" />
-    </template>
-
     <slot />
-
-  </Window>
+  </WindowBase>
 </template>
 
 <script setup>
 import {computed, ref, watch, inject, onMounted, onUnmounted} from 'vue'
 import {useStore} from 'vuex'
-import {kebabCase} from "../../../helpers/helperStrings";
+
+import WindowBase from '@owd-client/core/src/components/window/WindowBase.vue'
 
 const props = defineProps({
   title: {
@@ -115,13 +72,6 @@ const desktopConfig = inject('desktopConfig')
 
 const resizing = ref(false)
 const dragging = ref(false)
-
-// window name class
-const windowNameClass = computed(() => {
-  const kebabCaseName = kebabCase(props.window.config.name)
-
-  return 'owd-'+kebabCaseName.substr(1, kebabCaseName.length + 1)
-})
 
 // window max width
 const windowMaxWidth = computed(() => {
@@ -166,30 +116,14 @@ function onMinimize() {
  * Window maximize event
  */
 function onToggleMaximize() {
-  if (!props.window.config.maximizable) {
-    return false
-  }
-
-  if (props.window.storage.maximized) {
-    props.window.maximize(false)
-  } else {
-    props.window.maximize(true)
-  }
+  props.window.toggleMaximize()
 }
 
 /**
  * Window fullscreen event
  */
 function onToggleFullscreen() {
-  if (!props.window.config.fullscreenable) {
-    return false
-  }
-
-  if (props.window.storage.fullscreen) {
-    props.window.fullscreen(false)
-  } else {
-    props.window.fullscreen(true)
-  }
+  props.window.toggleFullscreen()
 }
 
 /**

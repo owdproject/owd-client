@@ -3,18 +3,12 @@ import('@owd-client/core/src/assets/css/app.scss')
 
 import Icon from "../../../src/components/icon/Icon.vue";
 import Button from "../../../src/components/button/Button.vue";
-import Desktop from "../../../src/components/desktop/DesktopBase.vue";
-import Window from "../../../src/components/window/Window.vue";
-import WindowApp from "../../../src/components/window/app/WindowApp.vue";
 
 import CoreModule from "../core.module";
 import {Component} from "vue";
 
 export default class CoreAssets extends CoreModule {
   private readonly defaultDesktopComponents = {
-    'Desktop': Desktop,
-    'Window': Window,
-    'WindowApp': WindowApp,
     'owd-icon': Icon,
     'owd-btn': Button
   }

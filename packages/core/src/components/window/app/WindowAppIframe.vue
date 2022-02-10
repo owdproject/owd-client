@@ -39,14 +39,6 @@
 
       <div v-if="!focused" class="detect-focus-in" />
     </div>
-
-    <!--
-    <v-progress-linear
-        v-if="progressBar && !loaded"
-        color="#323232"
-        indeterminate
-    />
-    -->
   </WindowApp>
 </template>
 
@@ -152,13 +144,6 @@ onMounted(() => {
       left: 0;
       right: 0;
       bottom: 0;
-    }
-
-    .v-progress-linear {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
     }
   }
 }

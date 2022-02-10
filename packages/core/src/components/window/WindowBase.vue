@@ -36,29 +36,11 @@
       }
     ]"
   >
+
     <div class="owd-window__container">
-
-      <WindowNav
-          :title="props.title"
-          :hasNavTitle="hasNavTitle"
-          @toggleMaximize="emit('toggle-maximize')"
-      >
-        <template v-slot:nav-prepend>
-          <slot name="nav-prepend" />
-        </template>
-
-        <template v-slot:nav-append>
-          <slot name="nav-append" />
-        </template>
-      </WindowNav>
-
-      <div class="owd-window__content">
-        <slot />
-      </div>
-
-      <slot name="outer-append" />
-      
+      <slot />
     </div>
+    
   </vue-resizable>
 </template>
 
@@ -231,7 +213,7 @@ function onResizeEnd(data) {
   overflow: hidden;
   user-select: none;
   pointer-events: initial;
-  max-width: 100% !important;
+  max-width: 100%;
   max-height: 100%;
 
   @media (max-width: 768px) and (min-width: 561px) {
